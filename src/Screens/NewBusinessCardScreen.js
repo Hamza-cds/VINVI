@@ -1,30 +1,125 @@
-import React, {Component} from 'react';
-import {View, ImageBackground, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { View, ImageBackground, ScrollView } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import UploadBtn from '../Components/UploadBtn';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Svg, {G, Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { G, Path } from 'react-native-svg';
+import { Height, Width } from '../Constants/Constants';
+import { EMPTY_BUSINESS, EMPTY_HOURLY, EMPTY_INCORPORATION, EMPTY_PRODUCT, EMPTY_SERVICES, EMPTY_WEBSITE } from '../Constants/Strings';
 
-export default class NewBusinessCardScreen extends Component {
-  render() {
-    const navigation = this.props.navigation;
+export default function NewBusinessCardScreen(props) {
+  const onFinish = () => {
+    const [productShelving, setProductShelving] = useState("")
+    const [servicesOffered, setServicesOffered] = useState("")
+    const [hourlyWage, setHourlyVage] = useState("")
+    const [businessIndustry, setBusinessIndustry] = useState("")
+    const [dateofIncorporation, setDateOfIncorporation] = useState("")
+    const [companyWebsite, setCompanyWebsite] = useState("")
+    const [city, setCity] = useState("")
+
+
+    const onFinish = () => {
+      //props.navigation.push("NewPersonalCard2")
+
+      if (isNullOrEmpty(productShelving)) {
+        alert(EMPTY_PRODUCT)
+      }
+      else if (isNullOrEmpty(servicesOffered)) {
+        alert(EMPTY_SERVICES)
+      }
+      else if (isNullOrEmpty(hourlyWage)) {
+        alert(EMPTY_HOURLY)
+      }
+      else if (isNullOrEmpty(businessIndustry)) {
+        alert(EMPTY_BUSINESS)
+      }
+      else if (isNullOrEmpty(dateofIncorporation)) {
+        alert(EMPTY_INCORPORATION)
+      }
+      else if (isNullOrEmpty(companyWebsite)) {
+        alert(EMPTY_WEBSITE)
+      }
+      // else if (isNullOrEmpty(city)) {
+      //   alert(EMPTY_CITY)
+      // }
+
+      else {
+        let object = {
+          // "Name": name,
+          // "Email": email,
+          // "PhoneNo": phoneNumber,
+          // "Address": address,
+          "PersonalCardMeta": [
+            {
+              "PersonalKey": "Product Shelving",
+              "PersonalValue": productShelving,
+              "Ishidden": true
+
+            },
+            {
+              "PersonalKey": "Services Offered",
+              "PersonalValue": servicesOffered,
+              "Ishidden": true
+
+            },
+            {
+              "PersonalKey": "Hourly Wage",
+              "PersonalValue": hourlyWage,
+              "Ishidden": true
+
+            },
+            {
+              "PersonalKey": "Business Industry",
+              "PersonalValue": businessIndustry,
+              "Ishidden": true
+            },
+            {
+              "PersonalKey": "Date of Incorporation",
+              "PersonalValue": dateofIncorporation,
+              "Ishidden": true
+            },
+            {
+              "PersonalKey": "Company Website",
+              "PersonalValue": companyWebsite,
+              "Ishidden": true
+            },
+          ],
+        }
+        console.log("object", object)
+
+        businessCardApiCall(object)
+          .then((response) => {
+            console.log("response", response)
+            if (response.data.status == 200) {
+              props.navigation.push("Buisness")
+            }
+            else {
+              alert(CREDIANTIAL_ERROR)
+            }
+          })
+          .catch((err) => {
+            console.log("err", err)
+          })
+
+      }
+    }
+
     return (
-      <SafeAreaView style={{height: Height, width: Width}}>
+      <SafeAreaView style={{ height: Height, width: Width }}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{flex: 1}}>
+          style={{ flex: 1 }}>
           <Header
-            navigation={navigation}
+            navigation={props.navigation}
             variant="dark"
             headerName="New Card"
             onPress={() => {
-              navigation.navigate('AddCard');
+              props.navigation.navigate('AddCard');
             }}
           />
-          <ScrollView style={{flex: 1}}>
+          <ScrollView style={{ flex: 1 }}>
             <View
               style={{
                 width: '100%',
@@ -33,23 +128,43 @@ export default class NewBusinessCardScreen extends Component {
               <OutlinedInputBox
                 placeholder="Product Shelving"
                 inputType="text"
+                onChange={(value) => {
+                  setProductShelving(value);
+                }}
               />
               <OutlinedInputBox
                 placeholder="Services Offered"
                 inputType="text"
+                onChange={(value) => {
+                  setServicesOffered(value);
+                }}
               />
-              <OutlinedInputBox placeholder="Hourly Wage" inputType="text" />
+              <OutlinedInputBox
+                placeholder="Hourly Wage"
+                inputType="text"
+                onChange={(value) => {
+                  setHourlyVage(value);
+                }} />
               <OutlinedInputBox
                 placeholder="Business Industry"
                 inputType="text"
+                onChange={(value) => {
+                  setBusinessIndustry(value);
+                }}
               />
               <OutlinedInputBox
                 placeholder="Date of Incorporation"
                 inputType="text"
+                onChange={(value) => {
+                  setDateOfIncorporation(value);
+                }}
               />
               <OutlinedInputBox
                 placeholder=" Company website"
                 inputType="text"
+                onChange={(value) => {
+                  setCompanyWebsite(value);
+                }}
               />
               <UploadBtn
                 svg={
@@ -83,7 +198,8 @@ export default class NewBusinessCardScreen extends Component {
               <BtnComponent
                 placeholder="Finish"
                 onPress={() => {
-                  navigation.navigate('Buisness');
+                  onFinish();
+                  // navigation.navigate('Buisness');
                 }}
               />
             </View>

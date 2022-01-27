@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Modal} from 'react-native';
-import {WHITE} from '../Constants/Colors';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { WHITE } from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import ImagePicker from 'react-native-image-crop-picker';
+import RNFS from 'react-native-fs';
 
-export default function UploadBtn({svg, placeholder, onPress}) {
+const UploadBtn = ({ svg, placeholder, onCallBack }) => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
@@ -19,7 +20,7 @@ export default function UploadBtn({svg, placeholder, onPress}) {
           marginVertical: 10,
         }}>
         {svg}
-        <Text style={{fontSize: 14, color: WHITE, marginTop: 20}}>
+        <Text style={{ fontSize: 14, color: WHITE, marginTop: 20 }}>
           {placeholder}
         </Text>
       </TouchableOpacity>
@@ -28,7 +29,7 @@ export default function UploadBtn({svg, placeholder, onPress}) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}
         style={{
@@ -52,11 +53,17 @@ export default function UploadBtn({svg, placeholder, onPress}) {
               ImagePicker.openCamera({
                 width: 300,
                 height: 400,
-                cropping: true,
+                cropping: false,
               }).then(image => {
                 console.log(image);
+                RNFS.readFile(image.path, 'base64')
+                  .then(res => {
+                    // console.log("res", res)
+                    onCallBack(res, placeholder == "Profile Photo" ? "profile" : "cover")
+                  });
               });
             }}
+
           />
           <BtnComponent
             placeholder="Upload Image"
@@ -66,9 +73,14 @@ export default function UploadBtn({svg, placeholder, onPress}) {
                 height: 400,
                 cropping: true,
               }).then(image => {
-                console.log(image);
+                RNFS.readFile(image.path, 'base64')
+                  .then(res => {
+                    // console.log("res", res)
+                    onCallBack(res, placeholder == "Profile Photo" ? "profile" : "cover")
+                  });
               });
             }}
+
           />
           <BtnComponent
             placeholder="Close"
@@ -79,3 +91,5 @@ export default function UploadBtn({svg, placeholder, onPress}) {
     </>
   );
 }
+
+export default UploadBtn
