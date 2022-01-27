@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { Text, StyleSheet } from 'react-native';
 
 import {
   CodeField,
@@ -7,10 +7,10 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {SECONDARY} from '../Constants/Colors';
+import { SECONDARY } from '../Constants/Colors';
 
 const styles = StyleSheet.create({
-  codeFieldRoot: {marginVertical: 20},
+  codeFieldRoot: { marginVertical: 20 },
   cell: {
     width: 40,
     height: 40,
@@ -29,13 +29,18 @@ const styles = StyleSheet.create({
 
 const CELL_COUNT = 6;
 
-const PhoneVerificationCell = () => {
+function PhoneVerificationCell({ onChange }) {
   const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+
+  const onChangeText = (value = props.text) => {
+    setValue(value);
+    onChange(value);
+  }
 
   return (
     <CodeField
@@ -43,12 +48,12 @@ const PhoneVerificationCell = () => {
       {...props}
       // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
       value={value}
-      onChangeText={setValue}
+      onChangeText={onChangeText}
       cellCount={CELL_COUNT}
       rootStyle={styles.codeFieldRoot}
       keyboardType="number-pad"
       textContentType="oneTimeCode"
-      renderCell={({index, symbol, isFocused}) => (
+      renderCell={({ index, symbol, isFocused }) => (
         <Text
           key={index}
           style={[styles.cell, isFocused && styles.focusCell]}

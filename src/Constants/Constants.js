@@ -1,6 +1,7 @@
-const {Dimensions} = require('react-native');
+const { Dimensions } = require('react-native');
 
 module.exports = {
+  URL: "https://vinvi.dsmeglobal.com/",
   QRCODE_URL: 'https://www.google.com',
   Height: Dimensions.get('window').height,
   Width: Dimensions.get('window').width,

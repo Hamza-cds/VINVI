@@ -1,9 +1,11 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
-import {USER_NAME} from '../Constants/Constants';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { SECONDARY, WHITE } from '../Constants/Colors';
+import { USER_NAME } from '../Constants/Constants';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AccountCard() {
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -26,11 +28,14 @@ export default function AccountCard() {
         marginHorizontal: 20,
       }}>
       <Image source={require('../Assets/profilePic.png')} />
-      <View style={{marginLeft: 20}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{USER_NAME}</Text>
-        <Text style={{fontSize: 14}}>{USER_NAME}</Text>
+      <View style={{ marginLeft: 20 }}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{USER_NAME}</Text>
+        <Text style={{ fontSize: 14 }}>{USER_NAME}</Text>
       </View>
       <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('EditProfile');
+        }}
         style={{
           borderRadius: 5,
           borderWidth: 1,
