@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, TextInput} from 'react-native';
-import {SECONDARY, TEXT_COLOR} from '../Constants/Colors';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, TextInput } from 'react-native';
+import { SECONDARY, TEXT_COLOR } from '../Constants/Colors';
 
-export default function RegisterInputBox({placeholder, inputType}) {
+export default function RegisterInputBox({ placeholder, inputType, onChange }) {
   const [isfocused, setIsfocused] = useState(false);
   let secureTextEntry;
   if (inputType === 'password') {
@@ -41,6 +41,9 @@ export default function RegisterInputBox({placeholder, inputType}) {
           color: SECONDARY,
         }}
         type={inputType}
+        keyboardType={inputType}
+        onChangeText={onChange}
+        maxLength={15}
         secureTextEntry={secureTextEntry}
         onPressIn={() => {
           setIsfocused(true);

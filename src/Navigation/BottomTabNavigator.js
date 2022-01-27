@@ -1,14 +1,14 @@
 import React from 'react';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import SavedDashboardScreen from '../Screens/SavedDashboardScreen';
 import ChatsDashboardScreen from '../Screens/ChatsDashboardScreen';
 import AccountDashboardScreen from '../Screens/AccountDashboardScreen';
 
-import {SECONDARY, THIRD, WHITE} from '../Constants/Colors';
-import {View, TouchableOpacity} from 'react-native';
-import Svg, {G, Path} from 'react-native-svg';
+import { SECONDARY, THIRD, WHITE } from '../Constants/Colors';
+import { View, TouchableOpacity } from 'react-native';
+import Svg, { G, Path } from 'react-native-svg';
 import LinearGradient from 'react-native-linear-gradient';
 
 import AddCardScreen from '../Screens/AddCardScreen';
@@ -45,7 +45,7 @@ export default function BottomTabsNavigator() {
         name="Home"
         component={HomeDashboardScreen}
         options={{
-          tabBarIcon: ({focused}) => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ export default function BottomTabsNavigator() {
         name="Saved"
         component={SavedDashboardScreen}
         options={{
-          tabBarIcon: ({focused}) => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +100,7 @@ export default function BottomTabsNavigator() {
         name="AddCard"
         component={AddCardScreen}
         options={{
-          tabBarIcon: ({focused}) => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +115,7 @@ export default function BottomTabsNavigator() {
               </Svg>
             );
           },
-          tabBarButton: ({children, onPress, focused}) => {
+          tabBarButton: ({ children, onPress, focused }) => {
             return (
               <View
                 style={{
@@ -133,7 +133,7 @@ export default function BottomTabsNavigator() {
                   }}>
                   <LinearGradient
                     colors={['#3b5998', '#192f6a']}
-                    style={{width: '100%', height: '100%', borderRadius: 60}}>
+                    style={{ width: '100%', height: '100%', borderRadius: 60 }}>
                     {children}
                   </LinearGradient>
                 </TouchableOpacity>
@@ -146,7 +146,7 @@ export default function BottomTabsNavigator() {
         name="Chats"
         component={ChatsDashboardScreen}
         options={{
-          tabBarIcon: ({focused}) => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@ export default function BottomTabsNavigator() {
         name="Account"
         component={AccountDashboardScreen}
         options={{
-          tabBarIcon: ({focused}) => {
+          tabBarIcon: ({ focused }) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"

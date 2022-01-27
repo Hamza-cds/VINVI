@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,98 +8,160 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
-import SocialLoginBtn from '../Components/SocialLoginBtn';
+import { SECONDARY, WHITE } from '../Constants/Colors';
 import RegisterInputBox from '../Components/RegisterInputBox';
 import BtnComponent from '../Components/BtnComponent';
-import {Height, Width} from '../Constants/Constants';
+import { Height, Width } from '../Constants/Constants';
+import { MATCH_ERROR, MINIMUM_PASSWORD, PASSWORD_ERROR, PHONE_EMPTY_EROOR, PHONE_LENGTH_ERROR, PHONE_NUMBER_ERROR } from '../Constants/Strings';
+import { isNullOrEmpty, stringsNotEqual } from '../Constants/TextUtils';
+import { signUpApiCall } from '../APIS/Repo'
+import { isInvalidPassword, isInvalidPhoneNumber } from '../Constants/Validations';
 
-export default class RegisterScreen extends Component {
-  render() {
-    const navigation = this.props.navigation;
-    return (
-      <SafeAreaView style={{height: Height, width: Width}}>
-        <ScrollView style={{flex: 1}}>
-          <ImageBackground
-            source={require('../Assets/registerbg.png')}
-            style={{flex: 1, minHeight: Height}}>
+export default function RegisterScreen(props, navigation) {
+
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+
+  const onSignUp = () => {
+
+    if (isNullOrEmpty(phoneNumber))
+      alert(PHONE_EMPTY_EROOR)
+    else if (isInvalidPhoneNumber(phoneNumber))
+      alert(PHONE_NUMBER_ERROR)
+    else if (phoneNumber.length < 11)
+      alert(PHONE_LENGTH_ERROR)
+    else if (isNullOrEmpty(password))
+      alert(PASSWORD_ERROR)
+    else if (isInvalidPassword(password))
+      alert(MINIMUM_PASSWORD)
+    else if (isNullOrEmpty(confirmPassword))
+      alert(PASSWORD_ERROR)
+    else if (stringsNotEqual(password, confirmPassword))
+      alert(MATCH_ERROR)
+    else {
+      let object = {
+        "Phoneno": phoneNumber,
+        "LoginPassword": password,
+      }
+      console.log("object", object)
+
+      signUpApiCall(object)
+        .then((response) => {
+          console.log("response", response)
+
+          if (response.data.status == 335) {
+            props.navigation.push("PhoneVerification", {
+              paramKey: phoneNumber,
+              paramKey1: password,
+            })
+          }
+          else {
+            alert(response.data.message)
+            console.log("ADD")
+          }
+        })
+        .catch((err) => {
+          console.log("err", err)
+        })
+    }
+  }
+
+
+  return (
+    <SafeAreaView style={{ height: Height, width: Width }}>
+      <ScrollView style={{ flex: 1 }}>
+        <ImageBackground
+          source={require('../Assets/registerbg.png')}
+          style={{ flex: 1, minHeight: Height }}>
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+              paddingBottom: 50,
+              display: 'flex',
+              justifyContent: 'space-evenly',
+            }}>
+            <Image
+              source={require('../Assets/vinvilightlogo.png')}
+              style={{
+                marginVertical: 20,
+                alignSelf: 'center',
+                width: 100,
+                height: 55,
+              }}></Image>
+            <Text
+              style={{
+                fontSize: 30,
+                color: WHITE,
+                fontWeight: 'bold',
+                marginBottom: 5,
+              }}>
+              Join Us
+            </Text>
+            <RegisterInputBox
+              placeholder="Phone or Username"
+              inputType="number-pad"
+              onChange={(value) => {
+                setPhoneNumber(value);
+              }}
+            />
+            <RegisterInputBox
+              placeholder="Password"
+              inputType="password"
+              onChange={(value) => {
+                setPassword(value);
+              }} />
+
+            <RegisterInputBox
+              placeholder="Confirm Password"
+              inputType="password"
+              onChange={(value) => {
+                setConfirmPassword(value);
+              }}
+            />
+            <BtnComponent
+              placeholder="Sign Up"
+              onPress={() => {
+                onSignUp()
+              }}
+            />
+            <Text
+              style={{ alignSelf: 'center', color: WHITE, marginBottom: 10 }}>
+              OR
+            </Text>
             <View
               style={{
-                width: '100%',
-                height: '100%',
-                paddingVertical: 20,
-                paddingHorizontal: 20,
-                paddingBottom: 50,
+                marginTop: 20,
                 display: 'flex',
-                justifyContent: 'space-evenly',
+                flexDirection: 'row',
+                justifyContent: 'center',
               }}>
-              <Image
-                source={require('../Assets/vinvilightlogo.png')}
-                style={{
-                  marginVertical: 20,
-                  alignSelf: 'center',
-                  width: 100,
-                  height: 55,
-                }}></Image>
-              <Text
-                style={{
-                  fontSize: 30,
-                  color: WHITE,
-                  fontWeight: 'bold',
-                  marginBottom: 5,
-                }}>
-                Join Us
+              <Text style={{ color: WHITE, fontSize: 14 }}>
+                Already have an account?
               </Text>
-              <RegisterInputBox
-                placeholder="Phone or Username"
-                inputType="text"
-              />
-              <RegisterInputBox placeholder="Password" inputType="password" />
-              <RegisterInputBox
-                placeholder="Confirm Password"
-                inputType="password"
-              />
-              <BtnComponent
-                placeholder="Sign Up"
+              <TouchableOpacity
+                style={{ marginLeft: 10 }}
                 onPress={() => {
-                  navigation.navigate('Dashboard');
-                }}
-              />
-              <Text
-                style={{alignSelf: 'center', color: WHITE, marginBottom: 10}}>
-                OR
-              </Text>
-              <SocialLoginBtn />
-              <View
-                style={{
-                  marginTop: 20,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
+                  props.navigation.push('Login')
                 }}>
-                <Text style={{color: WHITE, fontSize: 14}}>
-                  Already have an account?
-                </Text>
-                <TouchableOpacity
-                  style={{marginLeft: 10}}
-                  onPress={() => {
-                    navigation.navigate('Login');
+                <Text
+                  style={{
+                    color: SECONDARY,
+                    textDecorationStyle: 'solid',
+                    textDecorationLine: 'underline',
+                    fontSize: 14,
                   }}>
-                  <Text
-                    style={{
-                      color: SECONDARY,
-                      textDecorationStyle: 'solid',
-                      textDecorationLine: 'underline',
-                      fontSize: 14,
-                    }}>
-                    Login
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                  Login
+                </Text>
+              </TouchableOpacity>
             </View>
-          </ImageBackground>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
+          </View>
+        </ImageBackground>
+      </ScrollView>
+    </SafeAreaView>
+  );
+
 }

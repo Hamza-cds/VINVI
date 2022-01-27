@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from '../Screens/HomeScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
@@ -20,6 +20,7 @@ import ChangePassowrdScreen from '../Screens/ChangePassowrdScreen';
 import RequestScreen from '../Screens/RequestScreen';
 import BuisnessScreen from '../Screens/BuisnessScreen';
 import IndividualScreen from '../Screens/IndividualScreen';
+import EditProfile from '../Screens/EditProfile';
 
 Stack = createStackNavigator();
 
@@ -90,6 +91,11 @@ export default function StackNavigation() {
       <Stack.Screen
         name="ChangePassowrd"
         component={ChangePassowrdScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
         options={{}}
       />
     </Stack.Navigator>
