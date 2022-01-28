@@ -7,9 +7,20 @@ import UploadBtn from '../Components/UploadBtn';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { G, Path } from 'react-native-svg';
 import { Height, Width } from '../Constants/Constants';
-import { personalCardApiCall } from '../Apis/repo';
+import { personalCardApiCall } from '../Apis/Repo';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewCardScreen(props) {
+
+  const [image, setImage] = useState("");
+  let [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem("user_data").then((response) => {
+      setUserData(userData = JSON.parse(response))
+      console.log("userdata", userData);
+    })
+  }, [])
 
   const getBase64 = (image, type) => {
     console.log("image base 64", image)
@@ -17,11 +28,12 @@ export default function NewCardScreen(props) {
     const base64Converted = "data:image/png;base64," + image;
     setImage(base64Converted)
   }
-  const [image, setImage] = useState("")
 
 
   const onNext = () => {
     let object = {
+      "PhoneNo": userData.phoneno,
+      "UserId": userData.id,
       "ProfilePicture": image,
     }
     console.log("object", object)

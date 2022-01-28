@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, ImageBackground, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ImageBackground, ScrollView, } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -8,7 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Height, Width } from '../Constants/Constants';
 import { EMPTY_ACHIVEMENT, EMPTY_EDUCATION, EMPTY_HOBBIES, EMPTY_INTERESTS, EMPTY_JOBHISTORY, EMPTY_MESSAGE, EMPTY_PERSONALINFO, EMPTY_PORTFOLIO, EMPTY_QRCODE, EMPTY_SKILLS } from '../Constants/Strings';
 import { isNullOrEmpty } from '../Constants/TextUtils';
-import { personalCardApiCall } from '../Apis/repo';
+import { personalCardApiCall } from '../Apis/Repo';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewCardScreen(props) {
 
@@ -22,6 +23,14 @@ export default function NewCardScreen(props) {
   const [skills, setSkills] = useState("")
   const [portfolio, setPortFolio] = useState("")
   const [jobHistory, setJobHistory] = useState("")
+  let [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem("user_data").then((response) => {
+      setUserData(userData = JSON.parse(response))
+      console.log("userdata", userData);
+    })
+  }, [])
 
   const onFinish = () => {
     props.navigation.push("Individual")
@@ -58,7 +67,8 @@ export default function NewCardScreen(props) {
     // }
     // else {
     //   let object = {
-
+    // "UserId": userData.id,
+    // "PhoneNo": userData.phoneno,
     //     "PersonalCardMeta": [
     //       {
     //         "PersonalKey": "Introductory Message",

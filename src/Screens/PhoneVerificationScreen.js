@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Height, Width } from '../Constants/Constants';
 import { isNullOrEmpty } from '../Constants/TextUtils';
 import { CODE_ERROR } from '../Constants/Strings';
-import { verifyUserApiCall } from '../APIS/Repo';
+import { verifyUserApiCall } from '../Apis/Repo';
 
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ImageBackground, ScrollView } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
@@ -8,7 +8,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Height, Width } from '../Constants/Constants';
 import { isNullOrEmpty } from '../Constants/TextUtils';
 import { CREDIANTIAL_ERROR, EMPTY_ADDRESS, EMPTY_BIRTHDAY, EMPTY_CITY, EMPTY_COUNTRY, EMPTY_EMAIL, EMPTY_NAME, EMPTY_OCCUPATION, EMPTY_PHONE } from '../Constants/Strings';
-import { personalCardApiCall } from '../Apis/repo';
+import { personalCardApiCall } from '../Apis/Repo';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewCardScreen(props, navigation) {
   const [name, setName] = useState("")
@@ -19,6 +20,15 @@ export default function NewCardScreen(props, navigation) {
   const [address, setAddress] = useState("")
   const [city, setCity] = useState("")
   const [country, setCountry] = useState("")
+
+  let [userData, setUserData] = useState(null)
+
+  useEffect(() => {
+    AsyncStorage.getItem("user_data").then((response) => {
+      setUserData(userData = JSON.parse(response))
+      console.log("userdata", userData);
+    })
+  }, [])
 
   const onNext = () => {
     props.navigation.push("NewPersonalCard2")
@@ -53,6 +63,7 @@ export default function NewCardScreen(props, navigation) {
     //     "Email": email,
     //     "PhoneNo": phoneNumber,
     //     "Address": address,
+    // "UserId": userData.id,
     //     "PersonalCardMeta": [
     //       {
     //         "PersonalKey": "occupation",

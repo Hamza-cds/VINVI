@@ -14,7 +14,8 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import { Height, Width } from '../Constants/Constants';
 import { isNullOrEmpty } from '../Constants/TextUtils';
 import { PASSWORD_ERROR, PHONE_NUMBER_ERROR } from '../Constants/Strings';
-import { loginApiCall } from '../APIS/Repo';
+import { loginApiCall } from '../Apis/Repo';
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function LoginScreen(props) {
 
@@ -40,6 +41,8 @@ export default function LoginScreen(props) {
           console.log("response", response)
 
           if (response.data.status == 200) {
+            AsyncStorage.setItem("user_data", JSON.stringify(response.data.result))
+
             props.navigation.push("Dashboard", {
               paramKey: phoneNumber,
             })

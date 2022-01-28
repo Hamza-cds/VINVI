@@ -1,21 +1,22 @@
-import React, {Component} from 'react';
-import {View, ImageBackground, ScrollView} from 'react-native';
+import React, { Component } from 'react';
+import { View, ImageBackground, ScrollView } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import LinkBtn from '../Components/LinkBtn';
 import NewCardStepPanel from '../Components/NewCardStepPanel';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Svg, {Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { Path } from 'react-native-svg';
+import { Height, Width } from '../Constants/Constants';
 
 export default class NewCardScreen extends Component {
+
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{height: Height, width: Width}}>
+      <SafeAreaView style={{ height: Height, width: Width }}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{flex: 1}}>
+          style={{ flex: 1 }}>
           <Header
             navigation={navigation}
             variant="dark"
@@ -42,7 +43,7 @@ export default class NewCardScreen extends Component {
             step3={false}
             step4={false}
           />
-          <ScrollView style={{flex: 1}}>
+          <ScrollView style={{ flex: 1 }}>
             <View
               style={{
                 width: '100%',

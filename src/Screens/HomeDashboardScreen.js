@@ -5,7 +5,7 @@ import DashboardStories from '../Components/DashboardStories';
 import UserCard from '../Components/UserCard';
 import { Height, Width } from '../Constants/Constants';
 
-export default function HomeDashboardScreen(navigation) {
+export default function HomeDashboardScreen(props) {
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -13,10 +13,10 @@ export default function HomeDashboardScreen(navigation) {
         source={require('../Assets/dashboardbg.png')}
         style={{ flex: 1, paddingBottom: 80 }}>
         <Header
-          navigation={navigation}
+          navigation={props.navigation}
           variant="drawer"
           onPress={() => {
-            navigation.toggleDrawer();
+            props.navigation.toggleDrawer();
           }}
         />
         <View
@@ -31,43 +31,43 @@ export default function HomeDashboardScreen(navigation) {
           <UserCard
             cta={true}
             variant="closed"
-            navigation={navigation}
+            navigation={props.navigation}
             navigationPath="Individual"
           />
           <UserCard
             cta={true}
             variant="broadcasted"
-            navigation={navigation}
+            navigation={props.navigation}
             navigationPath="Individual"
           />
           <UserCard
             cta={true}
             variant="open"
-            navigation={navigation}
+            navigation={props.navigation}
             navigationPath="Individual"
           />
           <UserCard
             cta={true}
             variant="open"
-            navigation={navigation}
+            navigation={props.navigation}
             navigationPath="Individual"
           />
           <UserCard
             cta={true}
             variant="open"
-            navigation={navigation}
+            navigation={props.navigation}
             navigationPath="Individual"
           />
           <UserCard
             cta={true}
             variant="open"
-            navigation={navigation}
+            navigation={props.navigation}
             navigationPath="Individual"
           />
           <UserCard
             cta={true}
             variant="open"
-            navigation={navigation}
+            navigation={props.avigation}
             navigationPath="Individual"
           />
         </ScrollView>
