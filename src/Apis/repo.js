@@ -59,16 +59,71 @@ export async function loginApiCall(loginRequest) {
     }
 }
 
-export async function businessInfoApiCall(businessInfoRequest) {
+export async function personalCardApiCall(personalcardRequest) {
 
-    let route = URL.concat("/api/BusinessCard/Post");
-    console.log(`ResetPassword Request : ${route} REQUEST`, businessInfoRequest)
+    let route = URL.concat("/api/PersonalCard/Post");
+    console.log(`Personal card Info Request : ${route} REQUEST`, personalcardRequest)
     let apiRes = null;
     try {
         apiRes = await axios({
             method: 'POST',
             url: route,
-            data: businessInfoRequest
+            data: personalcardRequest
+        });
+    } catch (err) {
+        apiRes = err;
+        return apiRes;
+    } finally {
+        return apiRes;
+    }
+}
+
+export async function businessCardApiCall(businesscardRequest) {
+
+    let route = URL.concat("/api/PersonalCard/Post");
+    console.log(`Business card Info Request : ${route} REQUEST`, businesscardRequest)
+    let apiRes = null;
+    try {
+        apiRes = await axios({
+            method: 'POST',
+            url: route,
+            data: businesscardRequest
+        });
+    } catch (err) {
+        apiRes = err;
+        return apiRes;
+    } finally {
+        return apiRes;
+    }
+}
+
+export async function getPersonalCardByIdApiCall() {
+
+    let route = URL.concat("/api/PersonalCard/GetById?id=4");
+    console.log("getPersonalCardById Request : ", route)
+    let apiRes = null;
+    try {
+        apiRes = await axios({
+            method: 'GET',
+            url: route,
+        });
+    } catch (err) {
+        apiRes = err;
+        return apiRes;
+    } finally {
+        return apiRes;
+    }
+}
+
+export async function getPersonalCardAllActiveApiCall() {
+
+    let route = URL.concat("/api/PersonalCard/GetAllActive");
+    console.log("getPersonalCardById Request : ", route)
+    let apiRes = null;
+    try {
+        apiRes = await axios({
+            method: 'GET',
+            url: route,
         });
     } catch (err) {
         apiRes = err;

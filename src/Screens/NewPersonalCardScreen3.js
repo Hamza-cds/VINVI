@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ImageBackground, ScrollView } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
@@ -16,6 +16,7 @@ export default function NewCardScreen(props) {
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
+    console.log("PCS3", props)
     AsyncStorage.getItem("user_data").then((response) => {
       setUserData(userData = JSON.parse(response))
       console.log("userdata", userData);
@@ -31,28 +32,35 @@ export default function NewCardScreen(props) {
 
 
   const onNext = () => {
-    let object = {
-      "PhoneNo": userData.phoneno,
-      "UserId": userData.id,
-      "ProfilePicture": image,
-    }
-    console.log("object", object)
+    debugger;
+    const newArray = props.route.params.paramKey;
+    newArray.push(image);
+    props.navigation.push("NewPersonalCard4", {
+      paramKey: newArray,
+    })
+    console.log("tye ha data", newArray)
+    // let object = {
+    //   "PhoneNo": userData.phoneno,
+    //   "UserId": userData.id,
+    //   "ProfilePicture": image,
+    // }
+    // console.log("object", object)
 
-    personalCardApiCall(object)
-      .then((response) => {
-        console.log("response", response)
+    // personalCardApiCall(object)
+    //   .then((response) => {
+    //     console.log("response", response)
 
-        if (response.data.status == 200) {
-          props.navigation.push("NewPersonalCard4")
-        }
-        else {
-          alert(response.data.message)
-          console.log("ADD")
-        }
-      })
-      .catch((err) => {
-        console.log("err", err)
-      })
+    //     if (response.data.status == 200) {
+    //       props.navigation.push("NewPersonalCard4")
+    //     }
+    //     else {
+    //       alert(response.data.message)
+    //       console.log("ADD")
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err)
+    //   })
   }
 
   return (

@@ -1,11 +1,45 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, ScrollView, SafeAreaView } from 'react-native';
 import Header from '../Components/Header';
 import DashboardStories from '../Components/DashboardStories';
 import UserCard from '../Components/UserCard';
 import { Height, Width } from '../Constants/Constants';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getPersonalCardAllActiveApiCall } from '../Apis/Repo';
+import { FlatList } from 'react-native-gesture-handler';
 
 export default function HomeDashboardScreen(props) {
+
+  let [userData, setUserData] = useState(null)
+  const [data, setdata] = useState(null)
+
+  useEffect(() => {
+    AsyncStorage.getItem("user_data").then((response) => {
+      setUserData(userData = JSON.parse(response))
+      console.log("userdata", userData);
+    })
+  }, [])
+
+  useEffect(() => {
+    getData();
+  }, [])
+
+  const getData = () => {
+
+    getPersonalCardAllActiveApiCall()
+      .then((res) => {
+        console.log("res", res)
+        setdata(res.data);
+      })
+      .catch((err) => {
+        console.log("err", err)
+      })
+  }
+
+  useEffect(() => {
+    getData();
+  }, [])
+
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -19,6 +53,7 @@ export default function HomeDashboardScreen(props) {
             props.navigation.toggleDrawer();
           }}
         />
+
         <View
           style={{
             paddingHorizontal: 20,
@@ -27,7 +62,38 @@ export default function HomeDashboardScreen(props) {
           }}>
           <DashboardStories />
         </View>
-        <ScrollView style={{ flex: 1 }}>
+        {data != null ?
+          <FlatList
+            data={data}
+            horizontal={false}
+            // numColumns={1}
+            keyExtractor={item => item.id}
+            renderItem={({ item, index }) => {
+              console.log("item", item)
+              return (
+                <UserCard
+                  cta={true}
+                  variant="closed"
+                  navigation={props.navigation}
+                  navigationPath="Individual"
+                  item={item}
+                />
+              )
+            }}
+          />
+          :
+          null}
+
+      </ImageBackground>
+    </SafeAreaView>
+  );
+
+}
+
+
+
+
+{/* <ScrollView style={{ flex: 1 }}>
           <UserCard
             cta={true}
             variant="closed"
@@ -70,9 +136,4 @@ export default function HomeDashboardScreen(props) {
             navigation={props.avigation}
             navigationPath="Individual"
           />
-        </ScrollView>
-      </ImageBackground>
-    </SafeAreaView>
-  );
-
-}
+        </ScrollView> */}

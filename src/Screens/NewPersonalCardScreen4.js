@@ -26,6 +26,7 @@ export default function NewCardScreen(props) {
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
+    console.log("PCS3", props)
     AsyncStorage.getItem("user_data").then((response) => {
       setUserData(userData = JSON.parse(response))
       console.log("userdata", userData);
@@ -33,7 +34,14 @@ export default function NewCardScreen(props) {
   }, [])
 
   const onFinish = () => {
-    props.navigation.push("Individual")
+    debugger;
+    props.navigation.push("Individual", {
+      paramKey: props.route.params.paramkey,
+    })
+    console.log("tye ha data", props)
+
+    //props.navigation.push("Individual")
+
 
     // if (isNullOrEmpty(message)) {
     //   alert(EMPTY_MESSAGE)
@@ -67,8 +75,9 @@ export default function NewCardScreen(props) {
     // }
     // else {
     //   let object = {
-    // "UserId": userData.id,
-    // "PhoneNo": userData.phoneno,
+
+    //     "UserId": userData.id,
+    //     "PhoneNo": userData.phoneno,
     //     "PersonalCardMeta": [
     //       {
     //         "PersonalKey": "Introductory Message",
@@ -141,7 +150,7 @@ export default function NewCardScreen(props) {
     //       console.log("err", err)
     //     })
 
-    // }
+    //   // }
   }
 
   return (

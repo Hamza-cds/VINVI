@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -23,18 +23,14 @@ import {
   Width,
 } from '../Constants/Constants';
 import QRCode from 'react-native-qrcode-svg';
+import { getPersonalCardByIdApiCall } from '../Apis/Repo';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function IndividualScreen(props) {
 
   let [userData, setUserData] = useState(null)
-  const [data, setdata] = useState([])
-
-
-  useEffect(() => {
-    getData();
-  }, [])
+  const [data, setdata] = useState(null)
 
   useEffect(() => {
     AsyncStorage.getItem("user_data").then((response) => {
@@ -43,13 +39,19 @@ export default function IndividualScreen(props) {
     })
   }, [])
 
+  useEffect(() => {
+    getData();
+  }, [])
 
   const getData = () => {
-
-    GetJsonPlaceHolder()
+    getPersonalCardByIdApiCall()
       .then((res) => {
-        console.log("res", res)
-        setdata(res.data);
+        debugger;
+        console.log("res", res.data.result)
+        if (res.data.success)
+          setdata(res.data.result);
+        else
+          alert("No record found.")
       })
       .catch((err) => {
         console.log("err", err)
@@ -59,7 +61,9 @@ export default function IndividualScreen(props) {
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
       <ScrollView style={{ flex: 1 }}>
-        data={data}
+
+
+
         <ImageBackground
           source={require('../Assets/individualbanner.png')}
           style={{ width: '100%', height: 300 }}>
@@ -215,7 +219,7 @@ export default function IndividualScreen(props) {
               Contact Details
             </Text>
             <ContactDetailsRow
-              placeholder="092 545 454 4534"
+              placeholder={data != null ? data.phoneNo : "Phone No."}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -231,7 +235,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder="umar@gmail.com"
+              placeholder={data != null ? data.email : "Email"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -247,7 +251,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder="Street # 54, House #54, Housing Colony"
+              placeholder={data != null ? data.address : "Address"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -263,7 +267,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder="Lahore, Pakistan"
+              placeholder={data != null ? data.address : "Address"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"

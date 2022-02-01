@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Image, TouchableOpacity, Text} from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
-import Svg, {Path} from 'react-native-svg';
-import {USER_DESIGNATION, USER_EMAIL, USER_NAME} from '../Constants/Constants';
+import { View, Image, TouchableOpacity, Text } from 'react-native';
+import { SECONDARY, WHITE } from '../Constants/Colors';
+import Svg, { Path } from 'react-native-svg';
+import { USER_DESIGNATION, USER_EMAIL, USER_NAME } from '../Constants/Constants';
 
-function UserCardStatus({status}) {
+function UserCardStatus({ status }) {
   if (status === 'open') {
     return (
       <View
@@ -101,11 +101,13 @@ export default function UserCard({
   favoritBtn,
   navigation,
   navigationPath,
+  props,
+  item
 }) {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate(navigationPath);
+        props.navigation.navigate(navigationPath);
       }}
       activeOpacity={0.9}
       style={{
@@ -129,10 +131,10 @@ export default function UserCard({
       <UserCardStatus status={variant} />
       <Image
         source={require('../Assets/profilePic.png')}
-        style={{width: 80, height: 80}}
+        style={{ width: 80, height: 80 }}
       />
-      <View style={{marginLeft: 10}}>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{USER_NAME}</Text>
+      <View style={{ marginLeft: 10 }}>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>{item.Name}</Text>
         <Text
           style={{
             fontSize: 16,
@@ -142,8 +144,8 @@ export default function UserCard({
           }}>
           {USER_DESIGNATION}
         </Text>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{USER_EMAIL}</Text>
-        <Text style={{fontSize: 14, color: SECONDARY}}>Lahore, Pakistan</Text>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>{item.Email}</Text>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>Lahore, Pakistan</Text>
       </View>
       {cta ? (
         <View

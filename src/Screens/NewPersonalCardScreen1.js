@@ -8,10 +8,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Height, Width } from '../Constants/Constants';
 import { isNullOrEmpty } from '../Constants/TextUtils';
 import { CREDIANTIAL_ERROR, EMPTY_ADDRESS, EMPTY_BIRTHDAY, EMPTY_CITY, EMPTY_COUNTRY, EMPTY_EMAIL, EMPTY_NAME, EMPTY_OCCUPATION, EMPTY_PHONE } from '../Constants/Strings';
-import { personalCardApiCall } from '../Apis/Repo';
+//import { personalCardApiCall } from '../Apis/Repo';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function NewCardScreen(props, navigation) {
+export default function NewCardScreen(props) {
   const [name, setName] = useState("")
   const [occupation, setOccupation] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -20,6 +20,7 @@ export default function NewCardScreen(props, navigation) {
   const [address, setAddress] = useState("")
   const [city, setCity] = useState("")
   const [country, setCountry] = useState("")
+  const PCS1Array = [{ "name": name }, { "occupation": occupation }, { "phoneNumber": phoneNumber }, { "email": email }, { "birthday": birthday }, { "address": address }, { "city": city }, { "country": country }]
 
   let [userData, setUserData] = useState(null)
 
@@ -31,82 +32,87 @@ export default function NewCardScreen(props, navigation) {
   }, [])
 
   const onNext = () => {
-    props.navigation.push("NewPersonalCard2")
+    // props.navigation.push("NewPersonalCard2")
 
-    // if (isNullOrEmpty(name)) {
-    //   alert(EMPTY_NAME)
-    // }
-    // else if (isNullOrEmpty(occupation)) {
-    //   alert(EMPTY_OCCUPATION)
-    // }
-    // else if (isNullOrEmpty(phoneNumber)) {
-    //   alert(EMPTY_PHONE)
-    // }
-    // else if (isNullOrEmpty(email)) {
-    //   alert(EMPTY_EMAIL)
-    // }
-    // else if (isNullOrEmpty(birthday)) {
-    //   alert(EMPTY_BIRTHDAY)
-    // }
-    // else if (isNullOrEmpty(address)) {
-    //   alert(EMPTY_ADDRESS)
-    // }
-    // else if (isNullOrEmpty(city)) {
-    //   alert(EMPTY_CITY)
-    // }
-    // else if (isNullOrEmpty(country)) {
-    //   alert(EMPTY_COUNTRY)
-    // }
-    // else {
-    //   let object = {
-    //     "Name": name,
-    //     "Email": email,
-    //     "PhoneNo": phoneNumber,
-    //     "Address": address,
-    // "UserId": userData.id,
-    //     "PersonalCardMeta": [
-    //       {
-    //         "PersonalKey": "occupation",
-    //         "PersonalValue": occupation,
-    //         "Ishidden": true
+    if (isNullOrEmpty(name)) {
+      alert(EMPTY_NAME)
+    }
+    else if (isNullOrEmpty(occupation)) {
+      alert(EMPTY_OCCUPATION)
+    }
+    else if (isNullOrEmpty(phoneNumber)) {
+      alert(EMPTY_PHONE)
+    }
+    else if (isNullOrEmpty(email)) {
+      alert(EMPTY_EMAIL)
+    }
+    else if (isNullOrEmpty(birthday)) {
+      alert(EMPTY_BIRTHDAY)
+    }
+    else if (isNullOrEmpty(address)) {
+      alert(EMPTY_ADDRESS)
+    }
+    else if (isNullOrEmpty(city)) {
+      alert(EMPTY_CITY)
+    }
+    else if (isNullOrEmpty(country)) {
+      alert(EMPTY_COUNTRY)
+    }
+    else {
+      debugger;
+      props.navigation.push("NewPersonalCard2", {
+        paramkey: PCS1Array,
+      })
+      // console.log("PCS1Array", PCS1Array)
+      //     let object = {
+      //       "Name": name,
+      //       "Email": email,
+      //       "PhoneNo": phoneNumber,
+      //       "Address": address,
+      //       "UserId": userData.id,
+      //       "PersonalCardMeta": [
+      //         {
+      //           "PersonalKey": "occupation",
+      //           "PersonalValue": occupation,
+      //           "Ishidden": true
 
-    //       },
-    //       {
-    //         "PersonalKey": "birthday",
-    //         "PersonalValue": birthday,
-    //         "Ishidden": true
+      //         },
+      //         {
+      //           "PersonalKey": "birthday",
+      //           "PersonalValue": birthday,
+      //           "Ishidden": true
 
-    //       },
-    //       {
-    //         "PersonalKey": "city",
-    //         "PersonalValue": city,
-    //         "Ishidden": true
+      //         },
+      //         {
+      //           "PersonalKey": "city",
+      //           "PersonalValue": city,
+      //           "Ishidden": true
 
-    //       },
-    //       {
-    //         "PersonalKey": "country",
-    //         "PersonalValue": country,
-    //         "Ishidden": true
-    //       },
-    //     ],
-    //   }
-    //   console.log("object", object)
+      //         },
+      //         {
+      //           "PersonalKey": "country",
+      //           "PersonalValue": country,
+      //           "Ishidden": true
+      //         },
+      //       ],
+      //     }
+      //     console.log("object", object)
 
-    //   personalCardApiCall(object)
-    //     .then((response) => {
-    //       console.log("response", response)
-    //       if (response.data.status == 200) {
-    //         props.navigation.push("NewPersonalCard2")
-    //       }
-    //       else {
-    //         alert(CREDIANTIAL_ERROR)
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("err", err)
-    //     })
+      //     personalCardApiCall(object)
+      //       .then((response) => {
+      //         console.log("response", response)
+      //         if (response.data.status == 200) {
+      //           props.navigation.push("NewPersonalCard2")
+      //         }
+      //         else {
+      //           alert(CREDIANTIAL_ERROR)
+      //         }
+      //       })
+      //       .catch((err) => {
+      //         console.log("err", err)
+      //       })
 
-    // }
+    }
   }
 
   return (
@@ -115,11 +121,11 @@ export default function NewCardScreen(props, navigation) {
         source={require('../Assets/screenbg.png')}
         style={{ flex: 1 }}>
         <Header
-          navigation={navigation}
+          navigation={props.navigation}
           variant="dark"
           headerName="New Card"
           onPress={() => {
-            navigation.navigate('AddCard');
+            props.navigation.navigate('AddCard');
           }}
         />
         <NewCardStepPanel
