@@ -16,7 +16,7 @@ export default class AddCardScreen extends Component {
           style={{ flex: 1 }}>
           <Header
             navigation={navigation}
-            variant="dark"
+            variant="dark2"
             headerName="Add Card"
             onPress={() => {
               navigation.navigate('Home');
@@ -117,7 +117,7 @@ export default class AddCardScreen extends Component {
               <TouchableOpacity
                 style={{ display: 'flex', alignItems: 'center' }}
                 onPress={() => {
-                  navigation.navigate('NewBuisnessCard');
+                  navigation.navigate('NewBuisnessCard1');
                 }}>
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"

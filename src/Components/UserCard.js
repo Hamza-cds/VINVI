@@ -135,8 +135,7 @@ export default function UserCard({
         style={{ width: 80, height: 80 }}
       />
       <View style={{ marginLeft: 10 }}>
-        <Text style={{ fontSize: 14, color: SECONDARY }}>name</Text>
-        {/* {item.name} {item.email} {item.address}*/}
+        <Text style={{ fontSize: 14, color: SECONDARY }}>{item.name}</Text>
         <Text
           style={{
             fontSize: 16,
@@ -144,10 +143,11 @@ export default function UserCard({
             color: SECONDARY,
             marginBottom: 10,
           }}>
-          {USER_DESIGNATION}
+          {item.occupation}
+          {/* {USER_DESIGNATION} */}
         </Text>
-        <Text style={{ fontSize: 14, color: SECONDARY }}>email</Text>
-        <Text style={{ fontSize: 14, color: SECONDARY }}>address</Text>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>{item.email} </Text>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>{item.address}</Text>
       </View>
       {cta ? (
         <View

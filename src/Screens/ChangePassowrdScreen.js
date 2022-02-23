@@ -1,22 +1,22 @@
-import React, {Component} from 'react';
-import {View, ImageBackground, SafeAreaView} from 'react-native';
+import React, { Component } from 'react';
+import { View, ImageBackground, SafeAreaView } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import ChangePasswordInputBox from '../Components/ChangePasswordInputBox';
 import Header from '../Components/Header';
-import Svg, {Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import Svg, { Path } from 'react-native-svg';
+import { Height, Width } from '../Constants/Constants';
 
 export default class ChangePassowrdScreen extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{height: Height, width: Width}}>
+      <SafeAreaView style={{ height: Height, width: Width }}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{flex: 1}}>
+          style={{ flex: 1 }}>
           <Header
             navigation={navigation}
-            variant="dark"
+            variant="light2"
             headerName="Change Password"
             onPress={() => {
               navigation.navigate('Dashboard');
@@ -43,12 +43,12 @@ export default class ChangePassowrdScreen extends Component {
               justifyContent: 'space-between',
               paddingBottom: 40,
             }}>
-            <View>
+            <View style={{ marginTop: 15 }}>
               <ChangePasswordInputBox placeholder="Enter Previous Password" />
               <ChangePasswordInputBox placeholder="Enter New Password" />
               <ChangePasswordInputBox placeholder="Re-Enter New Password" />
             </View>
-            <BtnComponent placeholder="Chnage Password" onPress={() => {}} />
+            <BtnComponent placeholder="Chnage Password" onPress={() => { }} />
           </View>
         </ImageBackground>
       </SafeAreaView>

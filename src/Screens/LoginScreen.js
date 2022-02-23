@@ -12,9 +12,10 @@ import { SECONDARY, TEXT_COLOR, WHITE } from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import { Height, Width } from '../Constants/Constants';
-import { isNullOrEmpty } from '../Constants/TextUtils';
-import { PASSWORD_ERROR, PHONE_NUMBER_ERROR } from '../Constants/Strings';
+import { isNullOrEmpty, phoneLengthNotValid } from '../Constants/TextUtils';
+import { PASSWORD_ERROR, PHONE_EMPTY_ERROR, PHONE_LENGTH_ERROR, INCOMPLETE_PASSWORD } from '../Constants/Strings';
 import { loginApiCall } from '../Apis/Repo';
+import { isInvalidPassword } from '../Constants/Validations';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function LoginScreen(props) {
@@ -24,11 +25,15 @@ export default function LoginScreen(props) {
 
   const onLogin = () => {
     if (isNullOrEmpty(phoneNumber)) {
-      alert(PHONE_NUMBER_ERROR)
+      alert(PHONE_EMPTY_ERROR)
     }
+    else if (phoneLengthNotValid(phoneNumber))
+      alert(PHONE_LENGTH_ERROR)
     else if (isNullOrEmpty(password)) {
       alert(PASSWORD_ERROR)
     }
+    else if (isInvalidPassword(password))
+      alert(INCOMPLETE_PASSWORD)
     else {
       let object = {
         "Phoneno": phoneNumber,
@@ -135,8 +140,7 @@ export default function LoginScreen(props) {
             <BtnComponent
               placeholder="Login"
               onPress={() => {
-                // onLogin()
-                props.navigation.push("Dashboard")
+                onLogin()
               }}
             />
             <Text
