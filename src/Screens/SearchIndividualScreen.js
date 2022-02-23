@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+import { SECONDARY, WHITE } from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import PickerComponent from '../Components/PickerComponent';
 import InputBoxWOPlaceholder from '../Components/InputBoxWOPlaceholder';
@@ -16,8 +16,7 @@ export default class SearchIndividualScreen extends Component {
           backgroundColor: WHITE,
           paddingBottom: 20,
         }}>
-        <Text>Name</Text>
-        <InputBoxWOPlaceholder />
+
         <View
           style={{
             display: 'flex',
@@ -26,14 +25,14 @@ export default class SearchIndividualScreen extends Component {
             alignItems: 'center',
             marginVertical: 10,
           }}>
-          <View style={{flex: 1, marginRight: 10}}>
+          <View style={{ flex: 1, marginRight: 10 }}>
             <PickerComponent
               placeholder="Niche"
               itemLabels={('hello', 'Machenic')}
               itemValues={('hello', 'Machenic')}
             />
           </View>
-          <View style={{flex: 1, marginLeft: 10}}>
+          <View style={{ flex: 1, marginLeft: 10 }}>
             <PickerComponent
               placeholder="Area"
               itemLabels={('hello', 'Lahore')}
@@ -50,7 +49,7 @@ export default class SearchIndividualScreen extends Component {
           }}>
           <Text>0km</Text>
           <Slider
-            style={{flex: 1, height: 50}}
+            style={{ flex: 1, height: 50 }}
             minimumValue={0}
             maximumValue={30}
             minimumTrackTintColor={SECONDARY}
@@ -67,14 +66,14 @@ export default class SearchIndividualScreen extends Component {
             alignItems: 'center',
             marginVertical: 10,
           }}>
-          <View style={{flex: 1, marginRight: 10}}>
+          <View style={{ flex: 1, marginRight: 10 }}>
             <PickerComponent
               placeholder="Habbits"
               itemLabels={('hello', 'Gardening')}
               itemValues={('hello', 'Gardening')}
             />
           </View>
-          <View style={{flex: 1, marginLeft: 10}}>
+          <View style={{ flex: 1, marginLeft: 10 }}>
             <PickerComponent
               placeholder="Education"
               itemLabels={('hello', 'Metric')}
@@ -90,14 +89,14 @@ export default class SearchIndividualScreen extends Component {
             alignItems: 'center',
             marginVertical: 10,
           }}>
-          <View style={{flex: 1, marginRight: 10}}>
+          <View style={{ flex: 1, marginRight: 10 }}>
             <PickerComponent
               placeholder="Interests"
               itemLabels={('hello', 'Football')}
               itemValues={('hello', 'Football')}
             />
           </View>
-          <View style={{flex: 1, marginLeft: 10}}>
+          <View style={{ flex: 1, marginLeft: 10 }}>
             <PickerComponent
               placeholder="Skills"
               itemLabels={('hello', 'Programming')}
@@ -105,6 +104,8 @@ export default class SearchIndividualScreen extends Component {
             />
           </View>
         </View>
+        <Text>Name</Text>
+        <InputBoxWOPlaceholder />
         <BtnComponent
           placeholder="Search"
           onPress={() => {

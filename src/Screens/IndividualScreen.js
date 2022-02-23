@@ -29,34 +29,38 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function IndividualScreen(props) {
 
-  let [userData, setUserData] = useState(null)
-  const [data, setdata] = useState(null)
 
-  useEffect(() => {
-    AsyncStorage.getItem("user_data").then((response) => {
-      setUserData(userData = JSON.parse(response))
-      console.log("userdata", userData);
-    })
-  }, [])
+  // let [userData, setUserData] = useState(null)
+  // const [data, setdata] = useState(null)
+  const [favorit, setFavorit] = useState(false);
 
-  useEffect(() => {
-    getData();
-  }, [])
 
-  const getData = () => {
-    getPersonalCardByIdApiCall()
-      .then((res) => {
-        debugger;
-        console.log("res", res.data.result)
-        if (res.data.success)
-          setdata(res.data.result);
-        else
-          alert("No record found.")
-      })
-      .catch((err) => {
-        console.log("err", err)
-      })
-  }
+
+  // useEffect(() => {
+  //   AsyncStorage.getItem("user_data").then((response) => {
+  //     setUserData(userData = JSON.parse(response))
+  //     console.log("userdata", userData);
+  //   })
+  // }, [])
+
+  // useEffect(() => {
+  //   getData();
+  // }, [])
+
+  // const getData = () => {
+  //   getPersonalCardByIdApiCall()
+  //     .then((res) => {
+  //       debugger;
+  //       console.log("res", res.data.result)
+  //       if (res.data.success)
+  //         setdata(res.data.result);
+  //       else
+  //         alert("No record found.")
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err)
+  //     })
+  // }
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -85,16 +89,42 @@ export default function IndividualScreen(props) {
             position: 'absolute',
             top: 270,
           }}>
-          <Image
-            source={require('../Assets/profilePic.png')}
-            style={{ width: 100, height: 100 }}
-          />
-          <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
+          <View style={{ marginLeft: 50 }}>
+            <Image
+              source={require('../Assets/profilePic.png')}
+              style={{ width: 100, height: 100 }}
+            />
+          </View>
+
+          <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
             <Text style={{ color: SECONDARY, fontSize: 20 }}>{USER_NAME}</Text>
+
+            <View style={{ marginLeft: 150, marginTop: -20 }}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => {
+                  setFavorit(true);
+                }}>
+                <Svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={22.295}
+                  height={19.508}
+                  viewBox="0 0 22.295 19.508">
+                  <Path
+                    data-name="Icon awesome-heart"
+                    d="M20.131 1.334a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
+                    fill={favorit ? "red" : '#CACFD2'}
+                  />
+                </Svg>
+              </TouchableOpacity>
+            </View>
+
+
             <Text style={{ fontSize: 14, color: FORTH }}>
               {USER_DESIGNATION}
             </Text>
           </View>
+
         </View>
         <View
           style={{ marginTop: 70, paddingHorizontal: 20, paddingBottom: 50 }}>
@@ -219,7 +249,7 @@ export default function IndividualScreen(props) {
               Contact Details
             </Text>
             <ContactDetailsRow
-              placeholder={data != null ? data.phoneNo : "Phone No."}
+              // placeholder={data != null ? data.phoneNo : "Phone No."}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +265,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder={data != null ? data.email : "Email"}
+              //placeholder={data != null ? data.email : "Email"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -251,7 +281,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder={data != null ? data.address : "Address"}
+              // placeholder={data != null ? data.address : "Address"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -267,7 +297,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder={data != null ? data.address : "Address"}
+              // placeholder={data != null ? data.address : "Address"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"

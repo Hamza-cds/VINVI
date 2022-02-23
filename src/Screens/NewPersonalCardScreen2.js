@@ -10,7 +10,7 @@ import { Height, Width } from '../Constants/Constants';
 
 export default function NewCardScreen(props) {
 
-  console.log("PCS2", props)
+  console.log("PersonalcardScreen1Array", props)
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -164,12 +164,14 @@ export default function NewCardScreen(props) {
             <BtnComponent
               placeholder="Next"
               onPress={() => {
-                debugger;
+
                 props.navigation.navigate('NewPersonalCard3', {
                   paramKey: props.route.params.paramkey,
-
+                  name: props.route.params.name,
+                  email: props.route.params.email,
+                  address: props.route.params.address
                 });
-                console.log("page 2 data", props.route.params.paramkey)
+                console.log("page 2 data", props.route.params)
               }}
             />
           </View>

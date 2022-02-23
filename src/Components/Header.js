@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, View, Text, Image} from 'react-native';
-import Svg, {Path, G, Rect} from 'react-native-svg';
-import {LIGHT_TEXT_COLOR, SECONDARY, WHITE} from '../Constants/Colors';
+import React, { useState } from 'react';
+import { TouchableOpacity, View, Text, Image } from 'react-native';
+import Svg, { Path, G, Rect } from 'react-native-svg';
+import { LIGHT_TEXT_COLOR, PRIMARY, SECONDARY, WHITE } from '../Constants/Colors';
 
 export default function Header({
   navigation,
@@ -53,7 +53,7 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{marginLeft: 10, fontSize: 20, color: SECONDARY}}>
+            <Text style={{ marginLeft: 10, fontSize: 20, color: SECONDARY }}>
               {headerName}
             </Text>
           ) : null}
@@ -80,7 +80,7 @@ export default function Header({
             <Path
               data-name="Icon material-arrow_back"
               d="M17.957 7.856H4.3l6.274-6.274L8.979 0 0 8.979l8.979 8.979 1.582-1.582L4.3 10.1h13.657z"
-              fill={WHITE}
+              fill={"black"}
             />
           </Svg>
         </TouchableOpacity>
@@ -93,7 +93,7 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{marginLeft: 10, fontSize: 20, color: WHITE}}>
+            <Text style={{ marginLeft: 10, fontSize: 20, color: "black" }}>
               {headerName}
             </Text>
           ) : null}
@@ -193,9 +193,9 @@ export default function Header({
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Image source={userProfilePicture} style={{width: 50, height: 50}} />
-          <View style={{marginLeft: 10}}>
-            <Text style={{fontSize: 20, color: SECONDARY, marginBottom: 3}}>
+          <Image source={userProfilePicture} style={{ width: 50, height: 50 }} />
+          <View style={{ marginLeft: 10 }}>
+            <Text style={{ fontSize: 20, color: SECONDARY, marginBottom: 3 }}>
               {userName}
             </Text>
             <View
@@ -213,7 +213,7 @@ export default function Header({
                 }}
               />
               <Text
-                style={{marginLeft: 10, fontSize: 16, color: LIGHT_TEXT_COLOR}}>
+                style={{ marginLeft: 10, fontSize: 16, color: LIGHT_TEXT_COLOR }}>
                 {userStatus}
               </Text>
             </View>
@@ -245,7 +245,7 @@ export default function Header({
             />
           </Svg>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => {
             setFavorit(true);
@@ -258,10 +258,81 @@ export default function Header({
             <Path
               data-name="Icon awesome-heart"
               d="M20.131 1.334a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
-              fill={favorit ? SECONDARY : '#fff'}
+              fill={favorit ? "red" : '#fff'}
+            />
+          </Svg>
+        </TouchableOpacity> */}
+      </View>
+    );
+  } else if (variant == 'dark2') {
+    return (
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 20,
+          paddingVertical: 25,
+        }}>
+        <TouchableOpacity onPress={onPress}>
+        </TouchableOpacity>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          {headerIcon}
+          {isheaderName ? (
+            <Text style={{ marginLeft: 10, fontSize: 20, color: WHITE }}>
+              {headerName}
+            </Text>
+          ) : null}
+        </View>
+      </View>
+    );
+  } else if (variant == 'white') {
+    return (
+      <View
+        style={{
+          backgroundColor: WHITE,
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+        }}>
+        <TouchableOpacity onPress={onPress}>
+          <Svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={20.957}
+            height={20.957}
+            viewBox="0 0 17.957 17.957">
+            <Path
+              data-name="Icon material-arrow_back"
+              d="M17.957 7.856H4.3l6.274-6.274L8.979 0 0 8.979l8.979 8.979 1.582-1.582L4.3 10.1h13.657z"
+              fill={SECONDARY}
             />
           </Svg>
         </TouchableOpacity>
+        <View
+          style={{
+            backgroundColor: WHITE,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          {headerIcon}
+          {isheaderName ? (
+            <Text style={{ marginLeft: 10, fontSize: 20, color: SECONDARY }}>
+              {headerName}
+            </Text>
+          ) : null}
+        </View>
       </View>
     );
   }

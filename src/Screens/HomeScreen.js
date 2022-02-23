@@ -16,7 +16,7 @@ export default function HomeScreen(props) {
   return (
     <ImageBackground
       source={require('../Assets/homebg.png')}
-      style={{ flex: 1, height: Dimensions.get('window').height }}>
+      style={{ flex: 1, height: Dimensions.get('window').height, backgroundColor: "white" }}>
       <View
         style={{
           width: '100%',
@@ -24,6 +24,7 @@ export default function HomeScreen(props) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+
         }}>
         <Image
           source={require('../Assets/vinvilogo.png')}
