@@ -75,38 +75,38 @@ export default function NewCardScreen(props) {
     if (isNullOrEmpty(message)) {
       alert(EMPTY_MESSAGE)
     }
-    // else if (isNullOrEmpty(qrCode)) {
-    //   alert(EMPTY_QRCODE)
-    // }
-    // else if (isNullOrEmpty(hobbies)) {
-    //   alert(EMPTY_HOBBIES)
-    // }
-    // else if (isNullOrEmpty(education)) {
-    //   alert(EMPTY_EDUCATION)
-    // }
-    // else if (isNullOrEmpty(interests)) {
-    //   alert(EMPTY_INTERESTS)
-    // }
-    // else if (isNullOrEmpty(achivements)) {
-    //   alert(EMPTY_ACHIVEMENT)
-    // }
-    // else if (isNullOrEmpty(personalinfo)) {
-    //   alert(EMPTY_PERSONALINFO)
-    // }
-    // else if (isNullOrEmpty(skills)) {
-    //   alert(EMPTY_SKILLS)
-    // }
-    // else if (isNullOrEmpty(portfolio)) {
-    //   alert(EMPTY_PORTFOLIO)
-    // }
-    // else if (isNullOrEmpty(jobHistory)) {
-    //   alert(EMPTY_JOBHISTORY)
-    // }
+    else if (isNullOrEmpty(qrCode)) {
+      alert(EMPTY_QRCODE)
+    }
+    else if (isNullOrEmpty(hobbies)) {
+      alert(EMPTY_HOBBIES)
+    }
+    else if (isNullOrEmpty(education)) {
+      alert(EMPTY_EDUCATION)
+    }
+    else if (isNullOrEmpty(interests)) {
+      alert(EMPTY_INTERESTS)
+    }
+    else if (isNullOrEmpty(achivements)) {
+      alert(EMPTY_ACHIVEMENT)
+    }
+    else if (isNullOrEmpty(personalinfo)) {
+      alert(EMPTY_PERSONALINFO)
+    }
+    else if (isNullOrEmpty(skills)) {
+      alert(EMPTY_SKILLS)
+    }
+    else if (isNullOrEmpty(portfolio)) {
+      alert(EMPTY_PORTFOLIO)
+    }
+    else if (isNullOrEmpty(jobHistory)) {
+      alert(EMPTY_JOBHISTORY)
+    }
     else {
 
-      // props.navigation.push("Individual", {
-      //   paramKey: newArray1,
-      // })
+      props.navigation.push("Individual", {
+        paramKey: newArray1,
+      })
       console.log("ye ha data", newArray1)
 
       let PersonalCardMeta = [];

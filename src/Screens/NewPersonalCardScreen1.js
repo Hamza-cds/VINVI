@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Height, Width } from '../Constants/Constants';
 import { isNullOrEmpty } from '../Constants/TextUtils';
 import { CREDIANTIAL_ERROR, EMPTY_ADDRESS, EMPTY_BIRTHDAY, EMPTY_CITY, EMPTY_COUNTRY, EMPTY_EMAIL, EMPTY_NAME, EMPTY_OCCUPATION, EMPTY_PHONE } from '../Constants/Strings';
-//import { personalCardApiCall } from '../Apis/Repo';
+import { personalCardApiCall } from '../Apis/Repo';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewCardScreen(props) {
@@ -51,83 +51,84 @@ export default function NewCardScreen(props) {
     if (isNullOrEmpty(name)) {
       alert(EMPTY_NAME)
     }
-    // else if (isNullOrEmpty(occupation)) {
-    //   alert(EMPTY_OCCUPATION)
-    // }
-    // else if (isNullOrEmpty(phoneNumber)) {
-    //   alert(EMPTY_PHONE)
-    // }
-    // else if (isNullOrEmpty(email)) {
-    //   alert(EMPTY_EMAIL)
-    // }
-    // else if (isNullOrEmpty(birthday)) {
-    //   alert(EMPTY_BIRTHDAY)
-    // }
-    // else if (isNullOrEmpty(address)) {
-    //   alert(EMPTY_ADDRESS)
-    // }
-    // else if (isNullOrEmpty(city)) {
-    //   alert(EMPTY_CITY)
-    // }
-    // else if (isNullOrEmpty(country)) {
-    //   alert(EMPTY_COUNTRY)
-    // }
+    else if (isNullOrEmpty(occupation)) {
+      alert(EMPTY_OCCUPATION)
+    }
+    else if (isNullOrEmpty(phoneNumber)) {
+      alert(EMPTY_PHONE)
+    }
+    else if (isNullOrEmpty(email)) {
+      alert(EMPTY_EMAIL)
+    }
+    else if (isNullOrEmpty(birthday)) {
+      alert(EMPTY_BIRTHDAY)
+    }
+    else if (isNullOrEmpty(address)) {
+      alert(EMPTY_ADDRESS)
+    }
+    else if (isNullOrEmpty(city)) {
+      alert(EMPTY_CITY)
+    }
+    else if (isNullOrEmpty(country)) {
+      alert(EMPTY_COUNTRY)
+    }
     else {
 
       props.navigation.push("NewPersonalCard2", {
         paramkey: PersonalcardScreen1Array,
         name: name,
         email: email,
-        address: address
+        address: address,
+        occupation: occupation
       })
-      // console.log("PersonalcardScreen1Array", PersonalcardScreen1Array)
-      //     let object = {
-      //       "Name": name,
-      //       "Email": email,
-      //       "PhoneNo": phoneNumber,
-      //       "Address": address,
-      //       "UserId": userData.id,
-      //       "PersonalCardMeta": [
-      //         {
-      //           "PersonalKey": "occupation",
-      //           "PersonalValue": occupation,
-      //           "Ishidden": true
+      console.log("PersonalcardScreen1Array", PersonalcardScreen1Array)
+      let object = {
+        "Name": name,
+        "Email": email,
+        "PhoneNo": phoneNumber,
+        "Address": address,
+        "UserId": userData.id,
+        "PersonalCardMeta": [
+          {
+            "PersonalKey": "occupation",
+            "PersonalValue": occupation,
+            "Ishidden": true
 
-      //         },
-      //         {
-      //           "PersonalKey": "birthday",
-      //           "PersonalValue": birthday,
-      //           "Ishidden": true
+          },
+          {
+            "PersonalKey": "birthday",
+            "PersonalValue": birthday,
+            "Ishidden": true
 
-      //         },
-      //         {
-      //           "PersonalKey": "city",
-      //           "PersonalValue": city,
-      //           "Ishidden": true
+          },
+          {
+            "PersonalKey": "city",
+            "PersonalValue": city,
+            "Ishidden": true
 
-      //         },
-      //         {
-      //           "PersonalKey": "country",
-      //           "PersonalValue": country,
-      //           "Ishidden": true
-      //         },
-      //       ],
-      //     }
-      //     console.log("object", object)
+          },
+          {
+            "PersonalKey": "country",
+            "PersonalValue": country,
+            "Ishidden": true
+          },
+        ],
+      }
+      console.log("object", object)
 
-      //     personalCardApiCall(object)
-      //       .then((response) => {
-      //         console.log("response", response)
-      //         if (response.data.status == 200) {
-      //           props.navigation.push("NewPersonalCard2")
-      //         }
-      //         else {
-      //           alert(CREDIANTIAL_ERROR)
-      //         }
-      //       })
-      //       .catch((err) => {
-      //         console.log("err", err)
-      //       })
+      personalCardApiCall(object)
+        .then((response) => {
+          console.log("response", response)
+          if (response.data.status == 200) {
+            props.navigation.push("NewPersonalCard2")
+          }
+          else {
+            alert(CREDIANTIAL_ERROR)
+          }
+        })
+        .catch((err) => {
+          console.log("err", err)
+        })
 
     }
   }

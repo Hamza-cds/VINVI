@@ -27,40 +27,41 @@ import { getPersonalCardByIdApiCall } from '../Apis/Repo';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
-export default function IndividualScreen(props) {
+
+export default function IndividualScreen(props, item) {
 
 
-  // let [userData, setUserData] = useState(null)
-  // const [data, setdata] = useState(null)
+  let [userData, setUserData] = useState(null)
+  const [data, setdata] = useState(null)
   const [favorit, setFavorit] = useState(false);
 
 
 
-  // useEffect(() => {
-  //   AsyncStorage.getItem("user_data").then((response) => {
-  //     setUserData(userData = JSON.parse(response))
-  //     console.log("userdata", userData);
-  //   })
-  // }, [])
+  useEffect(() => {
+    AsyncStorage.getItem("user_data").then((response) => {
+      setUserData(userData = JSON.parse(response))
+      console.log("userdata", userData);
+    })
+  }, [])
 
-  // useEffect(() => {
-  //   getData();
-  // }, [])
+  useEffect(() => {
+    getData();
+  }, [])
 
-  // const getData = () => {
-  //   getPersonalCardByIdApiCall()
-  //     .then((res) => {
-  //       debugger;
-  //       console.log("res", res.data.result)
-  //       if (res.data.success)
-  //         setdata(res.data.result);
-  //       else
-  //         alert("No record found.")
-  //     })
-  //     .catch((err) => {
-  //       console.log("err", err)
-  //     })
-  // }
+  const getData = () => {
+    getPersonalCardByIdApiCall()
+      .then((res) => {
+        // debugger;
+        console.log("res", res.data.result)
+        if (res.data.success)
+          setdata(res.data.result);
+        else
+          alert("No record found.")
+      })
+      .catch((err) => {
+        console.log("err", err)
+      })
+  }
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -249,7 +250,7 @@ export default function IndividualScreen(props) {
               Contact Details
             </Text>
             <ContactDetailsRow
-              // placeholder={data != null ? data.phoneNo : "Phone No."}
+              placeholder={data != null ? data.phoneNo : "Phone No."}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -265,7 +266,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              //placeholder={data != null ? data.email : "Email"}
+              placeholder={data != null ? data.email : "Email"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -281,7 +282,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              // placeholder={data != null ? data.address : "Address"}
+              placeholder={data != null ? data.address : "Address"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -297,7 +298,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              // placeholder={data != null ? data.address : "Address"}
+              placeholder={data != null ? data.address : "Address"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
