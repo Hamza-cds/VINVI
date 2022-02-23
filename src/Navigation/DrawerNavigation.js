@@ -113,7 +113,7 @@ export default function DrawerNavigator() {
           },
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Chats"
         component={ChatsDashboardScreen}
         options={{
@@ -133,7 +133,7 @@ export default function DrawerNavigator() {
             );
           },
         }}
-      />
+      /> */}
       <Drawer.Screen
         name="TermsConditions"
         component={TermsConditionScreen}

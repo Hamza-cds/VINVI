@@ -12,8 +12,8 @@ import { SECONDARY, WHITE } from '../Constants/Colors';
 import RegisterInputBox from '../Components/RegisterInputBox';
 import BtnComponent from '../Components/BtnComponent';
 import { Height, Width } from '../Constants/Constants';
-import { MATCH_ERROR, MINIMUM_PASSWORD, PASSWORD_ERROR, PHONE_EMPTY_EROOR, PHONE_LENGTH_ERROR, PHONE_NUMBER_ERROR } from '../Constants/Strings';
-import { isNullOrEmpty, stringsNotEqual } from '../Constants/TextUtils';
+import { MATCH_ERROR, MINIMUM_PASSWORD, PASSWORD_ERROR, PHONE_EMPTY_EROOR, PHONE_EMPTY_ERROR, PHONE_LENGTH_ERROR, PHONE_NUMBER_ERROR } from '../Constants/Strings';
+import { isNullOrEmpty, phoneLengthNotValid, phoneValidLength, stringsNotEqual } from '../Constants/TextUtils';
 import { signUpApiCall } from '../Apis/Repo'
 import { isInvalidPassword, isInvalidPhoneNumber } from '../Constants/Validations';
 
@@ -26,10 +26,8 @@ export default function RegisterScreen(props, navigation) {
   const onSignUp = () => {
 
     if (isNullOrEmpty(phoneNumber))
-      alert(PHONE_EMPTY_EROOR)
-    else if (isInvalidPhoneNumber(phoneNumber))
-      alert(PHONE_NUMBER_ERROR)
-    else if (phoneNumber.length < 11)
+      alert(PHONE_EMPTY_ERROR)
+    else if (phoneLengthNotValid(phoneNumber))
       alert(PHONE_LENGTH_ERROR)
     else if (isNullOrEmpty(password))
       alert(PASSWORD_ERROR)

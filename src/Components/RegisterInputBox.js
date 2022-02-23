@@ -43,7 +43,7 @@ export default function RegisterInputBox({ placeholder, inputType, onChange }) {
         type={inputType}
         keyboardType={inputType}
         onChangeText={onChange}
-        maxLength={15}
+        maxLength={11}
         secureTextEntry={secureTextEntry}
         onPressIn={() => {
           setIsfocused(true);

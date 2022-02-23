@@ -12,7 +12,7 @@ import NewPersonalCardScreen1 from '../Screens/NewPersonalCardScreen1';
 import NewPersonalCardScreen2 from '../Screens/NewPersonalCardScreen2';
 import NewPersonalCardScreen3 from '../Screens/NewPersonalCardScreen3';
 import NewPersonalCardScreen4 from '../Screens/NewPersonalCardScreen4';
-import NewBusinessCardScreen from '../Screens/NewBusinessCardScreen';
+import NewBusinessCardScreen1 from '../Screens/NewBusinessCardScreen1';
 import SearchScreen from '../Screens/SearchScreen';
 import SearchResultScreen from '../Screens/SearchResultScreen';
 import MessagesScreen from '../Screens/MessagesScreen';
@@ -21,6 +21,7 @@ import RequestScreen from '../Screens/RequestScreen';
 import BuisnessScreen from '../Screens/BuisnessScreen';
 import IndividualScreen from '../Screens/IndividualScreen';
 import EditProfile from '../Screens/EditProfile';
+import NewBusinessCardScreen2 from '../Screens/NewBusinessCardScreen2';
 
 Stack = createStackNavigator();
 
@@ -70,8 +71,8 @@ export default function StackNavigation() {
         options={{}}
       />
       <Stack.Screen
-        name="NewBuisnessCard"
-        component={NewBusinessCardScreen}
+        name="NewBuisnessCard1"
+        component={NewBusinessCardScreen1}
         options={{}}
       />
       <Stack.Screen name="Search" component={SearchScreen} options={{}} />
@@ -96,6 +97,11 @@ export default function StackNavigation() {
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{}}
+      />
+      <Stack.Screen
+        name="NewBusinessCard2"
+        component={NewBusinessCardScreen2}
         options={{}}
       />
     </Stack.Navigator>

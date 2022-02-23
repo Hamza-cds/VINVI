@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -6,23 +6,23 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import { SECONDARY, WHITE } from '../Constants/Colors';
 import Header from '../Components/Header';
 import Notification from '../Components/Notification';
-import Svg, {G, Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import Svg, { G, Path } from 'react-native-svg';
+import { Height, Width } from '../Constants/Constants';
 
 export default class NotificationScreen extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{height: Height, width: Width}}>
+      <SafeAreaView style={{ height: Height, width: Width }}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{flex: 1, paddingBottom: 20}}>
+          style={{ flex: 1, paddingBottom: 20 }}>
           <Header
             navigation={navigation}
-            variant="dark"
+            variant="dark2"
             headerName="Notification"
             onPress={() => {
               navigation.navigate('Home');
@@ -46,10 +46,10 @@ export default class NotificationScreen extends Component {
               </Svg>
             }
           />
-          <ScrollView style={{flex: 1, paddingHorizontal: 20}}>
+          <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
             <Notification status={false} />
             <Notification status={false} />
-            <View style={{marginBottom: 20}}>
+            <View style={{ marginBottom: 20 }}>
               <View
                 style={{
                   width: '100%',

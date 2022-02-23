@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {View, ImageBackground, ScrollView, SafeAreaView} from 'react-native';
-import {SECONDARY} from '../Constants/Colors';
+import React, { Component } from 'react';
+import { View, ImageBackground, ScrollView, SafeAreaView } from 'react-native';
+import { SECONDARY } from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
-import Svg, {G, Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import Svg, { G, Path } from 'react-native-svg';
+import { Height, Width } from '../Constants/Constants';
 import AccountCard from '../Components/AccountCard';
 import LinkButton from '../Components/LinkButton';
 
@@ -12,13 +12,13 @@ export default class AccountDashboardScreen extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{height: Height, width: Width}}>
+      <SafeAreaView style={{ height: Height, width: Width }}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{flex: 1}}>
+          style={{ flex: 1 }}>
           <Header
             navigation={navigation}
-            variant="dark"
+            variant="dark2"
             headerName="Profile"
             onPress={() => {
               navigation.navigate('Home');
@@ -38,7 +38,7 @@ export default class AccountDashboardScreen extends Component {
             }
           />
           <AccountCard />
-          <ScrollView style={{flex: 1}}>
+          <ScrollView style={{ flex: 1 }}>
             <View
               style={{
                 display: 'flex',
@@ -199,7 +199,7 @@ export default class AccountDashboardScreen extends Component {
                 }
               />
             </View>
-            <View style={{paddingHorizontal: 20, marginTop: 30}}>
+            <View style={{ paddingHorizontal: 20, marginTop: 30 }}>
               <BtnComponent
                 placeholder="Logout"
                 onPress={() => {

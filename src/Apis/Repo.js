@@ -132,3 +132,38 @@ export async function getPersonalCardAllActiveApiCall() {
         return apiRes;
     }
 }
+export async function getBusinessCardAllActiveApiCall() {
+
+    let route = URL.concat("/api/BusinessCard/GetAllActive");
+    console.log("getBusinessCardAllActive Request : ", route)
+    let apiRes = null;
+    try {
+        apiRes = await axios({
+            method: 'GET',
+            url: route,
+        });
+    } catch (err) {
+        apiRes = err;
+        return apiRes;
+    } finally {
+        return apiRes;
+    }
+}
+
+
+export async function searchIndividualApiCall() {
+
+    let route = "/api/PersonalCard/Search";
+    let apiRes = null;
+    try {
+        apiRes = await axios({
+            method: 'GET',
+            url: URL + route,
+        });
+    } catch (err) {
+        apiRes = err;
+        return apiRes;
+    } finally {
+        return apiRes;
+    }
+}

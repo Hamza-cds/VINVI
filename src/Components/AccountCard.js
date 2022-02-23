@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { SECONDARY, WHITE } from '../Constants/Colors';
-import { USER_NAME } from '../Constants/Constants';
+import { USER_NAME, USER_EMAIL } from '../Constants/Constants';
 import { useNavigation } from '@react-navigation/native';
 
 export default function AccountCard() {
@@ -30,7 +30,7 @@ export default function AccountCard() {
       <Image source={require('../Assets/profilePic.png')} />
       <View style={{ marginLeft: 20 }}>
         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{USER_NAME}</Text>
-        <Text style={{ fontSize: 14 }}>{USER_NAME}</Text>
+        <Text style={{ fontSize: 14 }}>{USER_EMAIL}</Text>
       </View>
       <TouchableOpacity
         onPress={() => {
@@ -38,15 +38,16 @@ export default function AccountCard() {
         }}
         style={{
           borderRadius: 5,
-          borderWidth: 1,
           borderColor: SECONDARY,
           position: 'absolute',
-          top: -10,
-          right: -15,
+          top: 1,
+          right: 1,
           backgroundColor: WHITE,
-          padding: 10,
+          padding: 5,
         }}>
-        <Text>Edit Profile</Text>
+        <Image
+          source={require('../Assets/editProf.png')}
+        />
       </TouchableOpacity>
     </View>
   );
