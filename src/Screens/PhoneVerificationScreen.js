@@ -9,6 +9,8 @@ import { Height, Width } from '../Constants/Constants';
 import { isNullOrEmpty } from '../Constants/TextUtils';
 import { CODE_ERROR } from '../Constants/Strings';
 import { verifyUserApiCall } from '../Apis/Repo';
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
 
 
 
@@ -36,7 +38,11 @@ export default function PhoneVerificationScreen(props, navigation) {
           if (response.data.status == 98)
             alert(CODE_ERROR)
           else
-            props.navigation.push("Dashboard")
+            AsyncStorage.setItem("user_data", JSON.stringify(response.data.result))
+
+          props.navigation.push("Dashboard", {
+            paramKey: props.route.params.paramKey,
+          })
         })
         .catch((err) => {
           console.log("err", err)

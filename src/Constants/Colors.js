@@ -1,6 +1,7 @@
 module.exports = {
   PRIMARY: '#113065',
-  SECONDARY: '#0F1056',
+  PRIMARY1: '#113066',
+  SECONDARY: '#101056',
   THIRD: '#151269',
   FORTH: '#81B1CE',
   FIFTH: '#AAD6EC',

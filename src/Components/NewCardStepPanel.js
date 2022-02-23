@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import { View, Text } from 'react-native';
+import { SECONDARY, WHITE } from '../Constants/Colors';
 
-export default function NewCardStepPanel({step1, step2, step3, step4}) {
+export default function NewCardStepPanel({ step1, step2, step3, step4 }) {
   return (
     <View
       style={{
@@ -32,7 +32,7 @@ export default function NewCardStepPanel({step1, step2, step3, step4}) {
               1
             </Text>
           </View>
-          <View style={{flex: 1, height: 2, backgroundColor: SECONDARY}}></View>
+          <View style={{ flex: 1, height: 2, backgroundColor: SECONDARY }}></View>
         </>
       ) : (
         <>
@@ -53,7 +53,7 @@ export default function NewCardStepPanel({step1, step2, step3, step4}) {
               1
             </Text>
           </View>
-          <View style={{flex: 1, height: 2, backgroundColor: WHITE}}></View>
+          <View style={{ flex: 1, height: 2, backgroundColor: WHITE }}></View>
         </>
       )}
       {step2 ? (
@@ -75,13 +75,13 @@ export default function NewCardStepPanel({step1, step2, step3, step4}) {
               2
             </Text>
           </View>
-          <View style={{flex: 1, height: 2, backgroundColor: SECONDARY}}></View>
+          <View style={{ flex: 1, height: 2, backgroundColor: SECONDARY }}></View>
         </>
       ) : (
         <>
           <View
             style={{
-              backgroundColor: WHITE,
+              backgroundColor: "#A9D6EB",
               width: 30,
               height: 30,
               borderRadius: 50,
@@ -96,7 +96,7 @@ export default function NewCardStepPanel({step1, step2, step3, step4}) {
               2
             </Text>
           </View>
-          <View style={{flex: 1, height: 2, backgroundColor: WHITE}}></View>
+          <View style={{ flex: 1, height: 2, backgroundColor: WHITE }}></View>
         </>
       )}
       {step3 ? (
@@ -118,13 +118,13 @@ export default function NewCardStepPanel({step1, step2, step3, step4}) {
               3
             </Text>
           </View>
-          <View style={{flex: 1, height: 2, backgroundColor: SECONDARY}}></View>
+          <View style={{ flex: 1, height: 2, backgroundColor: SECONDARY }}></View>
         </>
       ) : (
         <>
           <View
             style={{
-              backgroundColor: WHITE,
+              backgroundColor: "#A9D6EB",
               width: 30,
               height: 30,
               borderRadius: 50,
@@ -139,7 +139,7 @@ export default function NewCardStepPanel({step1, step2, step3, step4}) {
               3
             </Text>
           </View>
-          <View style={{flex: 1, height: 2, backgroundColor: WHITE}}></View>
+          <View style={{ flex: 1, height: 2, backgroundColor: WHITE }}></View>
         </>
       )}
       {step4 ? (
@@ -166,7 +166,7 @@ export default function NewCardStepPanel({step1, step2, step3, step4}) {
         <>
           <View
             style={{
-              backgroundColor: WHITE,
+              backgroundColor: "#A9D6EB",
               width: 30,
               height: 30,
               borderRadius: 50,

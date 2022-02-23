@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { SECONDARY, WHITE } from '../Constants/Colors';
 import Svg, { Path } from 'react-native-svg';
@@ -101,13 +101,14 @@ export default function UserCard({
   favoritBtn,
   navigation,
   navigationPath,
-  props,
+  dataToSend,
   item
 }) {
+
   return (
     <TouchableOpacity
       onPress={() => {
-        props.navigation.navigate(navigationPath);
+        navigation.navigate(navigationPath);
       }}
       activeOpacity={0.9}
       style={{
@@ -134,7 +135,8 @@ export default function UserCard({
         style={{ width: 80, height: 80 }}
       />
       <View style={{ marginLeft: 10 }}>
-        <Text style={{ fontSize: 14, color: SECONDARY }}>{item.Name}</Text>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>name</Text>
+        {/* {item.name} {item.email} {item.address}*/}
         <Text
           style={{
             fontSize: 16,
@@ -144,8 +146,8 @@ export default function UserCard({
           }}>
           {USER_DESIGNATION}
         </Text>
-        <Text style={{ fontSize: 14, color: SECONDARY }}>{item.Email}</Text>
-        <Text style={{ fontSize: 14, color: SECONDARY }}>Lahore, Pakistan</Text>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>email</Text>
+        <Text style={{ fontSize: 14, color: SECONDARY }}>address</Text>
       </View>
       {cta ? (
         <View

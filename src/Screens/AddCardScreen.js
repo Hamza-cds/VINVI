@@ -1,19 +1,19 @@
-import React, {Component} from 'react';
-import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import React, { Component } from 'react';
+import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
+import { SECONDARY, WHITE } from '../Constants/Colors';
 import Header from '../Components/Header';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Svg, {G, Circle, Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { G, Circle, Path } from 'react-native-svg';
+import { Height, Width } from '../Constants/Constants';
 
 export default class AddCardScreen extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{height: Height, width: Width}}>
+      <SafeAreaView style={{ height: Height, width: Width }}>
         <ImageBackground
           source={require('../Assets/addcardbg.png')}
-          style={{flex: 1}}>
+          style={{ flex: 1 }}>
           <Header
             navigation={navigation}
             variant="dark"
@@ -34,7 +34,7 @@ export default class AddCardScreen extends Component {
                 alignItems: 'center',
               }}>
               <TouchableOpacity
-                style={{display: 'flex', alignItems: 'center'}}
+                style={{ display: 'flex', alignItems: 'center' }}
                 onPress={() => {
                   navigation.navigate('NewPersonalCard1');
                 }}>
@@ -104,7 +104,7 @@ export default class AddCardScreen extends Component {
                     />
                   </G>
                 </Svg>
-                <Text style={{fontSize: 16, color: WHITE}}>Personal</Text>
+                <Text style={{ fontSize: 16, color: WHITE }}>Personal</Text>
               </TouchableOpacity>
             </View>
             <View
@@ -115,7 +115,7 @@ export default class AddCardScreen extends Component {
                 alignItems: 'center',
               }}>
               <TouchableOpacity
-                style={{display: 'flex', alignItems: 'center'}}
+                style={{ display: 'flex', alignItems: 'center' }}
                 onPress={() => {
                   navigation.navigate('NewBuisnessCard');
                 }}>
@@ -205,7 +205,7 @@ export default class AddCardScreen extends Component {
                     />
                   </G>
                 </Svg>
-                <Text style={{fontSize: 16, color: SECONDARY}}>Business</Text>
+                <Text style={{ fontSize: 16, color: SECONDARY }}>Business</Text>
               </TouchableOpacity>
             </View>
           </View>

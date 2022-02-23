@@ -135,7 +135,8 @@ export default function LoginScreen(props) {
             <BtnComponent
               placeholder="Login"
               onPress={() => {
-                onLogin()
+                // onLogin()
+                props.navigation.push("Dashboard")
               }}
             />
             <Text

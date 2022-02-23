@@ -11,7 +11,8 @@ import { FlatList } from 'react-native-gesture-handler';
 export default function HomeDashboardScreen(props) {
 
   let [userData, setUserData] = useState(null)
-  const [data, setdata] = useState(null)
+  const [data, setdata] = useState([])
+
 
   useEffect(() => {
     AsyncStorage.getItem("user_data").then((response) => {
@@ -25,21 +26,15 @@ export default function HomeDashboardScreen(props) {
   }, [])
 
   const getData = () => {
-
     getPersonalCardAllActiveApiCall()
       .then((res) => {
         console.log("res", res)
-        setdata(res.data);
+        setdata(res.data.result);
       })
       .catch((err) => {
         console.log("err", err)
       })
   }
-
-  useEffect(() => {
-    getData();
-  }, [])
-
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -66,20 +61,17 @@ export default function HomeDashboardScreen(props) {
           <FlatList
             data={data}
             horizontal={false}
-            // numColumns={1}
             keyExtractor={item => item.id}
-            renderItem={({ item, index }) => {
-              console.log("item", item)
-              return (
-                <UserCard
-                  cta={true}
-                  variant="closed"
-                  navigation={props.navigation}
-                  navigationPath="Individual"
-                  item={item}
-                />
-              )
-            }}
+            renderItem={({ item, index }) => (
+              <UserCard
+                cta={true}
+                variant="closed"
+                navigation={props.navigation}
+                navigationPath="Individual"
+                item={item}
+                key={index}
+              />
+            )}
           />
           :
           null}

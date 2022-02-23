@@ -24,9 +24,43 @@ export default function NewCardScreen(props) {
   const [portfolio, setPortFolio] = useState("")
   const [jobHistory, setJobHistory] = useState("")
   let [userData, setUserData] = useState(null);
+  const newArray1 = props.route.params.paramKey;
+  const PersonalcardScreen4Array = [
+    {
+      "key": "Introductory Message",
+      "value": message
+    }, {
+      "key": "QR Code",
+      "value": qrCode
+    }, {
+      "key": "Hobbies",
+      "value": hobbies
+    }, {
+      "key": "Education",
+      "value": education
+    }, {
+      "key": "Interests",
+      "value": interests
+    }, {
+      "key": "Achievements",
+      "value": achivements
+    }, {
+      "key": "PersonalInfo",
+      "value": personalinfo
+    }, {
+      "key": "Skills",
+      "value": skills
+    }, {
+      "key": "PortFolio",
+      "value": portfolio
+    }, {
+      "key": "JobHistory",
+      "value": jobHistory
+    },
+  ]
 
   useEffect(() => {
-    console.log("PCS3", props)
+    console.log("PCS4", props.route.params)
     AsyncStorage.getItem("user_data").then((response) => {
       setUserData(userData = JSON.parse(response))
       console.log("userdata", userData);
@@ -34,18 +68,13 @@ export default function NewCardScreen(props) {
   }, [])
 
   const onFinish = () => {
-    debugger;
-    props.navigation.push("Individual", {
-      paramKey: props.route.params.paramkey,
-    })
-    console.log("tye ha data", props)
 
     //props.navigation.push("Individual")
 
 
-    // if (isNullOrEmpty(message)) {
-    //   alert(EMPTY_MESSAGE)
-    // }
+    if (isNullOrEmpty(message)) {
+      alert(EMPTY_MESSAGE)
+    }
     // else if (isNullOrEmpty(qrCode)) {
     //   alert(EMPTY_QRCODE)
     // }
@@ -73,182 +102,155 @@ export default function NewCardScreen(props) {
     // else if (isNullOrEmpty(jobHistory)) {
     //   alert(EMPTY_JOBHISTORY)
     // }
-    // else {
-    //   let object = {
+    else {
 
-    //     "UserId": userData.id,
-    //     "PhoneNo": userData.phoneno,
-    //     "PersonalCardMeta": [
-    //       {
-    //         "PersonalKey": "Introductory Message",
-    //         "PersonalValue": message,
-    //         "Ishidden": true
+      // props.navigation.push("Individual", {
+      //   paramKey: newArray1,
+      // })
+      console.log("ye ha data", newArray1)
 
-    //       },
-    //       {
-    //         "PersonalKey": "QR Code",
-    //         "PersonalValue": qrCode,
-    //         "Ishidden": true
+      let PersonalCardMeta = [];
+      for (let index = 0; index < newArray1.length && PersonalcardScreen4Array[index]; index++) {
+        const element = newArray1[index];
+        const element1 = PersonalcardScreen4Array[index];
+        let newObject = {
+          "PersonalKey": element.key,
+          "PersonalValue": element.value,
+          "Ishidden": true
+        }
+        PersonalCardMeta.push(newObject);
 
-    //       },
-    //       {
-    //         "PersonalKey": "Hobbies",
-    //         "PersonalValue": hobbies,
-    //         "Ishidden": true
+        let newObject1 = {
+          "PersonalKey": element1.key,
+          "PersonalValue": element1.value,
+          "Ishidden": true
+        }
+        PersonalCardMeta.push(newObject1);
+      }
+      console.log("PersonalCardMeta", PersonalCardMeta);
 
-    //       },
-    //       {
-    //         "PersonalKey": "Education",
-    //         "PersonalValue": education,
-    //         "Ishidden": true
-    //       },
-    //       {
-    //         "PersonalKey": "Interests",
-    //         "PersonalValue": interests,
-    //         "Ishidden": true
-    //       },
-    //       {
-    //         "PersonalKey": "Achivements",
-    //         "PersonalValue": achivements,
-    //         "Ishidden": true
-    //       },
-    //       {
-    //         "PersonalKey": "Personal Info",
-    //         "PersonalValue": personalinfo,
-    //         "Ishidden": true
-    //       },
-    //       {
-    //         "PersonalKey": "Skills",
-    //         "PersonalValue": skills,
-    //         "Ishidden": true
-    //       },
-    //       {
-    //         "PersonalKey": "Portfolio",
-    //         "PersonalValue": portfolio,
-    //         "Ishidden": true
-    //       },
-    //       {
-    //         "PersonalKey": "Job History",
-    //         "PersonalValue": jobHistory,
-    //         "Ishidden": true
-    //       },
-    //     ],
-    //   }
-    //   console.log("object", object)
+      let object = {
+        "name": props.route.params.name,
+        "Email": props.route.params.email,
+        "ProfilePicture": props.route.params.image,
+        "UserId": userData.id,
+        "PhoneNo": userData.phoneno,
+        "Address": props.route.params.address,
+        "PersonalCardMeta": PersonalCardMeta,
+      }
+      console.log("object", object)
 
-    //   personalCardApiCall(object)
-    //     .then((response) => {
-    //       console.log("response", response)
-    //       if (response.data.status == 200) {
-    //         props.navigation.push("Individual")
-    //       }
-    //       else {
-    //         alert(CREDIANTIAL_ERROR)
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("err", err)
-    //     })
+      personalCardApiCall(object)
+        .then((response) => {
+          console.log("response", response)
+          if (response.data.status == 200) {
+            props.navigation.push("Individual")
+          }
+          else {
+            alert(CREDIANTIAL_ERROR)
+          }
+        })
+        .catch((err) => {
+          console.log("err", err)
+        })
 
-    //   // }
+    }
   }
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
-      <ImageBackground
-        source={require('../Assets/screenbg.png')}
-        style={{ flex: 1 }}>
-        <Header
-          navigation={props.navigation}
-          variant="dark"
-          headerName="New Card"
-          onPress={() => {
-            props.navigation.navigate('NewPersonalCard3');
-          }}
-        />
-        <NewCardStepPanel
-          step1={true}
-          step2={true}
-          step3={true}
-          step4={true}
-        />
-        <ScrollView style={{ flex: 1 }}>
-          <View
-            style={{
-              width: '100%',
-              padding: 20,
-            }}>
-            <OutlinedInputBox
-              placeholder="Introductory Message"
-              inputType="text"
-              onChange={(value) => {
-                setMessage(value);
-              }}
-            />
-            <OutlinedInputBox
-              placeholder="QR Code"
-              inputType="text"
-              onChange={(value) => {
-                setQRcode(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Hobbies"
-              inputType="text"
-              onChange={(value) => {
-                setHobbies(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Education"
-              inputType="text"
-              onChange={(value) => {
-                setEducation(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Interests"
-              inputType="text"
-              onChange={(value) => {
-                setInterests(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Achievements"
-              inputType="text"
-              onChange={(value) => {
-                setAchivements(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Personal Info"
-              inputType="text"
-              onChange={(value) => {
-                setPersonalInfo(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Skills"
-              inputType="text"
-              onChange={(value) => {
-                setSkills(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Portfolio"
-              inputType="text"
-              onChange={(value) => {
-                setPortFolio(value);
-              }} />
-            <OutlinedInputBox
-              placeholder="Job History"
-              inputType="text"
-              onChange={(value) => {
-                setJobHistory(value);
-              }} />
-            <BtnComponent
-              placeholder="Finish"
-              onPress={() => {
-                onFinish();
-                // navigation.navigate('Individual');
-              }}
-            />
-          </View>
-        </ScrollView>
-      </ImageBackground>
+
+      <Header
+        navigation={props.navigation}
+        variant="dark"
+        headerName="Add Card"
+        onPress={() => {
+          props.navigation.navigate('NewPersonalCard3');
+        }}
+      />
+      <NewCardStepPanel
+        step1={true}
+        step2={true}
+        step3={true}
+        step4={true}
+      />
+      <ScrollView style={{ flex: 1 }}>
+        <View
+          style={{
+            width: '100%',
+            padding: 20,
+          }}>
+          <OutlinedInputBox
+            placeholder="Introductory Message"
+            inputType="text"
+            onChange={(value) => {
+              setMessage(value);
+            }}
+          />
+          <OutlinedInputBox
+            placeholder="QR Code"
+            inputType="text"
+            onChange={(value) => {
+              setQRcode(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Hobbies"
+            inputType="text"
+            onChange={(value) => {
+              setHobbies(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Education"
+            inputType="text"
+            onChange={(value) => {
+              setEducation(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Interests"
+            inputType="text"
+            onChange={(value) => {
+              setInterests(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Achievements"
+            inputType="text"
+            onChange={(value) => {
+              setAchivements(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Personal Info"
+            inputType="text"
+            onChange={(value) => {
+              setPersonalInfo(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Skills"
+            inputType="text"
+            onChange={(value) => {
+              setSkills(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Portfolio"
+            inputType="text"
+            onChange={(value) => {
+              setPortFolio(value);
+            }} />
+          <OutlinedInputBox
+            placeholder="Job History"
+            inputType="text"
+            onChange={(value) => {
+              setJobHistory(value);
+            }} />
+          <BtnComponent
+            placeholder="Finish"
+            onPress={() => {
+              onFinish();
+              // navigation.navigate('Individual');
+            }}
+          />
+        </View>
+      </ScrollView>
+
     </SafeAreaView>
   );
 
