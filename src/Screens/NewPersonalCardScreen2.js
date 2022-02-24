@@ -34,7 +34,7 @@ export default function NewCardScreen(props) {
           // }
           headerName="New Card"
           onPress={() => {
-            props.navigation.navigate('NewPersonalCard1');
+            props.navigation.navigate('NewBusinessCardScreen1');
           }}
         />
         <NewCardStepPanel

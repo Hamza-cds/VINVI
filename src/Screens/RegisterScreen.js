@@ -13,9 +13,9 @@ import RegisterInputBox from '../Components/RegisterInputBox';
 import BtnComponent from '../Components/BtnComponent';
 import { Height, Width } from '../Constants/Constants';
 import { MATCH_ERROR, MINIMUM_PASSWORD, PASSWORD_ERROR, PHONE_EMPTY_EROOR, PHONE_EMPTY_ERROR, PHONE_LENGTH_ERROR, PHONE_NUMBER_ERROR } from '../Constants/Strings';
-import { isNullOrEmpty, phoneLengthNotValid, phoneValidLength, stringsNotEqual } from '../Constants/TextUtils';
+import { isNullOrEmpty, phoneLengthNotValid, stringsNotEqual } from '../Constants/TextUtils';
 import { signUpApiCall } from '../Apis/Repo'
-import { isInvalidPassword, isInvalidPhoneNumber } from '../Constants/Validations';
+import { isInvalidPassword } from '../Constants/Validations';
 
 export default function RegisterScreen(props, navigation) {
 

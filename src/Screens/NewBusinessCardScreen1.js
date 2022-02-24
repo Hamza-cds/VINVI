@@ -7,7 +7,7 @@ import UploadBtn from '../Components/UploadBtn';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { G, Path } from 'react-native-svg';
 import { Height, Width } from '../Constants/Constants';
-import { EMPTY_BUSINESS, EMPTY_HOURLY, EMPTY_INCORPORATION, EMPTY_PRODUCT, EMPTY_SERVICES, EMPTY_WEBSITE } from '../Constants/Strings';
+import { EMPTY_BUSINESS, EMPTY_HOURLY, EMPTY_INCORPORATION, EMPTY_LOCATION, EMPTY_LOGO, EMPTY_NAME, EMPTY_PHONE, EMPTY_PRODUCT, EMPTY_SERVICES, EMPTY_TYPE, EMPTY_WEBSITE } from '../Constants/Strings';
 import { businessCardApiCall } from '../Apis/Repo';
 import LinkBtn from '../Components/LinkBtn';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,14 +16,27 @@ import { WHITE } from '../Constants/Colors';
 
 export default function NewBusinessCardScreen1(props) {
 
-  const [productShelving, setProductShelving] = useState("")
-  const [servicesOffered, setServicesOffered] = useState("")
-  const [hourlyWage, setHourlyVage] = useState("")
-  const [businessIndustry, setBusinessIndustry] = useState("")
-  const [dateofIncorporation, setDateOfIncorporation] = useState("")
-  const [companyWebsite, setCompanyWebsite] = useState("")
-  const [city, setCity] = useState("")
+  const [businessName, setBusinessName] = useState("")
+  const [businesssType, setBusinessType] = useState("")
+  const [cellNumber, setCellNumber] = useState("")
+  const [location, setLocation] = useState("")
+  const [logo, setLogo] = useState("")
+  const [address, setAddress] = useState("")
+  const [email, setEmail] = useState("")
   const [image, setImage] = useState("");
+  const [website, setWebsite] = useState("");
+
+
+  const businessCardScreen1Array = [
+    {
+      "key": "Type of Business",
+      "value": businesssType
+    }, {
+      "key": "Website",
+      "value": website
+    },
+  ]
+
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -43,86 +56,75 @@ export default function NewBusinessCardScreen1(props) {
 
   const onFinish = () => {
     props.navigation.push("NewPersonalCard2")
-    // if (isNullOrEmpty(productShelving)) {
-    //   alert(EMPTY_PRODUCT)
-    // }
-    // else if (isNullOrEmpty(servicesOffered)) {
-    //   alert(EMPTY_SERVICES)
-    // }
-    // else if (isNullOrEmpty(hourlyWage)) {
-    //   alert(EMPTY_HOURLY)
-    // }
-    // else if (isNullOrEmpty(businessIndustry)) {
-    //   alert(EMPTY_BUSINESS)
-    // }
-    // else if (isNullOrEmpty(dateofIncorporation)) {
-    //   alert(EMPTY_INCORPORATION)
-    // }
-    // else if (isNullOrEmpty(companyWebsite)) {
-    //   alert(EMPTY_WEBSITE)
-    // }
-    // else if (isNullOrEmpty(city)) {
-    //   alert(EMPTY_CITY)
-    // }
+    if (isNullOrEmpty(businessName)) {
+      alert(EMPTY_NAME)
+    }
+    else if (isNullOrEmpty(businesssType)) {
+      alert(EMPTY_TYPE)
+    }
+    else if (isNullOrEmpty(cellNumber)) {
+      alert(EMPTY_PHONE)
+    }
+    else if (isNullOrEmpty(location)) {
+      alert(EMPTY_LOCATION)
+    }
+    else if (isNullOrEmpty(logo)) {
+      alert(EMPTY_LOGO)
+    }
+    else if (isNullOrEmpty(website)) {
+      alert(EMPTY_WEBSITE)
+    }
 
-    //   else {
-    //     let object = {
-    //       "PhoneNo": userData.phoneno,
-    //       "Logo": image,
-    //       "UserId": userData.id,
-    //       "PersonalCardMeta": [
-    //         {
-    //           "PersonalKey": "Product Shelving",
-    //           "PersonalValue": productShelving,
-    //           "Ishidden": true
 
-    //         },
-    //         {
-    //           "PersonalKey": "Services Offered",
-    //           "PersonalValue": servicesOffered,
-    //           "Ishidden": true
+    else {
 
-    //         },
-    //         {
-    //           "PersonalKey": "Hourly Wage",
-    //           "PersonalValue": hourlyWage,
-    //           "Ishidden": true
+      props.navigation.push("NewBusinessCardScreen2", {
+        paramkey: businessCardScreen1Array,
+        businessName: businessName,
+        email: email,
+        cellNumber: cellNumber,
+        logo: logo,
+      })
+      console.log("BusinessCardScreen1Array", businessCardScreen1Array)
+      let object = {
+        "Name": businessName,
+        "Email": email,
+        "Address": address,
+        "PhoneNo": cellNumber,
+        "Logo": logo,
+        "UserId": userData.id,
+        "PersonalCardMeta": [
 
-    //         },
-    //         {
-    //           "PersonalKey": "Business Industry",
-    //           "PersonalValue": businessIndustry,
-    //           "Ishidden": true
-    //         },
-    //         {
-    //           "PersonalKey": "Date of Incorporation",
-    //           "PersonalValue": dateofIncorporation,
-    //           "Ishidden": true
-    //         },
-    //         {
-    //           "PersonalKey": "Company Website",
-    //           "PersonalValue": companyWebsite,
-    //           "Ishidden": true
-    //         },
-    //       ],
-    //     }
-    //     console.log("object", object)
+          {
+            "PersonalKey": "Type of Business",
+            "PersonalValue": businesssType,
+            "Ishidden": true
 
-    //     businessCardApiCall(object)
-    //       .then((response) => {
-    //         console.log("response", response)
-    //         if (response.data.status == 200) {
-    //           props.navigation.push("Buisness")
-    //         }
-    //         else {
-    //           alert(CREDIANTIAL_ERROR)
-    //         }
-    //       })
-    //       .catch((err) => {
-    //         console.log("err", err)
-    //       })
+          },
+          {
+            "PersonalKey": "Website",
+            "PersonalValue": website,
+            "Ishidden": true
+          },
+        ],
+      }
+      console.log("object", object)
 
-    //   }
+      businessCardApiCall(object)
+        .then((response) => {
+          console.log("response", response)
+          if (response.data.status == 200) {
+            props.navigation.push("Buisness")
+          }
+          else {
+            alert(CREDIANTIAL_ERROR)
+          }
+        })
+        .catch((err) => {
+          console.log("err", err)
+        })
+
+    }
   }
 
   return (
@@ -145,44 +147,44 @@ export default function NewBusinessCardScreen1(props) {
           <OutlinedInputBox
             placeholder="Name of Business"
             inputType="text"
-          // onChange={(value) => {
-          //   setProductShelving(value);
-          // }}
+            onChange={(value) => {
+              setBusinessName(value);
+            }}
           />
           <OutlinedInputBox
             placeholder="Type of Business"
             inputType="text"
-          // onChange={(value) => {
-          //   setServicesOffered(value);
-          // }}
+            onChange={(value) => {
+              setBusinessType(value);
+            }}
           />
           <OutlinedInputBox
             placeholder="Cell No"
             inputType="text"
-          // onChange={(value) => {
-          //   setHourlyVage(value);
-          // }} 
+            onChange={(value) => {
+              setCellNumber(value);
+            }}
           />
           <OutlinedInputBox
             placeholder="Location"
             inputType="text"
-          // onChange={(value) => {
-          //   setBusinessIndustry(value);
-          // }}
+            onChange={(value) => {
+              setLocation(value);
+            }}
           />
           <OutlinedInputBox
             placeholder="Logo"
             inputType="text"
-          // onChange={(value) => {
-          //   setDateOfIncorporation(value);
-          // }}
+            onChange={(value) => {
+              setLogo(value);
+            }}
           />
           <OutlinedInputBox
             placeholder="Address"
             inputType="text"
-          // onChange={(value) => {
-          //   setCompanyWebsite(value);
-          // }}
+            onChange={(value) => {
+              setAddress(value);
+            }}
           />
           <UploadBtn
             svg={
@@ -212,21 +214,21 @@ export default function NewBusinessCardScreen1(props) {
               </Svg>
             }
             placeholder="Add Photo"
-          // onCallBack={getBase64}
+            onCallBack={getBase64}
           />
           <OutlinedInputBox
             placeholder="Email Address"
             inputType="text"
-          // onChange={(value) => {
-          //   setDateOfIncorporation(value);
-          // }}
+            onChange={(value) => {
+              setEmail(value);
+            }}
           />
           <OutlinedInputBox
             placeholder="Website"
             inputType="text"
-          // onChange={(value) => {
-          //   setDateOfIncorporation(value);
-          // }}
+            onChange={(value) => {
+              setWebsite(value);
+            }}
           />
           <View
             style={{

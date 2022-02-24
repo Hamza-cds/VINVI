@@ -25,7 +25,7 @@ export default function NewCardScreen(props, navigation, onCallBack) {
                 style={{ flex: 1 }}>
                 <Header
                     navigation={navigation}
-                    variant="dark"
+                    variant="light2"
                     headerName="Edit Profile"
                     onPress={() => {
                         props.navigation.push('Dashboard');

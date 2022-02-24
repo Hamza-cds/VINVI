@@ -17,10 +17,9 @@ import { PRIMARY, WHITE } from '../Constants/Colors';
 
 export default function NewBusinessCardScreen1(props) {
 
-
-
+    console.log("BusinessCardScreen1Array", props)
     const onFinish = () => {
-        props.navigation.push("NewPersonalCard2")
+        // props.navigation.push("NewPersonalCard2")
         // if (isNullOrEmpty(productShelving)) {
         //   alert(EMPTY_PRODUCT)
         // }
