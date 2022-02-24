@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { G, Circle, Path } from 'react-native-svg';
 import { Height, Width } from '../Constants/Constants';
 
-export default function AddCardScreen(navigation) {
+export default function AddCardScreen(props, navigation) {
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -15,10 +15,10 @@ export default function AddCardScreen(navigation) {
         style={{ flex: 1 }}>
         <Header
           navigation={navigation}
-          variant="dark"
+          variant="dark2"
           headerName="Add Card"
           onPress={() => {
-            navigation.navigate('Home');
+            props.navigation.push('Home');
           }}
         />
         <View
@@ -35,7 +35,7 @@ export default function AddCardScreen(navigation) {
             <TouchableOpacity
               style={{ display: 'flex', alignItems: 'center' }}
               onPress={() => {
-                navigation.navigate('NewPersonalCard1');
+                props.navigation.push('NewPersonalCard1');
               }}>
               <Svg
                 xmlns="http://www.w3.org/2000/svg"

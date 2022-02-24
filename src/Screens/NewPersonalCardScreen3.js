@@ -72,7 +72,7 @@ export default function NewCardScreen(props) {
         variant="dark"
         headerName="Add Card"
         onPress={() => {
-          navigation.navigate('NewPersonalCard2');
+          props.navigation.push('NewPersonalCard2');
         }}
       />
       <NewCardStepPanel
