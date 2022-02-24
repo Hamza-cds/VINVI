@@ -7,6 +7,7 @@ import { Height, Width } from '../Constants/Constants';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getPersonalCardAllActiveApiCall } from '../Apis/Repo';
 import { FlatList } from 'react-native-gesture-handler';
+import IndividualScreen from './IndividualScreen';
 
 export default function HomeDashboardScreen(props) {
 

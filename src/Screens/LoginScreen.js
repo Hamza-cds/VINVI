@@ -43,7 +43,7 @@ export default function LoginScreen(props) {
 
       loginApiCall(object)
         .then((response) => {
-          console.log("response", response)
+          //console.log("response", response)
 
           if (response.data.status == 200) {
             AsyncStorage.setItem("user_data", JSON.stringify(response.data.result))

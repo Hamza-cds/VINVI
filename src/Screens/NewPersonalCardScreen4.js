@@ -75,9 +75,9 @@ export default function NewCardScreen(props) {
     if (isNullOrEmpty(message)) {
       alert(EMPTY_MESSAGE)
     }
-    // else if (isNullOrEmpty(qrCode)) {
-    //   alert(EMPTY_QRCODE)
-    // }
+    else if (isNullOrEmpty(qrCode)) {
+      alert(EMPTY_QRCODE)
+    }
     else if (isNullOrEmpty(hobbies)) {
       alert(EMPTY_HOBBIES)
     }

@@ -77,17 +77,22 @@ export default function NewCardScreen(props) {
         occupation: occupation,
         email: email,
         address: address,
+        occupation: occupation
       })
       console.log("PersonalcardScreen1Array", PersonalcardScreen1Array)
       let object = {
         "Name": name,
-        "Occupation": occupation,
         "Email": email,
         "PhoneNo": phoneNumber,
         "Address": address,
         "UserId": userData.id,
         "PersonalCardMeta": [
+          {
+            "PersonalKey": "occupation",
+            "PersonalValue": occupation,
+            "Ishidden": true
 
+          },
           {
             "PersonalKey": "birthday",
             "PersonalValue": birthday,

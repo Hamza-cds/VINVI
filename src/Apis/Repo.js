@@ -97,10 +97,28 @@ export async function businessCardApiCall(businesscardRequest) {
     }
 }
 
-export async function getPersonalCardByIdApiCall() {
+export async function getPersonalCardByIdApiCall(id) {
 
-    let route = URL.concat("/api/PersonalCard/GetById?id=4");
+    let route = URL.concat(`/api/PersonalCard/GetById?id=${id}`);
     console.log("getPersonalCardById Request : ", route)
+    let apiRes = null;
+    try {
+        apiRes = await axios({
+            method: 'GET',
+            url: route,
+        });
+    } catch (err) {
+        apiRes = err;
+        return apiRes;
+    } finally {
+        return apiRes;
+    }
+}
+
+export async function getPersonalCardByUserIdApiCall() {
+
+    let route = URL.concat("/api/PersonalCard/GetByUserId");
+    console.log("getPersonalCardByUserId Request : ", route)
     let apiRes = null;
     try {
         apiRes = await axios({
