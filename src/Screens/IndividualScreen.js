@@ -28,7 +28,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
-export default function IndividualScreen(props, item) {
+export default function IndividualScreen(props) {
+
 
 
   let [userData, setUserData] = useState(null)
@@ -37,31 +38,31 @@ export default function IndividualScreen(props, item) {
 
 
 
-  useEffect(() => {
-    AsyncStorage.getItem("user_data").then((response) => {
-      setUserData(userData = JSON.parse(response))
-      console.log("userdata", userData);
-    })
-  }, [])
+  // useEffect(() => {
+  //   AsyncStorage.getItem("user_data").then((response) => {
+  //     setUserData(userData = JSON.parse(response))
+  //     console.log("userdata", userData);
+  //   })
+  // }, [])
 
-  useEffect(() => {
-    getData();
-  }, [])
+  // useEffect(() => {
+  //   getData();
+  // }, [])
 
-  const getData = () => {
-    getPersonalCardByIdApiCall()
-      .then((res) => {
-        // debugger;
-        console.log("res", res.data.result)
-        if (res.data.success)
-          setdata(res.data.result);
-        else
-          alert("No record found.")
-      })
-      .catch((err) => {
-        console.log("err", err)
-      })
-  }
+  // const getData = () => {
+  //   getPersonalCardByIdApiCall()
+  //     .then((res) => {
+  //       // debugger;1
+  //       console.log("res", res.data.result)
+  //       if (res.data.success)
+  //         setdata(res.data.result);
+  //       else
+  //         alert("No record found.")
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err)
+  //     })
+  // }
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -122,7 +123,7 @@ export default function IndividualScreen(props, item) {
 
 
             <Text style={{ fontSize: 14, color: FORTH }}>
-              {USER_DESIGNATION}
+              {USER_NAME}
             </Text>
           </View>
 
