@@ -16,6 +16,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PRIMARY, WHITE } from '../Constants/Colors';
 
 export default function NewBusinessCardScreen1(props) {
+    // const [categoryName, setCategoryName] = useState("")
+    // const [productname, setProductName] = useState("")
+    // const [prodDescription, setprodDescription] = useState("")
+    // const [otherInfo, setOtherInfo] = useState("")
+    // const [category, setCategory] = useState("")
+    // const [address, setAddress] = useState("")
+    // const [tagline, setTagline] = useState("")
+    // const [image, setImage] = useState("");
+
 
     console.log("BusinessCardScreen1Array", props)
     const onFinish = () => {
@@ -242,12 +251,7 @@ export default function NewBusinessCardScreen1(props) {
                             placeholder="Finish"
                             onPress={() => {
                                 //       debugger;
-                                props.navigation.push('Dashboard',
-                                    //  {
-                                    //   paramKey: props.route.params.paramkey,
-
-                                    // }
-                                );
+                                // onFinish();
                                 // console.log("page 2 data", props.route.params.paramkey)
                             }}
                         />

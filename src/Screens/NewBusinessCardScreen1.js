@@ -54,8 +54,8 @@ export default function NewBusinessCardScreen1(props) {
   }
 
 
-  const onFinish = () => {
-    props.navigation.push("NewPersonalCard2")
+  const onNext = () => {
+    props.navigation.push("NewBusinessCard2")
     if (isNullOrEmpty(businessName)) {
       alert(EMPTY_NAME)
     }
@@ -77,8 +77,7 @@ export default function NewBusinessCardScreen1(props) {
 
 
     else {
-
-      props.navigation.push("NewBusinessCardScreen2", {
+      props.navigation.push("NewBusinessCard2", {
         paramkey: businessCardScreen1Array,
         businessName: businessName,
         email: email,
@@ -94,6 +93,12 @@ export default function NewBusinessCardScreen1(props) {
         "Logo": logo,
         "UserId": userData.id,
         "PersonalCardMeta": [
+          {
+            "PersonalKey": "Location",
+            "PersonalValue": location,
+            "Ishidden": true
+
+          },
 
           {
             "PersonalKey": "Type of Business",
@@ -110,19 +115,19 @@ export default function NewBusinessCardScreen1(props) {
       }
       console.log("object", object)
 
-      businessCardApiCall(object)
-        .then((response) => {
-          console.log("response", response)
-          if (response.data.status == 200) {
-            props.navigation.push("Buisness")
-          }
-          else {
-            alert(CREDIANTIAL_ERROR)
-          }
-        })
-        .catch((err) => {
-          console.log("err", err)
-        })
+      // businessCardApiCall(object)
+      //   .then((response) => {
+      //     console.log("response", response)
+      //     if (response.data.status == 200) {
+      //       props.navigation.push("Buisness")
+      //     }
+      //     else {
+      //       alert(CREDIANTIAL_ERROR)
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("err", err)
+      //   })
 
     }
   }
@@ -318,12 +323,9 @@ export default function NewBusinessCardScreen1(props) {
               placeholder="Next"
               onPress={() => {
                 // debugger;
-                props.navigation.push('NewBusinessCard2',
-                  //  {
-                  //   paramKey: props.route.params.paramkey,
 
-                  // }
-                );
+                onNext();
+
                 // console.log("page 2 data", props.route.params.paramkey)
               }}
             />
@@ -332,5 +334,4 @@ export default function NewBusinessCardScreen1(props) {
       </ScrollView>
     </SafeAreaView>
   );
-
 }

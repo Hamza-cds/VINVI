@@ -303,7 +303,7 @@ export default function Header({
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingHorizontal: 20,
-          paddingVertical: 20,
+          paddingTop: 20,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
