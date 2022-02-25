@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function NewCardScreen(props) {
 
+
   const [message, setMessage] = useState("")
   const [qrCode, setQRcode] = useState("")
   const [hobbies, setHobbies] = useState("")
@@ -68,10 +69,6 @@ export default function NewCardScreen(props) {
   }, [])
 
   const onFinish = () => {
-
-    //props.navigation.push("Individual")
-
-
     if (isNullOrEmpty(message)) {
       alert(EMPTY_MESSAGE)
     }
@@ -103,12 +100,6 @@ export default function NewCardScreen(props) {
       alert(EMPTY_JOBHISTORY)
     }
     else {
-
-      props.navigation.push("Individual", {
-        paramKey: newArray1,
-      })
-      console.log("ye ha data", newArray1)
-
       let PersonalCardMeta = [];
       for (let index = 0; index < newArray1.length && PersonalcardScreen4Array[index]; index++) {
         const element = newArray1[index];
@@ -140,11 +131,14 @@ export default function NewCardScreen(props) {
       }
       console.log("object", object)
 
+
       personalCardApiCall(object)
         .then((response) => {
           console.log("response", response)
           if (response.data.status == 200) {
-            props.navigation.push("Individual")
+            props.navigation.push("Dashboard", {
+              paramKey: newArray1,
+            })
           }
           else {
             alert(CREDIANTIAL_ERROR)

@@ -108,7 +108,7 @@ export default function UserCard({
   return (
     < TouchableOpacity
       onPress={() => {
-        navigation.navigate(navigationPath);
+        navigation.navigate(navigationPath, { item });
       }
       }
       activeOpacity={0.9}

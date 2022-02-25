@@ -77,7 +77,7 @@ export default function NewCardScreen(props) {
         occupation: occupation,
         email: email,
         address: address,
-        occupation: occupation
+
       })
       console.log("PersonalcardScreen1Array", PersonalcardScreen1Array)
       let object = {
@@ -114,19 +114,19 @@ export default function NewCardScreen(props) {
       }
       console.log("object", object)
 
-      personalCardApiCall(object)
-        .then((response) => {
-          console.log("response", response)
-          if (response.data.status == 200) {
-            props.navigation.push("NewPersonalCard2")
-          }
-          else {
-            alert(CREDIANTIAL_ERROR)
-          }
-        })
-        .catch((err) => {
-          console.log("err", err)
-        })
+      // personalCardApiCall(object)
+      //   .then((response) => {
+      //     console.log("response", response)
+      //     if (response.data.status == 200) {
+      //       props.navigation.push("NewPersonalCard2")
+      //     }
+      //     else {
+      //       alert(CREDIANTIAL_ERROR)
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("err", err)
+      //   })
 
     }
   }

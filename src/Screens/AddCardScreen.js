@@ -18,7 +18,11 @@ export default function AddCardScreen(props, navigation) {
           variant="dark2"
           headerName="Add Card"
           onPress={() => {
+<<<<<<< HEAD
             props.navigation.push('Home');
+=======
+            props.navigation.navigate('Home');
+>>>>>>> origin/fixes-hamza-23-2-2022
           }}
         />
         <View
@@ -35,7 +39,11 @@ export default function AddCardScreen(props, navigation) {
             <TouchableOpacity
               style={{ display: 'flex', alignItems: 'center' }}
               onPress={() => {
+<<<<<<< HEAD
                 props.navigation.push('NewPersonalCard1');
+=======
+                props.navigation.navigate('NewPersonalCard1');
+>>>>>>> origin/fixes-hamza-23-2-2022
               }}>
               <Svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -10,6 +10,7 @@ import { Height, Width } from '../Constants/Constants';
 
 export default function NewCardScreen(props) {
 
+
   console.log("PersonalcardScreen1Array", props)
 
   return (
@@ -171,6 +172,7 @@ export default function NewCardScreen(props) {
                   email: props.route.params.email,
                   address: props.route.params.address
                 });
+
                 console.log("page 2 data", props.route.params)
               }}
             />

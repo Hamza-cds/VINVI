@@ -47,21 +47,21 @@ export default function NewCardScreen(props) {
     }
     console.log("object", object)
 
-    personalCardApiCall(object)
-      .then((response) => {
-        console.log("response", response)
+    // personalCardApiCall(object)
+    //   .then((response) => {
+    //     console.log("response", response)
 
-        if (response.data.status == 200) {
-          props.navigation.push("NewPersonalCard4")
-        }
-        else {
-          alert(response.data.message)
-          console.log("ADD")
-        }
-      })
-      .catch((err) => {
-        console.log("err", err)
-      })
+    //     if (response.data.status == 200) {
+    //       props.navigation.push("NewPersonalCard4")
+    //     }
+    //     else {
+    //       alert(response.data.message)
+    //       console.log("ADD")
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err)
+    //   })
   }
 
   return (
