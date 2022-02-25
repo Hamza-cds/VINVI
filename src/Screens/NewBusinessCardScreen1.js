@@ -115,19 +115,7 @@ export default function NewBusinessCardScreen1(props) {
       }
       console.log("object", object)
 
-      // businessCardApiCall(object)
-      //   .then((response) => {
-      //     console.log("response", response)
-      //     if (response.data.status == 200) {
-      //       props.navigation.push("Buisness")
-      //     }
-      //     else {
-      //       alert(CREDIANTIAL_ERROR)
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log("err", err)
-      //   })
+
 
     }
   }

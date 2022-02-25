@@ -251,6 +251,7 @@ export default function NewBusinessCardScreen1(props) {
                             placeholder="Finish"
                             onPress={() => {
                                 //       debugger;
+                                props.navigation.push('Buisness');
                                 // onFinish();
                                 // console.log("page 2 data", props.route.params.paramkey)
                             }}
