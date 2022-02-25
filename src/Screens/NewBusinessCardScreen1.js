@@ -35,6 +35,10 @@ export default function NewBusinessCardScreen1(props) {
       "key": "Website",
       "value": website
     },
+    {
+      "key": "Image",
+      "value": image
+    },
   ]
 
   let [userData, setUserData] = useState(null);
@@ -55,7 +59,7 @@ export default function NewBusinessCardScreen1(props) {
 
 
   const onNext = () => {
-    props.navigation.push("NewBusinessCard2")
+
     if (isNullOrEmpty(businessName)) {
       alert(EMPTY_NAME)
     }
@@ -92,14 +96,14 @@ export default function NewBusinessCardScreen1(props) {
         "PhoneNo": cellNumber,
         "Logo": logo,
         "UserId": userData.id,
-        "PersonalCardMeta": [
+
+        "BusinessCardMeta": [
           {
             "PersonalKey": "Location",
             "PersonalValue": location,
             "Ishidden": true
 
           },
-
           {
             "PersonalKey": "Type of Business",
             "PersonalValue": businesssType,
@@ -111,11 +115,14 @@ export default function NewBusinessCardScreen1(props) {
             "PersonalValue": website,
             "Ishidden": true
           },
+          {
+            "PersonalKey": "Image",
+            "PersonalValue": image,
+            "Ishidden": true
+          }
         ],
       }
       console.log("object", object)
-
-
 
     }
   }

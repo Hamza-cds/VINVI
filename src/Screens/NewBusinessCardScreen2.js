@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -7,108 +7,142 @@ import UploadBtn from '../Components/UploadBtn';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { G, Path } from 'react-native-svg';
 import { Height, Width } from '../Constants/Constants';
-import { EMPTY_BUSINESS, EMPTY_HOURLY, EMPTY_INCORPORATION, EMPTY_PRODUCT, EMPTY_SERVICES, EMPTY_WEBSITE } from '../Constants/Strings';
+import { EMPTY_CATEGORY, EMPTY_OTHERINFO, EMPTY_PRODUCT, EMPTY_TAGLINE } from '../Constants/Strings';
 import { businessCardApiCall } from '../Apis/Repo';
-import LinkBtn from '../Components/LinkBtn';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { isNullOrEmpty } from '../Constants/TextUtils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PRIMARY, WHITE } from '../Constants/Colors';
 
 export default function NewBusinessCardScreen1(props) {
-    // const [categoryName, setCategoryName] = useState("")
-    // const [productname, setProductName] = useState("")
-    // const [prodDescription, setprodDescription] = useState("")
-    // const [otherInfo, setOtherInfo] = useState("")
-    // const [category, setCategory] = useState("")
-    // const [address, setAddress] = useState("")
-    // const [tagline, setTagline] = useState("")
-    // const [image, setImage] = useState("");
+
+    const [categoryName, setCategoryName] = useState("")
+    const [productname, setProductName] = useState("")
+    const [prodDescription, setProdDescription] = useState("")
+    const [otherInfo, setOtherInfo] = useState("")
+    const [category, setCategory] = useState("")
+    const [tagline, setTagline] = useState("")
+    const [prodImage, setProdImage] = useState("");
+
+    let [userData, setUserData] = useState(null);
+    const newBusinessArray = props.route.params;
+    debugger;
+
+    const businessCardScreen2Array = [
+        {
+            "key": "Category Name",
+            "value": categoryName
+        }, {
+            "key": "Product Name",
+            "value": productname
+        }, {
+            "key": "Prod description",
+            "value": prodDescription
+        }, {
+            "key": "Any Other Information",
+            "value": otherInfo
+        }, {
+            "key": "Category",
+            "value": category
+        }, {
+            "key": "Tagline",
+            "value": tagline
+        }, {
+            "key": "Product Image",
+            "value": prodImage
+        }
+
+    ]
+
+    useEffect(() => {
+        console.log("BusinessScreen2", props.route.params)
+        AsyncStorage.getItem("user_data").then((response) => {
+            setUserData(userData = JSON.parse(response))
+            console.log("userdata", userData);
+        })
+    }, [])
+
+    const getBase64 = (image, type) => {
+        console.log("image base 64", image)
+        console.log("type", type)
+        const base64Converted = "data:image/png;base64," + image;
+        setProdImage(base64Converted)
+    }
 
 
-    console.log("BusinessCardScreen1Array", props)
     const onFinish = () => {
-        // props.navigation.push("NewPersonalCard2")
-        // if (isNullOrEmpty(productShelving)) {
-        //   alert(EMPTY_PRODUCT)
-        // }
-        // else if (isNullOrEmpty(servicesOffered)) {
-        //   alert(EMPTY_SERVICES)
-        // }
-        // else if (isNullOrEmpty(hourlyWage)) {
-        //   alert(EMPTY_HOURLY)
-        // }
-        // else if (isNullOrEmpty(businessIndustry)) {
-        //   alert(EMPTY_BUSINESS)
-        // }
-        // else if (isNullOrEmpty(dateofIncorporation)) {
-        //   alert(EMPTY_INCORPORATION)
-        // }
-        // else if (isNullOrEmpty(companyWebsite)) {
-        //   alert(EMPTY_WEBSITE)
-        // }
-        // else if (isNullOrEmpty(city)) {
-        //   alert(EMPTY_CITY)
-        // }
 
-        //   else {
-        //     let object = {
-        //       "PhoneNo": userData.phoneno,
-        //       "Logo": image,
-        //       "UserId": userData.id,
-        //       "PersonalCardMeta": [
-        //         {
-        //           "PersonalKey": "Product Shelving",
-        //           "PersonalValue": productShelving,
-        //           "Ishidden": true
+        if (isNullOrEmpty(categoryName)) {
+            alert(EMPTY_CATEGORY)
+        }
+        else if (isNullOrEmpty(productname)) {
+            alert(EMPTY_PRODUCT)
+        }
+        else if (isNullOrEmpty(prodDescription)) {
+            alert(EMPTY_PRODUCT)
+        }
+        else if (isNullOrEmpty(otherInfo)) {
+            alert(EMPTY_OTHERINFO)
+        }
+        else if (isNullOrEmpty(category)) {
+            alert(EMPTY_CATEGORY)
+        }
 
-        //         },
-        //         {
-        //           "PersonalKey": "Services Offered",
-        //           "PersonalValue": servicesOffered,
-        //           "Ishidden": true
+        else if (isNullOrEmpty(tagline)) {
+            alert(EMPTY_TAGLINE)
+        }
 
-        //         },
-        //         {
-        //           "PersonalKey": "Hourly Wage",
-        //           "PersonalValue": hourlyWage,
-        //           "Ishidden": true
+        else {
+            let BusinessCardMeta = [];
+            for (let index = 0; index < businessCardScreen2Array[index]; index++) {
+                const element1 = businessCardScreen2Array[index];
+                let newObject1 = {
+                    "PersonalKey": element1.key,
+                    "PersonalValue": element1.value,
+                    "Ishidden": true
+                }
+                BusinessCardMeta.push(newObject1);
+            }
 
-        //         },
-        //         {
-        //           "PersonalKey": "Business Industry",
-        //           "PersonalValue": businessIndustry,
-        //           "Ishidden": true
-        //         },
-        //         {
-        //           "PersonalKey": "Date of Incorporation",
-        //           "PersonalValue": dateofIncorporation,
-        //           "Ishidden": true
-        //         },
-        //         {
-        //           "PersonalKey": "Company Website",
-        //           "PersonalValue": companyWebsite,
-        //           "Ishidden": true
-        //         },
-        //       ],
-        //     }
-        //     console.log("object", object)
+            for (let index = 0; index < newBusinessArray.length; index++) {
+                const element = newBusinessArray[index];
+                let newObject = {
+                    "PersonalKey": element.key,
+                    "PersonalValue": element.value,
+                    "Ishidden": true
+                }
+                BusinessCardMeta.push(newObject);
+            }
+            console.log("Business Card Meta", BusinessCardMeta)
 
-        //     businessCardApiCall(object)
-        //       .then((response) => {
-        //         console.log("response", response)
-        //         if (response.data.status == 200) {
-        //           props.navigation.push("Buisness")
-        //         }
-        //         else {
-        //           alert(CREDIANTIAL_ERROR)
-        //         }
-        //       })
-        //       .catch((err) => {
-        //         console.log("err", err)
-        //       })
+            let object = {
+                "Name": props.route.params.businessName,
+                "Email": props.route.params.email,
 
-        //   }
+                "PhoneNo": props.route.params.cellNumber,
+                "Logo": props.route.params.logo,
+                "UserId": userData.id,
+                "Business Card Meta": BusinessCardMeta,
+            }
+            console.log("object", object)
+
+            businessCardApiCall(object)
+                .then((response) => {
+                    console.log("response", response)
+                    if (response.data.status == 200) {
+                        props.navigation.push("Dashboard", {
+                            paramKey: newBusinessArray,
+                        })
+                    }
+                    else {
+                        alert(CREDIANTIAL_ERROR)
+                    }
+                })
+                .catch((err) => {
+                    console.log("err", err)
+                })
+
+        }
     }
 
     return (
@@ -133,9 +167,9 @@ export default function NewBusinessCardScreen1(props) {
                         <OutlinedInputBox
                             placeholder="Name of Category"
                             inputType="text"
-                        // onChange={(value) => {
-                        //   setProductShelving(value);
-                        // }}
+                            onChange={(value) => {
+                                setCategoryName(value);
+                            }}
                         />
                         <TouchableOpacity
                             style={{ backgroundColor: PRIMARY, width: 80, height: 50, borderRadius: 9, marginLeft: -70, marginRight: 10, marginVertical: 15 }}>
@@ -180,16 +214,16 @@ export default function NewBusinessCardScreen1(props) {
                     <OutlinedInputBox
                         placeholder="Name of Product"
                         inputType="text"
-                    // onChange={(value) => {
-                    //   setDateOfIncorporation(value);
-                    // }}
+                        onChange={(value) => {
+                            setProductName(value);
+                        }}
                     />
                     <OutlinedInputBox
                         placeholder="Description of Product"
                         inputType="text"
-                    // onChange={(value) => {
-                    //   setCompanyWebsite(value);
-                    // }}
+                        onChange={(value) => {
+                            setProdDescription(value);
+                        }}
                     />
                     <UploadBtn
                         svg={
@@ -219,28 +253,28 @@ export default function NewBusinessCardScreen1(props) {
                             </Svg>
                         }
                         placeholder="Add Photo of Product"
-                    // onCallBack={getBase64}
+                        onCallBack={getBase64}
                     />
                     <OutlinedInputBox
                         placeholder="Any Other Information"
                         inputType="text"
-                    // onChange={(value) => {
-                    //   setDateOfIncorporation(value);
-                    // }}
+                        onChange={(value) => {
+                            setOtherInfo(value);
+                        }}
                     />
                     <OutlinedInputBox
                         placeholder="Category"
                         inputType="text"
-                    // onChange={(value) => {
-                    //   setDateOfIncorporation(value);
-                    // }}
+                        onChange={(value) => {
+                            setCategory(value);
+                        }}
                     />
                     <OutlinedInputBox
                         placeholder="Tagline"
                         inputType="text"
-                    // onChange={(value) => {
-                    //   setDateOfIncorporation(value);
-                    // }}
+                        onChange={(value) => {
+                            setTagline(value);
+                        }}
                     />
                     <View
                         style={{
@@ -250,10 +284,7 @@ export default function NewBusinessCardScreen1(props) {
                         <BtnComponent
                             placeholder="Finish"
                             onPress={() => {
-                                //       debugger;
-                                props.navigation.push('Buisness');
-                                // onFinish();
-                                // console.log("page 2 data", props.route.params.paramkey)
+                                onFinish();
                             }}
                         />
                     </View>

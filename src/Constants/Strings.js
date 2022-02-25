@@ -33,4 +33,8 @@ module.exports = {
     EMPTY_INCORPORATION: "Date of Incorporation can't be empty",
     EMPTY_PORTFOLIO: "PortFolio can't be empty",
     EMPTY_WEBSITE: "Company Website can't be empty",
+    EMPTY_CATEGORY: 'Category details cannot be empty',
+    EMPTY_PRODUCT: "Product details cannot be empty",
+    EMPTY_OTHERINFO: "Other Info cannot be empty",
+    EMPTY_TAGLINE: "Tagline cannot be empty",
 };

@@ -5,7 +5,7 @@ import DashboardStories from '../Components/DashboardStories';
 import UserCard from '../Components/UserCard';
 import { Height, Width } from '../Constants/Constants';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getPersonalCardAllActiveApiCall } from '../Apis/Repo';
+import { getBusinessCardAllActiveApiCall, getPersonalCardAllActiveApiCall } from '../Apis/Repo';
 import { FlatList } from 'react-native-gesture-handler';
 import IndividualScreen from './IndividualScreen';
 
@@ -24,10 +24,22 @@ export default function HomeDashboardScreen(props) {
 
   useEffect(() => {
     getData();
+    getData2();
   }, [])
 
   const getData = () => {
     getPersonalCardAllActiveApiCall()
+      .then((res) => {
+        console.log("res", res)
+        setdata(res.data.result);
+      })
+      .catch((err) => {
+        console.log("err", err)
+      })
+  }
+
+  const getData2 = () => {
+    getBusinessCardAllActiveApiCall()
       .then((res) => {
         console.log("res", res)
         setdata(res.data.result);
