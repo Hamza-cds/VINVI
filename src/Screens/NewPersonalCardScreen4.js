@@ -101,16 +101,18 @@ export default function NewCardScreen(props) {
     }
     else {
       let PersonalCardMeta = [];
-      for (let index = 0; index < newArray1.length && PersonalcardScreen4Array[index]; index++) {
+      for (let index = 0; index < newArray1.length; index++) {
         const element = newArray1[index];
-        const element1 = PersonalcardScreen4Array[index];
         let newObject = {
           "PersonalKey": element.key,
           "PersonalValue": element.value,
           "Ishidden": true
         }
         PersonalCardMeta.push(newObject);
+      }
 
+      for (let index = 0; index < PersonalcardScreen4Array.length; index++) {
+        const element1 = PersonalcardScreen4Array[index];
         let newObject1 = {
           "PersonalKey": element1.key,
           "PersonalValue": element1.value,
@@ -136,8 +138,10 @@ export default function NewCardScreen(props) {
         .then((response) => {
           console.log("response", response)
           if (response.data.status == 200) {
-            props.navigation.push("Dashboard", {
-              paramKey: newArray1,
+            props.navigation.push("Individual", {
+              // paramKey: newArray1,
+              // paramKey: PersonalcardScreen4Array
+              // dont remove this !
             })
           }
           else {
@@ -239,7 +243,7 @@ export default function NewCardScreen(props) {
             placeholder="Finish"
             onPress={() => {
               onFinish();
-              // navigation.navigate('Individual');
+
             }}
           />
         </View>
