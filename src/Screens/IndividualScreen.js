@@ -22,6 +22,7 @@ import {
   USER_NAME,
   Width,
 } from '../Constants/Constants';
+import _ from "lodash";
 import QRCode from 'react-native-qrcode-svg';
 import { getPersonalCardByIdApiCall } from '../Apis/Repo';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -33,36 +34,65 @@ export default function IndividualScreen(props) {
 
 
   let [userData, setUserData] = useState(null)
-  const [data, setdata] = useState(null)
+  const [data, setdata] = useState(" ")
   const [favorit, setFavorit] = useState(false);
+  const [ID, setID] = useState(props.route.params.id);
+
+  let arrayOccupation;
+  arrayOccupation = _.find(data.personalCardMeta, { personalKey: "occupation" });
+  if (arrayOccupation) {
+    arrayOccupation = arrayOccupation.personalValue;
+  } else {
+    arrayOccupation = "Dummy occupation";
+  }
+
+  let arraycity;
+  arraycity = _.find(data.personalCardMeta, { personalKey: "city" });
+  if (arraycity) {
+    arraycity = arraycity.personalValue;
+  } else {
+    arraycity = "Dummy city";
+  }
+
+  let arraycountry;
+  arraycountry = _.find(data.personalCardMeta, { personalKey: "country" });
+  if (arraycountry) {
+    arraycountry = arraycountry.personalValue;
+  } else {
+    arraycountry = "Dummy country";
+  }
 
 
 
-  // useEffect(() => {
-  //   AsyncStorage.getItem("user_data").then((response) => {
-  //     setUserData(userData = JSON.parse(response))
-  //     console.log("userdata", userData);
-  //   })
-  // }, [])
 
-  // useEffect(() => {
-  //   getData();
-  // }, [])
+  useEffect(() => {
+    AsyncStorage.getItem("user_data").then((response) => {
+      setUserData(userData = JSON.parse(response))
+      console.log("userdata", userData);
+    })
+  }, [])
 
-  // const getData = () => {
-  //   getPersonalCardByIdApiCall()
-  //     .then((res) => {
-  //       // debugger;1
-  //       console.log("res", res.data.result)
-  //       if (res.data.success)
-  //         setdata(res.data.result);
-  //       else
-  //         alert("No record found.")
-  //     })
-  //     .catch((err) => {
-  //       console.log("err", err)
-  //     })
-  // }
+  useEffect(() => {
+    getData();
+  }, [])
+
+  const getData = () => {
+    getPersonalCardByIdApiCall(ID)
+      .then((res) => {
+        // debugger;
+        console.log("res", res.data.result)
+        if (res.data.success)
+          setdata(res.data.result);
+        else
+          alert("No record found.")
+      })
+      .catch((err) => {
+        // debugger;
+        console.log("err", err)
+      })
+  }
+  console.log("data here", data)
+  //debugger;
 
   return (
     <SafeAreaView style={{ height: Height, width: Width }}>
@@ -99,7 +129,7 @@ export default function IndividualScreen(props) {
           </View>
 
           <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-            <Text style={{ color: SECONDARY, fontSize: 20 }}>{USER_NAME}</Text>
+            <Text style={{ color: SECONDARY, fontSize: 20 }}>{data.name}</Text>
 
             <View style={{ marginLeft: 150, marginTop: -20 }}>
               <TouchableOpacity
@@ -123,7 +153,7 @@ export default function IndividualScreen(props) {
 
 
             <Text style={{ fontSize: 14, color: FORTH }}>
-              {USER_NAME}
+              {arrayOccupation}
             </Text>
           </View>
 
@@ -299,7 +329,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder={data != null ? data.address : "Address"}
+              placeholder={data != null ? arraycountry : "Address"}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
