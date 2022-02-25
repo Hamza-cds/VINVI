@@ -18,11 +18,7 @@ export default function AddCardScreen(props, navigation) {
           variant="dark2"
           headerName="Add Card"
           onPress={() => {
-<<<<<<< HEAD
-            props.navigation.push('Home');
-=======
-            props.navigation.navigate('Home');
->>>>>>> origin/fixes-hamza-23-2-2022
+            props.navigation.goBack();
           }}
         />
         <View
