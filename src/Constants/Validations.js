@@ -9,7 +9,7 @@ export function isInvalidPhoneNumber(str) {
   return !phoneNumberRegex.test(str);
 }
 export function isInvalidPassword(str) {
-  let passwordRegex = new RegExp(".{8,}"); // min 8 characters, 1 letter,number and special character
+  let passwordRegex = new RegExp('.{8,}'); // min 8 characters, 1 letter,number and special character
   if (passwordRegex.test(str) === false) return true;
   else return false;
 }
@@ -21,7 +21,7 @@ export function isInvalidURL(url) {
 }
 
 export function notValidNumber(str) {
-  const reg = new RegExp("^[0-9]+$");
+  const reg = new RegExp('^[0-9]+$');
 
   return !reg.test(str);
 }

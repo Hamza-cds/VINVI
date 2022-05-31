@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import { Text, ImageBackground, ScrollView } from 'react-native';
+import React from 'react';
+import {Text, ScrollView} from 'react-native';
 import Header from '../Components/Header';
 import UserCard from '../Components/UserCard';
 import FilterTag from '../Components/FilterTag';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
-import { Height, USER_DESIGNATION, Width } from '../Constants/Constants';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Svg, {Path} from 'react-native-svg';
+import {Height, USER_DESIGNATION, Width} from '../Constants/Constants';
 
 export default function SearchResultScreen(props) {
-
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
       {/* <ImageBackground
         source={require('../Assets/screenbg.png')}
         style={{ flex: 1, paddingBottom: 50 }}> */}
@@ -34,22 +33,17 @@ export default function SearchResultScreen(props) {
           props.navigation.navigate('Search');
         }}
       />
-      <FilterTag
-        filterName="Area"
-        filterValue="Lahore"
-        onPress={() => { }}
-      />
+      <FilterTag filterName="Area" filterValue="Lahore" onPress={() => {}} />
       <FilterTag
         filterName="Niche"
         filterValue={USER_DESIGNATION}
-        onPress={() => { }}
+        onPress={() => {}}
       />
-      <FilterTag filterName="Name" filterValue="Rahul" onPress={() => { }} />
-      <Text
-        style={{ marginVertical: 10, fontSize: 16, marginHorizontal: 20 }}>
+      <FilterTag filterName="Name" filterValue="Rahul" onPress={() => {}} />
+      <Text style={{marginVertical: 10, fontSize: 16, marginHorizontal: 20}}>
         Showing 203 Results
       </Text>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{flex: 1}}>
         <UserCard
           variant="closed"
           favoritBtn={true}
@@ -127,4 +121,3 @@ export default function SearchResultScreen(props) {
     </SafeAreaView>
   );
 }
-

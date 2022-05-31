@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
 import {SECONDARY, FIFTH} from '../Constants/Colors';
+
 export default function ProductCard({productPic, productName, productPrice}) {
   return (
     <View

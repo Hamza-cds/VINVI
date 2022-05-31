@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
@@ -6,19 +6,19 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import { SECONDARY, WHITE } from '../Constants/Colors';
+import {SECONDARY, WHITE} from '../Constants/Colors';
 import Header from '../Components/Header';
-import Svg, { G, Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
+import Svg, {G, Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
 
 export default class TermsConditionScreen extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{ height: Height, width: Width }}>
+      <SafeAreaView style={{height: Height, width: Width}}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{ flex: 1 }}>
+          style={{flex: 1}}>
           <Header
             navigation={navigation}
             variant="dark2"
@@ -40,7 +40,7 @@ export default class TermsConditionScreen extends Component {
               </Svg>
             }
           />
-          <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
+          <ScrollView style={{flex: 1, paddingHorizontal: 20}}>
             <View
               style={{
                 padding: 20,
@@ -48,7 +48,7 @@ export default class TermsConditionScreen extends Component {
                 borderRadius: 5,
                 paddingBottom: 150,
               }}>
-              <Text style={{ color: SECONDARY, textAlign: 'justify' }}>
+              <Text style={{color: SECONDARY, textAlign: 'justify'}}>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Consectetur quis enim voluptatum non debitis quo eligendi sed
                 voluptatibus pariatur nobis blanditiis repellat, nihil porro

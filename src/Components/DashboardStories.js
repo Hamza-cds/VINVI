@@ -1,6 +1,5 @@
 import React from 'react';
 import Story from 'react-native-story';
-import {TextInput} from 'react-native';
 import {WHITE, SECONDARY} from '../Constants/Colors';
 
 export default function DashboardStories() {

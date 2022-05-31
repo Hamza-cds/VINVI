@@ -6,14 +6,6 @@ export default function PickerComponent({placeholder, itemValues, itemLabels}) {
   const [selectedLanguage, setSelectedLanguage] = useState();
   const pickerRef = useRef();
 
-  function open() {
-    pickerRef.current.focus();
-  }
-
-  function close() {
-    pickerRef.current.blur();
-  }
-
   return (
     <>
       <Text>{placeholder}</Text>

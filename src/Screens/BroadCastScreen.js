@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   Text,
@@ -6,22 +6,22 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import { SECONDARY, WHITE } from '../Constants/Colors';
+import {SECONDARY, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import BroadcastCard from '../Components/BroadcastCard';
 import Header from '../Components/Header';
-import Svg, { G, Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
+import Svg, {G, Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
 import Slider from '@react-native-community/slider';
 
 export default class BroadCastScreen extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{ height: Height, width: Width }}>
+      <SafeAreaView style={{height: Height, width: Width}}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{ flex: 1, paddingBottom: 20 }}>
+          style={{flex: 1, paddingBottom: 20}}>
           <Header
             navigation={navigation}
             variant="dark2"
@@ -59,7 +59,7 @@ export default class BroadCastScreen extends Component {
               }}>
               <Text>0km</Text>
               <Slider
-                style={{ flex: 1, height: 50 }}
+                style={{flex: 1, height: 50}}
                 minimumValue={0}
                 maximumValue={30}
                 minimumTrackTintColor={SECONDARY}
@@ -69,7 +69,7 @@ export default class BroadCastScreen extends Component {
               <Text>30km</Text>
             </View>
           </View>
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             <BroadcastCard status={true} />
             <BroadcastCard status={false} />
             <BroadcastCard status={true} />
@@ -83,8 +83,8 @@ export default class BroadCastScreen extends Component {
             <BroadcastCard status={true} />
             <BroadcastCard status={false} />
           </ScrollView>
-          <View style={{ marginHorizontal: 20 }}>
-            <BtnComponent placeholder="Broadcast" onPress={() => { }} />
+          <View style={{marginHorizontal: 20}}>
+            <BtnComponent placeholder="Broadcast" onPress={() => {}} />
           </View>
         </ImageBackground>
       </SafeAreaView>

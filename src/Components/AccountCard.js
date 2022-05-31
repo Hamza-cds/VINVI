@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { SECONDARY, WHITE } from '../Constants/Colors';
-import { USER_NAME, USER_EMAIL } from '../Constants/Constants';
-import { useNavigation } from '@react-navigation/native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {SECONDARY, WHITE} from '../Constants/Colors';
+import {USER_NAME, USER_EMAIL} from '../Constants/Constants';
+import {useNavigation} from '@react-navigation/native';
 
 export default function AccountCard() {
   const navigation = useNavigation();
@@ -28,9 +28,9 @@ export default function AccountCard() {
         marginHorizontal: 20,
       }}>
       <Image source={require('../Assets/profilePic.png')} />
-      <View style={{ marginLeft: 20 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{USER_NAME}</Text>
-        <Text style={{ fontSize: 14 }}>{USER_EMAIL}</Text>
+      <View style={{marginLeft: 20}}>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{USER_NAME}</Text>
+        <Text style={{fontSize: 14}}>{USER_EMAIL}</Text>
       </View>
       <TouchableOpacity
         onPress={() => {
@@ -45,9 +45,7 @@ export default function AccountCard() {
           backgroundColor: WHITE,
           padding: 5,
         }}>
-        <Image
-          source={require('../Assets/editProf.png')}
-        />
+        <Image source={require('../Assets/editProf.png')} />
       </TouchableOpacity>
     </View>
   );

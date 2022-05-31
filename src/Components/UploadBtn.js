@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
-import { WHITE } from '../Constants/Colors';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Modal} from 'react-native';
+import {WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNFS from 'react-native-fs';
 
-const UploadBtn = ({ svg, placeholder, onCallBack }) => {
+const UploadBtn = ({svg, placeholder, onCallBack}) => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
@@ -20,7 +20,7 @@ const UploadBtn = ({ svg, placeholder, onCallBack }) => {
           marginVertical: 10,
         }}>
         {svg}
-        <Text style={{ fontSize: 14, color: WHITE, marginTop: 20 }}>
+        <Text style={{fontSize: 14, color: WHITE, marginTop: 20}}>
           {placeholder}
         </Text>
       </TouchableOpacity>
@@ -56,14 +56,15 @@ const UploadBtn = ({ svg, placeholder, onCallBack }) => {
                 cropping: false,
               }).then(image => {
                 console.log(image);
-                RNFS.readFile(image.path, 'base64')
-                  .then(res => {
-                    // console.log("res", res)
-                    onCallBack(res, placeholder == "Profile Photo" ? "profile" : "cover")
-                  });
+                RNFS.readFile(image.path, 'base64').then(res => {
+                  // console.log("res", res)
+                  onCallBack(
+                    res,
+                    placeholder == 'Profile Photo' ? 'profile' : 'cover',
+                  );
+                });
               });
             }}
-
           />
           <BtnComponent
             placeholder="Upload Image"
@@ -73,14 +74,15 @@ const UploadBtn = ({ svg, placeholder, onCallBack }) => {
                 height: 400,
                 cropping: true,
               }).then(image => {
-                RNFS.readFile(image.path, 'base64')
-                  .then(res => {
-                    // console.log("res", res)
-                    onCallBack(res, placeholder == "Profile Photo" ? "profile" : "cover")
-                  });
+                RNFS.readFile(image.path, 'base64').then(res => {
+                  // console.log("res", res)
+                  onCallBack(
+                    res,
+                    placeholder == 'Profile Photo' ? 'profile' : 'cover',
+                  );
+                });
               });
             }}
-
           />
           <BtnComponent
             placeholder="Close"
@@ -90,6 +92,6 @@ const UploadBtn = ({ svg, placeholder, onCallBack }) => {
       </Modal>
     </>
   );
-}
+};
 
-export default UploadBtn
+export default UploadBtn;

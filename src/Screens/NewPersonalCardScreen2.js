@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
-import { View, ImageBackground, ScrollView } from 'react-native';
+import React from 'react';
+import {View, ImageBackground, ScrollView} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import LinkBtn from '../Components/LinkBtn';
 import NewCardStepPanel from '../Components/NewCardStepPanel';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Svg, {Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
 
 export default function NewCardScreen(props) {
-
-
-  console.log("PersonalcardScreen1Array", props)
+  console.log('PersonalcardScreen1Array', props);
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
         source={require('../Assets/screenbg.png')}
-        style={{ flex: 1 }}>
+        style={{flex: 1}}>
         <Header
           navigation={props.navigation}
           variant="dark"
@@ -44,7 +42,7 @@ export default function NewCardScreen(props) {
           step3={false}
           step4={false}
         />
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView style={{flex: 1}}>
           <View
             style={{
               width: '100%',
@@ -165,15 +163,14 @@ export default function NewCardScreen(props) {
             <BtnComponent
               placeholder="Next"
               onPress={() => {
-
                 props.navigation.push('NewPersonalCard3', {
                   paramKey: props.route.params.paramkey,
                   name: props.route.params.name,
                   email: props.route.params.email,
-                  address: props.route.params.address
+                  address: props.route.params.address,
                 });
 
-                console.log("page 2 data", props.route.params)
+                console.log('page 2 data', props.route.params);
               }}
             />
           </View>
@@ -181,5 +178,4 @@ export default function NewCardScreen(props) {
       </ImageBackground>
     </SafeAreaView>
   );
-
 }

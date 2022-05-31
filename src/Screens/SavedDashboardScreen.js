@@ -1,45 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { ImageBackground, SafeAreaView } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ImageBackground, SafeAreaView} from 'react-native';
 import Header from '../Components/Header';
 import UserCard from '../Components/UserCard';
-import Svg, { Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
-import { FlatList } from 'react-native-gesture-handler';
+import Svg, {Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
+import {FlatList} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getPersonalCardAllActiveApiCall} from '../Apis/Repo';
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getPersonalCardAllActiveApiCall } from '../Apis/Repo';
 export default function SavedDashboardScreen(props, navigation) {
-
-  let [userData, setUserData] = useState(null)
-  const [data, setdata] = useState([])
+  let [userData, setUserData] = useState(null);
+  const [data, setdata] = useState([]);
 
   useEffect(() => {
-    AsyncStorage.getItem("user_data").then((response) => {
-      setUserData(userData = JSON.parse(response))
-      console.log("userdata", userData);
-    })
-  }, [])
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
 
   useEffect(() => {
     getData();
-  }, [])
+  }, []);
 
   const getData = () => {
     getPersonalCardAllActiveApiCall()
-      .then((res) => {
-        console.log("res", res)
+      .then(res => {
+        console.log('res', res);
         setdata(res.data.result);
       })
-      .catch((err) => {
-        console.log("err", err)
-      })
-  }
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
         source={require('../Assets/screenbg.png')}
-        style={{ flex: 1, paddingBottom: 100 }}>
+        style={{flex: 1, paddingBottom: 100}}>
         <Header
           navigation={navigation}
           variant="dark2"
@@ -61,12 +60,12 @@ export default function SavedDashboardScreen(props, navigation) {
             </Svg>
           }
         />
-        {data != null ?
+        {data != null ? (
           <FlatList
             data={data}
             horizontal={false}
             keyExtractor={item => item.id}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <UserCard
                 cta={true}
                 variant="closed"
@@ -77,10 +76,8 @@ export default function SavedDashboardScreen(props, navigation) {
               />
             )}
           />
-          :
-          null}
+        ) : null}
       </ImageBackground>
     </SafeAreaView>
   );
-
 }

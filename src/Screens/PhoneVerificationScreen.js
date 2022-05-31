@@ -1,61 +1,56 @@
-import React, { useState } from 'react';
-import { View, Text, ImageBackground, ScrollView } from 'react-native';
-import { SECONDARY, LIGHT_TEXT_COLOR } from '../Constants/Colors';
+import React, {useState} from 'react';
+import {View, Text, ImageBackground} from 'react-native';
+import {SECONDARY, LIGHT_TEXT_COLOR} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import PhoneVerificationCell from '../Components/PhoneVerificationCell';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Height, Width } from '../Constants/Constants';
-import { isNullOrEmpty } from '../Constants/TextUtils';
-import { CODE_ERROR } from '../Constants/Strings';
-import { verifyUserApiCall } from '../Apis/Repo';
-import AsyncStorage from "@react-native-async-storage/async-storage"
-
-
-
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Height, Width} from '../Constants/Constants';
+import {isNullOrEmpty} from '../Constants/TextUtils';
+import {CODE_ERROR} from '../Constants/Strings';
+import {verifyUserApiCall} from '../Apis/Repo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PhoneVerificationScreen(props, navigation) {
-  console.log("props", props)
+  console.log('props', props);
   const [code, setCode] = useState('');
 
   const onVerify = () => {
-
-    if (isNullOrEmpty(code))
-      alert(CODE_ERROR)
-
+    if (isNullOrEmpty(code)) alert(CODE_ERROR);
     else {
       let object = {
-        "VerificationCode": code,
-        "Phoneno": props.route.params.paramKey,
-        "LoginPassword": props.route.params.paramKey1,
-      }
-      console.log("object", object)
+        VerificationCode: code,
+        Phoneno: props.route.params.paramKey,
+        LoginPassword: props.route.params.paramKey1,
+      };
+      console.log('object', object);
       // debugger;
       verifyUserApiCall(object)
-        .then((response) => {
-          console.log("response", response)
+        .then(response => {
+          console.log('response', response);
 
-          if (response.data.status == 98)
-            alert(CODE_ERROR)
+          if (response.data.status == 98) alert(CODE_ERROR);
           else
-            AsyncStorage.setItem("user_data", JSON.stringify(response.data.result))
+            AsyncStorage.setItem(
+              'user_data',
+              JSON.stringify(response.data.result),
+            );
 
-          props.navigation.push("Dashboard", {
+          props.navigation.push('Dashboard', {
             paramKey: props.route.params.paramKey,
-          })
+          });
         })
-        .catch((err) => {
-          console.log("err", err)
-        })
-
+        .catch(err => {
+          console.log('err', err);
+        });
     }
-  }
+  };
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
         source={require('../Assets/loginbg.png')}
-        style={{ flex: 1, height: Height }}>
+        style={{flex: 1, height: Height}}>
         <Header
           navigation={navigation}
           variant="light"
@@ -90,22 +85,19 @@ export default function PhoneVerificationScreen(props, navigation) {
               }}>
               Enter the 6-Digit Code you Recieved on you phone
             </Text>
-            <PhoneVerificationCell
-              onChange={(text) => setCode(text)}
-            />
+            <PhoneVerificationCell onChange={text => setCode(text)} />
           </View>
           <BtnComponent
             placeholder="Verify"
             onPress={() => {
-              onVerify()
+              onVerify();
             }}
-          // onPress={() => {
-          //   navigation.navigate('PhoneVerification');
-          // }}
+            // onPress={() => {
+            //   navigation.navigate('PhoneVerification');
+            // }}
           />
         </View>
       </ImageBackground>
     </SafeAreaView>
   );
-
 }

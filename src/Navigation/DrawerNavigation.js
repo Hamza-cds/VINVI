@@ -1,12 +1,10 @@
-import * as React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
+import React from 'react';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import AccountDashboardScreen from '../Screens/AccountDashboardScreen';
-import ChatsDashboardScreen from '../Screens/ChatsDashboardScreen';
 import BottomTabsNavigator from '../Navigation/BottomTabNavigator';
 import CustomSidebarMenu from './DrawerMenu';
-import { SECONDARY, WHITE } from '../Constants/Colors';
-import Svg, { G, Path } from 'react-native-svg';
+import {SECONDARY, WHITE} from '../Constants/Colors';
+import Svg, {G, Path} from 'react-native-svg';
 import NotificationScreen from '../Screens/NotificationScreen';
 import TermsConditionScreen from '../Screens/TermsConditionScreen';
 import BroadCastScreen from '../Screens/BroadCastScreen';
@@ -22,7 +20,7 @@ export default function DrawerNavigator() {
         inactiveTintColor: WHITE,
         activeBackgroundColor: WHITE,
         inactiveBackgroundColor: 'transparent',
-        itemStyle: { marginVertical: 5 },
+        itemStyle: {marginVertical: 5},
       }}
       drawerContent={props => <CustomSidebarMenu {...props} />}>
       <Drawer.Screen
@@ -38,7 +36,7 @@ export default function DrawerNavigator() {
         name="Profile"
         component={AccountDashboardScreen}
         options={{
-          drawerIcon: ({ focused }) => {
+          drawerIcon: ({focused}) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +66,7 @@ export default function DrawerNavigator() {
         name="Notification"
         component={NotificationScreen}
         options={{
-          drawerIcon: ({ focused }) => {
+          drawerIcon: ({focused}) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +94,7 @@ export default function DrawerNavigator() {
         name="Broadcast"
         component={BroadCastScreen}
         options={{
-          drawerIcon: ({ focused }) => {
+          drawerIcon: ({focused}) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +136,7 @@ export default function DrawerNavigator() {
         name="TermsConditions"
         component={TermsConditionScreen}
         options={{
-          drawerIcon: ({ focused }) => {
+          drawerIcon: ({focused}) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -9,9 +9,8 @@ export function isNull(str) {
   return str === null;
 }
 
-
 export function isEmpty(str) {
-  return str === "";
+  return str === '';
 }
 export function stringsNotEqual(str1, str2) {
   return str1 !== str2;
@@ -31,6 +30,5 @@ export function isEmptyArray(array) {
 }
 
 export function phoneLengthNotValid(str) {
-  if (str.length != 11)
-    return true;
+  if (str.length != 11) return true;
 }

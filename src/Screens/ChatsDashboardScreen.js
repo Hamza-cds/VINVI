@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { ImageBackground, ScrollView, SafeAreaView } from 'react-native';
+import React, {Component} from 'react';
+import {ImageBackground, ScrollView, SafeAreaView} from 'react-native';
 import Header from '../Components/Header';
 import ChatCard from '../Components/ChatCard';
-import Svg, { Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
+import Svg, {Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
 
 export default class ChatsDashboardScreen extends Component {
   render() {
     const navigation = this.props.navigation;
     return (
-      <SafeAreaView style={{ height: Height, width: Width }}>
+      <SafeAreaView style={{height: Height, width: Width}}>
         <ImageBackground
           source={require('../Assets/screenbg.png')}
-          style={{ flex: 1, paddingBottom: 80 }}>
+          style={{flex: 1, paddingBottom: 80}}>
           <Header
             navigation={navigation}
             variant="dark2"
@@ -34,7 +34,7 @@ export default class ChatsDashboardScreen extends Component {
               </Svg>
             }
           />
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             <ChatCard
               picture={require('../Assets/profilePic.png')}
               lastMessage="Hi, I am there"

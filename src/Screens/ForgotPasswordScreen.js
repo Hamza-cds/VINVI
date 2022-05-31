@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  ImageBackground,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
+import {View, Text, ImageBackground, SafeAreaView} from 'react-native';
 import {SECONDARY, LIGHT_TEXT_COLOR} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   View,
   ImageBackground,
@@ -6,17 +6,20 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import { WHITE } from '../Constants/Colors';
+import {WHITE} from '../Constants/Colors';
 import Heading from '../Components/Heading';
 import Paragraph from '../Components/Paragraph';
-import Svg, { Path } from 'react-native-svg';
+import Svg, {Path} from 'react-native-svg';
 
 export default function HomeScreen(props) {
-
   return (
     <ImageBackground
       source={require('../Assets/homebg.png')}
-      style={{ flex: 1, height: Dimensions.get('window').height, backgroundColor: "white" }}>
+      style={{
+        flex: 1,
+        height: Dimensions.get('window').height,
+        backgroundColor: 'white',
+      }}>
       <View
         style={{
           width: '100%',
@@ -24,12 +27,11 @@ export default function HomeScreen(props) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-
         }}>
         <Image
           source={require('../Assets/vinvilogo.png')}
-          style={{ marginTop: 30, width: 140, height: 70 }}></Image>
-        <View style={{ width: '100%', paddingHorizontal: 20 }}>
+          style={{marginTop: 30, width: 140, height: 70}}></Image>
+        <View style={{width: '100%', paddingHorizontal: 20}}>
           <Heading placeholder="Heading" />
           <Paragraph
             placeholder="Lorem ipsum, dolor sit amet consectetur adipisicing elit.
@@ -76,5 +78,4 @@ export default function HomeScreen(props) {
       </View>
     </ImageBackground>
   );
-
 }

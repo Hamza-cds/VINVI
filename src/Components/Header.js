@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, View, Text, Image } from 'react-native';
-import Svg, { Path, G, Rect } from 'react-native-svg';
-import { LIGHT_TEXT_COLOR, PRIMARY, SECONDARY, WHITE } from '../Constants/Colors';
+import React, {useState} from 'react';
+import {TouchableOpacity, View, Text, Image} from 'react-native';
+import Svg, {Path, G, Rect} from 'react-native-svg';
+import {LIGHT_TEXT_COLOR, SECONDARY, WHITE} from '../Constants/Colors';
 
 export default function Header({
   navigation,
@@ -53,7 +53,7 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{ marginLeft: 10, fontSize: 20, color: SECONDARY }}>
+            <Text style={{marginLeft: 10, fontSize: 20, color: SECONDARY}}>
               {headerName}
             </Text>
           ) : null}
@@ -80,7 +80,7 @@ export default function Header({
             <Path
               data-name="Icon material-arrow_back"
               d="M17.957 7.856H4.3l6.274-6.274L8.979 0 0 8.979l8.979 8.979 1.582-1.582L4.3 10.1h13.657z"
-              fill={"black"}
+              fill={'black'}
             />
           </Svg>
         </TouchableOpacity>
@@ -93,7 +93,7 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{ marginLeft: 10, fontSize: 20, color: "black" }}>
+            <Text style={{marginLeft: 10, fontSize: 20, color: 'black'}}>
               {headerName}
             </Text>
           ) : null}
@@ -193,9 +193,9 @@ export default function Header({
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Image source={userProfilePicture} style={{ width: 50, height: 50 }} />
-          <View style={{ marginLeft: 10 }}>
-            <Text style={{ fontSize: 20, color: SECONDARY, marginBottom: 3 }}>
+          <Image source={userProfilePicture} style={{width: 50, height: 50}} />
+          <View style={{marginLeft: 10}}>
+            <Text style={{fontSize: 20, color: SECONDARY, marginBottom: 3}}>
               {userName}
             </Text>
             <View
@@ -213,7 +213,7 @@ export default function Header({
                 }}
               />
               <Text
-                style={{ marginLeft: 10, fontSize: 16, color: LIGHT_TEXT_COLOR }}>
+                style={{marginLeft: 10, fontSize: 16, color: LIGHT_TEXT_COLOR}}>
                 {userStatus}
               </Text>
             </View>
@@ -275,8 +275,7 @@ export default function Header({
           paddingHorizontal: 20,
           paddingVertical: 25,
         }}>
-        <TouchableOpacity onPress={onPress}>
-        </TouchableOpacity>
+        <TouchableOpacity onPress={onPress}></TouchableOpacity>
         <View
           style={{
             display: 'flex',
@@ -286,7 +285,7 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{ marginLeft: 10, fontSize: 20, color: WHITE }}>
+            <Text style={{marginLeft: 10, fontSize: 20, color: WHITE}}>
               {headerName}
             </Text>
           ) : null}
@@ -328,15 +327,14 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{ marginLeft: 10, fontSize: 20, color: SECONDARY }}>
+            <Text style={{marginLeft: 10, fontSize: 20, color: SECONDARY}}>
               {headerName}
             </Text>
           ) : null}
         </View>
       </View>
     );
-  }
-  else if (variant === 'light2') {
+  } else if (variant === 'light2') {
     return (
       <View
         style={{
@@ -356,7 +354,7 @@ export default function Header({
             <Path
               data-name="Icon material-arrow_back"
               d="M17.957 7.856H4.3l6.274-6.274L8.979 0 0 8.979l8.979 8.979 1.582-1.582L4.3 10.1h13.657z"
-              fill={"white"}
+              fill={'white'}
             />
           </Svg>
         </TouchableOpacity>
@@ -369,7 +367,7 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{ marginLeft: 10, fontSize: 20, color: "white" }}>
+            <Text style={{marginLeft: 10, fontSize: 20, color: 'white'}}>
               {headerName}
             </Text>
           ) : null}

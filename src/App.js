@@ -1,12 +1,8 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
-
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
-
 import {NavigationContainer} from '@react-navigation/native';
-
 import StackNavigation from './Navigation/StackNavigation';
-
 import SplashScreen from 'react-native-splash-screen';
 
 const theme = {

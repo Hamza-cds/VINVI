@@ -1,134 +1,126 @@
-import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, ScrollView } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, ScrollView} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import UploadBtn from '../Components/UploadBtn';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { G, Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
-import { EMPTY_BUSINESS, EMPTY_HOURLY, EMPTY_INCORPORATION, EMPTY_LOCATION, EMPTY_LOGO, EMPTY_NAME, EMPTY_PHONE, EMPTY_PRODUCT, EMPTY_SERVICES, EMPTY_TYPE, EMPTY_WEBSITE } from '../Constants/Strings';
-import { businessCardApiCall } from '../Apis/Repo';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Svg, {G, Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
 import LinkBtn from '../Components/LinkBtn';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { isNullOrEmpty } from '../Constants/TextUtils';
-import { WHITE } from '../Constants/Colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {isNullOrEmpty} from '../Constants/TextUtils';
+import {WHITE} from '../Constants/Colors';
+import {
+  EMPTY_LOCATION,
+  EMPTY_LOGO,
+  EMPTY_NAME,
+  EMPTY_PHONE,
+  EMPTY_TYPE,
+  EMPTY_WEBSITE,
+} from '../Constants/Strings';
 
 export default function NewBusinessCardScreen1(props) {
-
-  const [businessName, setBusinessName] = useState("")
-  const [businesssType, setBusinessType] = useState("")
-  const [cellNumber, setCellNumber] = useState("")
-  const [location, setLocation] = useState("")
-  const [logo, setLogo] = useState("")
-  const [address, setAddress] = useState("")
-  const [email, setEmail] = useState("")
-  const [image, setImage] = useState("");
-  const [website, setWebsite] = useState("");
-
+  const [businessName, setBusinessName] = useState('');
+  const [businesssType, setBusinessType] = useState('');
+  const [cellNumber, setCellNumber] = useState('');
+  const [location, setLocation] = useState('');
+  const [logo, setLogo] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
+  const [image, setImage] = useState('');
+  const [website, setWebsite] = useState('');
 
   const businessCardScreen1Array = [
     {
-      "key": "Type of Business",
-      "value": businesssType
-    }, {
-      "key": "Website",
-      "value": website
+      key: 'Type of Business',
+      value: businesssType,
     },
     {
-      "key": "Image",
-      "value": image
+      key: 'Website',
+      value: website,
     },
-  ]
+    {
+      key: 'Image',
+      value: image,
+    },
+  ];
 
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    AsyncStorage.getItem("user_data").then((response) => {
-      setUserData(userData = JSON.parse(response))
-      console.log("userdata", userData);
-    })
-  }, [])
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
 
   const getBase64 = (image, type) => {
-    console.log("image base 64", image)
-    console.log("type", type)
-    const base64Converted = "data:image/png;base64," + image;
-    setImage(base64Converted)
-  }
-
+    console.log('image base 64', image);
+    console.log('type', type);
+    const base64Converted = 'data:image/png;base64,' + image;
+    setImage(base64Converted);
+  };
 
   const onNext = () => {
-
     if (isNullOrEmpty(businessName)) {
-      alert(EMPTY_NAME)
-    }
-    else if (isNullOrEmpty(businesssType)) {
-      alert(EMPTY_TYPE)
-    }
-    else if (isNullOrEmpty(cellNumber)) {
-      alert(EMPTY_PHONE)
-    }
-    else if (isNullOrEmpty(location)) {
-      alert(EMPTY_LOCATION)
-    }
-    else if (isNullOrEmpty(logo)) {
-      alert(EMPTY_LOGO)
-    }
-    else if (isNullOrEmpty(website)) {
-      alert(EMPTY_WEBSITE)
-    }
-
-
-    else {
-      props.navigation.push("NewBusinessCard2", {
+      alert(EMPTY_NAME);
+    } else if (isNullOrEmpty(businesssType)) {
+      alert(EMPTY_TYPE);
+    } else if (isNullOrEmpty(cellNumber)) {
+      alert(EMPTY_PHONE);
+    } else if (isNullOrEmpty(location)) {
+      alert(EMPTY_LOCATION);
+    } else if (isNullOrEmpty(logo)) {
+      alert(EMPTY_LOGO);
+    } else if (isNullOrEmpty(website)) {
+      alert(EMPTY_WEBSITE);
+    } else {
+      props.navigation.push('NewBusinessCard2', {
         paramkey: businessCardScreen1Array,
         businessName: businessName,
         email: email,
         cellNumber: cellNumber,
         logo: logo,
-      })
-      console.log("BusinessCardScreen1Array", businessCardScreen1Array)
+      });
+      console.log('BusinessCardScreen1Array', businessCardScreen1Array);
       let object = {
-        "Name": businessName,
-        "Email": email,
-        "Address": address,
-        "PhoneNo": cellNumber,
-        "Logo": logo,
-        "UserId": userData.id,
+        Name: businessName,
+        Email: email,
+        Address: address,
+        PhoneNo: cellNumber,
+        Logo: logo,
+        UserId: userData.id,
 
-        "BusinessCardMeta": [
+        BusinessCardMeta: [
           {
-            "PersonalKey": "Location",
-            "PersonalValue": location,
-            "Ishidden": true
-
+            PersonalKey: 'Location',
+            PersonalValue: location,
+            Ishidden: true,
           },
           {
-            "PersonalKey": "Type of Business",
-            "PersonalValue": businesssType,
-            "Ishidden": true
-
+            PersonalKey: 'Type of Business',
+            PersonalValue: businesssType,
+            Ishidden: true,
           },
           {
-            "PersonalKey": "Website",
-            "PersonalValue": website,
-            "Ishidden": true
+            PersonalKey: 'Website',
+            PersonalValue: website,
+            Ishidden: true,
           },
           {
-            "PersonalKey": "Image",
-            "PersonalValue": image,
-            "Ishidden": true
-          }
+            PersonalKey: 'Image',
+            PersonalValue: image,
+            Ishidden: true,
+          },
         ],
-      }
-      console.log("object", object)
-
+      };
+      console.log('object', object);
     }
-  }
+  };
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
       <Header
         navigation={props.navigation}
         variant="white"
@@ -137,7 +129,7 @@ export default function NewBusinessCardScreen1(props) {
           props.navigation.navigate('AddCard');
         }}
       />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{flex: 1}}>
         <View
           style={{
             backgroundColor: WHITE,
@@ -147,42 +139,42 @@ export default function NewBusinessCardScreen1(props) {
           <OutlinedInputBox
             placeholder="Name of Business"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setBusinessName(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Type of Business"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setBusinessType(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Cell No"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setCellNumber(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Location"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setLocation(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Logo"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setLogo(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Address"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setAddress(value);
             }}
           />
@@ -219,14 +211,14 @@ export default function NewBusinessCardScreen1(props) {
           <OutlinedInputBox
             placeholder="Email Address"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setEmail(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Website"
             inputType="text"
-            onChange={(value) => {
+            onChange={value => {
               setWebsite(value);
             }}
           />

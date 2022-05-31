@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, TextInput } from 'react-native';
-import { SECONDARY, TEXT_COLOR } from '../Constants/Colors';
+import React, {useState} from 'react';
+import {Text, TouchableOpacity, TextInput} from 'react-native';
+import {SECONDARY, TEXT_COLOR} from '../Constants/Colors';
 
-export default function LoginInputBox({ placeholder, inputType, onChange }) {
+export default function LoginInputBox({placeholder, inputType, onChange}) {
   const [isfocused, setIsfocused] = useState(false);
   let secureTextEntry;
   let borderWidthConst;

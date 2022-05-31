@@ -1,6 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../Screens/HomeScreen';
 import RegisterScreen from '../Screens/RegisterScreen';
 import LoginScreen from '../Screens/LoginScreen';
@@ -94,11 +93,7 @@ export default function StackNavigation() {
         component={ChangePassowrdScreen}
         options={{}}
       />
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfile}
-        options={{}}
-      />
+      <Stack.Screen name="EditProfile" component={EditProfile} options={{}} />
       <Stack.Screen
         name="NewBusinessCard2"
         component={NewBusinessCardScreen2}

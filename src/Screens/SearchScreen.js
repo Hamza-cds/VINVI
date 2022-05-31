@@ -1,19 +1,15 @@
-import React, { Component } from 'react';
-import { ImageBackground, ScrollView } from 'react-native';
+import React from 'react';
+import {ScrollView} from 'react-native';
 import Header from '../Components/Header';
 import TopTabsNavigator from '../Navigation/TopTabsNavigator';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Svg, {Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
 
 export default function SearchScreen(props) {
-
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
-      {/* <ImageBackground
-        source={require('../Assets/screenbg.png')}
-        style={{ flex: 1, height: 800 }}> */}
-      <ScrollView style={{ flex: 1, minHeight: Height }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
+      <ScrollView style={{flex: 1, minHeight: Height}}>
         <Header
           navigation={props.navigation}
           variant="dark"
@@ -36,8 +32,6 @@ export default function SearchScreen(props) {
         />
         <TopTabsNavigator variant="search" />
       </ScrollView>
-      {/* </ImageBackground> */}
     </SafeAreaView>
   );
 }
-

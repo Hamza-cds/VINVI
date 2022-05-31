@@ -1,57 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { View, ImageBackground, ScrollView } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, ScrollView} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import NewCardStepPanel from '../Components/NewCardStepPanel';
 import UploadBtn from '../Components/UploadBtn';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { G, Path } from 'react-native-svg';
-import { Height, Width } from '../Constants/Constants';
-import { personalCardApiCall } from '../Apis/Repo';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Svg, {G, Path} from 'react-native-svg';
+import {Height, Width} from '../Constants/Constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function NewCardScreen(props) {
-
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState('');
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    console.log("PersonalcardScreen1Array", props)
-    AsyncStorage.getItem("user_data").then((response) => {
-      setUserData(userData = JSON.parse(response))
-      console.log("userdata", userData);
-    })
-  }, [])
+    console.log('PersonalcardScreen1Array', props);
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
 
   const getBase64 = (image, type) => {
-    console.log("image base 64", image)
-    console.log("type", type)
-    const base64Converted = "data:image/png;base64," + image;
-    setImage(base64Converted)
-  }
-
+    console.log('image base 64', image);
+    console.log('type', type);
+    const base64Converted = 'data:image/png;base64,' + image;
+    setImage(base64Converted);
+  };
 
   const onNext = () => {
-    props.navigation.push("NewPersonalCard4", {
+    props.navigation.push('NewPersonalCard4', {
       paramKey: props.route.params.paramKey,
       name: props.route.params.name,
       email: props.route.params.email,
       address: props.route.params.address,
       image: image,
-    })
-    console.log("props of page 3", props.route.params)
+    });
+    console.log('props of page 3', props.route.params);
     let object = {
-      "PhoneNo": userData.phoneno,
-      "UserId": userData.id,
-      "ProfilePicture": image,
-    }
-    console.log("object", object)
-
-  }
+      PhoneNo: userData.phoneno,
+      UserId: userData.id,
+      ProfilePicture: image,
+    };
+    console.log('object', object);
+  };
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
-
+    <SafeAreaView style={{height: Height, width: Width}}>
       <Header
         navigation={props.navigation}
         variant="dark"
@@ -60,13 +55,8 @@ export default function NewCardScreen(props) {
           props.navigation.push('NewPersonalCard2');
         }}
       />
-      <NewCardStepPanel
-        step1={true}
-        step2={true}
-        step3={true}
-        step4={false}
-      />
-      <ScrollView style={{ flex: 1 }}>
+      <NewCardStepPanel step1={true} step2={true} step3={true} step4={false} />
+      <ScrollView style={{flex: 1}}>
         <View
           style={{
             width: '100%',
@@ -140,8 +130,6 @@ export default function NewCardScreen(props) {
           />
         </View>
       </ScrollView>
-
     </SafeAreaView>
   );
-
 }

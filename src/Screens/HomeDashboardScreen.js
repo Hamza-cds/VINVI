@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, ScrollView, SafeAreaView } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, ImageBackground, SafeAreaView} from 'react-native';
 import Header from '../Components/Header';
 import DashboardStories from '../Components/DashboardStories';
 import UserCard from '../Components/UserCard';
-import { Height, Width } from '../Constants/Constants';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getBusinessCardAllActiveApiCall, getPersonalCardAllActiveApiCall } from '../Apis/Repo';
-import { FlatList } from 'react-native-gesture-handler';
-import IndividualScreen from './IndividualScreen';
+import {Height, Width} from '../Constants/Constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {FlatList} from 'react-native-gesture-handler';
+import {
+  getBusinessCardAllActiveApiCall,
+  getPersonalCardAllActiveApiCall,
+} from '../Apis/Repo';
 
 export default function HomeDashboardScreen(props) {
-
-  let [userData, setUserData] = useState(null)
-  const [data, setdata] = useState([])
-
+  let [userData, setUserData] = useState(null);
+  const [data, setdata] = useState([]);
 
   useEffect(() => {
-    AsyncStorage.getItem("user_data").then((response) => {
-      setUserData(userData = JSON.parse(response))
-      console.log("userdata", userData);
-    })
-  }, [])
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
 
   useEffect(() => {
     getData();
     getData2();
-  }, [])
+  }, []);
 
   const getData = () => {
     getPersonalCardAllActiveApiCall()
-      .then((res) => {
-        console.log("res", res)
+      .then(res => {
+        console.log('res', res);
         setdata(res.data.result);
       })
-      .catch((err) => {
-        console.log("err", err)
-      })
-  }
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
 
   const getData2 = () => {
     getBusinessCardAllActiveApiCall()
-      .then((res) => {
-        console.log("res", res)
+      .then(res => {
+        console.log('res', res);
         setdata(res.data.result);
       })
-      .catch((err) => {
-        console.log("err", err)
-      })
-  }
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
         source={require('../Assets/dashboardbg.png')}
-        style={{ flex: 1, paddingBottom: 80 }}>
+        style={{flex: 1, paddingBottom: 80}}>
         <Header
           navigation={props.navigation}
           variant="drawer"
@@ -70,12 +70,12 @@ export default function HomeDashboardScreen(props) {
           }}>
           <DashboardStories />
         </View>
-        {data != null ?
+        {data != null ? (
           <FlatList
             data={data}
             horizontal={false}
             keyExtractor={item => item.id}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <UserCard
                 cta={true}
                 variant="closed"
@@ -86,19 +86,14 @@ export default function HomeDashboardScreen(props) {
               />
             )}
           />
-          :
-          null}
-
+        ) : null}
       </ImageBackground>
     </SafeAreaView>
   );
-
 }
 
-
-
-
-{/* <ScrollView style={{ flex: 1 }}>
+{
+  /* <ScrollView style={{ flex: 1 }}>
           <UserCard
             cta={true}
             variant="closed"
@@ -141,4 +136,5 @@ export default function HomeDashboardScreen(props) {
             navigation={props.avigation}
             navigationPath="Individual"
           />
-        </ScrollView> */}
+        </ScrollView> */
+}

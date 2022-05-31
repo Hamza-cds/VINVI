@@ -1,6 +1,5 @@
 import React from 'react';
 import {SafeAreaView, View, Image, Text} from 'react-native';
-
 import {
   DrawerContentScrollView,
   DrawerItemList,

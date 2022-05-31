@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,101 +8,82 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import { SECONDARY, WHITE, FIFTH, FORTH } from '../Constants/Colors';
+import {SECONDARY, WHITE, FIFTH, FORTH} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import ContactDetailsRow from '../Components/ContactDetailsRow';
 import ContactDetailsRowReverse from '../Components/ContactDetailsRowReverseIndividual';
 import SkillTag from '../Components/SkillTag';
 import Header from '../Components/Header';
-import Svg, { G, Path } from 'react-native-svg';
-import {
-  Height,
-  QRCODE_URL,
-  USER_DESIGNATION,
-  USER_NAME,
-  Width,
-} from '../Constants/Constants';
-import _ from "lodash";
+import Svg, {G, Path} from 'react-native-svg';
+import {Height, QRCODE_URL, Width} from '../Constants/Constants';
+import _ from 'lodash';
 import QRCode from 'react-native-qrcode-svg';
-import { getPersonalCardByIdApiCall } from '../Apis/Repo';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-
+import {getPersonalCardByIdApiCall} from '../Apis/Repo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function IndividualScreen(props) {
-
-
-
-  let [userData, setUserData] = useState(null)
-  const [data, setdata] = useState(" ")
+  let [userData, setUserData] = useState(null);
+  const [data, setdata] = useState(' ');
   const [favorit, setFavorit] = useState(false);
   const [ID, setID] = useState(props.route.params.id);
 
   let arrayOccupation;
-  arrayOccupation = _.find(data.personalCardMeta, { personalKey: "occupation" });
+  arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
   if (arrayOccupation) {
     arrayOccupation = arrayOccupation.personalValue;
   } else {
-    arrayOccupation = "Dummy occupation";
+    arrayOccupation = 'Dummy occupation';
   }
 
   let arraycity;
-  arraycity = _.find(data.personalCardMeta, { personalKey: "city" });
+  arraycity = _.find(data.personalCardMeta, {personalKey: 'city'});
   if (arraycity) {
     arraycity = arraycity.personalValue;
   } else {
-    arraycity = "Dummy city";
+    arraycity = 'Dummy city';
   }
 
   let arraycountry;
-  arraycountry = _.find(data.personalCardMeta, { personalKey: "country" });
+  arraycountry = _.find(data.personalCardMeta, {personalKey: 'country'});
   if (arraycountry) {
     arraycountry = arraycountry.personalValue;
   } else {
-    arraycountry = "Dummy country";
+    arraycountry = 'Dummy country';
   }
 
-
-
-
   useEffect(() => {
-    AsyncStorage.getItem("user_data").then((response) => {
-      setUserData(userData = JSON.parse(response))
-      console.log("userdata", userData);
-    })
-  }, [])
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
 
   useEffect(() => {
     getData();
-  }, [])
+  }, []);
 
   const getData = () => {
     getPersonalCardByIdApiCall(ID)
-      .then((res) => {
+      .then(res => {
         // debugger;
-        console.log("res", res.data.result)
-        if (res.data.success)
-          setdata(res.data.result);
-        else
-          alert("No record found.")
+        console.log('res', res.data.result);
+        if (res.data.success) setdata(res.data.result);
+        else alert('No record found.');
       })
-      .catch((err) => {
+      .catch(err => {
         // debugger;
-        console.log("err", err)
-      })
-  }
-  console.log("data here", data)
+        console.log('err', err);
+      });
+  };
+  console.log('data here', data);
   //debugger;
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
-      <ScrollView style={{ flex: 1 }}>
-
-
-
+    <SafeAreaView style={{height: Height, width: Width}}>
+      <ScrollView style={{flex: 1}}>
         <ImageBackground
           source={require('../Assets/individualbanner.png')}
-          style={{ width: '100%', height: 300 }}>
+          style={{width: '100%', height: 300}}>
           <Header
             navigation={props.navigation}
             variant="user"
@@ -121,17 +102,17 @@ export default function IndividualScreen(props) {
             position: 'absolute',
             top: 270,
           }}>
-          <View style={{ marginLeft: 50 }}>
+          <View style={{marginLeft: 50}}>
             <Image
               source={require('../Assets/profilePic.png')}
-              style={{ width: 100, height: 100 }}
+              style={{width: 100, height: 100}}
             />
           </View>
 
-          <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-            <Text style={{ color: SECONDARY, fontSize: 20 }}>{data.name}</Text>
+          <View style={{paddingHorizontal: 10, marginBottom: 10}}>
+            <Text style={{color: SECONDARY, fontSize: 20}}>{data.name}</Text>
 
-            <View style={{ marginLeft: 150, marginTop: -20 }}>
+            <View style={{marginLeft: 150, marginTop: -20}}>
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
@@ -145,21 +126,16 @@ export default function IndividualScreen(props) {
                   <Path
                     data-name="Icon awesome-heart"
                     d="M20.131 1.334a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
-                    fill={favorit ? "red" : '#CACFD2'}
+                    fill={favorit ? 'red' : '#CACFD2'}
                   />
                 </Svg>
               </TouchableOpacity>
             </View>
 
-
-            <Text style={{ fontSize: 14, color: FORTH }}>
-              {arrayOccupation}
-            </Text>
+            <Text style={{fontSize: 14, color: FORTH}}>{arrayOccupation}</Text>
           </View>
-
         </View>
-        <View
-          style={{ marginTop: 70, paddingHorizontal: 20, paddingBottom: 50 }}>
+        <View style={{marginTop: 70, paddingHorizontal: 20, paddingBottom: 50}}>
           <View
             style={{
               display: 'flex',
@@ -246,13 +222,11 @@ export default function IndividualScreen(props) {
                 borderRadius: 5,
                 marginRight: 10,
               }}>
-              <Text style={{ color: SECONDARY, fontSize: 14 }}>
-                Send Request
-              </Text>
+              <Text style={{color: SECONDARY, fontSize: 14}}>Send Request</Text>
             </TouchableOpacity>
             <BtnComponent
               placeholder="Connect"
-              onPress={() => { }}
+              onPress={() => {}}
               width={true}
               widthValue="28%"
             />
@@ -264,9 +238,9 @@ export default function IndividualScreen(props) {
               textAlign: 'center',
               marginBottom: 20,
             }}>
-            Out beyond ideas of wrongdoing and rightdoing there is a field.
-            I'll meet you there. When the soul lies down in that grass the
-            world is too full to talk about.
+            Out beyond ideas of wrongdoing and rightdoing there is a field. I'll
+            meet you there. When the soul lies down in that grass the world is
+            too full to talk about.
           </Text>
           <View
             style={{
@@ -277,11 +251,11 @@ export default function IndividualScreen(props) {
               paddingRight: 10,
               borderRadius: 8,
             }}>
-            <Text style={{ fontSize: 18, color: WHITE, marginBottom: 20 }}>
+            <Text style={{fontSize: 18, color: WHITE, marginBottom: 20}}>
               Contact Details
             </Text>
             <ContactDetailsRow
-              placeholder={data != null ? data.phoneNo : "Phone No."}
+              placeholder={data != null ? data.phoneNo : 'Phone No.'}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -297,7 +271,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder={data != null ? data.email : "Email"}
+              placeholder={data != null ? data.email : 'Email'}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +287,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder={data != null ? data.address : "Address"}
+              placeholder={data != null ? data.address : 'Address'}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -329,7 +303,7 @@ export default function IndividualScreen(props) {
               }
             />
             <ContactDetailsRow
-              placeholder={data != null ? arraycountry : "Address"}
+              placeholder={data != null ? arraycountry : 'Address'}
               svg={
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -355,7 +329,7 @@ export default function IndividualScreen(props) {
               borderRadius: 8,
               marginTop: 20,
             }}>
-            <Text style={{ fontSize: 18, color: SECONDARY, marginBottom: 20 }}>
+            <Text style={{fontSize: 18, color: SECONDARY, marginBottom: 20}}>
               Personal Details
             </Text>
             <ContactDetailsRowReverse
@@ -495,7 +469,7 @@ export default function IndividualScreen(props) {
               borderRadius: 8,
               marginTop: 20,
             }}>
-            <Text style={{ fontSize: 18, color: SECONDARY, marginBottom: 20 }}>
+            <Text style={{fontSize: 18, color: SECONDARY, marginBottom: 20}}>
               Skills
             </Text>
             <View
@@ -523,7 +497,7 @@ export default function IndividualScreen(props) {
               borderRadius: 8,
               marginTop: 20,
             }}>
-            <Text style={{ fontSize: 18, color: SECONDARY, marginBottom: 20 }}>
+            <Text style={{fontSize: 18, color: SECONDARY, marginBottom: 20}}>
               Protfolio
             </Text>
             <View
@@ -534,28 +508,28 @@ export default function IndividualScreen(props) {
               }}>
               <Image
                 source={require('../Assets/portfolioPic.png')}
-                style={{ marginRight: 10, marginBottom: 10 }}
+                style={{marginRight: 10, marginBottom: 10}}
               />
               <Image
                 source={require('../Assets/portfolioPic.png')}
-                style={{ marginRight: 10, marginBottom: 10 }}
+                style={{marginRight: 10, marginBottom: 10}}
               />
               <Image
                 source={require('../Assets/portfolioPic.png')}
-                style={{ marginRight: 10, marginBottom: 10 }}
+                style={{marginRight: 10, marginBottom: 10}}
               />
               <Image
                 source={require('../Assets/portfolioPic.png')}
-                style={{ marginRight: 10, marginBottom: 10 }}
+                style={{marginRight: 10, marginBottom: 10}}
               />
               <Image
                 source={require('../Assets/portfolioPic.png')}
-                style={{ marginRight: 10, marginBottom: 10 }}
+                style={{marginRight: 10, marginBottom: 10}}
               />
             </View>
           </View>
           <View
-            style={{ width: '100%', marginVertical: 70, alignItems: 'center' }}>
+            style={{width: '100%', marginVertical: 70, alignItems: 'center'}}>
             <QRCode
               value={QRCODE_URL}
               // logo={{uri: base64Logo}}
@@ -564,10 +538,9 @@ export default function IndividualScreen(props) {
               color={SECONDARY}
             />
           </View>
-          <BtnComponent placeholder="Block" onPress={() => { }} />
+          <BtnComponent placeholder="Block" onPress={() => {}} />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-
 }

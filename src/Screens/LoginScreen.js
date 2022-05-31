@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,73 +8,74 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import { SECONDARY, TEXT_COLOR, WHITE } from '../Constants/Colors';
+import {SECONDARY, TEXT_COLOR, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
-import { Height, Width } from '../Constants/Constants';
-import { isNullOrEmpty, phoneLengthNotValid } from '../Constants/TextUtils';
-import { PASSWORD_ERROR, PHONE_EMPTY_ERROR, PHONE_LENGTH_ERROR, INCOMPLETE_PASSWORD } from '../Constants/Strings';
-import { loginApiCall } from '../Apis/Repo';
-import { isInvalidPassword } from '../Constants/Validations';
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import {Height, Width} from '../Constants/Constants';
+import {isNullOrEmpty, phoneLengthNotValid} from '../Constants/TextUtils';
+import {
+  PASSWORD_ERROR,
+  PHONE_EMPTY_ERROR,
+  PHONE_LENGTH_ERROR,
+  INCOMPLETE_PASSWORD,
+} from '../Constants/Strings';
+import {loginApiCall} from '../Apis/Repo';
+import {isInvalidPassword} from '../Constants/Validations';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen(props) {
-
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [password, setPassword] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
 
   const onLogin = () => {
     if (isNullOrEmpty(phoneNumber)) {
-      alert(PHONE_EMPTY_ERROR)
-    }
-    else if (phoneLengthNotValid(phoneNumber))
-      alert(PHONE_LENGTH_ERROR)
+      alert(PHONE_EMPTY_ERROR);
+    } else if (phoneLengthNotValid(phoneNumber)) alert(PHONE_LENGTH_ERROR);
     else if (isNullOrEmpty(password)) {
-      alert(PASSWORD_ERROR)
-    }
-    else if (isInvalidPassword(password))
-      alert(INCOMPLETE_PASSWORD)
+      alert(PASSWORD_ERROR);
+    } else if (isInvalidPassword(password)) alert(INCOMPLETE_PASSWORD);
     else {
       let object = {
-        "Phoneno": phoneNumber,
-        "Password": password,
-      }
-      console.log("object", object)
+        Phoneno: phoneNumber,
+        Password: password,
+      };
+      console.log('object', object);
 
       loginApiCall(object)
-        .then((response) => {
+        .then(response => {
           //console.log("response", response)
 
           if (response.data.status == 200) {
-            AsyncStorage.setItem("user_data", JSON.stringify(response.data.result))
+            AsyncStorage.setItem(
+              'user_data',
+              JSON.stringify(response.data.result),
+            );
 
-            props.navigation.push("Dashboard", {
+            props.navigation.push('Dashboard', {
               paramKey: phoneNumber,
-            })
-          }
-          else if (response.data.status == 335) {
-            props.navigation.push("PhoneVerification", {
+            });
+          } else if (response.data.status == 335) {
+            props.navigation.push('PhoneVerification', {
               paramKey: phoneNumber,
               paramKey1: password,
-            })
-          }
-          else {
-            alert(response.data.message)
-            console.log("Wrong")
+            });
+          } else {
+            alert(response.data.message);
+            console.log('Wrong');
           }
         })
-        .catch((err) => {
-          console.log("err", err)
-        })
+        .catch(err => {
+          console.log('err', err);
+        });
     }
-  }
+  };
 
   return (
-    <SafeAreaView style={{ height: Height, width: Width }}>
-      <ScrollView style={{ flex: 1 }}>
+    <SafeAreaView style={{height: Height, width: Width}}>
+      <ScrollView style={{flex: 1}}>
         <ImageBackground
           source={require('../Assets/loginbg.png')}
-          style={{ flex: 1, minHeight: Height }}>
+          style={{flex: 1, minHeight: Height}}>
           <View
             style={{
               width: '100%',
@@ -105,16 +106,17 @@ export default function LoginScreen(props) {
             <OutlinedInputBox
               placeholder="Phone or Username"
               inputType="number-pad"
-              onChange={(value) => {
+              onChange={value => {
                 setPhoneNumber(value);
               }}
             />
             <OutlinedInputBox
               placeholder="Password"
               inputType="password"
-              onChange={(value) => {
+              onChange={value => {
                 setPassword(value);
-              }} />
+              }}
+            />
             <View
               style={{
                 marginTop: 20,
@@ -123,7 +125,7 @@ export default function LoginScreen(props) {
                 justifyContent: 'flex-end',
               }}>
               <TouchableOpacity
-                style={{ marginLeft: 10 }}
+                style={{marginLeft: 10}}
                 onPress={() => {
                   props.navigation.push('ForgotPassword');
                 }}>
@@ -140,7 +142,7 @@ export default function LoginScreen(props) {
             <BtnComponent
               placeholder="Login"
               onPress={() => {
-                onLogin()
+                onLogin();
               }}
             />
             <Text
@@ -159,11 +161,11 @@ export default function LoginScreen(props) {
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-              <Text style={{ color: WHITE, fontSize: 14, marginBottom: 50 }}>
+              <Text style={{color: WHITE, fontSize: 14, marginBottom: 50}}>
                 Dont have an account?
               </Text>
               <TouchableOpacity
-                style={{ marginLeft: 10 }}
+                style={{marginLeft: 10}}
                 onPress={() => {
                   props.navigation.push('Register');
                 }}>
@@ -183,5 +185,4 @@ export default function LoginScreen(props) {
       </ScrollView>
     </SafeAreaView>
   );
-
 }
