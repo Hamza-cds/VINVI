@@ -30,6 +30,7 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingVertical: 25,
+          zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
@@ -70,6 +71,7 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingVertical: 25,
+          zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
@@ -110,6 +112,7 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingVertical: 25,
+          zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
@@ -172,6 +175,7 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingVertical: 20,
+          zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
@@ -231,6 +235,7 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingVertical: 25,
+          zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
@@ -274,8 +279,21 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingVertical: 25,
+          zIndex: 999,
         }}>
-        <TouchableOpacity onPress={onPress}></TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
+          <Svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={20.957}
+            height={20.957}
+            viewBox="0 0 17.957 17.957">
+            <Path
+              data-name="Icon material-arrow_back"
+              d="M17.957 7.856H4.3l6.274-6.274L8.979 0 0 8.979l8.979 8.979 1.582-1.582L4.3 10.1h13.657z"
+              fill={WHITE}
+            />
+          </Svg>
+        </TouchableOpacity>
         <View
           style={{
             display: 'flex',
@@ -303,6 +321,7 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingTop: 20,
+          zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
@@ -344,6 +363,7 @@ export default function Header({
           alignItems: 'center',
           paddingHorizontal: 20,
           paddingVertical: 25,
+          zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg

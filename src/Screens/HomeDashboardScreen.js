@@ -1,11 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import {View, ImageBackground, SafeAreaView} from 'react-native';
+import {
+  View,
+  ImageBackground,
+  SafeAreaView,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import Header from '../Components/Header';
 import DashboardStories from '../Components/DashboardStories';
 import UserCard from '../Components/UserCard';
 import {Height, Width} from '../Constants/Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FlatList} from 'react-native-gesture-handler';
+import { launchImageLibrary} from 'react-native-image-picker';
 import {
   getBusinessCardAllActiveApiCall,
   getPersonalCardAllActiveApiCall,
@@ -67,7 +74,27 @@ export default function HomeDashboardScreen(props) {
             paddingHorizontal: 20,
             marginTop: -65,
             marginBottom: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+            zIndex: 5,
           }}>
+          <TouchableOpacity
+            style={{
+              width: 55,
+              height: 55,
+              backgroundColor: '#ffffff',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 50,
+              marginTop: 43,
+              marginRight: 10,
+            }}
+            onPress={()=>{
+              launchImageLibrary({mediaType:"photo"}, ()=>{})
+            }}
+            >
+            <Text style={{color: '#242424', fontSize: 25}}>+</Text>
+          </TouchableOpacity>
           <DashboardStories />
         </View>
         {data != null ? (
