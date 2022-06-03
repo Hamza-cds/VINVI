@@ -1,21 +1,23 @@
 import React, {useState} from 'react';
-import {Text, TouchableOpacity, TextInput} from 'react-native';
+import {Text, TouchableOpacity, TextInput, View} from 'react-native';
 import {SECONDARY, TEXT_COLOR} from '../Constants/Colors';
 
-export default function LoginInputBox({placeholder, inputType, onChange}) {
+export default function LoginInputBox({
+  placeholder,
+  inputType,
+  onChange,
+  style,
+  multiline,
+}) {
   const [isfocused, setIsfocused] = useState(false);
   let secureTextEntry;
-  let borderWidthConst;
+
   if (inputType === 'password') {
     secureTextEntry = true;
   } else {
     secureTextEntry = false;
   }
-  if (isfocused) {
-    borderWidthConst = 1;
-  } else if (!isfocused) {
-    borderWidthConst = 0;
-  }
+
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -24,20 +26,26 @@ export default function LoginInputBox({placeholder, inputType, onChange}) {
         backgroundColor: '#EFEFEF',
         borderRadius: 5,
         marginVertical: 10,
-        borderWidth: borderWidthConst,
-        borderColor: SECONDARY,
+        borderWidth: 1,
+        borderColor: isfocused ? SECONDARY : '#EFEFEF',
+        position: 'relative',
+        ...style,
       }}>
       {isfocused ? (
-        <Text
+        <View
           style={{
-            width: '100%',
-            paddingHorizontal: 20,
-            paddingTop: 10,
-            fontSize: 12,
-            color: SECONDARY,
+            position: 'absolute',
+            top: -20,
+            left: 0,
           }}>
-          {placeholder}
-        </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              color: SECONDARY,
+            }}>
+            {placeholder}
+          </Text>
+        </View>
       ) : null}
       <TextInput
         placeholder={placeholder}
@@ -45,8 +53,10 @@ export default function LoginInputBox({placeholder, inputType, onChange}) {
         style={{
           width: '100%',
           paddingHorizontal: 20,
-          height: 50,
+          height: multiline ? 200 : 45,
+          textAlignVertical: multiline ? 'top' : 'center',
           color: SECONDARY,
+          paddingVertical: multiline ? 15 : 0,
         }}
         type={inputType}
         keyboardType={inputType}
@@ -58,6 +68,7 @@ export default function LoginInputBox({placeholder, inputType, onChange}) {
         onBlur={() => {
           setIsfocused(false);
         }}
+        multiline={multiline}
       />
     </TouchableOpacity>
   );

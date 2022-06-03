@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, TouchableOpacity, Text} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -21,8 +21,18 @@ import {
   EMPTY_QRCODE,
   EMPTY_SKILLS,
 } from '../Constants/Strings';
+import {JobHistoryCard} from './JobHistoryCard';
+import {EducationCard} from './EducationCard.1';
+import {SkillCard} from './SkillCard';
+import {EducationModal} from './EducationModal';
+import {SkillModal} from './SkillModal';
+import {JobHistoryModal} from './JobHistoryModal';
 
 export default function NewCardScreen(props) {
+  const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
+  const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
+    useState(false);
+  const [isSkillModalVisible, setIsSkillModalVisible] = useState(false);
   const [message, setMessage] = useState('');
   const [qrCode, setQRcode] = useState('');
   const [hobbies, setHobbies] = useState('');
@@ -171,90 +181,167 @@ export default function NewCardScreen(props) {
         }}
       />
       <NewCardStepPanel step1={true} step2={true} step3={true} step4={true} />
-      <ScrollView style={{flex: 1}}>
-        <View
-          style={{
-            width: '100%',
-            padding: 20,
-          }}>
-          <OutlinedInputBox
-            placeholder="Introductory Message"
-            inputType="text"
-            onChange={value => {
-              setMessage(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="QR Code"
-            inputType="text"
-            onChange={value => {
-              setQRcode(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Hobbies"
-            inputType="text"
-            onChange={value => {
-              setHobbies(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Education"
-            inputType="text"
-            onChange={value => {
-              setEducation(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Interests"
-            inputType="text"
-            onChange={value => {
-              setInterests(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Achievements"
-            inputType="text"
-            onChange={value => {
-              setAchivements(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Personal Info"
-            inputType="text"
-            onChange={value => {
-              setPersonalInfo(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Skills"
-            inputType="text"
-            onChange={value => {
-              setSkills(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Portfolio"
-            inputType="text"
-            onChange={value => {
-              setPortFolio(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Job History"
-            inputType="text"
-            onChange={value => {
-              setJobHistory(value);
-            }}
-          />
-          <BtnComponent
-            placeholder="Finish"
-            onPress={() => {
-              onFinish();
-            }}
-          />
+      <ScrollView style={{flex: 1, padding: 20, marginBottom: 20}}>
+        <OutlinedInputBox
+          placeholder="Introductory Message"
+          inputType="text"
+          onChange={value => {
+            setMessage(value);
+          }}
+        />
+        <OutlinedInputBox
+          placeholder="QR Code"
+          inputType="text"
+          onChange={value => {
+            setQRcode(value);
+          }}
+        />
+        <OutlinedInputBox
+          placeholder="Hobbies"
+          inputType="text"
+          onChange={value => {
+            setHobbies(value);
+          }}
+        />
+        <OutlinedInputBox
+          placeholder="Education"
+          inputType="text"
+          onChange={value => {
+            setEducation(value);
+          }}
+        />
+        <OutlinedInputBox
+          placeholder="Interests"
+          inputType="text"
+          onChange={value => {
+            setInterests(value);
+          }}
+        />
+        <OutlinedInputBox
+          placeholder="Achievements"
+          inputType="text"
+          onChange={value => {
+            setAchivements(value);
+          }}
+        />
+        <View style={{flexDirection: 'column', marginBottom: 20}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <Text style={{color: '#242424', fontSize: 16}}>Skills</Text>
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+              onPress={() => {
+                setIsSkillModalVisible(true);
+              }}>
+              <Text>
+                <Text>+</Text>Add
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal={true}>
+            <SkillCard />
+            <SkillCard />
+            <SkillCard />
+            <SkillCard />
+            <SkillCard />
+            <SkillCard />
+          </ScrollView>
         </View>
+        <View style={{flexDirection: 'column', marginBottom: 20}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <Text style={{color: '#242424', fontSize: 16}}>Education</Text>
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+              onPress={() => {
+                setIsEducationModalVisible(true);
+              }}>
+              <Text>
+                <Text>+</Text>Add
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal={true}>
+            <EducationCard />
+            <EducationCard />
+            <EducationCard />
+            <EducationCard />
+            <EducationCard />
+            <EducationCard />
+          </ScrollView>
+        </View>
+        <View style={{flexDirection: 'column', marginBottom: 20}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <Text style={{color: '#242424', fontSize: 16}}>Job History</Text>
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                borderRadius: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+              onPress={() => {
+                setIsJobHistoryModalVisible(true);
+              }}>
+              <Text>
+                <Text>+</Text>Add
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal={true}>
+            <JobHistoryCard />
+            <JobHistoryCard />
+            <JobHistoryCard />
+            <JobHistoryCard />
+            <JobHistoryCard />
+            <JobHistoryCard />
+          </ScrollView>
+        </View>
+        <BtnComponent
+          placeholder="Finish"
+          onPress={() => {
+            onFinish();
+          }}
+        />
       </ScrollView>
+      <EducationModal
+        modalVisible={isEducationModalVisible}
+        setModalVisible={setIsEducationModalVisible}
+      />
+      <JobHistoryModal
+        modalVisible={isJobHistoryModalVisible}
+        setModalVisible={setIsJobHistoryModalVisible}
+      />
+      <SkillModal
+        modalVisible={isSkillModalVisible}
+        setModalVisible={setIsSkillModalVisible}
+      />
     </SafeAreaView>
   );
 }
