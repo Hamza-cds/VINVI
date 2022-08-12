@@ -136,7 +136,7 @@ export default function DrawerNavigator() {
         }}
       /> */}
       <Drawer.Screen
-        name="MyCard"
+        name="MyCardsDashboardScreen"
         component={MyCardsDashboardScreen}
         options={{
           drawerLabel: 'My Card',

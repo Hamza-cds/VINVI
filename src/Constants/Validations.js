@@ -25,3 +25,15 @@ export function notValidNumber(str) {
 
   return !reg.test(str);
 }
+
+export function PhoneNumber(str) {
+  let phoneNumberRegex = /^\d+$/;
+
+  return !phoneNumberRegex.test(str);
+}
+
+export function isPassword(str) {
+  let passwordRegex = new RegExp(/^.{8,}$/);
+  if (passwordRegex.test(str) === false) return true;
+  else return false;
+}

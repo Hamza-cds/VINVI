@@ -19,7 +19,7 @@ export default function PickerComponent({
           height: inline ? 45 : 40,
           backgroundColor: '#eeeeee',
           borderRadius: 5,
-          marginTop: 5,
+          marginVertical: 10,
         }}>
         <Picker
           style={{marginTop: -4, fontSize: 13}}

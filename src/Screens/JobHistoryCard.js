@@ -1,37 +1,37 @@
 import React from 'react';
 import {View, Text} from 'react-native';
+import {WHITE} from '../Constants/Colors';
 
-export function JobHistoryCard({}) {
+export function JobHistoryCard({item}) {
   return (
     <View
       style={{
-        backgroundColor: '#EFEFEF',
+        backgroundColor: WHITE,
         width: 250,
         padding: 20,
         marginRight: 10,
+        borderRadius: 10,
+        marginTop: 10,
       }}>
       <Text
         style={{
           color: '#7A7A7A',
         }}>
-        Company Name
+        {item.companyName}
       </Text>
       <Text
         style={{
           color: '#7A7A7A',
           marginVertical: 10,
         }}>
-        2016 - 2020
+        {item.fromDate + '  ' + '-' + '  ' + item.toDate}
       </Text>
       <Text
         style={{
           color: '#7A7A7A',
           fontSize: 12,
         }}>
-        Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
-        laying out print, graphic or web designs. The passage is attributed to
-        an unknown typesetter in the 15th century who is thought to have
-        scrambled parts of Cicero's De Finibus Bonorum et
+        {item.description}
       </Text>
     </View>
   );

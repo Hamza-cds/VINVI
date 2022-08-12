@@ -180,3 +180,18 @@ export async function searchIndividualApiCall() {
     return apiRes;
   }
 }
+export async function LookupDetailApiCall(id) {
+  let route = `/api/LookupDetail/GetByLookupId?id=${id}`;
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: URL + route,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}

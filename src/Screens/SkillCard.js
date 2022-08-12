@@ -1,19 +1,19 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-export function SkillCard({}) {
+export function SkillCard({Skillname}) {
   return (
     <View
       style={{
         backgroundColor: '#EFEFEF',
-        padding: 20,
+        padding: 10,
         marginRight: 10,
       }}>
       <Text
         style={{
           color: '#7A7A7A',
         }}>
-        Skill name
+        {Skillname}
       </Text>
     </View>
   );

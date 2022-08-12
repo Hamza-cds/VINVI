@@ -13,7 +13,12 @@ import RegisterInputBox from '../Components/RegisterInputBox';
 import BtnComponent from '../Components/BtnComponent';
 import {Height, Width} from '../Constants/Constants';
 import {signUpApiCall} from '../Apis/Repo';
-import {isInvalidPassword} from '../Constants/Validations';
+import {
+  isInvalidPassword,
+  isInvalidPhoneNumber,
+  isPassword,
+  PhoneNumber,
+} from '../Constants/Validations';
 import {
   MATCH_ERROR,
   MINIMUM_PASSWORD,
@@ -31,6 +36,51 @@ export default function RegisterScreen(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [Error, setError] = useState(false);
+  const [ErrorMsg, setErrorMsg] = useState(false);
+  const [passError, setPassError] = useState(false);
+  const [passErrorMsg, setPassErrorMsg] = useState(false);
+  const [confirmpassError, setConfirmPassError] = useState(false);
+  const [confirmpassErrorMsg, setConfirmPassErrorMsg] = useState(false);
+  // console.log('password', password);
+  // console.log('confirmPassword', confirmPassword);
+
+  const NumberCheck = value => {
+    if (value == '') {
+      setError(true);
+      setErrorMsg('Enter Number');
+    } else if (PhoneNumber(value)) {
+      setError(true);
+      setErrorMsg('Inavlid Number');
+    } else {
+      setError(false);
+    }
+  };
+
+  const PasswordCheck = value => {
+    if (value == '') {
+      setPassError(true);
+      setPassErrorMsg('Enter Password');
+    } else if (isPassword(value)) {
+      setPassError(true);
+      setPassErrorMsg('Inavlid Password');
+    } else {
+      setPassError(false);
+    }
+  };
+
+  const ConfirmPassCheck = value => {
+    console.log('value', confirmPassword);
+    if (value == '') {
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Enter Confirm Password');
+    } else if (stringsNotEqual(value, password)) {
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Password !match');
+    } else {
+      setConfirmPassError(false);
+    }
+  };
 
   const onSignUp = () => {
     if (isNullOrEmpty(phoneNumber)) alert(PHONE_EMPTY_ERROR);
@@ -100,16 +150,24 @@ export default function RegisterScreen(props) {
               Join Us
             </Text>
             <RegisterInputBox
-              placeholder="Phone or Username"
-              inputType="number-pad"
+              placeholder="Phone"
+              keyboardType={'number-pad'}
+              maxLength={12}
+              ERROR={Error}
+              ERROR_MESSAGE={ErrorMsg}
               onChange={value => {
+                NumberCheck(value);
                 setPhoneNumber(value);
               }}
             />
             <RegisterInputBox
               placeholder="Password"
               inputType="password"
+              keyboardType={'default'}
+              ERROR={passError}
+              ERROR_MESSAGE={passErrorMsg}
               onChange={value => {
+                PasswordCheck(value);
                 setPassword(value);
               }}
             />
@@ -117,7 +175,10 @@ export default function RegisterScreen(props) {
             <RegisterInputBox
               placeholder="Confirm Password"
               inputType="password"
+              ERROR={confirmpassError}
+              ERROR_MESSAGE={confirmpassErrorMsg}
               onChange={value => {
+                ConfirmPassCheck();
                 setConfirmPassword(value);
               }}
             />

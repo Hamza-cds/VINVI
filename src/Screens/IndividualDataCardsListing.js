@@ -37,7 +37,7 @@ export function IndividualDataCardsListing({navigation}) {
               cta={true}
               variant="closed"
               navigation={navigation}
-              navigationPath="Individual"
+              navigationPath="IndividualScreen"
               item={item}
               key={index}
             />

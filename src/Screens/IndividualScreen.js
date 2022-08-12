@@ -12,7 +12,7 @@ import {SECONDARY, FORTH} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import Svg, {Path} from 'react-native-svg';
-import {Height, QRCODE_URL, Width} from '../Constants/Constants';
+import {Height, QRCODE_URL, URL, Width} from '../Constants/Constants';
 import _ from 'lodash';
 import QRCode from 'react-native-qrcode-svg';
 import {getPersonalCardByIdApiCall} from '../Apis/Repo';
@@ -79,8 +79,9 @@ export default function IndividualScreen(props) {
     getPersonalCardByIdApiCall(ID)
       .then(res => {
         console.log('res', res.data.result);
-        if (res.data.success) setdata(res.data.result);
-        else alert('No record found.');
+        if (res.data.success) {
+          setdata(res.data.result);
+        } else alert('No record found.');
       })
       .catch(err => {
         console.log('err', err);
@@ -114,7 +115,7 @@ export default function IndividualScreen(props) {
           }}>
           <View style={{marginLeft: 50}}>
             <Image
-              source={require('../Assets/profilePic.png')}
+              source={{uri: URL.concat(data.profilePicture)}}
               style={{width: 100, height: 100}}
             />
           </View>

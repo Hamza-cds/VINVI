@@ -22,6 +22,7 @@ import IndividualScreen from '../Screens/IndividualScreen';
 import EditProfile from '../Screens/EditProfile';
 import NewBusinessCardScreen2 from '../Screens/NewBusinessCardScreen2';
 import NewBusinessCardScreen3 from '../Screens/NewBusinessCardScreen3';
+import MyCardsDashboardScreen from '../Screens/MyCardsDashboardScreen';
 
 Stack = createStackNavigator();
 
@@ -65,10 +66,14 @@ export default function StackNavigation() {
       <Stack.Screen name="Request" component={RequestScreen} />
       <Stack.Screen name="SearchResult" component={SearchResultScreen} />
       <Stack.Screen name="Messages" component={MessagesScreen} />
-      <Stack.Screen name="Individual" component={IndividualScreen} />
+      <Stack.Screen name="IndividualScreen" component={IndividualScreen} />
       <Stack.Screen name="Buisness" component={BuisnessScreen} />
       <Stack.Screen name="ChangePassowrd" component={ChangePassowrdScreen} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen
+        name="MyCardsDashboardScreen"
+        component={MyCardsDashboardScreen}
+      />
       <Stack.Screen
         name="NewBusinessCard2"
         component={NewBusinessCardScreen2}

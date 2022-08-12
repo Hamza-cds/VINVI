@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ScrollView,
@@ -6,17 +6,44 @@ import {
   Text,
   Modal,
   Dimensions,
+  FlatList,
 } from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
+import {PRIMARY, WHITE} from '../Constants/Colors';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 export function SkillModal({
   modalVisible,
   setModalVisible,
-  setHobbies,
+  setModalSkill,
   isEdit,
+  onPress,
 }) {
+  let [modalSkillArray, setModalSKillArray] = useState([]);
+  const [newSkill, setNewSkill] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
+  const FunModalSkillsArray = () => {
+    debugger;
+    let newModalSkillArray = [...modalSkillArray];
+    newModalSkillArray.push(newSkill);
+    setModalSKillArray((modalSkillArray = newModalSkillArray));
+    debugger;
+    setModalSkill(modalSkillArray);
+    setInputValue('');
+    console.log('skillsArray', modalSkillArray);
+  };
+
+  const FunDelSkill = index => {
+    console.log('index', index);
+    let newArr = [...modalSkillArray];
+    newArr.splice(index);
+    setModalSKillArray(newArr);
+    setModalSkill((modalSkillArray = newArr));
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -84,14 +111,71 @@ export function SkillModal({
               placeholder="Skill Name"
               inputType="text"
               onChange={value => {
-                setHobbies(value);
+                // setSkill(value);
+                setNewSkill(value);
+                setInputValue(value);
               }}
+              value={inputValue}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                FunModalSkillsArray();
+              }}
+              style={{
+                backgroundColor: PRIMARY,
+                height: 30,
+                width: 50,
+                alignSelf: 'flex-end',
+                borderRadius: 5,
+              }}>
+              <Text
+                style={{color: WHITE, alignSelf: 'center', marginVertical: 5}}>
+                Add
+              </Text>
+            </TouchableOpacity>
+            {/* <FontAwesome name="remove" size={20} color={PRIMARY} /> */}
+            <FlatList
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={modalSkillArray}
+              renderItem={({item, index}) => (
+                <View
+                  style={{
+                    backgroundColor: '#EFEFEF',
+                    marginRight: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    borderRadius: 3,
+                    marginTop: 10,
+                  }}>
+                  <Text
+                    style={{
+                      marginVertical: 5,
+                      marginHorizontal: 5,
+                      color: '#7A7A7A',
+                    }}>
+                    {item}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      FunDelSkill(index);
+                    }}>
+                    <Entypo
+                      name="cross"
+                      size={22}
+                      color={'black'}
+                      style={{marginVertical: 4}}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
             />
             <BtnComponent
-              placeholder={isEdit ? 'Edit' : 'Add'}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
+              placeholder={isEdit ? 'Edit' : 'Save'}
+              // onPress={() => {
+              //   setModalVisible(!modalVisible);
+              // }}
+              onPress={onPress}
             />
           </View>
         </View>

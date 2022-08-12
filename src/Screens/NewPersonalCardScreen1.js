@@ -41,6 +41,10 @@ export default function NewCardScreen(props) {
       key: 'Country',
       value: country,
     },
+    {
+      key: 'occupation',
+      value: occupation,
+    },
   ];
 
   let [userData, setUserData] = useState(null);

@@ -10,6 +10,7 @@ import {isNullOrEmpty} from '../Constants/TextUtils';
 import {personalCardApiCall} from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+  CREDIANTIAL_ERROR,
   EMPTY_ACHIVEMENT,
   EMPTY_EDUCATION,
   EMPTY_HOBBIES,
@@ -27,6 +28,8 @@ import {SkillCard} from './SkillCard';
 import {EducationModal} from './EducationModal';
 import {SkillModal} from './SkillModal';
 import {JobHistoryModal} from './JobHistoryModal';
+import {FlatList} from 'react-native-gesture-handler';
+import {PRIMARY, WHITE} from '../Constants/Colors';
 
 export default function NewCardScreen(props) {
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
@@ -36,13 +39,14 @@ export default function NewCardScreen(props) {
   const [message, setMessage] = useState('');
   const [qrCode, setQRcode] = useState('');
   const [hobbies, setHobbies] = useState('');
-  const [education, setEducation] = useState('');
   const [interests, setInterests] = useState('');
   const [achivements, setAchivements] = useState('');
-  const [personalinfo, setPersonalInfo] = useState('');
-  const [skills, setSkills] = useState('');
-  const [portfolio, setPortFolio] = useState('');
-  const [jobHistory, setJobHistory] = useState('');
+  const [skillsArray, setSkillsArray] = useState([]);
+  const [modalSkill, setModalSkill] = useState([]);
+  const [educationArray, setEducationArray] = useState([]);
+  let [educationObject, setEducationObject] = useState('');
+  const [jobHistoryArray, setJobHistoryArray] = useState([]);
+  let [jobHistoryObject, setJobHistoryObject] = useState('');
   let [userData, setUserData] = useState(null);
   const newArray1 = props.route.params.paramKey;
   const PersonalcardScreen4Array = [
@@ -60,7 +64,7 @@ export default function NewCardScreen(props) {
     },
     {
       key: 'Education',
-      value: education,
+      value: JSON.stringify(educationArray),
     },
     {
       key: 'Interests',
@@ -71,25 +75,39 @@ export default function NewCardScreen(props) {
       value: achivements,
     },
     {
-      key: 'PersonalInfo',
-      value: personalinfo,
-    },
-    {
       key: 'Skills',
-      value: skills,
-    },
-    {
-      key: 'PortFolio',
-      value: portfolio,
+      value: JSON.stringify(skillsArray),
     },
     {
       key: 'JobHistory',
-      value: jobHistory,
+      value: JSON.stringify(jobHistoryArray),
     },
   ];
+  // console.log('educationObject', educationObject);
+
+  const FunSkillsArray = () => {
+    setSkillsArray(modalSkill);
+    // console.log('skillsArray', skillsArray);
+  };
+
+  const FunEducationArray = () => {
+    let newEducationArray = educationArray;
+    newEducationArray.push(educationObject);
+    setEducationArray([]);
+    setEducationArray(newEducationArray);
+    // console.log('educationArray', educationArray);
+  };
+
+  const FunJobHistoryArray = () => {
+    let newJobHistoryArray = jobHistoryArray;
+    newJobHistoryArray.push(jobHistoryObject);
+    setJobHistoryArray([]);
+    setJobHistoryArray(newJobHistoryArray);
+    // console.log('jobHistoryArray', jobHistoryArray);
+  };
 
   useEffect(() => {
-    console.log('PCS4', props.route.params);
+    // console.log('PCS4', props.route.params);
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
@@ -103,19 +121,23 @@ export default function NewCardScreen(props) {
       alert(EMPTY_QRCODE);
     } else if (isNullOrEmpty(hobbies)) {
       alert(EMPTY_HOBBIES);
-    } else if (isNullOrEmpty(education)) {
+    } else if (isNullOrEmpty(educationArray)) {
       alert(EMPTY_EDUCATION);
     } else if (isNullOrEmpty(interests)) {
       alert(EMPTY_INTERESTS);
     } else if (isNullOrEmpty(achivements)) {
       alert(EMPTY_ACHIVEMENT);
-    } else if (isNullOrEmpty(personalinfo)) {
-      alert(EMPTY_PERSONALINFO);
-    } else if (isNullOrEmpty(skills)) {
+    }
+    // else if (isNullOrEmpty(personalinfo)) {
+    //   alert(EMPTY_PERSONALINFO);
+    // }
+    else if (isNullOrEmpty(skillsArray)) {
       alert(EMPTY_SKILLS);
-    } else if (isNullOrEmpty(portfolio)) {
-      alert(EMPTY_PORTFOLIO);
-    } else if (isNullOrEmpty(jobHistory)) {
+    }
+    // else if (isNullOrEmpty(portfolio)) {
+    //   alert(EMPTY_PORTFOLIO);
+    // }
+    else if (isNullOrEmpty(jobHistoryArray)) {
       alert(EMPTY_JOBHISTORY);
     } else {
       let PersonalCardMeta = [];
@@ -138,7 +160,7 @@ export default function NewCardScreen(props) {
         };
         PersonalCardMeta.push(newObject1);
       }
-      console.log('PersonalCardMeta', PersonalCardMeta);
+      // console.log('PersonalCardMeta', PersonalCardMeta);
 
       let object = {
         name: props.route.params.name,
@@ -154,12 +176,13 @@ export default function NewCardScreen(props) {
       personalCardApiCall(object)
         .then(response => {
           console.log('response', response);
-          if (response.data.status == 200) {
-            props.navigation.push('Individual', {
-              // paramKey: newArray1,
-              // paramKey: PersonalcardScreen4Array
-              // dont remove this !
-            });
+          if (response.data.status === 200) {
+            props.navigation.push('MyCardsDashboardScreen');
+            // , {
+            //   paramKey: newArray1,
+            //   paramKey: PersonalcardScreen4Array
+            //   dont remove this !
+            // }
           } else {
             alert(CREDIANTIAL_ERROR);
           }
@@ -204,13 +227,6 @@ export default function NewCardScreen(props) {
           }}
         />
         <OutlinedInputBox
-          placeholder="Education"
-          inputType="text"
-          onChange={value => {
-            setEducation(value);
-          }}
-        />
-        <OutlinedInputBox
           placeholder="Interests"
           inputType="text"
           onChange={value => {
@@ -224,7 +240,14 @@ export default function NewCardScreen(props) {
             setAchivements(value);
           }}
         />
-        <View style={{flexDirection: 'column', marginBottom: 20}}>
+        {/* <View style={{flexDirection: 'column', marginBottom: 20}}> */}
+        <View
+          style={{
+            backgroundColor: '#E0E0E0',
+            marginBottom: 20,
+            padding: 15,
+            borderRadius: 8,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -239,25 +262,30 @@ export default function NewCardScreen(props) {
                 borderRadius: 5,
                 paddingHorizontal: 10,
                 paddingVertical: 5,
+                backgroundColor: PRIMARY,
               }}
               onPress={() => {
                 setIsSkillModalVisible(true);
               }}>
-              <Text>
-                <Text>+</Text>Add
+              <Text style={{color: WHITE}}>
+                <Text style={{color: WHITE}}>+</Text>Add
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal={true}>
-            <SkillCard />
-            <SkillCard />
-            <SkillCard />
-            <SkillCard />
-            <SkillCard />
-            <SkillCard />
-          </ScrollView>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            data={skillsArray}
+            renderItem={({item, index}) => <SkillCard Skillname={item} />}
+          />
         </View>
-        <View style={{flexDirection: 'column', marginBottom: 20}}>
+        <View
+          style={{
+            backgroundColor: '#E0E0E0',
+            marginBottom: 20,
+            padding: 15,
+            borderRadius: 8,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -265,32 +293,38 @@ export default function NewCardScreen(props) {
               alignItems: 'center',
               marginBottom: 10,
             }}>
-            <Text style={{color: '#242424', fontSize: 16}}>Education</Text>
+            <Text style={{color: '#242424', fontSize: 16, fontWeight: '700'}}>
+              Education
+            </Text>
             <TouchableOpacity
               style={{
                 borderWidth: 1,
                 borderRadius: 5,
                 paddingHorizontal: 10,
                 paddingVertical: 5,
+                backgroundColor: PRIMARY,
               }}
               onPress={() => {
                 setIsEducationModalVisible(true);
               }}>
-              <Text>
-                <Text>+</Text>Add
+              <Text style={{color: WHITE}}>
+                <Text style={{color: WHITE}}>+</Text>Add
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal={true}>
-            <EducationCard />
-            <EducationCard />
-            <EducationCard />
-            <EducationCard />
-            <EducationCard />
-            <EducationCard />
-          </ScrollView>
+          <FlatList
+            data={educationArray}
+            style={{alignSelf: 'center'}}
+            renderItem={({item, index}) => <EducationCard item={item} />}
+          />
         </View>
-        <View style={{flexDirection: 'column', marginBottom: 20}}>
+        <View
+          style={{
+            backgroundColor: '#E0E0E0',
+            marginBottom: 20,
+            padding: 15,
+            borderRadius: 8,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -298,30 +332,32 @@ export default function NewCardScreen(props) {
               alignItems: 'center',
               marginBottom: 10,
             }}>
-            <Text style={{color: '#242424', fontSize: 16}}>Job History</Text>
+            <Text style={{color: '#242424', fontSize: 16, fontWeight: '700'}}>
+              Job History
+            </Text>
             <TouchableOpacity
               style={{
                 borderWidth: 1,
                 borderRadius: 5,
                 paddingHorizontal: 10,
                 paddingVertical: 5,
+                backgroundColor: PRIMARY,
               }}
               onPress={() => {
                 setIsJobHistoryModalVisible(true);
               }}>
-              <Text>
-                <Text>+</Text>Add
+              <Text style={{color: WHITE}}>
+                <Text style={{color: WHITE}}>+</Text>Add
               </Text>
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal={true}>
-            <JobHistoryCard />
-            <JobHistoryCard />
-            <JobHistoryCard />
-            <JobHistoryCard />
-            <JobHistoryCard />
-            <JobHistoryCard />
-          </ScrollView>
+          <FlatList
+            horizontal={true}
+            style={{alignSelf: 'center'}}
+            showsHorizontalScrollIndicator={false}
+            data={jobHistoryArray}
+            renderItem={({item, index}) => <JobHistoryCard item={item} />}
+          />
         </View>
         <BtnComponent
           placeholder="Finish"
@@ -333,14 +369,29 @@ export default function NewCardScreen(props) {
       <EducationModal
         modalVisible={isEducationModalVisible}
         setModalVisible={setIsEducationModalVisible}
+        onPress={data => {
+          setEducationObject((educationObject = data));
+          FunEducationArray();
+          setIsEducationModalVisible(false);
+        }}
       />
       <JobHistoryModal
         modalVisible={isJobHistoryModalVisible}
         setModalVisible={setIsJobHistoryModalVisible}
+        onPress={data => {
+          setJobHistoryObject((jobHistoryObject = data));
+          FunJobHistoryArray();
+          setIsJobHistoryModalVisible(false);
+        }}
       />
       <SkillModal
+        setModalSkill={setModalSkill}
         modalVisible={isSkillModalVisible}
         setModalVisible={setIsSkillModalVisible}
+        onPress={() => {
+          FunSkillsArray();
+          setIsSkillModalVisible(false);
+        }}
       />
     </SafeAreaView>
   );

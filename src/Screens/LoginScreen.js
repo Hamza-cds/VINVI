@@ -22,10 +22,38 @@ import {
 import {loginApiCall} from '../Apis/Repo';
 import {isInvalidPassword} from '../Constants/Validations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../Components/Loader';
+import Select from '../Components/Select';
 
 export default function LoginScreen(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  //   const [DATA, setDATA] = useState('');
+  //   console.log('DATA', DATA);
+  //   const data = [
+  //     {
+  //       id: 1,
+  //       title: 'name',
+  //     },
+  //     {
+  //       id: 2,
+  //       title: 'name1',
+  //     },
+  //     {
+  //       id: 3,
+  //       title: 'name2',
+  //     },
+  //     {
+  //       id: 4,
+  //       title: 'name3',
+  //     },
+  //   ];
+  //   <Select
+  //   data={data}
+  //   placeholder={'Education'}
+  //   onCallBack={setDATA}
+  // />
 
   const onLogin = () => {
     if (isNullOrEmpty(phoneNumber)) {
@@ -41,6 +69,7 @@ export default function LoginScreen(props) {
       };
       console.log('object', object);
 
+      setIsLoading(true);
       loginApiCall(object)
         .then(response => {
           //console.log("response", response)
@@ -50,16 +79,18 @@ export default function LoginScreen(props) {
               'user_data',
               JSON.stringify(response.data.result),
             );
-
+            setIsLoading(false);
             props.navigation.push('Dashboard', {
               paramKey: phoneNumber,
             });
           } else if (response.data.status == 335) {
+            setIsLoading(false);
             props.navigation.push('PhoneVerification', {
               paramKey: phoneNumber,
               paramKey1: password,
             });
           } else {
+            setIsLoading(false);
             alert(response.data.message);
             console.log('Wrong');
           }
@@ -103,9 +134,11 @@ export default function LoginScreen(props) {
               }}>
               Login
             </Text>
+
             <OutlinedInputBox
               placeholder="Phone or Username"
-              inputType="number-pad"
+              KeyboardType={'number-pad'}
+              maxLength={11}
               onChange={value => {
                 setPhoneNumber(value);
               }}
@@ -113,6 +146,7 @@ export default function LoginScreen(props) {
             <OutlinedInputBox
               placeholder="Password"
               inputType="password"
+              KeyboardType={'default'}
               onChange={value => {
                 setPassword(value);
               }}
@@ -181,6 +215,7 @@ export default function LoginScreen(props) {
               </TouchableOpacity>
             </View>
           </View>
+          {isLoading ? <Loader /> : null}
         </ImageBackground>
       </ScrollView>
     </SafeAreaView>
