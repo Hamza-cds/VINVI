@@ -8,6 +8,8 @@ export default function BuisnessCard({
   selected,
   index,
   setSelected,
+  navigation,
+  navigationPath,
   cta,
 }) {
   return (
@@ -50,7 +52,8 @@ export default function BuisnessCard({
       </Svg>
       <TouchableOpacity
         onPress={() => {
-          setSelected(index);
+          // setSelected(index);
+          navigation.navigate(navigationPath, {id: item.id});
         }}
         activeOpacity={0.9}
         style={{

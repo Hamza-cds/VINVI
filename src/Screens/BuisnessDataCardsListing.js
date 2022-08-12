@@ -37,7 +37,7 @@ export function BuisnessDataCardsListing({navigation}) {
               cta={true}
               variant="closed"
               navigation={navigation}
-              navigationPath="Individual"
+              navigationPath="BuisnessScreen"
               item={item}
               key={index}
             />

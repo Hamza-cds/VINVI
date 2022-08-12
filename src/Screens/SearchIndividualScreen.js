@@ -1,13 +1,48 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import PickerComponent from '../Components/PickerComponent';
 import InputBoxWOPlaceholder from '../Components/InputBoxWOPlaceholder';
 import Slider from '@react-native-community/slider';
+import {LookupDetailApiCall} from '../Apis/Repo';
+import Select from '../Components/Select';
 
 const SearchIndividualScreen = props => {
   const navigation = props.navigation;
+  let [skillData, setSkillData] = useState([]);
+  let [educationData, setEducationData] = useState([]);
+  const [range, setRange] = useState(0);
+  const [DATA, setDATA] = useState('');
+
+  useEffect(() => {
+    getSkills();
+    getEducation();
+  }, []);
+
+  const getSkills = () => {
+    LookupDetailApiCall(1)
+      .then(res => {
+        // console.log('skillData', res.data.result);
+        setSkillData((skillData = res.data.result));
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
+  const getEducation = () => {
+    LookupDetailApiCall(3)
+      .then(res => {
+        // console.log('educationData', res.data.result);
+        setEducationData((educationData = res.data.result));
+        console.log('educationData', educationData);
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
   return (
     <View
       style={{
@@ -28,10 +63,16 @@ const SearchIndividualScreen = props => {
             flex: 1,
             marginRight: 10,
           }}>
-          <PickerComponent
-            placeholder="Niche"
-            itemLabels={('hello', 'Machenic')}
-            itemValues={('hello', 'Machenic')}
+          {/* <PickerComponent
+            placeholder="Profession"
+            // itemLabels={('hello', 'Machenic')}
+            // itemValues={('hello', 'Machenic')}
+            DATA={skillData}
+          /> */}
+          <Select
+            data={educationData}
+            placeholder={'Profession'}
+            onCallBack={setDATA}
           />
         </View>
         <View
@@ -39,14 +80,83 @@ const SearchIndividualScreen = props => {
             flex: 1,
             marginLeft: 10,
           }}>
-          <PickerComponent
-            placeholder="Area"
-            itemLabels={('hello', 'Lahore')}
-            itemValues={('hello', 'Lahore')}
+          {/* <PickerComponent placeholder="Education" DATA={educationData} /> */}
+          <Select
+            data={educationData}
+            placeholder={'Education'}
+            onCallBack={setDATA}
           />
         </View>
       </View>
-      <Text>Radius</Text>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flex: 1,
+            marginRight: 10,
+          }}>
+          {/* <PickerComponent placeholder="Habbits" DATA={skillData} /> */}
+          <Select
+            data={skillData}
+            placeholder={'Habbits'}
+            onCallBack={setDATA}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: 10,
+          }}>
+          {/* <PickerComponent placeholder="Interests" DATA={educationData} /> */}
+          <Select
+            data={skillData}
+            placeholder={'Interests'}
+            onCallBack={setDATA}
+          />
+        </View>
+      </View>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginVertical: 10,
+        }}>
+        <View
+          style={{
+            flex: 1,
+            marginRight: 10,
+          }}>
+          {/* <PickerComponent placeholder="Skills" DATA={educationData} /> */}
+          <Select
+            data={skillData}
+            placeholder={'Skills'}
+            onCallBack={setDATA}
+          />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: 10,
+          }}>
+          {/* <PickerComponent placeholder="Languages" DATA={skillData} /> */}
+          <Select
+            data={educationData}
+            placeholder={'Languages'}
+            onCallBack={setDATA}
+          />
+        </View>
+      </View>
+      <InputBoxWOPlaceholder placeholder={'location'} />
+
+      <Text style={{marginTop: 10}}>Radius</Text>
       <View
         style={{
           display: 'flex',
@@ -64,73 +174,15 @@ const SearchIndividualScreen = props => {
           minimumTrackTintColor={SECONDARY}
           maximumTrackTintColor={SECONDARY}
           thumbTintColor={SECONDARY}
+          step={2}
+          onValueChange={value => {
+            setRange(value.toFixed(0));
+          }}
         />
-        <Text>30km</Text>
+        <Text>{range + ' km'}</Text>
       </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginVertical: 10,
-        }}>
-        <View
-          style={{
-            flex: 1,
-            marginRight: 10,
-          }}>
-          <PickerComponent
-            placeholder="Habbits"
-            itemLabels={('hello', 'Gardening')}
-            itemValues={('hello', 'Gardening')}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            marginLeft: 10,
-          }}>
-          <PickerComponent
-            placeholder="Education"
-            itemLabels={('hello', 'Metric')}
-            itemValues={('hello', 'Metric')}
-          />
-        </View>
-      </View>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginVertical: 10,
-        }}>
-        <View
-          style={{
-            flex: 1,
-            marginRight: 10,
-          }}>
-          <PickerComponent
-            placeholder="Interests"
-            itemLabels={('hello', 'Football')}
-            itemValues={('hello', 'Football')}
-          />
-        </View>
-        <View
-          style={{
-            flex: 1,
-            marginLeft: 10,
-          }}>
-          <PickerComponent
-            placeholder="Skills"
-            itemLabels={('hello', 'Programming')}
-            itemValues={('hello', 'Programming')}
-          />
-        </View>
-      </View>
-      <Text>Name</Text>
-      <InputBoxWOPlaceholder />
+
+      {/* <InputBoxWOPlaceholder /> */}
       <BtnComponent
         placeholder="Search"
         onPress={() => {

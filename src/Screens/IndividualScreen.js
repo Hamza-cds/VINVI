@@ -57,11 +57,19 @@ export default function IndividualScreen(props) {
   }
 
   let arraycountry;
-  arraycountry = _.find(data.personalCardMeta, {personalKey: 'country'});
+  arraycountry = _.find(data.personalCardMeta, {personalKey: 'Country'});
   if (arraycountry) {
     arraycountry = arraycountry.personalValue;
   } else {
     arraycountry = 'Dummy country';
+  }
+
+  let arrayskills;
+  arrayskills = _.find(data.personalCardMeta, {personalKey: 'Skills'});
+  if (arrayskills) {
+    arrayskills = arrayskills.personalValue;
+  } else {
+    arrayskills = 'Dummy Skill';
   }
 
   useEffect(() => {
@@ -244,12 +252,13 @@ export default function IndividualScreen(props) {
           <ContactDetails
             data={data}
             arraycountry={arraycountry}
+            arraycity={arraycity}
             setEdit={setIsContactModalVisible}
           />
           <Education setEdit={setIsEducationModalVisible} />
           <JobHistory setEdit={setIsJobHistoryModalVisible} />
           <PersonalDetails setIsEdit={setIsPersonalModalVisible} />
-          <Skills setEdit={setIsSkillModalVisible} />
+          <Skills arrskills={arrayskills} setEdit={setIsSkillModalVisible} />
           <View
             style={{width: '100%', marginVertical: 70, alignItems: 'center'}}>
             <QRCode

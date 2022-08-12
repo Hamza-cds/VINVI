@@ -6,7 +6,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Svg, {Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 
-export default function SearchScreen(props) {
+export default function SearchScreen(props, navigation) {
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ScrollView style={{flex: 1, minHeight: Height}}>
@@ -27,7 +27,7 @@ export default function SearchScreen(props) {
           }
           headerName="Search"
           onPress={() => {
-            navigation.navigate('Dashboard');
+            props.navigation.navigate('Dashboard');
           }}
         />
         <TopTabsNavigator variant="search" />

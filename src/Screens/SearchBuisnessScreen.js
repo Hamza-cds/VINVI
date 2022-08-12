@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import PickerComponent from '../Components/PickerComponent';
 import BtnComponent from '../Components/BtnComponent';
 import InputBoxWOPlaceholder from '../Components/InputBoxWOPlaceholder';
 import Slider from '@react-native-community/slider';
+import Select from '../Components/Select';
 
 export default function SearchBuisnessScreen(props) {
+  const [range, setRange] = useState(0);
+  const [DATA, setDATA] = useState('');
+
+  const data = [
+    {
+      id: 1,
+      name: 'need data',
+    },
+    {
+      id: 2,
+      name: 'no data',
+    },
+  ];
+
   return (
     <View
       style={{
@@ -24,18 +39,22 @@ export default function SearchBuisnessScreen(props) {
           marginVertical: 10,
         }}>
         <View style={{flex: 1, marginRight: 10}}>
-          <PickerComponent
+          {/* <PickerComponent
             placeholder="Industry"
-            itemLabels={('hello', 'Machenic')}
-            itemValues={('hello', 'Machenic')}
-          />
+            // itemLabels={('hello', 'Machenic')}
+            // itemValues={('hello', 'Machenic')}
+            DATA={data}
+          /> */}
+          <Select data={data} placeholder={'Industry'} onCallBack={setDATA} />
         </View>
         <View style={{flex: 1, marginLeft: 10}}>
-          <PickerComponent
+          {/* <PickerComponent
             placeholder="Area"
-            itemLabels={('hello', 'Lahore')}
-            itemValues={('hello', 'Lahore')}
-          />
+            // itemLabels={('hello', 'Machenic')}
+            // itemValues={('hello', 'Machenic')}
+            DATA={data}
+          /> */}
+          <Select data={data} placeholder={'Area'} onCallBack={setDATA} />
         </View>
       </View>
       <Text>Radius</Text>
@@ -53,8 +72,12 @@ export default function SearchBuisnessScreen(props) {
           minimumTrackTintColor={SECONDARY}
           maximumTrackTintColor={SECONDARY}
           thumbTintColor={SECONDARY}
+          step={2}
+          onValueChange={value => {
+            setRange(value.toFixed(0));
+          }}
         />
-        <Text>30km</Text>
+        <Text>{range + ' km'}</Text>
       </View>
       <View
         style={{
@@ -65,11 +88,12 @@ export default function SearchBuisnessScreen(props) {
           marginVertical: 10,
         }}>
         <View style={{flex: 1}}>
-          <PickerComponent
+          {/* <PickerComponent
             placeholder="Employee"
-            itemLabels={('hello', '100 -  200')}
-            itemValues={('hello', '100 -  200')}
-          />
+            // itemLabels={('hello', 'Machenic')}
+            // itemValues={('hello', 'Machenic')}
+            DATA={data}
+          /> */}
         </View>
       </View>
       <View
@@ -81,22 +105,24 @@ export default function SearchBuisnessScreen(props) {
           marginVertical: 10,
         }}>
         <View style={{flex: 1, marginRight: 10}}>
-          <PickerComponent
+          {/* <PickerComponent
             placeholder="Age"
-            itemLabels={('hello', '20')}
-            itemValues={('hello1', '20')}
-          />
+            // itemLabels={('hello', 'Machenic')}
+            // itemValues={('hello', 'Machenic')}
+            DATA={data}
+          /> */}
         </View>
         <View style={{flex: 1, marginLeft: 10}}>
-          <PickerComponent
+          {/* <PickerComponent
             placeholder="Gender"
-            itemLabels={('hello', 'Male')}
-            itemValues={('hello', 'Male')}
-          />
+            // itemLabels={('hello', 'Machenic')}
+            // itemValues={('hello', 'Machenic')}
+            DATA={data}
+          /> */}
         </View>
       </View>
-      <Text>Name</Text>
-      <InputBoxWOPlaceholder />
+      {/* <Text>Name</Text> */}
+      {/* <InputBoxWOPlaceholder /> */}
       <BtnComponent
         placeholder="Search"
         onPress={() => {

@@ -26,11 +26,9 @@ export function SkillModal({
   const [inputValue, setInputValue] = useState('');
 
   const FunModalSkillsArray = () => {
-    debugger;
     let newModalSkillArray = [...modalSkillArray];
     newModalSkillArray.push(newSkill);
     setModalSKillArray((modalSkillArray = newModalSkillArray));
-    debugger;
     setModalSkill(modalSkillArray);
     setInputValue('');
     console.log('skillsArray', modalSkillArray);

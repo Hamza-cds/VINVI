@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TextInput} from 'react-native';
 import {SECONDARY} from '../Constants/Colors';
 
-export default function InputBoxWOPlaceholder() {
+export default function InputBoxWOPlaceholder({placeholder}) {
   const [focus, setFocus] = useState(false);
   let borderWidthValue;
   if (focus) {
@@ -12,7 +12,7 @@ export default function InputBoxWOPlaceholder() {
   }
   return (
     <TextInput
-      placeholder=""
+      placeholder={placeholder}
       onFocus={() => {
         setFocus(true);
       }}

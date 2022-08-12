@@ -44,7 +44,7 @@ export default function SavedDashboardScreen(props, navigation) {
           variant="dark2"
           headerName="Saved"
           onPress={() => {
-            navigation.navigate('Home');
+            props.navigation.navigate('Home');
           }}
           headerIcon={
             <Svg

@@ -4,7 +4,7 @@ import {SECONDARY, WHITE} from '../Constants/Colors';
 import ContactDetailsRow from '../Components/ContactDetailsRow';
 import Svg, {Path} from 'react-native-svg';
 
-export function ContactDetails({data, arraycountry, setEdit}) {
+export function ContactDetails({data, arraycountry, setEdit, arraycity}) {
   return (
     <View
       style={{
@@ -96,7 +96,7 @@ export function ContactDetails({data, arraycountry, setEdit}) {
         }
       />
       <ContactDetailsRow
-        placeholder={data != null ? arraycountry : 'Address'}
+        placeholder={arraycity + ',' + arraycountry}
         svg={
           <Svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,12 +13,77 @@ import BtnComponent from '../Components/BtnComponent';
 import ProductCard from '../Components/ProductCard';
 import Header from '../Components/Header';
 import Svg, {Path} from 'react-native-svg';
-import {Height, QRCODE_URL, Width} from '../Constants/Constants';
+import {Height, QRCODE_URL, URL, Width} from '../Constants/Constants';
 import QRCode from 'react-native-qrcode-svg';
+import {getBusinessCardByIdApiCall} from '../Apis/Repo';
+import _ from 'lodash';
 
 const BuisnessScreen = props => {
+  console.log('props', props);
   const [selectedCategory, setSelectedCategory] = useState(false);
   const navigation = props.navigation;
+  const [businessData, setBusinessData] = useState([]);
+  const [ID, setID] = useState(props.route.params.id);
+
+  useEffect(() => {
+    getBusinessData();
+  }, []);
+
+  const getBusinessData = () => {
+    getBusinessCardByIdApiCall(ID)
+      .then(res => {
+        console.log('res', res.data.result);
+        if (res.data.success) {
+          setBusinessData(res.data.result);
+        } else alert('No record found.');
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+  console.log('data here', businessData);
+
+  let arrayWebsite;
+  arrayWebsite = _.find(businessData.businessCardMeta, {
+    businessKey: 'Website',
+  });
+  if (arrayWebsite) {
+    arrayWebsite = arrayWebsite.businessValue;
+  } else {
+    arrayWebsite = 'Dummy Website';
+  }
+  ('CategoryName');
+
+  let arrayCategory;
+  arrayCategory = _.find(businessData.businessCardMeta, {
+    businessKey: 'CategoryName',
+  });
+  if (arrayCategory) {
+    arrayCategory = arrayCategory.businessValue;
+  } else {
+    arrayCategory = 'Dummy Category';
+  }
+
+  let arrayProductImg;
+  arrayProductImg = _.find(businessData.businessCardMeta, {
+    businessKey: 'ProductImage',
+  });
+  if (arrayProductImg) {
+    arrayProductImg = arrayProductImg.businessValue;
+  } else {
+    arrayProductImg = 'No Product Image';
+  }
+
+  let arrayBusinessType;
+  arrayBusinessType = _.find(businessData.businessCardMeta, {
+    businessKey: 'Type of Business',
+  });
+  if (arrayBusinessType) {
+    arrayBusinessType = arrayBusinessType.businessValue;
+  } else {
+    arrayBusinessType = 'No Product Image';
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -61,7 +126,7 @@ const BuisnessScreen = props => {
                   borderRadius: 100,
                 }}>
                 <Image
-                  source={require('../Assets/companyPic.png')}
+                  source={{uri: URL.concat(businessData.logo)}}
                   style={{
                     width: 100,
                     height: 100,
@@ -75,7 +140,7 @@ const BuisnessScreen = props => {
                   fontSize: 20,
                   marginVertical: 20,
                 }}>
-                Travelco
+                {businessData.name}
               </Text>
               <View
                 style={{
@@ -256,7 +321,7 @@ const BuisnessScreen = props => {
                 </Text>
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
-                  travelco.com
+                  {arrayWebsite}
                 </Text>
               </View>
             </View>
@@ -286,7 +351,7 @@ const BuisnessScreen = props => {
                 </Text>
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
-                  Travel
+                  {arrayBusinessType}
                 </Text>
               </View>
             </View>
@@ -316,7 +381,7 @@ const BuisnessScreen = props => {
                 <Text style={{color: PRIMARY, fontSize: 11}}>Contact</Text>
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
-                  0445 3434 3434
+                  {businessData.phoneNo}
                 </Text>
               </View>
             </View>
@@ -345,7 +410,7 @@ const BuisnessScreen = props => {
                 </Text>
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
-                  Lahore
+                  {businessData.address}
                 </Text>
               </View>
             </View>
@@ -365,62 +430,16 @@ const BuisnessScreen = props => {
             <CategoryFilter
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
-              title="Category"
-            />
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title="Category1"
-            />
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title="Category2"
-            />
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title="Category3"
-            />
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title="Category4"
-            />
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title="Category5"
-            />
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title="Category6"
-            />
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title="Category7"
+              title={arrayCategory}
             />
           </ScrollView>
           <ScrollView style={{}} horizontal={true}>
             <ProductCard
-              productPic={require('../Assets/productPic.png')}
-              productName="Product Name"
-              productPrice="$343"
-            />
-            <ProductCard
-              productPic={require('../Assets/productPic.png')}
-              productName="Product Name"
-              productPrice="$343"
-            />
-            <ProductCard
-              productPic={require('../Assets/productPic.png')}
-              productName="Product Name"
-              productPrice="$343"
-            />
-            <ProductCard
-              productPic={require('../Assets/productPic.png')}
+              productPic={
+                arrayProductImg
+                  ? {uri: URL.concat(arrayProductImg)}
+                  : require('../Assets/productPic.png')
+              }
               productName="Product Name"
               productPrice="$343"
             />

@@ -1,10 +1,11 @@
-import React from 'react';
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import {SECONDARY, FIFTH} from '../Constants/Colors';
 import SkillTag from '../Components/SkillTag';
 import Svg, {G, Path} from 'react-native-svg';
 
-export function Skills({setEdit}) {
+export function Skills({setEdit, arrskills}) {
+  // const [skills, setSkills] = useState([]);
   return (
     <View
       style={{
@@ -96,15 +97,18 @@ export function Skills({setEdit}) {
           </Svg>
         </TouchableOpacity>
       </View>
-      <ScrollView horizontal={true}>
-        <SkillTag placeholder="Skill Name" />
-        <SkillTag placeholder="Skill Name" />
-        <SkillTag placeholder="Skill Name" />
-        <SkillTag placeholder="Skill Name" />
-        <SkillTag placeholder="Skill Name" />
-        <SkillTag placeholder="Skill Name" />
-        <SkillTag placeholder="Skill Name" />
-      </ScrollView>
+      {/* <ScrollView horizontal={true}> */}
+      <FlatList
+        horizontal={true}
+        // style={{marginHorizontal: 8, marginTop: 15}}
+        data={arrskills}
+        keyExtractor={item => item.id}
+        renderItem={({item, index}) => (
+          // console.log('item', item)
+          <SkillTag item={item} placeholder="Skill Name" />
+        )}
+      />
+      {/* </ScrollView> */}
     </View>
   );
 }

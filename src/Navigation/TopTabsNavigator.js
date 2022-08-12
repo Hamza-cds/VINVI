@@ -13,7 +13,7 @@ export default function TopTabsNavigator({variant}) {
   if (variant === 'search') {
     return (
       <Tab.Navigator
-        initialRouteName="Individual"
+        initialRouteName="Search Individual"
         tabBarOptions={{
           labelStyle: {fontSize: 12, color: 'grey'},
           style: {
@@ -27,14 +27,17 @@ export default function TopTabsNavigator({variant}) {
           },
           bounces: true,
         }}>
-        <Tab.Screen name="Individual" component={SearchIndividualScreen} />
-        <Tab.Screen name="Buisness" component={SearchBuisnessScreen} />
+        <Tab.Screen
+          name="Search Individual"
+          component={SearchIndividualScreen}
+        />
+        <Tab.Screen name="Search Buisness" component={SearchBuisnessScreen} />
       </Tab.Navigator>
     );
   } else if (variant === 'request') {
     return (
       <Tab.Navigator
-        initialRouteName="Sent"
+        initialRouteName="SentRequestScreen"
         tabBarOptions={{
           labelStyle: {fontSize: 12, color: WHITE},
           style: {
@@ -47,8 +50,11 @@ export default function TopTabsNavigator({variant}) {
           },
           bounces: true,
         }}>
-        <Tab.Screen name="Sent" component={SentRequestScreen} />
-        <Tab.Screen name="Recieved" component={RecievedRequestScreen} />
+        <Tab.Screen name="SentRequestScreen" component={SentRequestScreen} />
+        <Tab.Screen
+          name="RecievedRequestScreen"
+          component={RecievedRequestScreen}
+        />
       </Tab.Navigator>
     );
   }

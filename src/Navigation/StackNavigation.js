@@ -67,7 +67,7 @@ export default function StackNavigation() {
       <Stack.Screen name="SearchResult" component={SearchResultScreen} />
       <Stack.Screen name="Messages" component={MessagesScreen} />
       <Stack.Screen name="IndividualScreen" component={IndividualScreen} />
-      <Stack.Screen name="Buisness" component={BuisnessScreen} />
+      <Stack.Screen name="BuisnessScreen" component={BuisnessScreen} />
       <Stack.Screen name="ChangePassowrd" component={ChangePassowrdScreen} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen

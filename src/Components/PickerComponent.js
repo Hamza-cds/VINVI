@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
 export default function PickerComponent({
@@ -7,6 +7,7 @@ export default function PickerComponent({
   itemValues,
   itemLabels,
   inline,
+  DATA,
 }) {
   const [selectedLanguage, setSelectedLanguage] = useState();
   const pickerRef = useRef();
@@ -22,15 +23,15 @@ export default function PickerComponent({
           marginVertical: 10,
         }}>
         <Picker
-          style={{marginTop: -4, fontSize: 13}}
+          style={{marginTop: -6}}
           ref={pickerRef}
           selectedValue={selectedLanguage}
-          onValueChange={itemValue => setSelectedLanguage(itemValue)}>
-          <Picker.Item
-            label={itemLabels}
-            value={itemValues}
-            style={{fontSize: 14}}
-          />
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedLanguage(itemValue)
+          }>
+          {DATA.map(item => (
+            <Picker.Item key={item} label={item.name} value={item.name} />
+          ))}
         </Picker>
       </View>
     </>
