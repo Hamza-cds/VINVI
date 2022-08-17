@@ -7,6 +7,7 @@ import {getPersonalCardAllActiveApiCall} from '../Apis/Repo';
 
 export function IndividualDataCardsListing({navigation}) {
   const [individualData, setIndividualData] = useState([]);
+  let [userData, setUserData] = useState(null);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {

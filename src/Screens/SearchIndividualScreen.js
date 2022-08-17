@@ -5,43 +5,80 @@ import BtnComponent from '../Components/BtnComponent';
 import PickerComponent from '../Components/PickerComponent';
 import InputBoxWOPlaceholder from '../Components/InputBoxWOPlaceholder';
 import Slider from '@react-native-community/slider';
-import {LookupDetailApiCall} from '../Apis/Repo';
+import {GetAllLookupDetailApiCall, LookupDetailApiCall} from '../Apis/Repo';
 import Select from '../Components/Select';
 
 const SearchIndividualScreen = props => {
   const navigation = props.navigation;
   let [skillData, setSkillData] = useState([]);
   let [educationData, setEducationData] = useState([]);
+  let [professionData, setProfessionData] = useState([]);
+  let [languagesData, setLanguagesData] = useState([]);
+  let [lookupData, setLookupData] = useState([]);
   const [range, setRange] = useState(0);
   const [DATA, setDATA] = useState('');
 
+  console.log('skillData', skillData);
+  // getSkills();
+  // getEducation();
+
   useEffect(() => {
-    getSkills();
-    getEducation();
+    getAllLookupdetail();
   }, []);
 
-  const getSkills = () => {
-    LookupDetailApiCall(1)
+  const getAllLookupdetail = () => {
+    GetAllLookupDetailApiCall()
       .then(res => {
-        // console.log('skillData', res.data.result);
-        setSkillData((skillData = res.data.result));
+        setLookupData((lookupData = res.data.result));
+
+        for (let index = 0; index < lookupData.length; index++) {
+          const element = lookupData[index];
+          if (element.lookupId == 1) {
+            let arraySkill = skillData;
+            arraySkill.push(element);
+            setSkillData((skillData = arraySkill));
+          } else if (element.lookupId == 3) {
+            let arrayEducation = educationData;
+            arrayEducation.push(element);
+            setEducationData((educationData = arrayEducation));
+          } else if (element.lookupId == 4) {
+            let arrayProfession = professionData;
+            arrayProfession.push(element);
+            setProfessionData((professionData = arrayProfession));
+          } else if (element.lookupId == 7) {
+            let arrayLangauge = languagesData;
+            arrayLangauge.push(element);
+            setLanguagesData((languagesData = arrayLangauge));
+          }
+        }
       })
       .catch(err => {
         console.log('err', err);
       });
   };
 
-  const getEducation = () => {
-    LookupDetailApiCall(3)
-      .then(res => {
-        // console.log('educationData', res.data.result);
-        setEducationData((educationData = res.data.result));
-        console.log('educationData', educationData);
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
-  };
+  // const getSkills = () => {
+  //   LookupDetailApiCall(1)
+  //     .then(res => {
+  //       // console.log('skillData', res.data.result);
+  //       setSkillData((skillData = res.data.result));
+  //     })
+  //     .catch(err => {
+  //       console.log('err', err);
+  //     });
+  // };
+
+  // const getEducation = () => {
+  //   LookupDetailApiCall(3)
+  //     .then(res => {
+  //       // console.log('educationData', res.data.result);
+  //       setEducationData((educationData = res.data.result));
+  //       console.log('educationData', educationData);
+  //     })
+  //     .catch(err => {
+  //       console.log('err', err);
+  //     });
+  // };
 
   return (
     <View
@@ -67,10 +104,10 @@ const SearchIndividualScreen = props => {
             placeholder="Profession"
             // itemLabels={('hello', 'Machenic')}
             // itemValues={('hello', 'Machenic')}
-            DATA={skillData}
+            DATA={professionData}
           /> */}
           <Select
-            data={educationData}
+            data={professionData}
             placeholder={'Profession'}
             onCallBack={setDATA}
           />
@@ -115,7 +152,7 @@ const SearchIndividualScreen = props => {
           }}>
           {/* <PickerComponent placeholder="Interests" DATA={educationData} /> */}
           <Select
-            data={skillData}
+            data={professionData}
             placeholder={'Interests'}
             onCallBack={setDATA}
           />
@@ -148,7 +185,7 @@ const SearchIndividualScreen = props => {
           }}>
           {/* <PickerComponent placeholder="Languages" DATA={skillData} /> */}
           <Select
-            data={educationData}
+            data={languagesData}
             placeholder={'Languages'}
             onCallBack={setDATA}
           />

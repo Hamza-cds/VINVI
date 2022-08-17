@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text} from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
-import PickerComponent from '../Components/PickerComponent';
 import BtnComponent from '../Components/BtnComponent';
 import InputBoxWOPlaceholder from '../Components/InputBoxWOPlaceholder';
 import Slider from '@react-native-community/slider';
@@ -39,21 +38,9 @@ export default function SearchBuisnessScreen(props) {
           marginVertical: 10,
         }}>
         <View style={{flex: 1, marginRight: 10}}>
-          {/* <PickerComponent
-            placeholder="Industry"
-            // itemLabels={('hello', 'Machenic')}
-            // itemValues={('hello', 'Machenic')}
-            DATA={data}
-          /> */}
           <Select data={data} placeholder={'Industry'} onCallBack={setDATA} />
         </View>
         <View style={{flex: 1, marginLeft: 10}}>
-          {/* <PickerComponent
-            placeholder="Area"
-            // itemLabels={('hello', 'Machenic')}
-            // itemValues={('hello', 'Machenic')}
-            DATA={data}
-          /> */}
           <Select data={data} placeholder={'Area'} onCallBack={setDATA} />
         </View>
       </View>
@@ -87,14 +74,7 @@ export default function SearchBuisnessScreen(props) {
           alignItems: 'center',
           marginVertical: 10,
         }}>
-        <View style={{flex: 1}}>
-          {/* <PickerComponent
-            placeholder="Employee"
-            // itemLabels={('hello', 'Machenic')}
-            // itemValues={('hello', 'Machenic')}
-            DATA={data}
-          /> */}
-        </View>
+        <View style={{flex: 1}}></View>
       </View>
       <View
         style={{
@@ -104,22 +84,8 @@ export default function SearchBuisnessScreen(props) {
           alignItems: 'center',
           marginVertical: 10,
         }}>
-        <View style={{flex: 1, marginRight: 10}}>
-          {/* <PickerComponent
-            placeholder="Age"
-            // itemLabels={('hello', 'Machenic')}
-            // itemValues={('hello', 'Machenic')}
-            DATA={data}
-          /> */}
-        </View>
-        <View style={{flex: 1, marginLeft: 10}}>
-          {/* <PickerComponent
-            placeholder="Gender"
-            // itemLabels={('hello', 'Machenic')}
-            // itemValues={('hello', 'Machenic')}
-            DATA={data}
-          /> */}
-        </View>
+        <View style={{flex: 1, marginRight: 10}}></View>
+        <View style={{flex: 1, marginLeft: 10}}></View>
       </View>
       {/* <Text>Name</Text> */}
       {/* <InputBoxWOPlaceholder /> */}

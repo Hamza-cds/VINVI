@@ -21,6 +21,7 @@ import {
 } from '../Constants/Strings';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import PickerComponent from '../Components/PickerComponent';
+import Select from '../Components/Select';
 
 export default function NewBusinessCardScreen1(props) {
   const [businessName, setBusinessName] = useState('');
@@ -34,6 +35,15 @@ export default function NewBusinessCardScreen1(props) {
   const [website, setWebsite] = useState('');
   const [otherInfo, setOtherInfo] = useState('');
   const [tagline, setTagline] = useState('');
+
+  const data = [
+    {
+      name: 'no data',
+    },
+    {
+      name: 'need data',
+    },
+  ];
 
   const businessCardScreen1Array = [
     {
@@ -147,12 +157,13 @@ export default function NewBusinessCardScreen1(props) {
               setBusinessName(value);
             }}
           />
-          <PickerComponent
+          {/* <PickerComponent
             placeholder="Area"
             inline
             itemLabels={('hello', 'Business Industry')}
             itemValues={('hello', 'Lahore')}
-          />
+          /> */}
+          <Select placeholder="Area" data={data} />
           <OutlinedInputBox
             placeholder="Any Other Information"
             inputType="text"
@@ -337,7 +348,7 @@ export default function NewBusinessCardScreen1(props) {
             />
 
             <BtnComponent
-              placeholder="Save"
+              placeholder="Next"
               onPress={() => {
                 // onNext();
                 props.navigation.navigate('NewBusinessCard2');

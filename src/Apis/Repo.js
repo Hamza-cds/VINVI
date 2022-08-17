@@ -6,18 +6,28 @@ export async function signUpApiCall(signUpRequest) {
   let route = URL.concat('/api/User/Register');
   console.log(`RegisterCustomer Request : ${route} REQUEST`, signUpRequest);
   let apiRes = null;
-  try {
-    apiRes = await axios({
-      method: 'POST',
-      url: route,
-      data: signUpRequest,
-    });
-  } catch (err) {
-    apiRes = err;
-    return apiRes;
-  } finally {
-    return apiRes;
-  }
+
+  return fetch(route, {
+    method: 'POST',
+    body: signUpRequest,
+    headers: {'Content-Type': 'multipart/form-data', Accept: '*/*'},
+  });
+  // try {
+  //   apiRes = await axios({
+  //     method: 'POST',
+  //     url: route,
+  //     data: signUpRequest,
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data',
+  //       Accept: 'text/plain',
+  //     },
+  //   });
+  // } catch (err) {
+  //   apiRes = err;
+  //   return apiRes;
+  // } finally {
+  //   return apiRes;
+  // }
 }
 
 export async function verifyUserApiCall(verifyUserRequest) {
@@ -190,6 +200,7 @@ export async function searchIndividualApiCall() {
       method: 'GET',
       url: URL + route,
     });
+    console.log('searchIndividualApiCall Request : ', apiRes);
   } catch (err) {
     apiRes = err;
     return apiRes;
@@ -205,6 +216,24 @@ export async function LookupDetailApiCall(id) {
       method: 'GET',
       url: URL + route,
     });
+    console.log('LookupDetailApiCall Request : ', apiRes);
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function GetAllLookupDetailApiCall() {
+  let route = `/api/LookupDetail/GetAll`;
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: URL + route,
+    });
+    console.log('GetAllLookupDetailApiCall Request : ', apiRes);
   } catch (err) {
     apiRes = err;
     return apiRes;

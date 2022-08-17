@@ -4,7 +4,8 @@ import {SECONDARY, WHITE} from '../Constants/Colors';
 import {USER_NAME, USER_EMAIL} from '../Constants/Constants';
 import {useNavigation} from '@react-navigation/native';
 
-export default function AccountCard() {
+export default function AccountCard({item}) {
+  console.log('item', item);
   const navigation = useNavigation();
   return (
     <View
@@ -27,10 +28,19 @@ export default function AccountCard() {
         marginBottom: 20,
         marginHorizontal: 20,
       }}>
-      <Image source={require('../Assets/profilePic.png')} />
+      <Image
+        source={
+          item.image != null
+            ? {uri: item.image.path}
+            : require('../Assets/profilePic.png')
+        }
+        style={{height: 70, width: 70, borderRadius: 35}}
+      />
       <View style={{marginLeft: 20}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{USER_NAME}</Text>
-        <Text style={{fontSize: 14}}>{USER_EMAIL}</Text>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+          {item.userData.firstName + item.userData.lastName}
+        </Text>
+        <Text style={{fontSize: 14}}>{item.userData.email}</Text>
       </View>
       <TouchableOpacity
         onPress={() => {

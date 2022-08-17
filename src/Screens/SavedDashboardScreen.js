@@ -70,7 +70,7 @@ export default function SavedDashboardScreen(props, navigation) {
                 cta={true}
                 variant="closed"
                 navigation={props.navigation}
-                navigationPath="Individual"
+                navigationPath="IndividualScreen"
                 item={item}
                 key={index}
               />

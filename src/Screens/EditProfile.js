@@ -1,21 +1,75 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, ImageBackground, Image, TouchableOpacity} from 'react-native';
 import Header from '../Components/Header';
 import ChangePasswordInputBox from '../Components/ChangePasswordInputBox';
 import Svg, {Path} from 'react-native-svg';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Height, Width} from '../Constants/Constants';
+import {Height, URL, Width} from '../Constants/Constants';
 import BtnComponent from '../Components/BtnComponent';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNFS from 'react-native-fs';
+import {isNullOrEmpty} from '../Constants/TextUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {signUpApiCall} from '../Apis/Repo';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 export default function NewCardScreen(props, navigation, onCallBack) {
-  const getBase64 = (image, type) => {
-    console.log('image base 64', image);
-    console.log('type', type);
-    const base64Converted = 'data:image/png;base64,' + image;
-    setImage(base64Converted);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [imageName, setImageName] = useState('');
+  const [image, setImage] = useState('');
+  let [userData, setUserData] = useState('');
+
+  useEffect(() => {
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+      setImage({path: URL.concat(userData.profileImage)});
+    });
+  }, []);
+
+  const onSave = () => {
+    if (isNullOrEmpty(firstName)) {
+      alert('enter first name');
+    } else if (isNullOrEmpty(lastName)) {
+      alert('enter last name');
+    } else if (isNullOrEmpty(email)) {
+      alert('enter email');
+    } else {
+      let object = {
+        Id: userData.id,
+        Phoneno: userData.phoneno,
+        FirstName: firstName,
+        LastName: lastName,
+        Email: email,
+      };
+      console.log('object', object);
+      let updateinfo = new FormData();
+      updateinfo.append('Model', JSON.stringify(object));
+      updateinfo.append('image_file', {
+        uri: image.path,
+        name: imageName,
+        type: image.mime,
+      });
+
+      signUpApiCall(updateinfo)
+        .then(res => res.json())
+        .then(data => {
+          console.log('data', data);
+          AsyncStorage.setItem('user_data', JSON.stringify(data.result));
+          if (data.result.status == 200 && data.result.success == true) {
+            props.navigation.goback();
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
   };
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
@@ -44,8 +98,12 @@ export default function NewCardScreen(props, navigation, onCallBack) {
         />
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
           <Image
-            source={require('../Assets/profilePic.png')}
-            style={{height: 100, width: 100}}
+            source={
+              image != null
+                ? {uri: image.path}
+                : require('../Assets/profilePic.png')
+            }
+            style={{height: 120, width: 120, borderRadius: 60}}
           />
           <TouchableOpacity
             onPress={() => {
@@ -54,19 +112,16 @@ export default function NewCardScreen(props, navigation, onCallBack) {
                 height: 400,
                 cropping: true,
               }).then(image => {
-                RNFS.readFile(image.path, 'base64').then(res => {
-                  // console.log("res", res)
-                  onCallBack(
-                    res,
-                    placeholder == 'Profile Photo' ? 'profile' : 'cover',
-                  );
-                });
+                console.log('image', image);
+                var imageMime = image.mime;
+                var name = imageMime.split('/')[1];
+                setImageName('Vinvi.' + name);
+                setImage(image);
               });
-            }}
-            onCallBack={getBase64}>
+            }}>
             <Image
               source={require('../Assets/editProf.png')}
-              style={{marginTop: 70, marginLeft: -20}}
+              style={{marginTop: 80, marginLeft: -30}}
             />
           </TouchableOpacity>
         </View>
@@ -80,14 +135,54 @@ export default function NewCardScreen(props, navigation, onCallBack) {
             paddingBottom: 75,
           }}>
           <View>
-            <ChangePasswordInputBox placeholder="First Name" />
-            <ChangePasswordInputBox placeholder="Last Name" />
-            <ChangePasswordInputBox placeholder="Email" />
+            <ChangePasswordInputBox
+              placeholder="First Name"
+              text={
+                userData
+                  ? userData.firstName
+                    ? userData.firstName
+                    : null
+                  : null
+              }
+              onChange={value => {
+                setFirstName(value);
+              }}
+              icon={
+                <Image
+                  source={require('../Assets/id-card.png')}
+                  style={{height: 30, width: 30, marginLeft: -5}}
+                />
+              }
+            />
+            <ChangePasswordInputBox
+              placeholder="Last Name"
+              text={
+                userData ? (userData.lastName ? userData.lastName : null) : null
+              }
+              onChange={value => {
+                setLastName(value);
+              }}
+              icon={
+                <Image
+                  source={require('../Assets/id-card.png')}
+                  style={{height: 30, width: 30, marginLeft: -5}}
+                />
+              }
+            />
+            <ChangePasswordInputBox
+              placeholder="Email"
+              text={userData ? (userData.email ? userData.email : null) : null}
+              onChange={value => {
+                setEmail(value);
+              }}
+              icon={<Fontisto name="email" size={20} />}
+            />
           </View>
           <BtnComponent
             placeholder="Save"
             onPress={() => {
-              props.navigation.push('Dashboard');
+              onSave();
+              // props.navigation.push('Dashboard');
             }}
           />
         </View>

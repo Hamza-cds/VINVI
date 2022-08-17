@@ -1,14 +1,26 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, ImageBackground, ScrollView, SafeAreaView} from 'react-native';
 import {SECONDARY} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import Svg, {G, Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import {Height, URL, Width} from '../Constants/Constants';
 import AccountCard from '../Components/AccountCard';
 import LinkButton from '../Components/LinkButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AccountDashboardScreen = props => {
+  const [image, setImage] = useState('');
+  let [userData, setUserData] = useState('');
+
+  useEffect(() => {
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+      setImage({path: URL.concat(userData.profileImage)});
+    });
+  }, []);
+
   const navigation = props.navigation;
   return (
     <SafeAreaView
@@ -42,7 +54,7 @@ const AccountDashboardScreen = props => {
             </Svg>
           }
         />
-        <AccountCard />
+        <AccountCard item={{userData, image}} />
         <ScrollView
           style={{
             flex: 1,

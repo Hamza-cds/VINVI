@@ -96,17 +96,21 @@ export default function RegisterScreen(props) {
       };
       console.log('object', object);
 
-      signUpApiCall(object)
-        .then(response => {
-          console.log('response', response);
+      let updateinfo = new FormData();
+      updateinfo.append('Model', JSON.stringify(object));
 
-          if (response.data.status == 335) {
+      signUpApiCall(updateinfo)
+        .then(res => res.json())
+        .then(data => {
+          console.log('data', data);
+
+          if (data.status == 335) {
             props.navigation.push('PhoneVerification', {
               paramKey: phoneNumber,
               paramKey1: password,
             });
           } else {
-            alert(response.data.message);
+            alert(data.message);
             console.log('ADD');
           }
         })

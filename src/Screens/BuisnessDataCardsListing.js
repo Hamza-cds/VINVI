@@ -7,6 +7,7 @@ import {getBusinessCardAllActiveApiCall} from '../Apis/Repo';
 
 export function BuisnessDataCardsListing({navigation}) {
   const [buisnessData, setBuisnessData] = useState([]);
+  let [userData, setUserData] = useState(null);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
