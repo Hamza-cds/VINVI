@@ -27,7 +27,7 @@ export function SkillModal({
 
   const FunModalSkillsArray = () => {
     let newModalSkillArray = [...modalSkillArray];
-    newModalSkillArray.push(newSkill);
+    newModalSkillArray.push(newSkill.trim());
     setModalSKillArray((modalSkillArray = newModalSkillArray));
     setModalSkill(modalSkillArray);
     setInputValue('');
@@ -56,7 +56,7 @@ export function SkillModal({
         }}>
         <View
           style={{
-            backgroundColor: 'rgba(64,77,136,.8)',
+            backgroundColor: 'rgba(190,190,190,.8)',
             flex: 1,
             height: Dimensions.get('window').height,
             padding: 20,

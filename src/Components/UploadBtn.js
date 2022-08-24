@@ -64,14 +64,15 @@ const UploadBtn = ({svg, placeholder, onCallBack}) => {
                 height: 400,
                 cropping: false,
               }).then(image => {
-                console.log(image);
-                RNFS.readFile(image.path, 'base64').then(res => {
-                  // console.log("res", res)
-                  onCallBack(
-                    res,
-                    placeholder == 'Profile Photo' ? 'profile' : 'cover',
-                  );
-                });
+                onCallBack(image);
+                // console.log(image);
+                // RNFS.readFile(image.path, 'base64').then(res => {
+                //   // console.log("res", res)
+                //   onCallBack(
+                //     res,
+                //     placeholder == 'Profile Photo' ? 'profile' : 'cover',
+                //   );
+                // });
               });
             }}
           />
@@ -83,13 +84,14 @@ const UploadBtn = ({svg, placeholder, onCallBack}) => {
                 height: 400,
                 cropping: true,
               }).then(image => {
-                RNFS.readFile(image.path, 'base64').then(res => {
-                  // console.log("res", res)
-                  onCallBack(
-                    res,
-                    placeholder == 'Profile Photo' ? 'profile' : 'cover',
-                  );
-                });
+                onCallBack(image);
+                // RNFS.readFile(image.path, 'base64').then(res => {
+                //   // console.log("res", res)
+                //   onCallBack(
+                //     res,
+                //     placeholder == 'Profile Photo' ? 'profile' : 'cover',
+                //   );
+                // });
               });
             }}
           />

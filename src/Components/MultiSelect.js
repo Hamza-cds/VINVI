@@ -24,6 +24,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Search} from 'react-native-feather';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function Select({
   placeholder,
@@ -34,7 +35,8 @@ export default function Select({
   onCallBack,
 }) {
   const [openModal, setOpenModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState([]);
+  let [selectedItem, setSelectedItem] = useState([]);
+  let [searchText, setSearchText] = useState('');
 
   const itemSelection = () => {
     setOpenModal(false);
@@ -44,39 +46,15 @@ export default function Select({
     }
   };
 
-  // const selectItems = value => {
-  //   if (isMulti) {
-  //     let newArray = [...itemsSelected];
-  //     const found = newArray.find(element => element.value == value.value);
-  //     if (found == undefined) {
-  //       newArray.push(value);
-  //       setSelectedItem([]);
-  //       setSelectedItem(newArray);
-  //     } else {
-  //       const objectIndex = newArray.findIndex(
-  //         element => element.value == value.value,
-  //       );
-  //       if (objectIndex > -1) {
-  //         newArray.splice(objectIndex, 1);
-  //         setSelectedItem([]);
-  //         setSelectedItem(newArray);
-  //       }
-  //     }
-  //   } else {
-  //     setSelectedItem([]);
-  //     setSelectedItem(prevArray => [...prevArray, value]);
-  //   }
-  // };
+  const remove = (item, index) => {
+    setSelectedItem(selectedItem.filter(Sitem => Sitem.id !== item.id));
+  };
 
-  // const removeSelectedItem = (item, index) => {
-  //   let newArray = [...itemsSelected];
-  //   const objectIndex = newArray.findIndex(
-  //     element => element.value == item.value,
-  //   );
-  //   if (objectIndex > -1) newArray.splice(objectIndex, 1);
-
-  //   onSelect(newArray);
-  // };
+  const addSelectedItem = item => {
+    let arr = [...selectedItem];
+    arr.push(item);
+    setSelectedItem((selectedItem = arr));
+  };
 
   const onOpenModal = () => {
     setOpenModal(!openModal);
@@ -186,6 +164,7 @@ export default function Select({
               <TouchableOpacity
                 onPress={() => {
                   setOpenModal(!openModal);
+                  setSelectedItem([]);
                 }}
                 style={{
                   paddingBottom: 10,
@@ -244,10 +223,7 @@ export default function Select({
                 <TextInput
                   placeholder="Search"
                   keyboardType="default"
-                  onChangeText={value => {
-                    console.log('value', value);
-                    // setseacrhKey(value)
-                  }}
+                  onChangeText={setSearchText}
                   placeholderTextColor={'#8D8C8C'}
                   style={{
                     padding: 0,
@@ -265,7 +241,7 @@ export default function Select({
                     marginLeft: 5,
                   }}
                   onPress={() => {
-                    props.navigation.push('Search Result');
+                    // props.navigation.push('Search Result');
                   }}>
                   <Search
                     stroke="#242424"
@@ -282,32 +258,48 @@ export default function Select({
               <FlatList
                 horizontal={false}
                 style={{marginHorizontal: 8, marginTop: 15}}
-                data={data}
+                data={data.filter(item => {
+                  if (isNullOrEmpty(searchText)) return item;
+                  else
+                    return item.name
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase());
+                })}
                 keyExtractor={item => item.id}
                 renderItem={({item, index}) => (
                   <TouchableOpacity
                     style={{
                       marginTop: 5,
                       marginLeft: 10,
-                      backgroundColor:
-                        item.id == selectedItem.id ? SECONDARY : '#EFEFEF',
-                      // backgroundColor: '#EFEFEF',
+                      backgroundColor: selectedItem.find(
+                        element => element.id == item.id,
+                      )
+                        ? SECONDARY
+                        : '#EFEFEF',
                       height: 40,
                       width: '90%',
                       borderRadius: 15,
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                     }}
-                    onPress={() => setSelectedItem(item)}>
+                    onPress={() => {
+                      selectedItem.find(element => element.id == item.id)
+                        ? remove(item, index)
+                        : addSelectedItem(item);
+                    }}>
                     <Text
                       style={{
                         marginLeft: 20,
                         alignSelf: 'center',
-                        color: item.id == selectedItem.id ? WHITE : 'black',
+                        color: selectedItem.find(
+                          element => element.id == item.id,
+                        )
+                          ? WHITE
+                          : 'black',
                       }}>
                       {item.name}
                     </Text>
-                    {item.id == selectedItem.id ? (
+                    {selectedItem.find(element => element.id == item.id) ? (
                       <AntDesign
                         name="checkcircleo"
                         size={20}

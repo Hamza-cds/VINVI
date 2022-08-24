@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
+import {URL} from '../Constants/Constants';
 
 export default function IndividualCard({
   cta,
@@ -34,11 +35,23 @@ export default function IndividualCard({
         borderRadius: 8,
         position: 'relative',
       }}>
-      <Image
-        source={require('../Assets/profilePic.png')}
-        style={{width: 80, height: 80}}
-      />
-      <View style={{marginLeft: 10}}>
+      <View
+        style={{
+          width: 80,
+          height: 80,
+          backgroundColor: 'grey',
+          borderRadius: 40,
+        }}>
+        <Image
+          source={
+            item.profilePicture
+              ? {uri: URL.concat(item.profilePicture)}
+              : require('../Assets/EmptyProfile.png')
+          }
+          style={{width: 80, height: 80, borderRadius: 40}}
+        />
+      </View>
+      <View style={{marginHorizontal: 10}}>
         <Text style={{fontSize: 14, color: SECONDARY}}>{item.name}</Text>
         <Text
           style={{
@@ -50,7 +63,11 @@ export default function IndividualCard({
           {item.occupation}
           {/* {USER_DESIGNATION} */}
         </Text>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{item.email} </Text>
+        <Text
+          numberOfLines={2}
+          style={{fontSize: 14, color: SECONDARY, maxWidth: 190}}>
+          {item.email}
+        </Text>
         <Text style={{fontSize: 14, color: SECONDARY}}>{item.address}</Text>
       </View>
       {cta ? (

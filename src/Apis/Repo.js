@@ -66,25 +66,29 @@ export async function loginApiCall(loginRequest) {
   }
 }
 
-export async function personalCardApiCall(personalcardRequest) {
-  let route = URL.concat('/api/PersonalCard/Post');
-  console.log(
-    `Personal card Info Request : ${route} REQUEST`,
-    personalcardRequest,
+export async function personalCardApiCall(formdata) {
+  let route = URL.concat('api/PersonalCard/Post');
+  console.log(route, formdata);
+
+  var requestOptions = {
+    method: 'POST',
+    body: formdata,
+    redirect: 'follow',
+  };
+
+  return fetch(
+    'https://vinvi.dsmeglobal.com/api/PersonalCard/Post',
+    requestOptions,
   );
-  let apiRes = null;
-  try {
-    apiRes = await axios({
-      method: 'POST',
-      url: route,
-      data: personalcardRequest,
-    });
-  } catch (err) {
-    apiRes = err;
-    return apiRes;
-  } finally {
-    return apiRes;
-  }
+
+  // return await fetch('https://vinvi.dsmeglobal.com/api/PersonalCard/Post', {
+  //   method: 'POST',
+  //   body: JSON.stringify(personalcardRequest),
+  //   headers: {
+  //     'Content-Type': 'multipart/form-data',
+  //     Accept: 'application/json',
+  //   },
+  // });
 }
 
 export async function businessCardApiCall(businesscardRequest) {

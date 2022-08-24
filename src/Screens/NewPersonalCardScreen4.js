@@ -29,9 +29,16 @@ import {EducationModal} from './EducationModal';
 import {SkillModal} from './SkillModal';
 import {JobHistoryModal} from './JobHistoryModal';
 import {FlatList} from 'react-native-gesture-handler';
-import {PRIMARY, WHITE} from '../Constants/Colors';
+import {PRIMARY, TEXT_COLOR, WHITE} from '../Constants/Colors';
+import {useDispatch, useSelector} from 'react-redux';
+import {PCDComplete} from '../../Store/Action';
+import {useTheme} from 'react-native-paper';
 
 export default function NewCardScreen(props) {
+  const dispatch = useDispatch();
+  const DATA_TEST = useSelector(state => state.PCData);
+  // console.log('PERSONAL_CARD_3_DATA_TEST', DATA_TEST);
+
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
   const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
     useState(false);
@@ -43,36 +50,43 @@ export default function NewCardScreen(props) {
   const [achivements, setAchivements] = useState('');
   const [skillsArray, setSkillsArray] = useState([]);
   const [modalSkill, setModalSkill] = useState([]);
+  const [profilePic, setProfilePic] = useState(DATA_TEST.ProfilePicture);
+  const [profilePicName, setProfilePicName] = useState('');
+  // const [coverPic,setCoverPic]=useState('')
   const [educationArray, setEducationArray] = useState([]);
   let [educationObject, setEducationObject] = useState('');
   const [jobHistoryArray, setJobHistoryArray] = useState([]);
   let [jobHistoryObject, setJobHistoryObject] = useState('');
   let [userData, setUserData] = useState(null);
-  const newArray1 = props.route.params.paramKey;
+  // console.log('educationObject', educationObject);
+  const newArray1 = DATA_TEST.PersonalcardScreen1Array;
+  console.log('newArray1', newArray1);
+  console.log('profilePic', profilePic);
   const PersonalcardScreen4Array = [
     {
       key: 'Introductory Message',
-      value: message,
+      value: message.trim(),
     },
     {
       key: 'QR Code',
-      value: qrCode,
+      value: qrCode.trim(),
     },
     {
       key: 'Hobbies',
-      value: hobbies,
+      value: hobbies.trim(),
     },
     {
       key: 'Education',
       value: JSON.stringify(educationArray),
+      // value: educationArray,
     },
     {
       key: 'Interests',
-      value: interests,
+      value: interests.trim(),
     },
     {
       key: 'Achievements',
-      value: achivements,
+      value: achivements.trim(),
     },
     {
       key: 'Skills',
@@ -87,7 +101,6 @@ export default function NewCardScreen(props) {
 
   const FunSkillsArray = () => {
     setSkillsArray(modalSkill);
-    // console.log('skillsArray', skillsArray);
   };
 
   const FunEducationArray = () => {
@@ -95,7 +108,14 @@ export default function NewCardScreen(props) {
     newEducationArray.push(educationObject);
     setEducationArray([]);
     setEducationArray(newEducationArray);
-    // console.log('educationArray', educationArray);
+  };
+
+  const FunDelEducation = item => {
+    setEducationArray(educationArray.filter(Sitem => Sitem.id !== item.id));
+  };
+
+  const FunDelJobHistory = item => {
+    setJobHistoryArray(jobHistoryArray.filter(Sitem => Sitem.id !== item.id));
   };
 
   const FunJobHistoryArray = () => {
@@ -103,16 +123,21 @@ export default function NewCardScreen(props) {
     newJobHistoryArray.push(jobHistoryObject);
     setJobHistoryArray([]);
     setJobHistoryArray(newJobHistoryArray);
-    // console.log('jobHistoryArray', jobHistoryArray);
   };
 
   useEffect(() => {
-    // console.log('PCS4', props.route.params);
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
     });
   }, []);
+
+  const profileFilterFun = () => {
+    var imageMime = profilePic.mime;
+    var name = imageMime.split('/')[1];
+    setProfilePicName('Vinvi.' + name);
+    // setImage(image);
+  };
 
   const onFinish = () => {
     if (isNullOrEmpty(message)) {
@@ -144,8 +169,8 @@ export default function NewCardScreen(props) {
       for (let index = 0; index < newArray1.length; index++) {
         const element = newArray1[index];
         let newObject = {
-          PersonalKey: element.key,
-          PersonalValue: element.value,
+          PersonalKey: element.PersonalKey,
+          PersonalValue: element.PersonalValue.trim(),
           Ishidden: true,
         };
         PersonalCardMeta.push(newObject);
@@ -155,34 +180,49 @@ export default function NewCardScreen(props) {
         const element1 = PersonalcardScreen4Array[index];
         let newObject1 = {
           PersonalKey: element1.key,
-          PersonalValue: element1.value,
+          PersonalValue: element1.value.trim(),
           Ishidden: true,
         };
         PersonalCardMeta.push(newObject1);
       }
-      // console.log('PersonalCardMeta', PersonalCardMeta);
 
-      let object = {
-        name: props.route.params.name,
-        Email: props.route.params.email,
-        ProfilePicture: props.route.params.image,
-        UserId: userData.id,
-        PhoneNo: userData.phoneno,
-        Address: props.route.params.address,
-        PersonalCardMeta: PersonalCardMeta,
-      };
-      console.log('object', object);
+      var formdata = new FormData();
+      formdata.append('Name', DATA_TEST.Name);
+      formdata.append('Email', DATA_TEST.Email);
+      formdata.append('UserId', JSON.stringify(userData.id));
+      formdata.append('PhoneNo', DATA_TEST.PhoneNo);
+      formdata.append('Address', DATA_TEST.Address);
+      for (let index = 0; index < PersonalCardMeta.length; index++) {
+        const element = PersonalCardMeta[index];
+        formdata.append(
+          `PersonalCardMeta[${index}][PersonalKey]`,
+          element.PersonalKey,
+        );
+        formdata.append(
+          `PersonalCardMeta[${index}][PersonalValue]`,
+          element.PersonalValue,
+        );
+        formdata.append(
+          `PersonalCardMeta[${index}][Ishidden]`,
+          element.Ishidden,
+        );
+      }
 
-      personalCardApiCall(object)
-        .then(response => {
-          console.log('response', response);
-          if (response.data.status === 200) {
-            props.navigation.push('MyCardsDashboardScreen');
-            // , {
-            //   paramKey: newArray1,
-            //   paramKey: PersonalcardScreen4Array
-            //   dont remove this !
-            // }
+      formdata.append('profile_image_file', {
+        uri: profilePic.path,
+        name: 'Vinvi',
+        type: profilePic.mime,
+      });
+
+      // console.log('updateinfo', updateinfo);
+
+      personalCardApiCall(formdata)
+        .then(res => res.json())
+        .then(data => {
+          console.log('response', data);
+          if (data.status === 200 && data.success === true) {
+            dispatch(PCDComplete(''));
+            props.navigation.replace('MyCardsDashboardScreen');
           } else {
             alert(CREDIANTIAL_ERROR);
           }
@@ -194,7 +234,8 @@ export default function NewCardScreen(props) {
   };
 
   return (
-    <SafeAreaView style={{height: Height, width: Width}}>
+    <SafeAreaView
+      style={{height: Height, width: Width, backgroundColor: 'white'}}>
       <Header
         navigation={props.navigation}
         variant="dark"
@@ -243,7 +284,7 @@ export default function NewCardScreen(props) {
         {/* <View style={{flexDirection: 'column', marginBottom: 20}}> */}
         <View
           style={{
-            backgroundColor: '#E0E0E0',
+            backgroundColor: '#F0F0F0',
             marginBottom: 20,
             padding: 15,
             borderRadius: 8,
@@ -281,7 +322,7 @@ export default function NewCardScreen(props) {
         </View>
         <View
           style={{
-            backgroundColor: '#E0E0E0',
+            backgroundColor: '#F0F0F0',
             marginBottom: 20,
             padding: 15,
             borderRadius: 8,
@@ -315,12 +356,19 @@ export default function NewCardScreen(props) {
           <FlatList
             data={educationArray}
             style={{alignSelf: 'center'}}
-            renderItem={({item, index}) => <EducationCard item={item} />}
+            renderItem={({item, index}) => (
+              <EducationCard
+                item={item}
+                onPress={() => {
+                  FunDelEducation(item);
+                }}
+              />
+            )}
           />
         </View>
         <View
           style={{
-            backgroundColor: '#E0E0E0',
+            backgroundColor: '#F0F0F0',
             marginBottom: 20,
             padding: 15,
             borderRadius: 8,
@@ -356,7 +404,14 @@ export default function NewCardScreen(props) {
             style={{alignSelf: 'center'}}
             showsHorizontalScrollIndicator={false}
             data={jobHistoryArray}
-            renderItem={({item, index}) => <JobHistoryCard item={item} />}
+            renderItem={({item, index}) => (
+              <JobHistoryCard
+                item={item}
+                onPress={() => {
+                  FunDelJobHistory(item);
+                }}
+              />
+            )}
           />
         </View>
         <BtnComponent

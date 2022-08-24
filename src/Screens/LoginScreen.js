@@ -23,37 +23,12 @@ import {loginApiCall} from '../Apis/Repo';
 import {isInvalidPassword} from '../Constants/Validations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
-import Select from '../Components/Select';
 
 export default function LoginScreen(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  //   const [DATA, setDATA] = useState('');
-  //   console.log('DATA', DATA);
-  //   const data = [
-  //     {
-  //       id: 1,
-  //       title: 'name',
-  //     },
-  //     {
-  //       id: 2,
-  //       title: 'name1',
-  //     },
-  //     {
-  //       id: 3,
-  //       title: 'name2',
-  //     },
-  //     {
-  //       id: 4,
-  //       title: 'name3',
-  //     },
-  //   ];
-  //   <Select
-  //   data={data}
-  //   placeholder={'Education'}
-  //   onCallBack={setDATA}
-  // />
+  const [logedIn, setLogedIn] = useState(true);
 
   const onLogin = () => {
     if (isNullOrEmpty(phoneNumber)) {
@@ -79,8 +54,10 @@ export default function LoginScreen(props) {
               'user_data',
               JSON.stringify(response.data.result),
             );
+            AsyncStorage.setItem('logedIn', JSON.stringify(logedIn));
             setIsLoading(false);
-            props.navigation.push('Dashboard', {
+            // props.navigation.navigate('NewPersonalCard4');
+            props.navigation.replace('Dashboard', {
               paramKey: phoneNumber,
             });
           } else if (response.data.status == 335) {

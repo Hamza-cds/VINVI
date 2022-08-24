@@ -21,19 +21,34 @@ export function EducationModal({
   onPress,
 }) {
   const [institute, setInstitute] = useState('');
-  const [degree, setDegree] = useState('');
+  let [degree, setDegree] = useState('');
   const [fieldOfStudy, setFieldOfStudy] = useState('');
-  const [startDateMonth, setStartDateMonth] = useState('');
-  const [startDateYear, setStartDateYear] = useState('');
-  const [endDateMonth, setEndDateMonth] = useState('');
-  const [endDateYear, setEndDateYear] = useState('');
-  const [DATA, setDATA] = useState('');
-  const id = 1;
+  let [startDateMonth, setStartDateMonth] = useState('');
+  let [startDateYear, setStartDateYear] = useState('');
+  let [endDateMonth, setEndDateMonth] = useState('');
+  let [endDateYear, setEndDateYear] = useState('');
+  const id = 3;
+
+  useEffect(() => {
+    getDegree();
+  }, []);
+
+  const getDegree = () => {
+    LookupDetailApiCall(id)
+      .then(res => {
+        console.log('res ha hamza', res.data.result);
+        setDegreeData((degreeData = res.data.result));
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
   let [degreeData, setDegreeData] = useState('');
-  console.log('DATA', DATA);
+  // console.log('DATA', DATA);
   const Year = [
     {id: 1, name: '1960'},
-    {id: 22, name: '1961'},
+    {id: 2, name: '1961'},
     {id: 3, name: '1962'},
     {id: 4, name: '1963'},
     {id: 5, name: '1964'},
@@ -148,19 +163,40 @@ export function EducationModal({
     },
   ];
 
-  useEffect(() => {
-    getDegree();
-  }, []);
+  console.log('degree', degree);
 
-  const getDegree = () => {
-    LookupDetailApiCall(id)
-      .then(res => {
-        console.log('res ha hamza', res.data.result);
-        setDegreeData((degreeData = res.data.result));
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
+  const onAdd = () => {
+    let obj = {
+      institute: institute.trim(),
+      startDateMonth: startDateMonth,
+      startDateYear: startDateYear,
+      endDateMonth: endDateMonth,
+      endDateYear: endDateYear,
+      degree: degree,
+    };
+    onPress(obj);
+    // setModalVisible(!modalVisible);
+  };
+
+  const FunDegree = value => {
+    setDegree((degree = value.name));
+    console.log('degree', degree);
+  };
+  const FunstartDateMonth = value => {
+    setStartDateMonth((startDateMonth = value.name));
+    console.log('startDateMonth', startDateMonth);
+  };
+  const FunstartDateYear = value => {
+    setStartDateYear((startDateYear = value.name));
+    console.log('startDateYear', startDateYear);
+  };
+  const FunendDateMonth = value => {
+    setEndDateMonth((endDateMonth = value.name));
+    console.log('endDateMonth', endDateMonth);
+  };
+  const FunendDateYear = value => {
+    setEndDateYear((endDateYear = value.name));
+    console.log('endDateYear', endDateYear);
   };
 
   return (
@@ -177,7 +213,7 @@ export function EducationModal({
         }}>
         <View
           style={{
-            backgroundColor: 'rgba(64,77,136,.8)',
+            backgroundColor: 'rgba(190,190,190,.8)',
             flex: 1,
             height: Dimensions.get('window').height,
             padding: 20,
@@ -230,7 +266,7 @@ export function EducationModal({
             <Select
               data={degreeData}
               placeholder={'Degree'}
-              onCallBack={setDATA}
+              onCallBack={FunDegree}
             />
             <OutlinedInputBox
               placeholder="University-Institute"
@@ -253,13 +289,13 @@ export function EducationModal({
             <Select
               data={Months}
               placeholder={'Start month'}
-              onCallBack={setStartDateMonth}
+              onCallBack={FunstartDateMonth}
             />
 
             <Select
               data={Year}
               placeholder={'Start year'}
-              onCallBack={setStartDateYear}
+              onCallBack={FunstartDateYear}
             />
 
             <Text style={{color: 'black', fontWeight: '700', fontSize: 16}}>
@@ -268,32 +304,33 @@ export function EducationModal({
             <Select
               data={Months}
               placeholder={'End month'}
-              onCallBack={setEndDateMonth}
+              onCallBack={FunendDateMonth}
             />
 
             <Select
               data={Year}
               placeholder={'End year'}
-              onCallBack={setEndDateYear}
+              onCallBack={FunendDateYear}
             />
 
             <BtnComponent
               placeholder={isEdit ? 'Edit' : 'Add'}
+              onPress={onAdd}
               // onPress={() => {
               //   setModalVisible(!modalVisible);
               //   setEducationObject(obj);
               // }}
-              onPress={() => {
-                let obj = {
-                  institute: institute,
-                  startDateMonth: startDateMonth,
-                  startDateYear: startDateYear,
-                  endDateMonth: endDateMonth,
-                  endDateYear: endDateYear,
-                  degree: degree,
-                };
-                onPress(obj);
-              }}
+              // onPress={() => {
+              //   let obj = {
+              //     institute: institute,
+              //     startDateMonth: startDateMonth,
+              //     startDateYear: startDateYear,
+              //     endDateMonth: endDateMonth,
+              //     endDateYear: endDateYear,
+              //     degree: degree,
+              //   };
+              //   onPress(obj);
+              // }}
             />
           </View>
         </View>

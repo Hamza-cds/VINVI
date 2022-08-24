@@ -38,7 +38,7 @@ export default function MyCardIndividual({
         source={require('../Assets/profilePic.png')}
         style={{width: 80, height: 80}}
       />
-      <View style={{marginLeft: 10}}>
+      <View style={{marginHorizontal: 10}}>
         <Text
           style={{fontSize: 14, color: selected === index ? WHITE : SECONDARY}}>
           {item.name}
@@ -54,11 +54,11 @@ export default function MyCardIndividual({
           user designation
         </Text>
         <Text
-          style={{fontSize: 14, color: selected === index ? WHITE : SECONDARY}}>
-          {item.email}{' '}
+          style={{fontSize: 12, color: selected === index ? WHITE : SECONDARY}}>
+          {item.email}
         </Text>
         <Text
-          style={{fontSize: 14, color: selected === index ? WHITE : SECONDARY}}>
+          style={{fontSize: 12, color: selected === index ? WHITE : SECONDARY}}>
           {item.address}
         </Text>
       </View>

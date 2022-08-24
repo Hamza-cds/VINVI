@@ -7,6 +7,8 @@ import NewCardStepPanel from '../Components/NewCardStepPanel';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Height, Width} from '../Constants/Constants';
 import {isNullOrEmpty} from '../Constants/TextUtils';
+import {PCData} from '../../Store/Action';
+import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   EMPTY_ADDRESS,
@@ -20,6 +22,8 @@ import {
 } from '../Constants/Strings';
 
 export default function NewCardScreen(props) {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [occupation, setOccupation] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -47,73 +51,103 @@ export default function NewCardScreen(props) {
     },
   ];
 
-  let [userData, setUserData] = useState(null);
+  let [UserData, setUserData] = useState(null);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
-      setUserData((userData = JSON.parse(response)));
-      console.log('userdata', userData);
+      setUserData((UserData = JSON.parse(response)));
+      console.log('Userdata', UserData);
     });
   }, []);
 
-  const onNext = () => {
-    if (isNullOrEmpty(name)) {
-      alert(EMPTY_NAME);
-    } else if (isNullOrEmpty(occupation)) {
-      alert(EMPTY_OCCUPATION);
-    } else if (isNullOrEmpty(phoneNumber)) {
-      alert(EMPTY_PHONE);
-    } else if (isNullOrEmpty(email)) {
-      alert(EMPTY_EMAIL);
-    } else if (isNullOrEmpty(birthday)) {
-      alert(EMPTY_BIRTHDAY);
-    } else if (isNullOrEmpty(address)) {
-      alert(EMPTY_ADDRESS);
-    } else if (isNullOrEmpty(city)) {
-      alert(EMPTY_CITY);
-    } else if (isNullOrEmpty(country)) {
-      alert(EMPTY_COUNTRY);
-    } else {
-      props.navigation.push('NewPersonalCard2', {
-        paramkey: PersonalcardScreen1Array,
-        name: name,
-        occupation: occupation,
-        email: email,
-        address: address,
-      });
-      console.log('PersonalcardScreen1Array', PersonalcardScreen1Array);
-      let object = {
-        Name: name,
-        Email: email,
-        PhoneNo: phoneNumber,
-        Address: address,
-        UserId: userData.id,
-        PersonalCardMeta: [
-          {
-            PersonalKey: 'occupation',
-            PersonalValue: occupation,
-            Ishidden: true,
-          },
-          {
-            PersonalKey: 'birthday',
-            PersonalValue: birthday,
-            Ishidden: true,
-          },
-          {
-            PersonalKey: 'city',
-            PersonalValue: city,
-            Ishidden: true,
-          },
-          {
-            PersonalKey: 'country',
-            PersonalValue: country,
-            Ishidden: true,
-          },
-        ],
-      };
-      console.log('object', object);
-    }
+  let object = {
+    Name: name.trim(),
+    Email: email.trim(),
+    PhoneNo: phoneNumber.trim(),
+    Address: address.trim(),
+    // UserId: UserData.id,
+    PersonalcardScreen1Array: [
+      {
+        PersonalKey: 'occupation',
+        PersonalValue: occupation.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'birthday',
+        PersonalValue: birthday.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'city',
+        PersonalValue: city.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'country',
+        PersonalValue: country.trim(),
+        Ishidden: true,
+      },
+    ],
   };
+
+  // const onNext = () => {
+  //   if (isNullOrEmpty(name)) {
+  //     alert(EMPTY_NAME);
+  //   } else if (isNullOrEmpty(occupation)) {
+  //     alert(EMPTY_OCCUPATION);
+  //   } else if (isNullOrEmpty(phoneNumber)) {
+  //     alert(EMPTY_PHONE);
+  //   } else if (isNullOrEmpty(email)) {
+  //     alert(EMPTY_EMAIL);
+  //   } else if (isNullOrEmpty(birthday)) {
+  //     alert(EMPTY_BIRTHDAY);
+  //   } else if (isNullOrEmpty(address)) {
+  //     alert(EMPTY_ADDRESS);
+  //   } else if (isNullOrEmpty(city)) {
+  //     alert(EMPTY_CITY);
+  //   } else if (isNullOrEmpty(country)) {
+  //     alert(EMPTY_COUNTRY);
+  //   } else {
+  //     props.navigation.push('NewPersonalCard2', {
+  //       paramkey: PersonalcardScreen1Array,
+  //       name: name,
+  //       occupation: occupation,
+  //       email: email,
+  //       address: address,
+  //     });
+  //     console.log('PersonalcardScreen1Array', PersonalcardScreen1Array);
+  //     let object = {
+  //       Name: name,
+  //       Email: email,
+  //       PhoneNo: phoneNumber,
+  //       Address: address,
+  //       UserId: userData.id,
+  //       PersonalCardMeta: [
+  //         {
+  //           PersonalKey: 'occupation',
+  //           PersonalValue: occupation,
+  //           Ishidden: true,
+  //         },
+  //         {
+  //           PersonalKey: 'birthday',
+  //           PersonalValue: birthday,
+  //           Ishidden: true,
+  //         },
+  //         {
+  //           PersonalKey: 'city',
+  //           PersonalValue: city,
+  //           Ishidden: true,
+  //         },
+  //         {
+  //           PersonalKey: 'country',
+  //           PersonalValue: country,
+  //           Ishidden: true,
+  //         },
+  //       ],
+  //     };
+  //     console.log('object', object);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -196,7 +230,9 @@ export default function NewCardScreen(props) {
           <BtnComponent
             placeholder="Next"
             onPress={() => {
-              onNext();
+              // onNext();
+              dispatch(PCData(object));
+              props.navigation.navigate('NewPersonalCard2');
             }}
           />
         </View>

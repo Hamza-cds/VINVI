@@ -8,9 +8,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Svg, {G, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {PCData, PCDComplete} from '../../Store/Action';
 
 export default function NewCardScreen(props) {
-  const [image, setImage] = useState('');
+  const [profileImage, setProfileImage] = useState('');
+  const [profileImageName, setProfileImageName] = useState('');
+  const [coverImage, setCoverImage] = useState('');
+  const [coverImageName, setCoverImageName] = useState('');
+  const dispatch = useDispatch();
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -21,29 +27,45 @@ export default function NewCardScreen(props) {
     });
   }, []);
 
-  const getBase64 = (image, type) => {
+  const profileImageFun = image => {
     console.log('image base 64', image);
-    console.log('type', type);
-    const base64Converted = 'data:image/png;base64,' + image;
-    setImage(base64Converted);
+    var imageMime = image.mime;
+    var name = imageMime.split('/')[1];
+    setProfileImageName('Vinvi.' + name);
+    setProfileImage(image);
   };
 
-  const onNext = () => {
-    props.navigation.push('NewPersonalCard4', {
-      paramKey: props.route.params.paramKey,
-      name: props.route.params.name,
-      email: props.route.params.email,
-      address: props.route.params.address,
-      image: image,
-    });
-    console.log('props of page 3', props.route.params);
-    let object = {
-      PhoneNo: userData.phoneno,
-      UserId: userData.id,
-      ProfilePicture: image,
-    };
-    console.log('object', object);
+  const coverImageFun = image => {
+    console.log('image base 64', image);
+    var imageMime = image.mime;
+    var name = imageMime.split('/')[1];
+    setCoverImageName('Vinvi.' + name);
+    setCoverImage(image);
   };
+
+  let object = {
+    ProfilePicture: profileImage,
+    profileName: profileImageName,
+    CoverPicture: coverImage,
+    coverName: coverImageName,
+  };
+
+  // const onNext = () => {
+  //   props.navigation.push('NewPersonalCard4', {
+  //     paramKey: props.route.params.paramKey,
+  //     name: props.route.params.name,
+  //     email: props.route.params.email,
+  //     address: props.route.params.address,
+  //     image: image,
+  //   });
+  //   console.log('props of page 3', props.route.params);
+  //   let object = {
+  //     PhoneNo: userData.phoneno,
+  //     UserId: userData.id,
+  //     ProfilePicture: image,
+  //   };
+  //   console.log('object', object);
+  // };
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -90,7 +112,7 @@ export default function NewCardScreen(props) {
               </Svg>
             }
             placeholder="Profile Photo"
-            onCallBack={getBase64}
+            onCallBack={profileImageFun}
           />
           <UploadBtn
             svg={
@@ -120,12 +142,16 @@ export default function NewCardScreen(props) {
               </Svg>
             }
             placeholder="Cover Photo"
-            onCallBack={getBase64}
+            onCallBack={coverImageFun}
           />
           <BtnComponent
             placeholder="Next"
             onPress={() => {
-              onNext();
+              dispatch(PCData(object));
+              // dispatch(PCDComplete(''));
+
+              props.navigation.navigate('NewPersonalCard4');
+              // onNext();
             }}
           />
         </View>

@@ -40,6 +40,8 @@ export default function IndividualScreen(props) {
   const [favorit, setFavorit] = useState(false);
   const [ID, setID] = useState(props.route.params.id);
 
+  console.log('data', data);
+
   let arrayOccupation;
   arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
   if (arrayOccupation) {
@@ -123,8 +125,12 @@ export default function IndividualScreen(props) {
           }}>
           <View style={{marginLeft: 50}}>
             <Image
-              source={{uri: URL.concat(data.profilePicture)}}
-              style={{width: 100, height: 100}}
+              source={
+                data.profilePicture
+                  ? {uri: URL.concat(data.profilePicture)}
+                  : require('../Assets/EmptyProfile.png')
+              }
+              style={{width: 100, height: 100, borderRadius: 50}}
             />
           </View>
 

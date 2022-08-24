@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ImageBackground,
@@ -10,8 +10,18 @@ import {WHITE} from '../Constants/Colors';
 import Heading from '../Components/Heading';
 import Paragraph from '../Components/Paragraph';
 import Svg, {Path} from 'react-native-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function HomeScreen(props) {
+export default function IntroSc(props) {
+  //   const [firstTime, setFirstTime] = useState(true);
+  const firstTime = true;
+
+  const pressFunctionality = pageName => {
+    props.navigation.replace(pageName);
+    AsyncStorage.setItem('isFirstTimeRunApp', JSON.stringify(firstTime));
+    console.log('First time', firstTime);
+  };
+
   return (
     <ImageBackground
       source={require('../Assets/homebg.png')}
@@ -35,11 +45,11 @@ export default function HomeScreen(props) {
           <Heading placeholder="Heading" />
           <Paragraph
             placeholder="Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Sapiente, incidunt iste! Veritatis, eum consectetur. Reiciendis
-              harum enim tempore eum error quibusdam labore ipsum recusandae.
-              Tenetur recusandae quisquam rerum facilis consectetur dolore sint
-              perspiciatis numquam ipsa architecto, sit excepturi provident
-              mollitia culpa ab!"
+            Sapiente, incidunt iste! Veritatis, eum consectetur. Reiciendis
+            harum enim tempore eum error quibusdam labore ipsum recusandae.
+            Tenetur recusandae quisquam rerum facilis consectetur dolore sint
+            perspiciatis numquam ipsa architecto, sit excepturi provident
+            mollitia culpa ab!"
           />
           <View
             style={{
@@ -59,7 +69,8 @@ export default function HomeScreen(props) {
                 alignItems: 'flex-end',
               }}
               onPress={() => {
-                props.navigation.navigate('Register');
+                pressFunctionality('Login');
+                // props.navigation.navigate('Register');
               }}>
               <Svg
                 xmlns="http://www.w3.org/2000/svg"

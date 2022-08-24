@@ -227,8 +227,12 @@ const AccountDashboardScreen = props => {
             <BtnComponent
               placeholder="Logout"
               onPress={() => {
-                navigation.navigate('Login');
+                AsyncStorage.removeItem('user_data');
+                props.navigation.replace('Login');
               }}
+              // onPress={() => {
+              //   navigation.navigate('Login');
+              // }}
             />
           </View>
         </ScrollView>

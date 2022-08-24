@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from '../Screens/HomeScreen';
+import Splash from '../Screens/Splash';
+import IntroSc from '../Screens/IntroSc';
 import RegisterScreen from '../Screens/RegisterScreen';
 import LoginScreen from '../Screens/LoginScreen';
 import ForgotPasswordScreen from '../Screens/ForgotPasswordScreen';
@@ -29,10 +30,20 @@ Stack = createStackNavigator();
 export default function StackNavigation() {
   return (
     <Stack.Navigator
+      initialRouteName="Splash"
       screenOptions={{
         header: () => null,
       }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="welcome"
+        component={IntroSc}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />

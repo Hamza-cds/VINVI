@@ -7,9 +7,15 @@ import NewCardStepPanel from '../Components/NewCardStepPanel';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Svg, {Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
+import {useSelector, useDispatch} from 'react-redux';
+import {stat} from 'react-native-fs';
 
 export default function NewCardScreen(props) {
-  console.log('PersonalcardScreen1Array', props);
+  console.log('props', props);
+  const dispatch = useDispatch();
+
+  const DATA_TEST = useSelector(state => state.PCData);
+  console.log('DATA_TEST', DATA_TEST);
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -163,14 +169,15 @@ export default function NewCardScreen(props) {
             <BtnComponent
               placeholder="Next"
               onPress={() => {
-                props.navigation.push('NewPersonalCard3', {
-                  paramKey: props.route.params.paramkey,
-                  name: props.route.params.name,
-                  email: props.route.params.email,
-                  address: props.route.params.address,
-                });
+                props.navigation.navigate('NewPersonalCard3');
+                // props.navigation.push('NewPersonalCard3', {
+                //   paramKey: props.route.params.paramkey,
+                //   name: props.route.params.name,
+                //   email: props.route.params.email,
+                //   address: props.route.params.address,
+                // });
 
-                console.log('page 2 data', props.route.params);
+                // console.log('page 2 data', props.route.params);
               }}
             />
           </View>

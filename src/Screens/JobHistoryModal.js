@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -12,6 +12,7 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
 import Select from '../Components/Select';
 import {WHITE} from '../Constants/Colors';
+import {GetAllLookupDetailApiCall} from '../Apis/Repo';
 
 export function JobHistoryModal({
   modalVisible,
@@ -19,12 +20,45 @@ export function JobHistoryModal({
   onPress,
   isEdit,
 }) {
+  useEffect(() => {
+    getAllLookupdetail();
+  }, []);
   const [companyName, setCompanyName] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
-  const [description, setDescription] = useState('');
-  const [DATA, setDATA] = useState('');
-  console.log('DATA', DATA);
+  let [startMonth, setStartMonth] = useState('');
+  let [startYear, setStartYear] = useState('');
+  let [endMonth, setEndMonth] = useState('');
+  let [endYear, setEndYear] = useState('');
+  let [industry, setIndustry] = useState('');
+  let [employee, setEmployee] = useState('');
+  const [title, setTitle] = useState('');
+  // const [description, setDescription] = useState('');
+  let [industryType, setIndustryType] = useState([]);
+  let [employeeType, setEmployeeType] = useState([]);
+  let [lookupData, setLookupData] = useState([]);
+
+  const getAllLookupdetail = () => {
+    GetAllLookupDetailApiCall()
+      .then(res => {
+        setLookupData((lookupData = res.data.result));
+
+        for (let index = 0; index < lookupData.length; index++) {
+          const element = lookupData[index];
+          if (element.lookupId == 8) {
+            let arrayEmpType = employeeType;
+            arrayEmpType.push(element);
+            setEmployeeType((employeeType = arrayEmpType));
+          } else if (element.lookupId == 9) {
+            let arrayIndustryType = industryType;
+            arrayIndustryType.push(element);
+            setIndustryType((industryType = arrayIndustryType));
+          }
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
   const Year = [
     {id: 1, name: '1960'},
     {id: 22, name: '1961'},
@@ -142,6 +176,52 @@ export function JobHistoryModal({
     },
   ];
 
+  // console.log('employee', employee);
+  // console.log('industry', industry);
+  // console.log('startMonth', startMonth);
+  // console.log('startYear', startYear);
+
+  const onAdd = () => {
+    let obj = {
+      title: title.trim(),
+      companyName: companyName.trim(),
+      industryType: industry,
+      employeeType: employee,
+      startMonth: startMonth,
+      startYear: startYear,
+      endMonth: endMonth,
+      endYear: endYear,
+      // description: description.trim(),
+    };
+    onPress(obj);
+    // setModalVisible(!modalVisible);
+  };
+
+  const FunIndustry = value => {
+    setIndustry((industry = value.name));
+    console.log('industry', industry);
+  };
+  const FunEmployee = value => {
+    setEmployee((employee = value.name));
+    console.log('employee', employee);
+  };
+  const FunstartDateMonth = value => {
+    setStartMonth((startMonth = value.name));
+    console.log('startMonth', startMonth);
+  };
+  const FunstartDateYear = value => {
+    setStartYear((startYear = value.name));
+    console.log('startYear', startYear);
+  };
+  const FunendDateMonth = value => {
+    setEndMonth((endMonth = value.name));
+    console.log('endMonth', endMonth);
+  };
+  const FunendDateYear = value => {
+    setEndYear((endYear = value.name));
+    console.log('endYear', endYear);
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -156,7 +236,7 @@ export function JobHistoryModal({
         }}> */}
       <View
         style={{
-          backgroundColor: 'rgba(64,77,136,.8)',
+          backgroundColor: 'rgba(190,190,190,.8)',
           // flex: 1,
           height: Dimensions.get('window').height,
           padding: 10,
@@ -211,8 +291,8 @@ export function JobHistoryModal({
                 placeholder="Title"
                 inputType="text"
                 onChange={value => {
-                  // setCompanyName(value);
-                  console.log(value);
+                  setTitle(value);
+                  // console.log(value);
                 }}
               />
               <OutlinedInputBox
@@ -224,14 +304,17 @@ export function JobHistoryModal({
               />
 
               <Select
-                data={Months}
+                data={industryType}
                 placeholder={'Industry type'}
-                onCallBack={setDATA}
+                onCallBack={FunIndustry}
               />
               <Select
-                data={Months}
+                data={employeeType}
                 placeholder={'Employee type'}
-                onCallBack={setDATA}
+                onChange={value => {
+                  console.log('value', value);
+                }}
+                onCallBack={FunEmployee}
               />
 
               <Text style={{color: 'black', fontWeight: '700', fontSize: 16}}>
@@ -240,13 +323,13 @@ export function JobHistoryModal({
               <Select
                 data={Months}
                 placeholder={'Start month'}
-                onCallBack={setDATA}
+                onCallBack={FunstartDateMonth}
               />
 
               <Select
                 data={Year}
                 placeholder={'Start year'}
-                onCallBack={setDATA}
+                onCallBack={FunstartDateYear}
               />
 
               <Text style={{color: 'black', fontWeight: '700', fontSize: 16}}>
@@ -255,39 +338,40 @@ export function JobHistoryModal({
               <Select
                 data={Months}
                 placeholder={'Start month'}
-                onCallBack={setDATA}
+                onCallBack={FunendDateMonth}
               />
 
               <Select
                 data={Year}
                 placeholder={'Start year'}
-                onCallBack={setDATA}
+                onCallBack={FunendDateYear}
               />
 
-              <OutlinedInputBox
+              {/* <OutlinedInputBox
                 placeholder="Decription"
                 inputType="text"
                 multiline
                 onChange={value => {
                   setDescription(value);
                 }}
-              />
+              /> */}
             </View>
           </ScrollView>
           <BtnComponent
             placeholder={isEdit ? 'Edit' : 'Add'}
+            onPress={onAdd}
             // onPress={() => {
             //   setModalVisible(!modalVisible);
             // }}
-            onPress={() => {
-              let obj = {
-                companyName: companyName,
-                fromDate: fromDate,
-                toDate: toDate,
-                description: description,
-              };
-              onPress(obj);
-            }}
+            // onPress={() => {
+            //   let obj = {
+            //     companyName: companyName,
+            //     fromDate: fromDate,
+            //     toDate: toDate,
+            //     description: description,
+            //   };
+            //   onPress(obj);
+            // }}
           />
         </View>
       </View>

@@ -19,7 +19,7 @@ export function IndividualDataCardsListing({navigation}) {
   useEffect(() => {
     getPersonalCardAllActiveApiCall()
       .then(res => {
-        console.log('res', res);
+        console.log('lIUQWDKJLSdahLsdfi', res);
         setIndividualData(res.data.result);
       })
       .catch(err => {

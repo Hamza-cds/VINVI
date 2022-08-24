@@ -3,7 +3,9 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {PRIMARY, WHITE} from '../Constants/Colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-export function EducationCard({item}) {
+export function EducationCard({item, onPress}) {
+  console.log('item', item);
+
   return (
     <View
       style={{
@@ -15,6 +17,7 @@ export function EducationCard({item}) {
         marginTop: 10,
       }}>
       <TouchableOpacity
+        onPress={onPress}
         style={{alignSelf: 'flex-end', marginTop: -7, marginRight: -7}}>
         <AntDesign name="closecircle" size={23} color={PRIMARY} />
       </TouchableOpacity>
@@ -22,22 +25,32 @@ export function EducationCard({item}) {
         <Text
           style={{
             color: '#7A7A7A',
+            fontWeight: '700',
           }}>
           {item.institute}
         </Text>
         <Text
           style={{
             color: '#7A7A7A',
+            fontSize: 13,
             marginVertical: 10,
           }}>
-          {item.fromDate + '  ' + '-' + '  ' + item.toDate}
+          {item.degree}
         </Text>
         <Text
           style={{
             color: '#7A7A7A',
-            fontSize: 12,
+            fontSize: 13,
           }}>
-          {item.degree}
+          {item.startDateMonth +
+            ' ' +
+            item.startDateYear +
+            '  ' +
+            '-' +
+            '  ' +
+            item.endDateMonth +
+            ' ' +
+            item.endDateYear}
         </Text>
       </View>
     </View>
