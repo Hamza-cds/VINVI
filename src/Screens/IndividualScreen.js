@@ -8,7 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {SECONDARY, FORTH} from '../Constants/Colors';
+import {SECONDARY, FORTH, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import Svg, {Path} from 'react-native-svg';
@@ -29,6 +29,7 @@ import {ContactModal} from './ContactModal';
 import {PersonalModal} from './PersonalModal';
 
 export default function IndividualScreen(props) {
+  console.log('props', props);
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
   const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
     useState(false);
@@ -39,6 +40,10 @@ export default function IndividualScreen(props) {
   const [data, setdata] = useState(' ');
   const [favorit, setFavorit] = useState(false);
   const [ID, setID] = useState(props.route.params.id);
+  const [Edit, setEdit] = useState(
+    props.route.params.edit ? props.route.params.edit : '',
+  );
+  const [editSkill, setEditSkill] = useState('');
 
   console.log('data', data);
 
@@ -59,7 +64,7 @@ export default function IndividualScreen(props) {
   }
 
   let arraycountry;
-  arraycountry = _.find(data.personalCardMeta, {personalKey: 'Country'});
+  arraycountry = _.find(data.personalCardMeta, {personalKey: 'country'});
   if (arraycountry) {
     arraycountry = arraycountry.personalValue;
   } else {
@@ -73,6 +78,68 @@ export default function IndividualScreen(props) {
   } else {
     arrayskills = 'Dummy Skill';
   }
+
+  let arrayeducation;
+  arrayeducation = _.find(data.personalCardMeta, {personalKey: 'Education'});
+  if (arrayeducation) {
+    arrayeducation = arrayeducation.personalValue;
+  } else {
+    arrayeducation = 'Dummy education';
+  }
+
+  let arrayjobhistory;
+  arrayjobhistory = _.find(data.personalCardMeta, {personalKey: 'JobHistory'});
+  if (arrayjobhistory) {
+    arrayjobhistory = arrayjobhistory.personalValue;
+  } else {
+    arrayjobhistory = 'Dummy job History';
+  }
+
+  let arrayhobbies;
+  arrayhobbies = _.find(data.personalCardMeta, {personalKey: 'Hobbies'});
+  if (arrayhobbies) {
+    arrayhobbies = arrayhobbies.personalValue;
+  } else {
+    arrayhobbies = 'Dummy hobbies';
+  }
+
+  let arrayinterest;
+  arrayinterest = _.find(data.personalCardMeta, {personalKey: 'Interests'});
+  if (arrayinterest) {
+    arrayinterest = arrayinterest.personalValue;
+  } else {
+    arrayinterest = 'Dummy Interests';
+  }
+
+  let arrayachievment;
+  arrayachievment = _.find(data.personalCardMeta, {
+    personalKey: 'Achievements',
+  });
+  if (arrayachievment) {
+    arrayachievment = arrayachievment.personalValue;
+  } else {
+    arrayachievment = 'Dummy Achievements';
+  }
+
+  let arrayIntro;
+  arrayIntro = _.find(data.personalCardMeta, {
+    personalKey: 'Introductory Message',
+  });
+  if (arrayIntro) {
+    arrayIntro = arrayIntro.personalValue;
+  } else {
+    arrayIntro = 'Dummy Introduction';
+  }
+
+  let arraybirthday;
+  arraybirthday = _.find(data.personalCardMeta, {personalKey: 'birthday'});
+  if (arraybirthday) {
+    arraybirthday = arraybirthday.personalValue;
+  } else {
+    arraybirthday = 'Dummy Birthday';
+  }
+
+  console.log('arrayjobhistory', arrayjobhistory);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -101,7 +168,7 @@ export default function IndividualScreen(props) {
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{flex: 1, backgroundColor: WHITE}}>
         <ImageBackground
           source={require('../Assets/individualbanner.png')}
           style={{width: '100%', height: 300}}>
@@ -123,7 +190,14 @@ export default function IndividualScreen(props) {
             position: 'absolute',
             top: 270,
           }}>
-          <View style={{marginLeft: 50}}>
+          <View
+            style={{
+              marginLeft: 30,
+              backgroundColor: '#E0E0E0',
+              width: 100,
+              height: 100,
+              borderRadius: 50,
+            }}>
             <Image
               source={
                 data.profilePicture
@@ -137,7 +211,7 @@ export default function IndividualScreen(props) {
           <View style={{paddingHorizontal: 10, marginBottom: 10}}>
             <Text style={{color: SECONDARY, fontSize: 20}}>{data.name}</Text>
 
-            <View style={{marginLeft: 150, marginTop: -20}}>
+            <View style={{marginLeft: 170, marginTop: -20}}>
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
@@ -251,20 +325,40 @@ export default function IndividualScreen(props) {
               textAlign: 'center',
               marginBottom: 20,
             }}>
-            Out beyond ideas of wrongdoing and rightdoing there is a field. I'll
-            meet you there. When the soul lies down in that grass the world is
-            too full to talk about.
+            {arrayIntro}
           </Text>
+
+          <PersonalDetails
+            setIsEdit={setIsPersonalModalVisible}
+            arrayhobbies={arrayhobbies}
+            arrayinterest={arrayinterest}
+            arrayachievment={arrayachievment}
+            arraybirthday={arraybirthday}
+            edit={Edit ? Edit : false}
+          />
+
           <ContactDetails
             data={data}
             arraycountry={arraycountry}
             arraycity={arraycity}
             setEdit={setIsContactModalVisible}
+            edit={Edit ? Edit : false}
           />
-          <Education setEdit={setIsEducationModalVisible} />
-          <JobHistory setEdit={setIsJobHistoryModalVisible} />
-          <PersonalDetails setIsEdit={setIsPersonalModalVisible} />
-          <Skills arrskills={arrayskills} setEdit={setIsSkillModalVisible} />
+          <Education
+            setEdit={setIsEducationModalVisible}
+            arrayeducation={arrayeducation}
+            edit={Edit ? Edit : false}
+          />
+          <JobHistory
+            setEdit={setIsJobHistoryModalVisible}
+            arrayjobhistory={arrayjobhistory}
+            edit={Edit ? Edit : false}
+          />
+          <Skills
+            arrskills={arrayskills}
+            setEdit={setIsSkillModalVisible}
+            edit={Edit ? Edit : false}
+          />
           <View
             style={{width: '100%', marginVertical: 70, alignItems: 'center'}}>
             <QRCode
@@ -291,16 +385,25 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isSkillModalVisible}
         setModalVisible={setIsSkillModalVisible}
+        arrskills={arrayskills}
+        setEditSkill={setEditSkill}
       />
       <ContactModal
         isEdit
         modalVisible={isContactModalVisible}
         setModalVisible={setIsContactModalVisible}
+        data={data}
+        arraycountry={arraycountry}
+        arraycity={arraycity}
       />
       <PersonalModal
         isEdit
         modalVisible={isPersonalModalVisible}
         setModalVisible={setIsPersonalModalVisible}
+        arrayhobbies={arrayhobbies}
+        arrayinterest={arrayinterest}
+        arrayachievment={arrayachievment}
+        arraybirthday={arraybirthday}
       />
     </SafeAreaView>
   );

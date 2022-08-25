@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {SECONDARY} from '../Constants/Colors';
 
-export default function SkillTag({placeholder, item}) {
+export default function SkillTag({item}) {
   return (
     <View
       style={{
@@ -14,7 +14,9 @@ export default function SkillTag({placeholder, item}) {
         marginRight: 10,
         marginBottom: 10,
       }}>
-      <Text style={{color: SECONDARY, fontSize: 12}}>{item}</Text>
+      <Text style={{color: SECONDARY, fontSize: 12}}>
+        {item ? item : 'dummy skill'}
+      </Text>
     </View>
   );
 }

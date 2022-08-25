@@ -10,6 +10,8 @@ export function Individual({navigation}) {
   let [userData, setUserData] = useState(null);
   const [data, setdata] = useState([]);
 
+  console.log('my card list', data);
+
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));

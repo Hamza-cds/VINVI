@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-export function EducationCard({}) {
+export function EducationCard({item}) {
   return (
     <View
       style={{
@@ -10,24 +10,42 @@ export function EducationCard({}) {
         borderRadius: 5,
         marginRight: 10,
         minWidth: 250,
+        marginTop: 10,
       }}>
       <Text
         style={{
           color: '#606060',
         }}>
-        Institute
+        {item.institute ? item.institute : 'dummy institute'}
       </Text>
       <Text
         style={{
           color: '#606060',
         }}>
-        2016 - 2020
+        {/* {item.startDateMonth
+          ? item.startDateMonth
+          : 'dummy month' + ' ' + item.startDateYear
+          ? item.startDateYear
+          : 'dummy year' + ' ' + '-' + ' ' + item.endDateMonth
+          ? item.endDateMonth
+          : 'dummy month' + ' ' + item.endDateYear
+          ? item.endDateYear
+          : 'dummy year'} */}
+        {item.startDateMonth +
+          ' ' +
+          item.startDateYear +
+          ' ' +
+          '-' +
+          ' ' +
+          item.endDateMonth +
+          ' ' +
+          item.endDateYear}
       </Text>
       <Text
         style={{
           color: '#606060',
         }}>
-        Degree
+        {item.degree ? item.degree : 'dummy degree'}
       </Text>
     </View>
   );

@@ -3,6 +3,7 @@ import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
 import {URL} from '../Constants/Constants';
+import _ from 'lodash';
 
 export default function IndividualCard({
   cta,
@@ -11,6 +12,16 @@ export default function IndividualCard({
   navigationPath,
   item,
 }) {
+  console.log('data list card show', item);
+
+  let arrayOccupation;
+  arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
+  if (arrayOccupation) {
+    arrayOccupation = arrayOccupation.personalValue;
+  } else {
+    arrayOccupation = 'Dummy occupation';
+  }
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -60,8 +71,7 @@ export default function IndividualCard({
             color: SECONDARY,
             marginBottom: 10,
           }}>
-          {item.occupation}
-          {/* {USER_DESIGNATION} */}
+          {arrayOccupation}
         </Text>
         <Text
           numberOfLines={2}

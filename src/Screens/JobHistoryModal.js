@@ -19,10 +19,9 @@ export function JobHistoryModal({
   setModalVisible,
   onPress,
   isEdit,
+  industryType,
+  employeeType,
 }) {
-  useEffect(() => {
-    getAllLookupdetail();
-  }, []);
   const [companyName, setCompanyName] = useState('');
   let [startMonth, setStartMonth] = useState('');
   let [startYear, setStartYear] = useState('');
@@ -31,33 +30,6 @@ export function JobHistoryModal({
   let [industry, setIndustry] = useState('');
   let [employee, setEmployee] = useState('');
   const [title, setTitle] = useState('');
-  // const [description, setDescription] = useState('');
-  let [industryType, setIndustryType] = useState([]);
-  let [employeeType, setEmployeeType] = useState([]);
-  let [lookupData, setLookupData] = useState([]);
-
-  const getAllLookupdetail = () => {
-    GetAllLookupDetailApiCall()
-      .then(res => {
-        setLookupData((lookupData = res.data.result));
-
-        for (let index = 0; index < lookupData.length; index++) {
-          const element = lookupData[index];
-          if (element.lookupId == 8) {
-            let arrayEmpType = employeeType;
-            arrayEmpType.push(element);
-            setEmployeeType((employeeType = arrayEmpType));
-          } else if (element.lookupId == 9) {
-            let arrayIndustryType = industryType;
-            arrayIndustryType.push(element);
-            setIndustryType((industryType = arrayIndustryType));
-          }
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
-  };
 
   const Year = [
     {id: 1, name: '1960'},
@@ -175,11 +147,6 @@ export function JobHistoryModal({
       name: 'December',
     },
   ];
-
-  // console.log('employee', employee);
-  // console.log('industry', industry);
-  // console.log('startMonth', startMonth);
-  // console.log('startYear', startYear);
 
   const onAdd = () => {
     let obj = {
@@ -346,36 +313,68 @@ export function JobHistoryModal({
                 placeholder={'Start year'}
                 onCallBack={FunendDateYear}
               />
-
-              {/* <OutlinedInputBox
-                placeholder="Decription"
-                inputType="text"
-                multiline
-                onChange={value => {
-                  setDescription(value);
-                }}
-              /> */}
             </View>
           </ScrollView>
-          <BtnComponent
-            placeholder={isEdit ? 'Edit' : 'Add'}
-            onPress={onAdd}
-            // onPress={() => {
-            //   setModalVisible(!modalVisible);
-            // }}
-            // onPress={() => {
-            //   let obj = {
-            //     companyName: companyName,
-            //     fromDate: fromDate,
-            //     toDate: toDate,
-            //     description: description,
-            //   };
-            //   onPress(obj);
-            // }}
-          />
+          <BtnComponent placeholder={isEdit ? 'Edit' : 'Add'} onPress={onAdd} />
         </View>
       </View>
       {/* </ScrollView> */}
     </Modal>
   );
 }
+
+// const [description, setDescription] = useState('');
+// let [industryType, setIndustryType] = useState([]);
+// let [employeeType, setEmployeeType] = useState([]);
+// let [lookupData, setLookupData] = useState([]);
+
+// useEffect(() => {
+//   getAllLookupdetail();
+// }, []);
+
+// const getAllLookupdetail = () => {
+//   GetAllLookupDetailApiCall()
+//     .then(res => {
+//       setLookupData((lookupData = res.data.result));
+
+//       for (let index = 0; index < lookupData.length; index++) {
+//         const element = lookupData[index];
+//         if (element.lookupId == 8) {
+//           let arrayEmpType = employeeType;
+//           arrayEmpType.push(element);
+//           setEmployeeType((employeeType = arrayEmpType));
+//         } else if (element.lookupId == 9) {
+//           let arrayIndustryType = industryType;
+//           arrayIndustryType.push(element);
+//           setIndustryType((industryType = arrayIndustryType));
+//         }
+//       }
+//     })
+//     .catch(err => {
+//       console.log('err', err);
+//     });
+// };
+
+{
+  /* <OutlinedInputBox
+                placeholder="Decription"
+                inputType="text"
+                multiline
+                onChange={value => {
+                  setDescription(value);
+                }}
+              /> */
+}
+
+// onPress={() => {
+//   setModalVisible(!modalVisible);
+// }}
+// onPress={() => {
+//   let obj = {
+//     companyName: companyName,
+//     fromDate: fromDate,
+//     toDate: toDate,
+//     description: description,
+//   };
+//   onPress(obj);
+// }}

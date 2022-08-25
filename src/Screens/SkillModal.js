@@ -13,6 +13,8 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
 import {PRIMARY, WHITE} from '../Constants/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {isNullOrEmptyArray} from '../Constants/TextUtils';
+import {Save} from 'react-native-feather';
 
 export function SkillModal({
   modalVisible,
@@ -20,12 +22,18 @@ export function SkillModal({
   setModalSkill,
   isEdit,
   onPress,
+  arrskills,
+  setEditSkill,
 }) {
+  console.log('isEdit', isEdit);
+  console.log('modalSkillArray', modalSkillArray);
+
   let [modalSkillArray, setModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
   const [inputValue, setInputValue] = useState('');
 
   const FunModalSkillsArray = () => {
+    debugger;
     let newModalSkillArray = [...modalSkillArray];
     newModalSkillArray.push(newSkill.trim());
     setModalSKillArray((modalSkillArray = newModalSkillArray));
@@ -41,6 +49,32 @@ export function SkillModal({
     setModalSKillArray(newArr);
     setModalSkill((modalSkillArray = newArr));
   };
+
+  const FunEditModalSkillsArray = () => {
+    debugger;
+    let newModalSkillArray = [...modalSkillArray];
+    newModalSkillArray.push(newSkill.trim());
+    setModalSKillArray((modalSkillArray = newModalSkillArray));
+    setEditSkill(modalSkillArray);
+    setInputValue('');
+    console.log('skillsArray', modalSkillArray);
+  };
+
+  const FunEditDelSkill = index => {
+    console.log('index', index);
+    let newArr = [...modalSkillArray];
+    newArr.splice(index);
+    setModalSKillArray(newArr);
+    setEditSkill((modalSkillArray = newArr));
+  };
+
+  const Save = () => {
+    debugger;
+    if (isEdit == true) FunEditModalSkillsArray();
+    else FunModalSkillsArray();
+  };
+
+  console.log('modalSkillArray', modalSkillArray);
 
   return (
     <Modal
@@ -117,7 +151,7 @@ export function SkillModal({
             />
             <TouchableOpacity
               onPress={() => {
-                FunModalSkillsArray();
+                Save();
               }}
               style={{
                 backgroundColor: PRIMARY,
@@ -132,42 +166,82 @@ export function SkillModal({
               </Text>
             </TouchableOpacity>
             {/* <FontAwesome name="remove" size={20} color={PRIMARY} /> */}
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={modalSkillArray}
-              renderItem={({item, index}) => (
-                <View
-                  style={{
-                    backgroundColor: '#EFEFEF',
-                    marginRight: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    borderRadius: 3,
-                    marginTop: 10,
-                  }}>
-                  <Text
+            {isNullOrEmptyArray(modalSkillArray) ? (
+              <FlatList
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={arrskills}
+                renderItem={({item, index}) => (
+                  <View
                     style={{
-                      marginVertical: 5,
-                      marginHorizontal: 5,
-                      color: '#7A7A7A',
+                      backgroundColor: '#EFEFEF',
+                      marginRight: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      borderRadius: 3,
+                      marginTop: 10,
                     }}>
-                    {item}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      FunDelSkill(index);
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        marginHorizontal: 5,
+                        color: '#7A7A7A',
+                      }}>
+                      {item}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        // FunDelSkill(index);
+                      }}>
+                      <Entypo
+                        name="cross"
+                        size={22}
+                        color={'black'}
+                        style={{marginVertical: 4}}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            ) : (
+              <FlatList
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={modalSkillArray}
+                renderItem={({item, index}) => (
+                  <View
+                    style={{
+                      backgroundColor: '#EFEFEF',
+                      marginRight: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      borderRadius: 3,
+                      marginTop: 10,
                     }}>
-                    <Entypo
-                      name="cross"
-                      size={22}
-                      color={'black'}
-                      style={{marginVertical: 4}}
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
+                    <Text
+                      style={{
+                        marginVertical: 5,
+                        marginHorizontal: 5,
+                        color: '#7A7A7A',
+                      }}>
+                      {item}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        FunDelSkill(index);
+                      }}>
+                      <Entypo
+                        name="cross"
+                        size={22}
+                        color={'black'}
+                        style={{marginVertical: 4}}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+            )}
+
             <BtnComponent
               placeholder={isEdit ? 'Edit' : 'Save'}
               // onPress={() => {

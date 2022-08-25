@@ -11,6 +11,7 @@ export default function LoginInputBox({
   maxLength,
   value,
   KeyboardType,
+  text,
 }) {
   const [isfocused, setIsfocused] = useState(false);
   let secureTextEntry;
@@ -79,8 +80,9 @@ export default function LoginInputBox({
             setIsfocused(false);
           }}
           value={value}
-          multiline={multiline}
-        />
+          multiline={multiline}>
+          <Text>{text ? text : null}</Text>
+        </TextInput>
       </TouchableOpacity>
     </>
   );

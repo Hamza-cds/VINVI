@@ -16,6 +16,10 @@ export function PersonalModal({
   setModalVisible,
   setHobbies,
   isEdit,
+  arrayhobbies,
+  arrayinterest,
+  arrayachievment,
+  arraybirthday,
 }) {
   return (
     <Modal
@@ -81,15 +85,17 @@ export function PersonalModal({
               </TouchableOpacity>
             </View>
             <OutlinedInputBox
-              placeholder="Status"
+              placeholder="Hobbies"
               inputType="text"
+              text={arrayhobbies ? arrayhobbies : null}
               onChange={value => {
                 setHobbies(value);
               }}
             />
             <OutlinedInputBox
-              placeholder="Hobbies"
+              placeholder="Interests"
               inputType="text"
+              text={arrayinterest ? arrayinterest : null}
               onChange={value => {
                 setHobbies(value);
               }}
@@ -97,6 +103,7 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Achevements"
               inputType="text"
+              text={arrayachievment ? arrayachievment : null}
               onChange={value => {
                 setHobbies(value);
               }}
@@ -104,6 +111,7 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Date of birth"
               inputType="text"
+              text={arraybirthday ? arraybirthday : null}
               onChange={value => {
                 setHobbies(value);
               }}

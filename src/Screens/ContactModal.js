@@ -16,7 +16,11 @@ export function ContactModal({
   setModalVisible,
   setHobbies,
   isEdit,
+  data,
+  arraycountry,
+  arraycity,
 }) {
+  console.log('datasjkdhjkhashdfkha', data);
   return (
     <Modal
       animationType="fade"
@@ -83,6 +87,7 @@ export function ContactModal({
             <OutlinedInputBox
               placeholder="Number"
               inputType="text"
+              text={data.phoneNo ? data.phoneNo : null}
               onChange={value => {
                 setHobbies(value);
               }}
@@ -90,6 +95,7 @@ export function ContactModal({
             <OutlinedInputBox
               placeholder="Email Address"
               inputType="text"
+              text={data.email ? data.email : null}
               onChange={value => {
                 setHobbies(value);
               }}
@@ -97,6 +103,7 @@ export function ContactModal({
             <OutlinedInputBox
               placeholder="Address"
               inputType="text"
+              text={data.address ? data.address : null}
               onChange={value => {
                 setHobbies(value);
               }}
@@ -104,6 +111,7 @@ export function ContactModal({
             <OutlinedInputBox
               placeholder="City"
               inputType="text"
+              text={arraycity}
               onChange={value => {
                 setHobbies(value);
               }}
@@ -111,6 +119,7 @@ export function ContactModal({
             <OutlinedInputBox
               placeholder="Country"
               inputType="text"
+              text={arraycountry}
               onChange={value => {
                 setHobbies(value);
               }}

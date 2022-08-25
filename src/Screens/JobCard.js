@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-export function JobCard({}) {
+export function JobCard({item}) {
   return (
     <View
       style={{
@@ -10,27 +10,36 @@ export function JobCard({}) {
         borderRadius: 5,
         marginRight: 10,
         width: 250,
+        marginTop: 10,
       }}>
       <Text
         style={{
           color: '#606060',
         }}>
-        Company Name
+        {item.companyName ? item.companyName : 'dummy company'}
       </Text>
       <Text
         style={{
           color: '#606060',
         }}>
-        2016 - 2020
+        {item.startMonth +
+          ' ' +
+          item.startYear +
+          ' ' +
+          '-' +
+          ' ' +
+          item.endMonth +
+          ' ' +
+          item.endYear}
       </Text>
-      <Text
+      {/* <Text
         style={{
           color: '#606060',
         }}>
         Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in
         laying out print, graphic or web designs. The passage is attributed to
         an unknown typesetter in the 15th century
-      </Text>
+      </Text> */}
     </View>
   );
 }

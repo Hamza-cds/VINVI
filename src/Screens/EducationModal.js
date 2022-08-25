@@ -19,6 +19,7 @@ export function EducationModal({
   setModalVisible,
   isEdit,
   onPress,
+  degreeData,
 }) {
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
@@ -27,25 +28,8 @@ export function EducationModal({
   let [startDateYear, setStartDateYear] = useState('');
   let [endDateMonth, setEndDateMonth] = useState('');
   let [endDateYear, setEndDateYear] = useState('');
-  const id = 3;
+  // let [degreeData, setDegreeData] = useState('hamza');
 
-  useEffect(() => {
-    getDegree();
-  }, []);
-
-  const getDegree = () => {
-    LookupDetailApiCall(id)
-      .then(res => {
-        console.log('res ha hamza', res.data.result);
-        setDegreeData((degreeData = res.data.result));
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
-  };
-
-  let [degreeData, setDegreeData] = useState('');
-  // console.log('DATA', DATA);
   const Year = [
     {id: 1, name: '1960'},
     {id: 2, name: '1961'},
@@ -163,8 +147,6 @@ export function EducationModal({
     },
   ];
 
-  console.log('degree', degree);
-
   const onAdd = () => {
     let obj = {
       institute: institute.trim(),
@@ -180,7 +162,6 @@ export function EducationModal({
 
   const FunDegree = value => {
     setDegree((degree = value.name));
-    console.log('degree', degree);
   };
   const FunstartDateMonth = value => {
     setStartDateMonth((startDateMonth = value.name));
@@ -316,21 +297,6 @@ export function EducationModal({
             <BtnComponent
               placeholder={isEdit ? 'Edit' : 'Add'}
               onPress={onAdd}
-              // onPress={() => {
-              //   setModalVisible(!modalVisible);
-              //   setEducationObject(obj);
-              // }}
-              // onPress={() => {
-              //   let obj = {
-              //     institute: institute,
-              //     startDateMonth: startDateMonth,
-              //     startDateYear: startDateYear,
-              //     endDateMonth: endDateMonth,
-              //     endDateYear: endDateYear,
-              //     degree: degree,
-              //   };
-              //   onPress(obj);
-              // }}
             />
           </View>
         </View>
@@ -338,6 +304,31 @@ export function EducationModal({
     </Modal>
   );
 }
+
+// const id = 3;
+
+// useEffect(() => {
+//   // getDegree();
+//   LookupDetailApiCall(id)
+//     .then(res => {
+//       console.log('degree res', res.data.result);
+//       setDegreeData((degreeData = res.data.result));
+//     })
+//     .catch(err => {
+//       console.log('err', err);
+//     });
+// }, []);
+
+// const getDegree = () => {
+//   LookupDetailApiCall(id)
+//     .then(res => {
+//       console.log('res ha hamza', res.data.result);
+//       setDegreeData((degreeData = res.data.result));
+//     })
+//     .catch(err => {
+//       console.log('err', err);
+//     });
+// };
 
 {
   /* <View

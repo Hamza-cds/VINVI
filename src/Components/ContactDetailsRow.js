@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import {WHITE} from '../Constants/Colors';
+import {PRIMARY, WHITE} from '../Constants/Colors';
 
 export default function ContactDetailsRow({placeholder, svg}) {
   return (
@@ -13,7 +13,7 @@ export default function ContactDetailsRow({placeholder, svg}) {
         alignItems: 'center',
       }}>
       {svg}
-      <Text style={{fontSize: 14, color: WHITE, marginLeft: 10}}>
+      <Text style={{fontSize: 14, color: PRIMARY, marginLeft: 10}}>
         {placeholder}
       </Text>
     </View>

@@ -7,7 +7,7 @@ import NewCardStepPanel from '../Components/NewCardStepPanel';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Height, Width} from '../Constants/Constants';
 import {isNullOrEmpty} from '../Constants/TextUtils';
-import {personalCardApiCall} from '../Apis/Repo';
+import {personalCardApiCall, GetAllLookupDetailApiCall} from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   CREDIANTIAL_ERROR,
@@ -51,17 +51,20 @@ export default function NewCardScreen(props) {
   const [skillsArray, setSkillsArray] = useState([]);
   const [modalSkill, setModalSkill] = useState([]);
   const [profilePic, setProfilePic] = useState(DATA_TEST.ProfilePicture);
-  const [profilePicName, setProfilePicName] = useState('');
-  // const [coverPic,setCoverPic]=useState('')
+  const [profilePicName, setProfilePicName] = useState(DATA_TEST.profileName);
+  const [coverPic, setCoverPic] = useState(DATA_TEST.CoverPicture);
+  const [coverName, setCoverName] = useState(DATA_TEST.coverName);
   const [educationArray, setEducationArray] = useState([]);
   let [educationObject, setEducationObject] = useState('');
   const [jobHistoryArray, setJobHistoryArray] = useState([]);
   let [jobHistoryObject, setJobHistoryObject] = useState('');
   let [userData, setUserData] = useState(null);
-  // console.log('educationObject', educationObject);
   const newArray1 = DATA_TEST.PersonalcardScreen1Array;
-  console.log('newArray1', newArray1);
-  console.log('profilePic', profilePic);
+  let [industryType, setIndustryType] = useState([]);
+  let [employeeType, setEmployeeType] = useState([]);
+  let [degreeList, setDegreList] = useState([]);
+  let [lookupData, setLookupData] = useState([]);
+
   const PersonalcardScreen4Array = [
     {
       key: 'Introductory Message',
@@ -129,14 +132,35 @@ export default function NewCardScreen(props) {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
+      getAllLookupdetail();
     });
   }, []);
 
-  const profileFilterFun = () => {
-    var imageMime = profilePic.mime;
-    var name = imageMime.split('/')[1];
-    setProfilePicName('Vinvi.' + name);
-    // setImage(image);
+  const getAllLookupdetail = () => {
+    GetAllLookupDetailApiCall()
+      .then(res => {
+        setLookupData((lookupData = res.data.result));
+
+        for (let index = 0; index < lookupData.length; index++) {
+          const element = lookupData[index];
+          if (element.lookupId == 3) {
+            let arraydegree = degreeList;
+            arraydegree.push(element);
+            setDegreList((degreeList = arraydegree));
+          } else if (element.lookupId == 8) {
+            let arrayEmpType = employeeType;
+            arrayEmpType.push(element);
+            setEmployeeType((employeeType = arrayEmpType));
+          } else if (element.lookupId == 9) {
+            let arrayIndustryType = industryType;
+            arrayIndustryType.push(element);
+            setIndustryType((industryType = arrayIndustryType));
+          }
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
   };
 
   const onFinish = () => {
@@ -208,13 +232,25 @@ export default function NewCardScreen(props) {
         );
       }
 
-      formdata.append('profile_image_file', {
-        uri: profilePic.path,
-        name: 'Vinvi',
-        type: profilePic.mime,
-      });
+      {
+        profilePic
+          ? formdata.append('profile_image_file', {
+              uri: profilePic.path,
+              name: profilePicName,
+              type: profilePic.mime,
+            })
+          : formdata.append('profile_image_file', null);
+      }
 
-      // console.log('updateinfo', updateinfo);
+      {
+        coverPic
+          ? formdata.append('cover_image_image', {
+              uri: coverPic.path,
+              name: coverName,
+              type: coverPic.mime,
+            })
+          : formdata.append('cover_image_image', null);
+      }
 
       personalCardApiCall(formdata)
         .then(res => res.json())
@@ -424,6 +460,7 @@ export default function NewCardScreen(props) {
       <EducationModal
         modalVisible={isEducationModalVisible}
         setModalVisible={setIsEducationModalVisible}
+        degreeData={degreeList}
         onPress={data => {
           setEducationObject((educationObject = data));
           FunEducationArray();
@@ -433,6 +470,8 @@ export default function NewCardScreen(props) {
       <JobHistoryModal
         modalVisible={isJobHistoryModalVisible}
         setModalVisible={setIsJobHistoryModalVisible}
+        industryType={industryType}
+        employeeType={employeeType}
         onPress={data => {
           setJobHistoryObject((jobHistoryObject = data));
           FunJobHistoryArray();
@@ -451,3 +490,10 @@ export default function NewCardScreen(props) {
     </SafeAreaView>
   );
 }
+
+// const profileFilterFun = () => {
+//   var imageMime = profilePic.mime;
+//   var name = imageMime.split('/')[1];
+//   setProfilePicName('Vinvi.' + name);
+//   // setImage(image);
+// };
