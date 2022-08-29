@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -23,23 +23,29 @@ export function SkillModal({
   isEdit,
   onPress,
   arrskills,
-  setEditSkill,
+  setEditModalSkill,
 }) {
-  console.log('isEdit', isEdit);
-  console.log('modalSkillArray', modalSkillArray);
-
   let [modalSkillArray, setModalSKillArray] = useState([]);
+  let [editModalSkillArray, setEditModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
   const [inputValue, setInputValue] = useState('');
 
+  useEffect(() => {
+    if (isEdit) {
+      editModalSkillArray.length == 0
+        ? setEditModalSKillArray((editModalSkillArray = arrskills))
+        : setEditModalSKillArray(editModalSkillArray);
+    }
+  }, [modalVisible]);
+  console.log('hamza editModalSkillArray', editModalSkillArray);
+
+  /* these funtions used when creating personal cards skills  */
   const FunModalSkillsArray = () => {
-    debugger;
     let newModalSkillArray = [...modalSkillArray];
     newModalSkillArray.push(newSkill.trim());
     setModalSKillArray((modalSkillArray = newModalSkillArray));
     setModalSkill(modalSkillArray);
     setInputValue('');
-    console.log('skillsArray', modalSkillArray);
   };
 
   const FunDelSkill = index => {
@@ -50,31 +56,27 @@ export function SkillModal({
     setModalSkill((modalSkillArray = newArr));
   };
 
+  /*These functions used when editing personal cards skill*/
   const FunEditModalSkillsArray = () => {
-    debugger;
-    let newModalSkillArray = [...modalSkillArray];
-    newModalSkillArray.push(newSkill.trim());
-    setModalSKillArray((modalSkillArray = newModalSkillArray));
-    setEditSkill(modalSkillArray);
+    let neweditModalSkillArray = [...arrskills];
+    neweditModalSkillArray.push(newSkill.trim());
+    setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
+    setEditModalSkill(modalSkillArray);
     setInputValue('');
-    console.log('skillsArray', modalSkillArray);
   };
 
   const FunEditDelSkill = index => {
     console.log('index', index);
-    let newArr = [...modalSkillArray];
+    let newArr = [...arrskills];
     newArr.splice(index);
-    setModalSKillArray(newArr);
-    setEditSkill((modalSkillArray = newArr));
+    setEditModalSkill(newArr);
+    setEditModalSKillArray((editModalSkillArray = newArr));
   };
 
   const Save = () => {
-    debugger;
     if (isEdit == true) FunEditModalSkillsArray();
     else FunModalSkillsArray();
   };
-
-  console.log('modalSkillArray', modalSkillArray);
 
   return (
     <Modal
@@ -142,12 +144,11 @@ export function SkillModal({
             <OutlinedInputBox
               placeholder="Skill Name"
               inputType="text"
+              // inputValue={inputValue}
               onChange={value => {
-                // setSkill(value);
                 setNewSkill(value);
                 setInputValue(value);
               }}
-              value={inputValue}
             />
             <TouchableOpacity
               onPress={() => {
@@ -165,12 +166,12 @@ export function SkillModal({
                 Add
               </Text>
             </TouchableOpacity>
-            {/* <FontAwesome name="remove" size={20} color={PRIMARY} /> */}
-            {isNullOrEmptyArray(modalSkillArray) ? (
+            {isEdit ? (
               <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                data={arrskills}
+                data={editModalSkillArray}
+                keyExtractor={item => item.id}
                 renderItem={({item, index}) => (
                   <View
                     style={{
@@ -191,7 +192,7 @@ export function SkillModal({
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        // FunDelSkill(index);
+                        FunEditDelSkill(index);
                       }}>
                       <Entypo
                         name="cross"
@@ -208,6 +209,7 @@ export function SkillModal({
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 data={modalSkillArray}
+                keyExtractor={item => item.id}
                 renderItem={({item, index}) => (
                   <View
                     style={{

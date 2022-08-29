@@ -1,11 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import {SECONDARY, FIFTH} from '../Constants/Colors';
 import SkillTag from '../Components/SkillTag';
 import Svg, {G, Path} from 'react-native-svg';
 
-export function Skills({setEdit, arrskills, edit}) {
-  // const [skills, setSkills] = useState([]);
+export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
+  // useEffect(() => {
+  //   debugger;
+  //   if (edit) {
+  //     editModalSkillArray.length <= 0
+  //       ? setEditModalSKillArray((editModalSkillArray = arrskills))
+  //       : setEditModalSKillArray(editModalSkillArray);
+  //   }
+  // }, [modalVisible]);
+
   return (
     <View
       style={{
@@ -99,14 +107,33 @@ export function Skills({setEdit, arrskills, edit}) {
           </TouchableOpacity>
         ) : null}
       </View>
-      <FlatList
+      {editSkillsArray.length > 0 ? (
+        <FlatList
+          horizontal={true}
+          data={editSkillsArray}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => (
+            <SkillTag item={item} placeholder="Skill Name" />
+          )}
+        />
+      ) : (
+        <FlatList
+          horizontal={true}
+          data={arrskills}
+          keyExtractor={item => item.id}
+          renderItem={({item, index}) => (
+            <SkillTag item={item} placeholder="Skill Name" />
+          )}
+        />
+      )}
+      {/* <FlatList
         horizontal={true}
         data={arrskills}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => (
           <SkillTag item={item} placeholder="Skill Name" />
         )}
-      />
+      /> */}
     </View>
   );
 }

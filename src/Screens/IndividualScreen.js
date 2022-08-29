@@ -29,7 +29,6 @@ import {ContactModal} from './ContactModal';
 import {PersonalModal} from './PersonalModal';
 
 export default function IndividualScreen(props) {
-  console.log('props', props);
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
   const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
     useState(false);
@@ -43,9 +42,11 @@ export default function IndividualScreen(props) {
   const [Edit, setEdit] = useState(
     props.route.params.edit ? props.route.params.edit : '',
   );
-  const [editSkill, setEditSkill] = useState('');
-
-  console.log('data', data);
+  let [editSkillsArray, setEditSkillsArray] = useState([]);
+  const [jobHistoryArray, setJobHistoryArray] = useState([]);
+  let [jobHistoryObject, setJobHistoryObject] = useState('');
+  let [jobIndex, setJobIndex] = useState('');
+  let [eduIndex, setEduIndex] = useState('');
 
   let arrayOccupation;
   arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
@@ -71,7 +72,7 @@ export default function IndividualScreen(props) {
     arraycountry = 'Dummy country';
   }
 
-  let arrayskills;
+  let arrayskills = [];
   arrayskills = _.find(data.personalCardMeta, {personalKey: 'Skills'});
   if (arrayskills) {
     arrayskills = arrayskills.personalValue;
@@ -79,7 +80,7 @@ export default function IndividualScreen(props) {
     arrayskills = 'Dummy Skill';
   }
 
-  let arrayeducation;
+  let arrayeducation = [];
   arrayeducation = _.find(data.personalCardMeta, {personalKey: 'Education'});
   if (arrayeducation) {
     arrayeducation = arrayeducation.personalValue;
@@ -87,7 +88,7 @@ export default function IndividualScreen(props) {
     arrayeducation = 'Dummy education';
   }
 
-  let arrayjobhistory;
+  let arrayjobhistory = [];
   arrayjobhistory = _.find(data.personalCardMeta, {personalKey: 'JobHistory'});
   if (arrayjobhistory) {
     arrayjobhistory = arrayjobhistory.personalValue;
@@ -95,7 +96,7 @@ export default function IndividualScreen(props) {
     arrayjobhistory = 'Dummy job History';
   }
 
-  let arrayhobbies;
+  let arrayhobbies = [];
   arrayhobbies = _.find(data.personalCardMeta, {personalKey: 'Hobbies'});
   if (arrayhobbies) {
     arrayhobbies = arrayhobbies.personalValue;
@@ -103,7 +104,7 @@ export default function IndividualScreen(props) {
     arrayhobbies = 'Dummy hobbies';
   }
 
-  let arrayinterest;
+  let arrayinterest = [];
   arrayinterest = _.find(data.personalCardMeta, {personalKey: 'Interests'});
   if (arrayinterest) {
     arrayinterest = arrayinterest.personalValue;
@@ -111,7 +112,7 @@ export default function IndividualScreen(props) {
     arrayinterest = 'Dummy Interests';
   }
 
-  let arrayachievment;
+  let arrayachievment = [];
   arrayachievment = _.find(data.personalCardMeta, {
     personalKey: 'Achievements',
   });
@@ -121,7 +122,7 @@ export default function IndividualScreen(props) {
     arrayachievment = 'Dummy Achievements';
   }
 
-  let arrayIntro;
+  let arrayIntro = [];
   arrayIntro = _.find(data.personalCardMeta, {
     personalKey: 'Introductory Message',
   });
@@ -131,15 +132,13 @@ export default function IndividualScreen(props) {
     arrayIntro = 'Dummy Introduction';
   }
 
-  let arraybirthday;
+  let arraybirthday = [];
   arraybirthday = _.find(data.personalCardMeta, {personalKey: 'birthday'});
   if (arraybirthday) {
     arraybirthday = arraybirthday.personalValue;
   } else {
     arraybirthday = 'Dummy Birthday';
   }
-
-  console.log('arrayjobhistory', arrayjobhistory);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -164,7 +163,13 @@ export default function IndividualScreen(props) {
         console.log('err', err);
       });
   };
-  console.log('data here', data);
+
+  const FunJobHistoryArray = () => {
+    let newJobHistoryArray = jobHistoryObject;
+    newJobHistoryArray.push(jobHistoryObject);
+    setJobHistoryArray([]);
+    setJobHistoryArray(newJobHistoryArray);
+  };
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -328,6 +333,8 @@ export default function IndividualScreen(props) {
             {arrayIntro}
           </Text>
 
+          {/* Screen View Handling from these components start */}
+
           <PersonalDetails
             setIsEdit={setIsPersonalModalVisible}
             arrayhobbies={arrayhobbies}
@@ -346,19 +353,25 @@ export default function IndividualScreen(props) {
           />
           <Education
             setEdit={setIsEducationModalVisible}
+            setEduIndex={setEduIndex}
             arrayeducation={arrayeducation}
             edit={Edit ? Edit : false}
           />
           <JobHistory
             setEdit={setIsJobHistoryModalVisible}
+            setJobIndex={setJobIndex}
             arrayjobhistory={arrayjobhistory}
             edit={Edit ? Edit : false}
           />
           <Skills
             arrskills={arrayskills}
+            editSkillsArray={editSkillsArray}
             setEdit={setIsSkillModalVisible}
             edit={Edit ? Edit : false}
           />
+
+          {/* Screen View Handling from these components end */}
+
           <View
             style={{width: '100%', marginVertical: 70, alignItems: 'center'}}>
             <QRCode
@@ -371,6 +384,9 @@ export default function IndividualScreen(props) {
           <BtnComponent placeholder="Block" onPress={() => {}} />
         </View>
       </ScrollView>
+
+      {/* Edit Profile Handling componants start */}
+
       <EducationModal
         isEdit
         modalVisible={isEducationModalVisible}
@@ -380,13 +396,23 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isJobHistoryModalVisible}
         setModalVisible={setIsJobHistoryModalVisible}
+        arrayjobhistory={arrayjobhistory}
+        index={jobIndex}
+        // onPress={data => {
+        //   setJobHistoryObject((jobHistoryObject = data));
+        //   FunJobHistoryArray();
+        //   setIsJobHistoryModalVisible(false);
+        // }}
       />
       <SkillModal
         isEdit
         modalVisible={isSkillModalVisible}
         setModalVisible={setIsSkillModalVisible}
         arrskills={arrayskills}
-        setEditSkill={setEditSkill}
+        setEditModalSkill={setEditSkillsArray}
+        onPress={() => {
+          setIsSkillModalVisible(false);
+        }}
       />
       <ContactModal
         isEdit
@@ -405,6 +431,8 @@ export default function IndividualScreen(props) {
         arrayachievment={arrayachievment}
         arraybirthday={arraybirthday}
       />
+
+      {/* Edit Profile Handling componants end */}
     </SafeAreaView>
   );
 }

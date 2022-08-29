@@ -4,7 +4,7 @@ import {SECONDARY, FIFTH} from '../Constants/Colors';
 import Svg, {G, Path} from 'react-native-svg';
 import {JobCard} from './JobCard';
 
-export function JobHistory({setEdit, arrayjobhistory, edit}) {
+export function JobHistory({setEdit, arrayjobhistory, edit, setJobIndex}) {
   return (
     <View
       style={{
@@ -78,7 +78,7 @@ export function JobHistory({setEdit, arrayjobhistory, edit}) {
             />
           </Svg>
         </View>
-        {edit == true ? (
+        {/* {edit == true ? (
           <TouchableOpacity
             onPress={() => {
               setEdit(true);
@@ -96,13 +96,22 @@ export function JobHistory({setEdit, arrayjobhistory, edit}) {
               />
             </Svg>
           </TouchableOpacity>
-        ) : null}
+        ) : null} */}
       </View>
       <FlatList
         data={arrayjobhistory}
         horizontal={false}
         // keyExtractor={item => item.id}
-        renderItem={({item, index}) => <JobCard item={item} />}
+        renderItem={({item, index}) => (
+          <JobCard
+            item={item}
+            edit={edit}
+            onPress={() => {
+              setEdit(true);
+              setJobIndex(index);
+            }}
+          />
+        )}
       />
     </View>
   );

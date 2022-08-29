@@ -24,6 +24,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Search} from 'react-native-feather';
+import {isEmpty} from '../Constants/TextUtils';
 
 export default function Select({
   placeholder,
@@ -32,6 +33,8 @@ export default function Select({
   label,
   data,
   onCallBack,
+  isEdit,
+  editText,
 }) {
   const [openModal, setOpenModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -134,13 +137,23 @@ export default function Select({
         <TouchableOpacity
           onPress={() => onOpenModal()}
           style={{flex: 1, justifyContent: 'center'}}>
-          <Text
-            style={{
-              color: 'rgba(0,0,0,.5)',
-              fontSize: 14,
-            }}>
-            {selectedItem ? selectedItem.title : placeholder}
-          </Text>
+          {isEdit == true ? (
+            <Text
+              style={{
+                color: 'rgba(0,0,0,.5)',
+                fontSize: 14,
+              }}>
+              {editText}
+            </Text>
+          ) : (
+            <Text
+              style={{
+                color: 'rgba(0,0,0,.5)',
+                fontSize: 14,
+              }}>
+              {selectedItem ? selectedItem.title : placeholder}
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
       <TouchableOpacity

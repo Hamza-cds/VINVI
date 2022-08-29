@@ -21,7 +21,13 @@ export function JobHistoryModal({
   isEdit,
   industryType,
   employeeType,
+  arrayjobhistory,
+  index,
 }) {
+  console.log('index', index);
+  console.log('arrayjobhistory', arrayjobhistory);
+  console.log('arrayjobhistory[index]', arrayjobhistory[index]);
+
   const [companyName, setCompanyName] = useState('');
   let [startMonth, setStartMonth] = useState('');
   let [startYear, setStartYear] = useState('');
@@ -30,6 +36,8 @@ export function JobHistoryModal({
   let [industry, setIndustry] = useState('');
   let [employee, setEmployee] = useState('');
   const [title, setTitle] = useState('');
+  // let [editJobHistorylArray, setEditJobHistorylArray] = useState([]);
+  let [editJob, setEditJob] = useState('');
 
   const Year = [
     {id: 1, name: '1960'},
@@ -148,6 +156,13 @@ export function JobHistoryModal({
     },
   ];
 
+  useEffect(() => {
+    if (isEdit) {
+      setEditJob((editJob = arrayjobhistory[index]));
+      // console.log('EditJob', EditJob);
+    }
+  }, [modalVisible]);
+
   const onAdd = () => {
     let obj = {
       title: title.trim(),
@@ -161,7 +176,6 @@ export function JobHistoryModal({
       // description: description.trim(),
     };
     onPress(obj);
-    // setModalVisible(!modalVisible);
   };
 
   const FunIndustry = value => {
@@ -188,6 +202,8 @@ export function JobHistoryModal({
     setEndYear((endYear = value.name));
     console.log('endYear', endYear);
   };
+
+  console.log('editJob check here', editJob);
 
   return (
     <Modal
@@ -257,6 +273,7 @@ export function JobHistoryModal({
               <OutlinedInputBox
                 placeholder="Title"
                 inputType="text"
+                text={editJob ? (editJob.title ? editJob.title : null) : null}
                 onChange={value => {
                   setTitle(value);
                   // console.log(value);
@@ -265,6 +282,13 @@ export function JobHistoryModal({
               <OutlinedInputBox
                 placeholder="Company Name"
                 inputType="text"
+                text={
+                  editJob
+                    ? editJob.companyName
+                      ? editJob.companyName
+                      : null
+                    : null
+                }
                 onChange={value => {
                   setCompanyName(value);
                 }}
@@ -273,11 +297,31 @@ export function JobHistoryModal({
               <Select
                 data={industryType}
                 placeholder={'Industry type'}
+                editText={
+                  industry
+                    ? industry
+                    : editJob
+                    ? editJob.industryType
+                      ? editJob.industryType
+                      : null
+                    : null
+                }
                 onCallBack={FunIndustry}
+                isEdit={isEdit}
               />
               <Select
                 data={employeeType}
                 placeholder={'Employee type'}
+                isEdit={isEdit}
+                editText={
+                  employee
+                    ? employee
+                    : editJob
+                    ? editJob.employeeType
+                      ? editJob.employeeType
+                      : null
+                    : null
+                }
                 onChange={value => {
                   console.log('value', value);
                 }}
@@ -290,12 +334,32 @@ export function JobHistoryModal({
               <Select
                 data={Months}
                 placeholder={'Start month'}
+                isEdit={isEdit}
+                editText={
+                  startMonth
+                    ? startMonth
+                    : editJob
+                    ? editJob.startMonth
+                      ? editJob.startMonth
+                      : null
+                    : null
+                }
                 onCallBack={FunstartDateMonth}
               />
 
               <Select
                 data={Year}
                 placeholder={'Start year'}
+                isEdit={isEdit}
+                editText={
+                  startYear
+                    ? startYear
+                    : editJob
+                    ? editJob.startYear
+                      ? editJob.startYear
+                      : null
+                    : null
+                }
                 onCallBack={FunstartDateYear}
               />
 
@@ -305,12 +369,32 @@ export function JobHistoryModal({
               <Select
                 data={Months}
                 placeholder={'Start month'}
+                isEdit={isEdit}
+                editText={
+                  endMonth
+                    ? endMonth
+                    : editJob
+                    ? editJob.endMonth
+                      ? editJob.endMonth
+                      : null
+                    : null
+                }
                 onCallBack={FunendDateMonth}
               />
 
               <Select
                 data={Year}
                 placeholder={'Start year'}
+                isEdit={isEdit}
+                editText={
+                  endYear
+                    ? endYear
+                    : editJob
+                    ? editJob.endYear
+                      ? editJob.endYear
+                      : null
+                    : null
+                }
                 onCallBack={FunendDateYear}
               />
             </View>

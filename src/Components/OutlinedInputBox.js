@@ -9,7 +9,7 @@ export default function LoginInputBox({
   style,
   multiline,
   maxLength,
-  value,
+  inputValue,
   KeyboardType,
   text,
 }) {
@@ -73,13 +73,13 @@ export default function LoginInputBox({
           keyboardType={KeyboardType}
           secureTextEntry={secureTextEntry}
           onChangeText={onChange}
+          // value={inputValue}
           onPressIn={() => {
             setIsfocused(true);
           }}
           onBlur={() => {
             setIsfocused(false);
           }}
-          value={value}
           multiline={multiline}>
           <Text>{text ? text : null}</Text>
         </TextInput>

@@ -4,7 +4,7 @@ import {SECONDARY, FIFTH} from '../Constants/Colors';
 import Svg, {G, Path} from 'react-native-svg';
 import {EducationCard} from './EducationCard';
 
-export function Education({setEdit, arrayeducation, edit}) {
+export function Education({setEdit, arrayeducation, edit, setEduIndex}) {
   return (
     <View
       style={{
@@ -78,7 +78,7 @@ export function Education({setEdit, arrayeducation, edit}) {
             />
           </Svg>
         </View>
-        {edit == true ? (
+        {/* {edit == true ? (
           <TouchableOpacity
             onPress={() => {
               setEdit(true);
@@ -96,13 +96,22 @@ export function Education({setEdit, arrayeducation, edit}) {
               />
             </Svg>
           </TouchableOpacity>
-        ) : null}
+        ) : null} */}
       </View>
       <FlatList
         horizontal={false}
         showsHorizontalScrollIndicator={false}
         data={arrayeducation}
-        renderItem={({item, index}) => <EducationCard item={item} />}
+        renderItem={({item, index}) => (
+          <EducationCard
+            item={item}
+            edit={edit}
+            onPress={() => {
+              setEdit(true);
+              setEduIndex(index);
+            }}
+          />
+        )}
       />
     </View>
   );
