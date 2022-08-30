@@ -245,3 +245,21 @@ export async function GetAllLookupDetailApiCall() {
     return apiRes;
   }
 }
+
+export async function PersonalCardEditApiCall(obj) {
+  let route = URL.concat('/api/PersonalCard/PersonalCardMetaPost');
+  console.log(`personal card Edit Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}

@@ -13,6 +13,8 @@ import Svg, {Path} from 'react-native-svg';
 import {LookupDetailApiCall} from '../Apis/Repo';
 // import Dropdown from '../Components/Dropdown';
 import Select from '../Components/Select';
+import _ from 'lodash';
+import {PersonalCardEditApiCall} from '../Apis/Repo';
 
 export function EducationModal({
   modalVisible,
@@ -20,6 +22,9 @@ export function EducationModal({
   isEdit,
   onPress,
   degreeData,
+  CardData,
+  index,
+  educationarray,
 }) {
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
@@ -29,6 +34,8 @@ export function EducationModal({
   let [endDateMonth, setEndDateMonth] = useState('');
   let [endDateYear, setEndDateYear] = useState('');
   // let [degreeData, setDegreeData] = useState('hamza');
+  let [editEdu, setEditEdu] = useState('');
+  let [editEduHistoryArray, setEditEducationHistoryArray] = useState([]);
 
   const Year = [
     {id: 1, name: '1960'},
@@ -147,6 +154,83 @@ export function EducationModal({
     },
   ];
 
+  useEffect(() => {
+    if (isEdit) {
+      setEditEdu((editEdu = educationarray[index]));
+      console.log('editEdu', editEdu);
+      editEduHistoryArray.length <= 0
+        ? setEditEducationHistoryArray((editEduHistoryArray = educationarray))
+        : setEditEducationHistoryArray(editEduHistoryArray);
+    }
+  }, [modalVisible]);
+
+  let EditArrayEducation;
+  const extractEduHistoryForId = () => {
+    debugger;
+    EditArrayEducation = _.find(CardData.personalCardMeta, {
+      personalKey: 'Education',
+    });
+    if (EditArrayEducation) {
+      EditArrayEducation = EditArrayEducation;
+    } else {
+      EditArrayEducation = '';
+    }
+    console.log('EditArrayEducation', EditArrayEducation);
+  };
+
+  {
+    debugger;
+    isEdit == true ? extractEduHistoryForId() : null;
+  }
+
+  const onEdit = () => {
+    let newEditModalEduObj = educationarray[index];
+    newEditModalEduObj.degree = degree
+      ? degree.trim()
+      : newEditModalEduObj.degree;
+    newEditModalEduObj.institute = institute
+      ? institute.trim()
+      : newEditModalEduObj.institute;
+    newEditModalEduObj.startDateMonth = startDateMonth
+      ? startDateMonth
+      : newEditModalEduObj.startDateMonth;
+    newEditModalEduObj.startDateYear = startDateYear
+      ? startDateYear
+      : newEditModalEduObj.startDateYear;
+    newEditModalEduObj.endDateMonth = endDateMonth
+      ? endDateMonth
+      : newEditModalEduObj.endDateMonth;
+    newEditModalEduObj.endDateYear = endDateYear
+      ? endDateYear
+      : newEditModalEduObj.endDateYear;
+    // console.log('newEditModalEduObj', newEditModalEduObj);
+    // console.log('educationarray onEdit', educationarray);
+    // console.log('EditArrayEducation', EditArrayEducation);
+
+    let obj = {
+      id: EditArrayEducation.id,
+      ishidden: true,
+      personalCardId: CardData.id,
+      personalKey: 'Education',
+      personalValue: JSON.stringify(educationarray),
+    };
+    PersonalCardEditApiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('Edit Skill Data', data);
+
+        if (data.data.status == 200 && data.data.success == true) {
+          setModalVisible(false);
+        } else {
+          alert(data.message);
+          console.log('ADD');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
   const onAdd = () => {
     let obj = {
       institute: institute.trim(),
@@ -247,11 +331,24 @@ export function EducationModal({
             <Select
               data={degreeData}
               placeholder={'Degree'}
+              editText={
+                degree
+                  ? degree
+                  : editEdu
+                  ? editEdu.degree
+                    ? editEdu.degree
+                    : null
+                  : null
+              }
               onCallBack={FunDegree}
+              isEdit={isEdit}
             />
             <OutlinedInputBox
               placeholder="University-Institute"
               inputType="text"
+              text={
+                editEdu ? (editEdu.institute ? editEdu.institute : null) : null
+              }
               onChange={value => {
                 setInstitute(value);
               }}
@@ -270,13 +367,33 @@ export function EducationModal({
             <Select
               data={Months}
               placeholder={'Start month'}
+              editText={
+                startDateMonth
+                  ? startDateMonth
+                  : editEdu
+                  ? editEdu.startDateMonth
+                    ? editEdu.startDateMonth
+                    : null
+                  : null
+              }
               onCallBack={FunstartDateMonth}
+              isEdit={isEdit}
             />
 
             <Select
               data={Year}
               placeholder={'Start year'}
+              editText={
+                startDateYear
+                  ? startDateYear
+                  : editEdu
+                  ? editEdu.startDateYear
+                    ? editEdu.startDateYear
+                    : null
+                  : null
+              }
               onCallBack={FunstartDateYear}
+              isEdit={isEdit}
             />
 
             <Text style={{color: 'black', fontWeight: '700', fontSize: 16}}>
@@ -285,19 +402,46 @@ export function EducationModal({
             <Select
               data={Months}
               placeholder={'End month'}
+              editText={
+                endDateMonth
+                  ? endDateMonth
+                  : editEdu
+                  ? editEdu.endDateMonth
+                    ? editEdu.endDateMonth
+                    : null
+                  : null
+              }
               onCallBack={FunendDateMonth}
+              isEdit={isEdit}
             />
 
             <Select
               data={Year}
               placeholder={'End year'}
+              editText={
+                endDateYear
+                  ? endDateYear
+                  : editEdu
+                  ? editEdu.endDateYear
+                    ? editEdu.endDateYear
+                    : null
+                  : null
+              }
               onCallBack={FunendDateYear}
+              isEdit={isEdit}
             />
 
-            <BtnComponent
-              placeholder={isEdit ? 'Edit' : 'Add'}
-              onPress={onAdd}
-            />
+            {isEdit == true ? (
+              <BtnComponent
+                placeholder={isEdit ? 'Edit' : 'Add'}
+                onPress={onEdit}
+              />
+            ) : (
+              <BtnComponent
+                placeholder={isEdit ? 'Edit' : 'Add'}
+                onPress={onAdd}
+              />
+            )}
           </View>
         </View>
       </ScrollView>

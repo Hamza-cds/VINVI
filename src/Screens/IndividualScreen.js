@@ -77,7 +77,7 @@ export default function IndividualScreen(props) {
   if (arrayskills) {
     arrayskills = arrayskills.personalValue;
   } else {
-    arrayskills = 'Dummy Skill';
+    arrayskills = '';
   }
 
   let arrayeducation = [];
@@ -164,12 +164,12 @@ export default function IndividualScreen(props) {
       });
   };
 
-  const FunJobHistoryArray = () => {
-    let newJobHistoryArray = jobHistoryObject;
-    newJobHistoryArray.push(jobHistoryObject);
-    setJobHistoryArray([]);
-    setJobHistoryArray(newJobHistoryArray);
-  };
+  // const FunJobHistoryArray = () => {
+  //   let newJobHistoryArray = jobHistoryObject;
+  //   newJobHistoryArray.push(jobHistoryObject);
+  //   setJobHistoryArray([]);
+  //   setJobHistoryArray(newJobHistoryArray);
+  // };
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -391,13 +391,17 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isEducationModalVisible}
         setModalVisible={setIsEducationModalVisible}
+        educationarray={arrayeducation}
+        index={eduIndex}
+        CardData={data}
       />
       <JobHistoryModal
         isEdit
         modalVisible={isJobHistoryModalVisible}
         setModalVisible={setIsJobHistoryModalVisible}
-        arrayjobhistory={arrayjobhistory}
+        jobhistoryarray={arrayjobhistory}
         index={jobIndex}
+        CardData={data}
         // onPress={data => {
         //   setJobHistoryObject((jobHistoryObject = data));
         //   FunJobHistoryArray();
@@ -408,11 +412,12 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isSkillModalVisible}
         setModalVisible={setIsSkillModalVisible}
-        arrskills={arrayskills}
+        skillarr={arrayskills}
+        CardData={data}
         setEditModalSkill={setEditSkillsArray}
-        onPress={() => {
-          setIsSkillModalVisible(false);
-        }}
+        // onPress={() => {
+        //   setIsSkillModalVisible(false);
+        // }}
       />
       <ContactModal
         isEdit
@@ -426,10 +431,11 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isPersonalModalVisible}
         setModalVisible={setIsPersonalModalVisible}
-        arrayhobbies={arrayhobbies}
-        arrayinterest={arrayinterest}
-        arrayachievment={arrayachievment}
-        arraybirthday={arraybirthday}
+        hobbiesarray={arrayhobbies}
+        interestarray={arrayinterest}
+        achievmentarray={arrayachievment}
+        birthdayarray={arraybirthday}
+        CardData={data}
       />
 
       {/* Edit Profile Handling componants end */}

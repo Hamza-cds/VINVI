@@ -13,8 +13,9 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
 import {PRIMARY, WHITE} from '../Constants/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {isNullOrEmptyArray} from '../Constants/TextUtils';
-import {Save} from 'react-native-feather';
+import _ from 'lodash';
+import {PersonalCardEditApiCall} from '../Apis/Repo';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export function SkillModal({
   modalVisible,
@@ -22,22 +23,22 @@ export function SkillModal({
   setModalSkill,
   isEdit,
   onPress,
-  arrskills,
+  skillarr,
+  CardData,
   setEditModalSkill,
 }) {
+  const [userId, setUserId] = useState('');
   let [modalSkillArray, setModalSKillArray] = useState([]);
   let [editModalSkillArray, setEditModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
   const [inputValue, setInputValue] = useState('');
-
   useEffect(() => {
     if (isEdit) {
-      editModalSkillArray.length == 0
-        ? setEditModalSKillArray((editModalSkillArray = arrskills))
+      editModalSkillArray.length <= 0
+        ? setEditModalSKillArray((editModalSkillArray = skillarr))
         : setEditModalSKillArray(editModalSkillArray);
     }
   }, [modalVisible]);
-  console.log('hamza editModalSkillArray', editModalSkillArray);
 
   /* these funtions used when creating personal cards skills  */
   const FunModalSkillsArray = () => {
@@ -49,7 +50,7 @@ export function SkillModal({
   };
 
   const FunDelSkill = index => {
-    console.log('index', index);
+    // console.log('index', index);
     let newArr = [...modalSkillArray];
     newArr.splice(index);
     setModalSKillArray(newArr);
@@ -57,8 +58,26 @@ export function SkillModal({
   };
 
   /*These functions used when editing personal cards skill*/
+
+  var EditArraySkills;
+  const extractSkillForId = () => {
+    EditArraySkills = _.find(CardData.personalCardMeta, {
+      personalKey: 'Skills',
+    });
+    if (EditArraySkills) {
+      EditArraySkills = EditArraySkills;
+    } else {
+      EditArraySkills = '';
+    }
+    console.log('EditArraySkills', EditArraySkills);
+  };
+
+  {
+    isEdit == true ? extractSkillForId() : null;
+  }
+
   const FunEditModalSkillsArray = () => {
-    let neweditModalSkillArray = [...arrskills];
+    let neweditModalSkillArray = [...skillarr];
     neweditModalSkillArray.push(newSkill.trim());
     setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
     setEditModalSkill(modalSkillArray);
@@ -66,16 +85,42 @@ export function SkillModal({
   };
 
   const FunEditDelSkill = index => {
-    console.log('index', index);
-    let newArr = [...arrskills];
+    debugger;
+    // console.log('index', index);
+    let newArr = [...skillarr];
     newArr.splice(index);
     setEditModalSkill(newArr);
     setEditModalSKillArray((editModalSkillArray = newArr));
   };
 
-  const Save = () => {
+  const Add = () => {
     if (isEdit == true) FunEditModalSkillsArray();
     else FunModalSkillsArray();
+  };
+
+  const onEdit = () => {
+    let obj = {
+      id: EditArraySkills.id,
+      ishidden: true,
+      personalCardId: CardData.id,
+      personalKey: 'Skills',
+      personalValue: JSON.stringify(editModalSkillArray),
+    };
+    PersonalCardEditApiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('Edit Skill Data', data);
+
+        if (data.data.status == 200 && data.data.success == true) {
+          setModalVisible(false);
+        } else {
+          alert(data.message);
+          console.log('ADD');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
   };
 
   return (
@@ -152,7 +197,7 @@ export function SkillModal({
             />
             <TouchableOpacity
               onPress={() => {
-                Save();
+                Add();
               }}
               style={{
                 backgroundColor: PRIMARY,
@@ -244,13 +289,25 @@ export function SkillModal({
               />
             )}
 
-            <BtnComponent
-              placeholder={isEdit ? 'Edit' : 'Save'}
-              // onPress={() => {
-              //   setModalVisible(!modalVisible);
-              // }}
-              onPress={onPress}
-            />
+            {isEdit == true ? (
+              <BtnComponent
+                placeholder={isEdit ? 'Edit' : 'Save'}
+                onPress={() => {
+                  onEdit();
+                  // setModalVisible(!modalVisible);
+                }}
+                // onPress={onPress}
+              />
+            ) : (
+              <BtnComponent
+                placeholder={isEdit ? 'Edit' : 'Save'}
+                // onPress={() => {
+                //   onEdit();
+                //   setModalVisible(!modalVisible);
+                // }}
+                onPress={onPress}
+              />
+            )}
           </View>
         </View>
       </ScrollView>

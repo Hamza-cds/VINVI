@@ -12,7 +12,8 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
 import Select from '../Components/Select';
 import {WHITE} from '../Constants/Colors';
-import {GetAllLookupDetailApiCall} from '../Apis/Repo';
+import _ from 'lodash';
+import {PersonalCardEditApiCall} from '../Apis/Repo';
 
 export function JobHistoryModal({
   modalVisible,
@@ -21,12 +22,13 @@ export function JobHistoryModal({
   isEdit,
   industryType,
   employeeType,
-  arrayjobhistory,
+  jobhistoryarray,
   index,
+  CardData,
 }) {
-  console.log('index', index);
-  console.log('arrayjobhistory', arrayjobhistory);
-  console.log('arrayjobhistory[index]', arrayjobhistory[index]);
+  console.log('isEdit', isEdit);
+  console.log('jobhistoryarray', jobhistoryarray);
+  // console.log('arrayjobhistory[index]', arrayjobhistory[index]);
 
   const [companyName, setCompanyName] = useState('');
   let [startMonth, setStartMonth] = useState('');
@@ -36,7 +38,7 @@ export function JobHistoryModal({
   let [industry, setIndustry] = useState('');
   let [employee, setEmployee] = useState('');
   const [title, setTitle] = useState('');
-  // let [editJobHistorylArray, setEditJobHistorylArray] = useState([]);
+  let [editJobHistoryArray, setEditJobHistoryArray] = useState([]);
   let [editJob, setEditJob] = useState('');
 
   const Year = [
@@ -158,10 +160,80 @@ export function JobHistoryModal({
 
   useEffect(() => {
     if (isEdit) {
-      setEditJob((editJob = arrayjobhistory[index]));
-      // console.log('EditJob', EditJob);
+      setEditJob((editJob = jobhistoryarray[index]));
+      editJobHistoryArray.length <= 0
+        ? setEditJobHistoryArray((editJobHistoryArray = jobhistoryarray))
+        : setEditJobHistoryArray(editJobHistoryArray);
     }
   }, [modalVisible]);
+
+  let EditArrayJobHistory;
+  const extractJobHistoryForId = () => {
+    EditArrayJobHistory = _.find(CardData.personalCardMeta, {
+      personalKey: 'JobHistory',
+    });
+    if (EditArrayJobHistory) {
+      EditArrayJobHistory = EditArrayJobHistory;
+    } else {
+      EditArrayJobHistory = '';
+    }
+    console.log('EditArrayJobHistory', EditArrayJobHistory);
+  };
+
+  {
+    isEdit == true ? extractJobHistoryForId() : null;
+  }
+
+  const onEdit = () => {
+    let newEditModalJobObj = jobhistoryarray[index];
+    newEditModalJobObj.title = title ? title.trim() : newEditModalJobObj.title;
+    newEditModalJobObj.companyName = companyName
+      ? companyName.trim()
+      : newEditModalJobObj.companyName;
+    newEditModalJobObj.employeeType = employee
+      ? employee
+      : newEditModalJobObj.employeeType;
+    newEditModalJobObj.startMonth = startMonth
+      ? startMonth
+      : newEditModalJobObj.startMonth;
+    newEditModalJobObj.startYear = startYear
+      ? startYear
+      : newEditModalJobObj.startYear;
+    newEditModalJobObj.endMonth = endMonth
+      ? endMonth
+      : newEditModalJobObj.endMonth;
+    newEditModalJobObj.endYear = endYear ? endYear : newEditModalJobObj.endYear;
+    newEditModalJobObj.industryType = industry
+      ? industry
+      : newEditModalJobObj.industryType;
+    console.log('newEditModalJobObj', newEditModalJobObj);
+    console.log('jobhistoryarray onEdit', jobhistoryarray);
+
+    let obj = {
+      id: EditArrayJobHistory.id,
+      ishidden: true,
+      personalCardId: CardData.id,
+      personalKey: 'JobHistory',
+      personalValue: JSON.stringify(jobhistoryarray),
+    };
+    PersonalCardEditApiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('Edit Skill Data', data);
+
+        if (data.data.status == 200 && data.data.success == true) {
+          setModalVisible(false);
+        } else {
+          alert(data.message);
+          console.log('ADD');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
+  /*********************************************************************/
 
   const onAdd = () => {
     let obj = {
@@ -202,8 +274,6 @@ export function JobHistoryModal({
     setEndYear((endYear = value.name));
     console.log('endYear', endYear);
   };
-
-  console.log('editJob check here', editJob);
 
   return (
     <Modal
@@ -399,7 +469,20 @@ export function JobHistoryModal({
               />
             </View>
           </ScrollView>
-          <BtnComponent placeholder={isEdit ? 'Edit' : 'Add'} onPress={onAdd} />
+          {isEdit == true ? (
+            <BtnComponent
+              placeholder={isEdit ? 'Edit' : 'Add'}
+              onPress={() => {
+                // EditingJob();
+                onEdit();
+              }}
+            />
+          ) : (
+            <BtnComponent
+              placeholder={isEdit ? 'Edit' : 'Add'}
+              onPress={onAdd}
+            />
+          )}
         </View>
       </View>
       {/* </ScrollView> */}

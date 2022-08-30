@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ScrollView,
@@ -10,17 +10,201 @@ import {
 import BtnComponent from '../Components/BtnComponent';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
+import _ from 'lodash';
+import {personalCardApiCall} from '../Apis/Repo';
 
 export function PersonalModal({
   modalVisible,
   setModalVisible,
-  setHobbies,
   isEdit,
-  arrayhobbies,
-  arrayinterest,
-  arrayachievment,
-  arraybirthday,
+  hobbiesarray,
+  interestarray,
+  achievmentarray,
+  birthdayarray,
+  CardData,
 }) {
+  console.log('CardData', CardData);
+  const [hobbies, setHobbies] = useState('');
+  const [interests, setInterests] = useState('');
+  const [achevements, setAchevements] = useState('');
+  const [dob, setDOB] = useState('');
+  const [occupation, setOccupation] = useState('');
+  const [msg, setMsg] = useState('');
+
+  let arrayhobbies = [];
+  arrayhobbies = _.find(CardData.personalCardMeta, {personalKey: 'Hobbies'});
+  if (arrayhobbies) {
+    arrayhobbies = arrayhobbies;
+  } else {
+    arrayhobbies = 'Dummy hobbies';
+  }
+
+  let arrayinterest = [];
+  arrayinterest = _.find(CardData.personalCardMeta, {personalKey: 'Interests'});
+  if (arrayinterest) {
+    arrayinterest = arrayinterest;
+  } else {
+    arrayinterest = 'Dummy Interests';
+  }
+
+  let arraybirthday = [];
+  arraybirthday = _.find(CardData.personalCardMeta, {personalKey: 'birthday'});
+  if (arraybirthday) {
+    arraybirthday = arraybirthday;
+  } else {
+    arraybirthday = 'Dummy Birthday';
+  }
+
+  let arrayachievment = [];
+  arrayachievment = _.find(CardData.personalCardMeta, {
+    personalKey: 'Achievements',
+  });
+  if (arrayachievment) {
+    arrayachievment = arrayachievment;
+  } else {
+    arrayachievment = 'Dummy Achievements';
+  }
+
+  let arrayOccupation;
+  arrayOccupation = _.find(CardData.personalCardMeta, {
+    personalKey: 'occupation',
+  });
+  if (arrayOccupation) {
+    arrayOccupation = arrayOccupation;
+  } else {
+    arrayOccupation = 'Dummy occupation';
+  }
+
+  let arrayIntro = [];
+  arrayIntro = _.find(CardData.personalCardMeta, {
+    personalKey: 'Introductory Message',
+  });
+  if (arrayIntro) {
+    arrayIntro = arrayIntro;
+  } else {
+    arrayIntro = 'Dummy Introduction';
+  }
+
+  const onEdit = () => {
+    let PersonalCardMeta = [
+      {
+        id: arrayhobbies.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'Hobbies',
+        PersonalValue: hobbies ? hobbies.trim() : arrayhobbies.personalValue,
+        Ishidden: arrayhobbies.ishidden,
+      },
+      {
+        id: arrayinterest.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'Interests',
+        PersonalValue: interests
+          ? interests.trim()
+          : arrayinterest.personalValue,
+        Ishidden: arrayinterest.ishidden,
+      },
+      {
+        id: arrayachievment.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'Achievements',
+        PersonalValue: achevements
+          ? achevements.trim()
+          : arrayachievment.personalValue,
+        Ishidden: arrayachievment.ishidden,
+      },
+      {
+        id: arraybirthday.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'birthday',
+        PersonalValue: dob ? dob.trim() : arraybirthday.personalValue,
+        Ishidden: arraybirthday.ishidden,
+      },
+      {
+        id: arrayOccupation.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'occupation',
+        PersonalValue: occupation
+          ? occupation.trim()
+          : arrayOccupation.personalValue,
+        Ishidden: arrayOccupation.ishidden,
+      },
+      {
+        id: arrayIntro.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'Introductory Message',
+        PersonalValue: msg ? msg.trim() : arrayIntro.personalValue,
+        Ishidden: arrayIntro.ishidden,
+      },
+    ];
+
+    var formdata = new FormData();
+    formdata.append('Name', CardData.name);
+    formdata.append('Email', CardData.email);
+    formdata.append('UserId', JSON.stringify(CardData.userId));
+    formdata.append('PhoneNo', CardData.phoneNo);
+    formdata.append('Address', CardData.address);
+    for (let index = 0; index < PersonalCardMeta.length; index++) {
+      const element = PersonalCardMeta[index];
+      formdata.append(`PersonalCardMeta[${index}][id]`, element.id);
+      formdata.append(
+        `PersonalCardMeta[${index}][personalCardId]`,
+        element.personalCardId,
+      );
+      formdata.append(
+        `PersonalCardMeta[${index}][PersonalKey]`,
+        element.PersonalKey,
+      );
+      formdata.append(
+        `PersonalCardMeta[${index}][PersonalValue]`,
+        element.PersonalValue,
+      );
+      formdata.append(`PersonalCardMeta[${index}][Ishidden]`, element.Ishidden);
+    }
+
+    console.log('formdata', formdata);
+
+    // {
+    //   profilePic
+    //     ? formdata.append('profile_image_file', {
+    //         uri: profilePic.path,
+    //         name: profilePicName,
+    //         type: profilePic.mime,
+    //       })
+    //     : formdata.append('profile_image_file', null);
+    // }
+
+    // {
+    //   coverPic
+    //     ? formdata.append('cover_image_image', {
+    //         uri: coverPic.path,
+    //         name: coverName,
+    //         type: coverPic.mime,
+    //       })
+    //     : formdata.append('cover_image_image', null);
+    // }
+
+    personalCardApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
+          setModalVisible(false);
+        } else {
+          alert('alert');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
+  console.log('arrayhobbies', arrayhobbies);
+  console.log('arrayinterest', arrayinterest);
+  console.log('arraybirthday', arraybirthday);
+  console.log('arrayachievment', arrayachievment);
+  console.log('arrayOccupation', arrayOccupation);
+  console.log('arrayIntro', arrayIntro);
+
   return (
     <Modal
       animationType="fade"
@@ -87,7 +271,7 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Hobbies"
               inputType="text"
-              text={arrayhobbies ? arrayhobbies : null}
+              // text={arrayhobbies ? arrayhobbies : null}
               onChange={value => {
                 setHobbies(value);
               }}
@@ -95,31 +279,48 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Interests"
               inputType="text"
-              text={arrayinterest ? arrayinterest : null}
+              // text={arrayinterest ? arrayinterest : null}
               onChange={value => {
-                setHobbies(value);
+                setInterests(value);
               }}
             />
             <OutlinedInputBox
               placeholder="Achevements"
               inputType="text"
-              text={arrayachievment ? arrayachievment : null}
+              // text={arrayachievment ? arrayachievment : null}
               onChange={value => {
-                setHobbies(value);
+                setAchevements(value);
               }}
             />
             <OutlinedInputBox
               placeholder="Date of birth"
               inputType="text"
-              text={arraybirthday ? arraybirthday : null}
+              // text={arraybirthday ? arraybirthday : null}
               onChange={value => {
-                setHobbies(value);
+                setDOB(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="occupation"
+              inputType="text"
+              // text={arrayOccupation ? arrayOccupation : null}
+              onChange={value => {
+                setOccupation(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Introductory Message"
+              inputType="text"
+              // text={arr ? arraybirthday : null}
+              onChange={value => {
+                setMsg(value);
               }}
             />
             <BtnComponent
               placeholder={isEdit ? 'Edit' : 'Add'}
               onPress={() => {
-                setModalVisible(!modalVisible);
+                onEdit();
+                // setModalVisible(!modalVisible);
               }}
             />
           </View>
