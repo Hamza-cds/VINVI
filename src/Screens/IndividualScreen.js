@@ -15,7 +15,11 @@ import Svg, {Path} from 'react-native-svg';
 import {Height, QRCODE_URL, URL, Width} from '../Constants/Constants';
 import _ from 'lodash';
 import QRCode from 'react-native-qrcode-svg';
-import {getPersonalCardByIdApiCall, personalCardApiCall} from '../Apis/Repo';
+import {
+  getPersonalCardByIdApiCall,
+  personalCardApiCall,
+  GetAllLookupDetailApiCall,
+} from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ContactDetails} from './ContactDetails';
 import {Education} from './Education';
@@ -50,6 +54,10 @@ export default function IndividualScreen(props) {
   let [proImage, setProImage] = useState('');
   let [imageName, setImageName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  let [industryType, setIndustryType] = useState([]);
+  let [employeeType, setEmployeeType] = useState([]);
+  let [degreeList, setDegreList] = useState([]);
+  let [lookupData, setLookupData] = useState([]);
 
   let arrayOccupation;
   arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
@@ -152,6 +160,7 @@ export default function IndividualScreen(props) {
 
   useEffect(() => {
     getData();
+    getAllLookupdetail();
   }, []);
 
   const getData = () => {
@@ -170,6 +179,36 @@ export default function IndividualScreen(props) {
       })
       .catch(err => {
         setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
+  const getAllLookupdetail = () => {
+    setIsLoading(true);
+    GetAllLookupDetailApiCall()
+      .then(res => {
+        setLookupData((lookupData = res.data.result));
+        console.log('lookupData', lookupData);
+        setIsLoading(false);
+
+        for (let index = 0; index < lookupData.length; index++) {
+          const element = lookupData[index];
+          if (element.lookupId == 3) {
+            let arraydegree = degreeList;
+            arraydegree.push(element);
+            setDegreList((degreeList = arraydegree));
+          } else if (element.lookupId == 8) {
+            let arrayEmpType = employeeType;
+            arrayEmpType.push(element);
+            setEmployeeType((employeeType = arrayEmpType));
+          } else if (element.lookupId == 9) {
+            let arrayIndustryType = industryType;
+            arrayIndustryType.push(element);
+            setIndustryType((industryType = arrayIndustryType));
+          }
+        }
+      })
+      .catch(err => {
         console.log('err', err);
       });
   };
@@ -486,6 +525,7 @@ export default function IndividualScreen(props) {
         modalVisible={isEducationModalVisible}
         setModalVisible={setIsEducationModalVisible}
         educationarray={arrayeducation}
+        degreeData={degreeList}
         index={eduIndex}
         CardData={data}
       />
@@ -494,6 +534,8 @@ export default function IndividualScreen(props) {
         modalVisible={isJobHistoryModalVisible}
         setModalVisible={setIsJobHistoryModalVisible}
         jobhistoryarray={arrayjobhistory}
+        industryType={industryType}
+        employeeType={employeeType}
         index={jobIndex}
         CardData={data}
         // onPress={data => {

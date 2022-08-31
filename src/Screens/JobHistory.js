@@ -78,7 +78,7 @@ export function JobHistory({setEdit, arrayjobhistory, edit, setJobIndex}) {
             />
           </Svg>
         </View>
-        {/* {edit == true ? (
+        {edit == true ? (
           <TouchableOpacity
             onPress={() => {
               setEdit(true);
@@ -96,7 +96,7 @@ export function JobHistory({setEdit, arrayjobhistory, edit, setJobIndex}) {
               />
             </Svg>
           </TouchableOpacity>
-        ) : null} */}
+        ) : null}
       </View>
       <FlatList
         data={arrayjobhistory}
