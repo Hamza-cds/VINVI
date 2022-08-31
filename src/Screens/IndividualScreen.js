@@ -8,7 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {SECONDARY, FORTH, WHITE} from '../Constants/Colors';
+import {SECONDARY, FORTH, WHITE, PRIMARY} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import Svg, {Path} from 'react-native-svg';
@@ -28,6 +28,7 @@ import {SkillModal} from './SkillModal';
 import {ContactModal} from './ContactModal';
 import {PersonalModal} from './PersonalModal';
 import ImagePicker from 'react-native-image-crop-picker';
+import Loader from '../Components/Loader';
 
 export default function IndividualScreen(props) {
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
@@ -44,12 +45,11 @@ export default function IndividualScreen(props) {
     props.route.params.edit ? props.route.params.edit : '',
   );
   let [editSkillsArray, setEditSkillsArray] = useState([]);
-  // const [jobHistoryArray, setJobHistoryArray] = useState([]);
-  // let [jobHistoryObject, setJobHistoryObject] = useState('');
   let [jobIndex, setJobIndex] = useState('');
   let [eduIndex, setEduIndex] = useState('');
   let [proImage, setProImage] = useState('');
   let [imageName, setImageName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   let arrayOccupation;
   arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
@@ -155,15 +155,21 @@ export default function IndividualScreen(props) {
   }, []);
 
   const getData = () => {
+    setIsLoading(true);
     getPersonalCardByIdApiCall(ID)
       .then(res => {
         console.log('res', res.data.result);
         if (res.data.success) {
           setdata((data = res.data.result));
+          setIsLoading(false);
           console.log('data', data);
-        } else alert('No record found.');
+        } else {
+          setIsLoading(false);
+          alert('No record found.');
+        }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -206,34 +212,39 @@ export default function IndividualScreen(props) {
     //     : formdata.append('cover_image_image', null);
     // }
 
+    setIsLoading(true);
     personalCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
+          setIsLoading(false);
           alert('picture updated successfully');
         } else {
+          setIsLoading(false);
           alert('alert');
         }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
-
-  // const FunJobHistoryArray = () => {
-  //   let newJobHistoryArray = jobHistoryObject;
-  //   newJobHistoryArray.push(jobHistoryObject);
-  //   setJobHistoryArray([]);
-  //   setJobHistoryArray(newJobHistoryArray);
-  // };
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ScrollView style={{flex: 1, backgroundColor: WHITE}}>
         <ImageBackground
-          source={require('../Assets/individualbanner.png')}
-          style={{width: '100%', height: 300}}>
+          source={
+            data.coverPicture
+              ? {uri: URL.concat(data.coverPicture)}
+              : require('../Assets/individualbanner.png')
+          }
+          style={{
+            width: '100%',
+            height: 300,
+            backgroundColor: '#F0F0F0',
+          }}>
           <Header
             navigation={props.navigation}
             variant="user"
@@ -270,30 +281,32 @@ export default function IndividualScreen(props) {
                 style={{width: 100, height: 100, borderRadius: 50}}
               />
             </View>
-            <TouchableOpacity
-              style={{padding: 3, marginTop: 75, marginLeft: -25}}
-              onPress={() => {
-                ImagePicker.openPicker({
-                  width: 300,
-                  height: 400,
-                  cropping: true,
-                }).then(image => {
-                  console.log('image', image);
-                  var imageMime = image.mime;
-                  var name = imageMime.split('/')[1];
-                  setImageName((imageName = 'Vinvi.' + name));
-                  setProImage((proImage = image));
-                  onSelectImage();
-                });
-              }}>
-              <Image
-                source={require('../Assets/editProf.png')}
-                style={{height: 22, width: 22}}
-              />
-            </TouchableOpacity>
+            {Edit == true ? (
+              <TouchableOpacity
+                style={{padding: 3, marginTop: 75, marginLeft: -25}}
+                onPress={() => {
+                  ImagePicker.openPicker({
+                    width: 300,
+                    height: 400,
+                    cropping: true,
+                  }).then(image => {
+                    console.log('image', image);
+                    var imageMime = image.mime;
+                    var name = imageMime.split('/')[1];
+                    setImageName((imageName = 'Vinvi.' + name));
+                    setProImage((proImage = image));
+                    onSelectImage();
+                  });
+                }}>
+                <Image
+                  source={require('../Assets/editProf.png')}
+                  style={{height: 22, width: 22}}
+                />
+              </TouchableOpacity>
+            ) : null}
           </View>
 
-          <View style={{paddingHorizontal: 10, marginBottom: 10}}>
+          <View style={{paddingHorizontal: 10, marginBottom: 20}}>
             <Text style={{color: SECONDARY, fontSize: 20}}>{data.name}</Text>
 
             <View style={{marginLeft: 170, marginTop: -20}}>
@@ -463,6 +476,7 @@ export default function IndividualScreen(props) {
           </View>
           <BtnComponent placeholder="Block" onPress={() => {}} />
         </View>
+        {isLoading ? <Loader /> : null}
       </ScrollView>
 
       {/* Edit Profile Handling componants start */}

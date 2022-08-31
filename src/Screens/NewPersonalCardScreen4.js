@@ -33,6 +33,7 @@ import {PRIMARY, TEXT_COLOR, WHITE} from '../Constants/Colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {PCDComplete} from '../../Store/Action';
 import {useTheme} from 'react-native-paper';
+import Loader from '../Components/Loader';
 
 export default function NewCardScreen(props) {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ export default function NewCardScreen(props) {
   let [employeeType, setEmployeeType] = useState([]);
   let [degreeList, setDegreList] = useState([]);
   let [lookupData, setLookupData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const PersonalcardScreen4Array = [
     {
@@ -132,14 +134,21 @@ export default function NewCardScreen(props) {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
-      getAllLookupdetail();
+      // getAllLookupdetail();
     });
   }, []);
 
+  useEffect(() => {
+    getAllLookupdetail();
+  }, []);
+
   const getAllLookupdetail = () => {
+    setIsLoading(true);
     GetAllLookupDetailApiCall()
       .then(res => {
         setLookupData((lookupData = res.data.result));
+        console.log('lookupData', lookupData);
+        setIsLoading(false);
 
         for (let index = 0; index < lookupData.length; index++) {
           const element = lookupData[index];
@@ -252,18 +261,22 @@ export default function NewCardScreen(props) {
           : formdata.append('cover_image_image', null);
       }
 
+      setIsLoading(true);
       personalCardApiCall(formdata)
         .then(res => res.json())
         .then(data => {
           console.log('response', data);
           if (data.status === 200 && data.success === true) {
+            setIsLoading(false);
             dispatch(PCDComplete(''));
             props.navigation.replace('MyCardsDashboardScreen');
           } else {
+            setIsLoading(false);
             alert(CREDIANTIAL_ERROR);
           }
         })
         .catch(err => {
+          setIsLoading(false);
           console.log('err', err);
         });
     }
@@ -456,6 +469,8 @@ export default function NewCardScreen(props) {
             onFinish();
           }}
         />
+
+        {isLoading ? <Loader /> : null}
       </ScrollView>
       <EducationModal
         modalVisible={isEducationModalVisible}

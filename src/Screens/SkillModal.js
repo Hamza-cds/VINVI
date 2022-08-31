@@ -16,6 +16,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 import {isNullOrEmpty} from '../Constants/TextUtils';
+import Loader from '../Components/Loader';
 
 export function SkillModal({
   modalVisible,
@@ -32,6 +33,7 @@ export function SkillModal({
   let [editModalSkillArray, setEditModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
   const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (isEdit) {
       editModalSkillArray.length <= 0
@@ -106,19 +108,23 @@ export function SkillModal({
       personalKey: 'Skills',
       personalValue: JSON.stringify(editModalSkillArray),
     };
+
+    setIsLoading(true);
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
         console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
+          setIsLoading(false);
           setModalVisible(false);
         } else {
+          setIsLoading(false);
           alert(data.message);
-          console.log('ADD');
         }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -310,6 +316,7 @@ export function SkillModal({
             )}
           </View>
         </View>
+        {isLoading ? <Loader /> : null}
       </ScrollView>
     </Modal>
   );

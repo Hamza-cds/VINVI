@@ -97,6 +97,7 @@ export default function MyCardIndividual({
               fontWeight: 'bold',
               color: selected === index ? WHITE : SECONDARY,
               marginBottom: 10,
+              width: 200,
             }}>
             {item.occupation}
             {arrayOccupation}
@@ -112,6 +113,7 @@ export default function MyCardIndividual({
             style={{
               fontSize: 12,
               color: selected === index ? WHITE : SECONDARY,
+              width: 200,
             }}>
             {item.address}
           </Text>

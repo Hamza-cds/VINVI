@@ -70,6 +70,7 @@ export default function IndividualCard({
             fontWeight: 'bold',
             color: SECONDARY,
             marginBottom: 10,
+            width: 200,
           }}>
           {arrayOccupation}
         </Text>
@@ -78,7 +79,9 @@ export default function IndividualCard({
           style={{fontSize: 14, color: SECONDARY, maxWidth: 190}}>
           {item.email}
         </Text>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{item.address}</Text>
+        <Text style={{fontSize: 14, color: SECONDARY, width: 200}}>
+          {item.address}
+        </Text>
       </View>
       {cta ? (
         <View

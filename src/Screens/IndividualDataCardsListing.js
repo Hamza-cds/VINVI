@@ -4,10 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {FlatList} from 'react-native-gesture-handler';
 import {View, Text} from 'react-native';
 import {getPersonalCardAllActiveApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 export function IndividualDataCardsListing({navigation}) {
   const [individualData, setIndividualData] = useState([]);
   let [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -17,12 +19,15 @@ export function IndividualDataCardsListing({navigation}) {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     getPersonalCardAllActiveApiCall()
       .then(res => {
-        console.log('lIUQWDKJLSdahLsdfi', res);
+        console.log('Card List', res);
+        setIsLoading(false);
         setIndividualData(res.data.result);
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   }, []);
@@ -55,6 +60,8 @@ export function IndividualDataCardsListing({navigation}) {
           <Text style={{color: '#242424'}}>No Cards</Text>
         </View>
       )}
+
+      {isLoading ? <Loader /> : null}
     </>
   );
 }

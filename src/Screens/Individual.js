@@ -4,11 +4,13 @@ import {TouchableOpacity, Text, View, FlatList} from 'react-native';
 import {getPersonalCardAllActiveApiCall} from '../Apis/Repo';
 import MyCardIndividual from '../Components/MyCardIndividual';
 import {SECONDARY, WHITE} from '../Constants/Colors';
+import Loader from '../Components/Loader';
 
 export function Individual({navigation}) {
   const [selected, setSelected] = useState(null);
   let [userData, setUserData] = useState(null);
   const [data, setdata] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log('my card list', data);
 
@@ -24,12 +26,15 @@ export function Individual({navigation}) {
   }, []);
 
   const getData = () => {
+    setIsLoading(true);
     getPersonalCardAllActiveApiCall()
       .then(res => {
         console.log('res', res);
         setdata(res.data.result);
+        setIsLoading(false);
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -73,6 +78,8 @@ export function Individual({navigation}) {
           }
         />
       ) : null}
+
+      {isLoading ? <Loader /> : null}
     </>
   );
 }

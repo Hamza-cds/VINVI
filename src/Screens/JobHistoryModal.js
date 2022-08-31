@@ -14,6 +14,7 @@ import Select from '../Components/Select';
 import {WHITE} from '../Constants/Colors';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 export function JobHistoryModal({
   modalVisible,
@@ -40,6 +41,7 @@ export function JobHistoryModal({
   const [title, setTitle] = useState('');
   let [editJobHistoryArray, setEditJobHistoryArray] = useState([]);
   let [editJob, setEditJob] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const Year = [
     {id: 1, name: '1960'},
@@ -216,19 +218,24 @@ export function JobHistoryModal({
       personalKey: 'JobHistory',
       personalValue: JSON.stringify(jobhistoryarray),
     };
+
+    setIsLoading(true);
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
         console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
+          setIsLoading(false);
           setModalVisible(false);
         } else {
+          setIsLoading(false);
           alert(data.message);
           console.log('ADD');
         }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -485,6 +492,8 @@ export function JobHistoryModal({
           )}
         </View>
       </View>
+
+      {isLoading ? <Loader /> : null}
       {/* </ScrollView> */}
     </Modal>
   );

@@ -15,6 +15,7 @@ import {LookupDetailApiCall} from '../Apis/Repo';
 import Select from '../Components/Select';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 export function EducationModal({
   modalVisible,
@@ -26,6 +27,7 @@ export function EducationModal({
   index,
   educationarray,
 }) {
+  console.log('degreeData', degreeData);
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
   const [fieldOfStudy, setFieldOfStudy] = useState('');
@@ -36,6 +38,7 @@ export function EducationModal({
   // let [degreeData, setDegreeData] = useState('hamza');
   let [editEdu, setEditEdu] = useState('');
   let [editEduHistoryArray, setEditEducationHistoryArray] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const Year = [
     {id: 1, name: '1960'},
@@ -214,19 +217,24 @@ export function EducationModal({
       personalKey: 'Education',
       personalValue: JSON.stringify(educationarray),
     };
+
+    setIsLoading(true);
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
         console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
+          setIsLoading(false);
           setModalVisible(false);
         } else {
           alert(data.message);
+          setIsLoading(false);
           console.log('ADD');
         }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -444,6 +452,7 @@ export function EducationModal({
             )}
           </View>
         </View>
+        {isLoading ? <Loader /> : null}
       </ScrollView>
     </Modal>
   );

@@ -14,22 +14,34 @@ import {signUpApiCall} from '../Apis/Repo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 export default function NewCardScreen(props, navigation, onCallBack) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [imageName, setImageName] = useState('');
+  let [firstName, setFirstName] = useState('');
+  let [lastName, setLastName] = useState('');
+  let [email, setEmail] = useState('');
+  let [imageName, setImageName] = useState('');
   const [image, setImage] = useState('');
   let [userData, setUserData] = useState('');
-
+  console.log('image', image);
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
-      setImage({path: URL.concat(userData.profileImage)});
+      // setImage({path: URL.concat(userData.profileImage)});
     });
   }, []);
 
+  useEffect(() => {
+    if (!isNullOrEmpty(userData)) {
+      setFirstName(userData.firstName);
+      setLastName(userData.lastName);
+      setEmail(userData.email);
+    }
+  }, []);
   const onSave = () => {
+    console.log('firstName', firstName);
+    console.log('lastName', lastName);
+    console.log('email', email);
+    console.log('image', image);
+
     if (isNullOrEmpty(firstName)) {
       alert('enter first name');
     } else if (isNullOrEmpty(lastName)) {
@@ -47,11 +59,20 @@ export default function NewCardScreen(props, navigation, onCallBack) {
       console.log('object', object);
       let updateinfo = new FormData();
       updateinfo.append('Model', JSON.stringify(object));
-      updateinfo.append('image_file', {
-        uri: image.path,
-        name: imageName,
-        type: image.mime,
-      });
+      // updateinfo.append('image_file', {
+      //   uri: image.path,
+      //   name: imageName,
+      //   type: image.mime,
+      // });
+      {
+        image
+          ? updateinfo.append('image_file', {
+              uri: image.path,
+              name: imageName,
+              type: image.mime,
+            })
+          : updateinfo.append('image_file', userData.profileImage);
+      }
 
       signUpApiCall(updateinfo)
         .then(res => res.json())
@@ -99,13 +120,16 @@ export default function NewCardScreen(props, navigation, onCallBack) {
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
           <Image
             source={
-              image != null
+              image
                 ? {uri: image.path}
+                : userData.profileImage != null
+                ? {uri: URL.concat(userData.profileImage)}
                 : require('../Assets/profilePic.png')
             }
             style={{height: 120, width: 120, borderRadius: 60}}
           />
           <TouchableOpacity
+            style={{marginTop: 80, marginLeft: -30}}
             onPress={() => {
               ImagePicker.openPicker({
                 width: 300,
@@ -121,7 +145,7 @@ export default function NewCardScreen(props, navigation, onCallBack) {
             }}>
             <Image
               source={require('../Assets/editProf.png')}
-              style={{marginTop: 80, marginLeft: -30}}
+              // style={{marginTop: 80, marginLeft: -30}}
             />
           </TouchableOpacity>
         </View>

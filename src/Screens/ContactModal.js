@@ -12,6 +12,7 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
 import _ from 'lodash';
 import {personalCardApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 export function ContactModal({
   modalVisible,
@@ -27,6 +28,7 @@ export function ContactModal({
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   let arraycity;
   arraycity = _.find(CardData.personalCardMeta, {personalKey: 'city'});
@@ -69,6 +71,8 @@ export function ContactModal({
     formdata.append('id', JSON.stringify(CardData.id));
     formdata.append('PhoneNo', CardData.phoneNo);
     formdata.append('Address', address ? address : CardData.address);
+    formdata.append('ProfilePicture', CardData.profilePicture);
+    formdata.append('CoverPicture', CardData.coverPicture);
     for (let index = 0; index < PersonalCardMeta.length; index++) {
       const element = PersonalCardMeta[index];
       formdata.append(`PersonalCardMeta[${index}][id]`, element.id);
@@ -87,16 +91,6 @@ export function ContactModal({
       formdata.append(`PersonalCardMeta[${index}][Ishidden]`, element.Ishidden);
     }
 
-    {
-      CardData.profilePicture
-        ? formdata.append('profile_image_file', {
-            uri: profilePic.path,
-            name: profilePicName,
-            type: profilePic.mime,
-          })
-        : formdata.append('profile_image_file', null);
-    }
-
     // {
     //   coverPic
     //     ? formdata.append('cover_image_image', {
@@ -109,17 +103,21 @@ export function ContactModal({
 
     console.log('formdata', formdata);
 
+    setIsLoading(true);
     personalCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
+          setIsLoading(false);
           setModalVisible(false);
         } else {
+          setIsLoading(false);
           alert('alert');
         }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -239,6 +237,7 @@ export function ContactModal({
             />
           </View>
         </View>
+        {isLoading ? <Loader /> : null}
       </ScrollView>
     </Modal>
   );
