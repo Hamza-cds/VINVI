@@ -12,6 +12,7 @@ export default function LoginInputBox({
   inputValue,
   KeyboardType,
   text,
+  editable,
 }) {
   const [isfocused, setIsfocused] = useState(false);
   let secureTextEntry;
@@ -61,6 +62,7 @@ export default function LoginInputBox({
           placeholder={placeholder}
           maxLength={maxLength}
           placeholderTextColor={TEXT_COLOR}
+          editable={editable}
           style={{
             width: '100%',
             paddingHorizontal: 20,

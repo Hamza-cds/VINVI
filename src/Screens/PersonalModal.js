@@ -24,6 +24,7 @@ export function PersonalModal({
   CardData,
 }) {
   console.log('CardData', CardData);
+  const [name, setName] = useState('');
   const [hobbies, setHobbies] = useState('');
   const [interests, setInterests] = useState('');
   const [achevements, setAchevements] = useState('');
@@ -138,9 +139,10 @@ export function PersonalModal({
     ];
 
     var formdata = new FormData();
-    formdata.append('Name', CardData.name);
+    formdata.append('Name', name ? name : CardData.name);
     formdata.append('Email', CardData.email);
     formdata.append('UserId', JSON.stringify(CardData.userId));
+    formdata.append('id', JSON.stringify(CardData.id));
     formdata.append('PhoneNo', CardData.phoneNo);
     formdata.append('Address', CardData.address);
     for (let index = 0; index < PersonalCardMeta.length; index++) {
@@ -161,27 +163,17 @@ export function PersonalModal({
       formdata.append(`PersonalCardMeta[${index}][Ishidden]`, element.Ishidden);
     }
 
+    {
+      CardData.profilePicture
+        ? formdata.append('profile_image_file', {
+            uri: profilePic.path,
+            name: profilePicName,
+            type: profilePic.mime,
+          })
+        : formdata.append('profile_image_file', null);
+    }
+
     console.log('formdata', formdata);
-
-    // {
-    //   profilePic
-    //     ? formdata.append('profile_image_file', {
-    //         uri: profilePic.path,
-    //         name: profilePicName,
-    //         type: profilePic.mime,
-    //       })
-    //     : formdata.append('profile_image_file', null);
-    // }
-
-    // {
-    //   coverPic
-    //     ? formdata.append('cover_image_image', {
-    //         uri: coverPic.path,
-    //         name: coverName,
-    //         type: coverPic.mime,
-    //       })
-    //     : formdata.append('cover_image_image', null);
-    // }
 
     personalCardApiCall(formdata)
       .then(res => res.json())
@@ -197,13 +189,6 @@ export function PersonalModal({
         console.log('err', err);
       });
   };
-
-  console.log('arrayhobbies', arrayhobbies);
-  console.log('arrayinterest', arrayinterest);
-  console.log('arraybirthday', arraybirthday);
-  console.log('arrayachievment', arrayachievment);
-  console.log('arrayOccupation', arrayOccupation);
-  console.log('arrayIntro', arrayIntro);
 
   return (
     <Modal
@@ -268,10 +253,22 @@ export function PersonalModal({
                 </Svg>
               </TouchableOpacity>
             </View>
+
+            <OutlinedInputBox
+              placeholder="Name"
+              inputType="text"
+              text={CardData.name ? CardData.name : null}
+              onChange={value => {
+                setName(value);
+              }}
+            />
+
             <OutlinedInputBox
               placeholder="Hobbies"
               inputType="text"
-              // text={arrayhobbies ? arrayhobbies : null}
+              text={
+                arrayhobbies.personalValue ? arrayhobbies.personalValue : null
+              }
               onChange={value => {
                 setHobbies(value);
               }}
@@ -279,7 +276,9 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Interests"
               inputType="text"
-              // text={arrayinterest ? arrayinterest : null}
+              text={
+                arrayinterest.personalValue ? arrayinterest.personalValue : null
+              }
               onChange={value => {
                 setInterests(value);
               }}
@@ -287,7 +286,11 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Achevements"
               inputType="text"
-              // text={arrayachievment ? arrayachievment : null}
+              text={
+                arrayachievment.personalValue
+                  ? arrayachievment.personalValue
+                  : null
+              }
               onChange={value => {
                 setAchevements(value);
               }}
@@ -295,7 +298,9 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Date of birth"
               inputType="text"
-              // text={arraybirthday ? arraybirthday : null}
+              text={
+                arraybirthday.personalValue ? arraybirthday.personalValue : null
+              }
               onChange={value => {
                 setDOB(value);
               }}
@@ -303,7 +308,11 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="occupation"
               inputType="text"
-              // text={arrayOccupation ? arrayOccupation : null}
+              text={
+                arrayOccupation.personalValue
+                  ? arrayOccupation.personalValue
+                  : null
+              }
               onChange={value => {
                 setOccupation(value);
               }}
@@ -311,7 +320,7 @@ export function PersonalModal({
             <OutlinedInputBox
               placeholder="Introductory Message"
               inputType="text"
-              // text={arr ? arraybirthday : null}
+              text={arrayIntro.personalValue ? arrayIntro.personalValue : null}
               onChange={value => {
                 setMsg(value);
               }}

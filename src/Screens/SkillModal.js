@@ -85,7 +85,7 @@ export function SkillModal({
   };
 
   const FunEditDelSkill = index => {
-    debugger;
+    // debugger;
     // console.log('index', index);
     let newArr = [...skillarr];
     newArr.splice(index);

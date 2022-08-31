@@ -15,7 +15,7 @@ import Svg, {Path} from 'react-native-svg';
 import {Height, QRCODE_URL, URL, Width} from '../Constants/Constants';
 import _ from 'lodash';
 import QRCode from 'react-native-qrcode-svg';
-import {getPersonalCardByIdApiCall} from '../Apis/Repo';
+import {getPersonalCardByIdApiCall, personalCardApiCall} from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ContactDetails} from './ContactDetails';
 import {Education} from './Education';
@@ -27,6 +27,7 @@ import {JobHistoryModal} from './JobHistoryModal';
 import {SkillModal} from './SkillModal';
 import {ContactModal} from './ContactModal';
 import {PersonalModal} from './PersonalModal';
+import ImagePicker from 'react-native-image-crop-picker';
 
 export default function IndividualScreen(props) {
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
@@ -36,17 +37,19 @@ export default function IndividualScreen(props) {
   const [isContactModalVisible, setIsContactModalVisible] = useState(false);
   const [isPersonalModalVisible, setIsPersonalModalVisible] = useState(false);
   let [userData, setUserData] = useState(null);
-  const [data, setdata] = useState(' ');
+  let [data, setdata] = useState('');
   const [favorit, setFavorit] = useState(false);
   const [ID, setID] = useState(props.route.params.id);
   const [Edit, setEdit] = useState(
     props.route.params.edit ? props.route.params.edit : '',
   );
   let [editSkillsArray, setEditSkillsArray] = useState([]);
-  const [jobHistoryArray, setJobHistoryArray] = useState([]);
-  let [jobHistoryObject, setJobHistoryObject] = useState('');
+  // const [jobHistoryArray, setJobHistoryArray] = useState([]);
+  // let [jobHistoryObject, setJobHistoryObject] = useState('');
   let [jobIndex, setJobIndex] = useState('');
   let [eduIndex, setEduIndex] = useState('');
+  let [proImage, setProImage] = useState('');
+  let [imageName, setImageName] = useState('');
 
   let arrayOccupation;
   arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
@@ -156,8 +159,62 @@ export default function IndividualScreen(props) {
       .then(res => {
         console.log('res', res.data.result);
         if (res.data.success) {
-          setdata(res.data.result);
+          setdata((data = res.data.result));
+          console.log('data', data);
         } else alert('No record found.');
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
+  const onSelectImage = () => {
+    console.log('imageName', imageName);
+    console.log('proImage', proImage);
+
+    var formdata = new FormData();
+    formdata.append('Name', data.name);
+    formdata.append('Email', data.email);
+    formdata.append('UserId', JSON.stringify(data.userId));
+    formdata.append('id', JSON.stringify(data.id));
+    formdata.append('PhoneNo', data.phoneNo);
+    formdata.append('Address', data.address);
+
+    {
+      proImage
+        ? formdata.append('profile_image_file', {
+            uri: proImage.path,
+            name: imageName,
+            type: proImage.mime,
+          })
+        : data.profilePicture
+        ? formdata.append('profile_image_file', data.profilePicture)
+        : null;
+    }
+
+    formdata.append('PersonalCardMeta', '[]');
+
+    console.log('formdata', formdata);
+
+    // {
+    //   coverPic
+    //     ? formdata.append('cover_image_image', {
+    //         uri: coverPic.path,
+    //         name: coverName,
+    //         type: coverPic.mime,
+    //       })
+    //     : formdata.append('cover_image_image', null);
+    // }
+
+    personalCardApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
+          alert('picture updated successfully');
+        } else {
+          alert('alert');
+        }
       })
       .catch(err => {
         console.log('err', err);
@@ -195,22 +252,45 @@ export default function IndividualScreen(props) {
             position: 'absolute',
             top: 270,
           }}>
-          <View
-            style={{
-              marginLeft: 30,
-              backgroundColor: '#E0E0E0',
-              width: 100,
-              height: 100,
-              borderRadius: 50,
-            }}>
-            <Image
-              source={
-                data.profilePicture
-                  ? {uri: URL.concat(data.profilePicture)}
-                  : require('../Assets/EmptyProfile.png')
-              }
-              style={{width: 100, height: 100, borderRadius: 50}}
-            />
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                marginLeft: 30,
+                backgroundColor: '#E0E0E0',
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+              }}>
+              <Image
+                source={
+                  data.profilePicture
+                    ? {uri: URL.concat(data.profilePicture)}
+                    : require('../Assets/EmptyProfile.png')
+                }
+                style={{width: 100, height: 100, borderRadius: 50}}
+              />
+            </View>
+            <TouchableOpacity
+              style={{padding: 3, marginTop: 75, marginLeft: -25}}
+              onPress={() => {
+                ImagePicker.openPicker({
+                  width: 300,
+                  height: 400,
+                  cropping: true,
+                }).then(image => {
+                  console.log('image', image);
+                  var imageMime = image.mime;
+                  var name = imageMime.split('/')[1];
+                  setImageName((imageName = 'Vinvi.' + name));
+                  setProImage((proImage = image));
+                  onSelectImage();
+                });
+              }}>
+              <Image
+                source={require('../Assets/editProf.png')}
+                style={{height: 22, width: 22}}
+              />
+            </TouchableOpacity>
           </View>
 
           <View style={{paddingHorizontal: 10, marginBottom: 10}}>
@@ -423,9 +503,9 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isContactModalVisible}
         setModalVisible={setIsContactModalVisible}
-        data={data}
-        arraycountry={arraycountry}
-        arraycity={arraycity}
+        CardData={data}
+        countryarray={arraycountry}
+        cityarray={arraycity}
       />
       <PersonalModal
         isEdit

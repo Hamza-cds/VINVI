@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ScrollView,
@@ -10,17 +10,120 @@ import {
 import BtnComponent from '../Components/BtnComponent';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
+import _ from 'lodash';
+import {personalCardApiCall} from '../Apis/Repo';
 
 export function ContactModal({
   modalVisible,
   setModalVisible,
   setHobbies,
   isEdit,
-  data,
-  arraycountry,
-  arraycity,
+  CardData,
+  countryarray,
+  cityarray,
 }) {
-  console.log('datasjkdhjkhashdfkha', data);
+  console.log('CardData contact', CardData);
+
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+
+  let arraycity;
+  arraycity = _.find(CardData.personalCardMeta, {personalKey: 'city'});
+  if (arraycity) {
+    arraycity = arraycity;
+  } else {
+    arraycity = 'Dummy city';
+  }
+
+  let arraycountry;
+  arraycountry = _.find(CardData.personalCardMeta, {personalKey: 'country'});
+  if (arraycountry) {
+    arraycountry = arraycountry;
+  } else {
+    arraycountry = 'Dummy country';
+  }
+
+  const onEdit = () => {
+    let PersonalCardMeta = [
+      {
+        id: arraycity.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'city',
+        PersonalValue: city ? city.trim() : arraycity.personalValue,
+        Ishidden: arraycity.ishidden,
+      },
+      {
+        id: arraycountry.id,
+        personalCardId: CardData.id,
+        PersonalKey: 'country',
+        PersonalValue: country ? country.trim() : arraycountry.personalValue,
+        Ishidden: arraycountry.ishidden,
+      },
+    ];
+
+    var formdata = new FormData();
+    formdata.append('Name', CardData.name);
+    formdata.append('Email', CardData.email);
+    formdata.append('UserId', JSON.stringify(CardData.userId));
+    formdata.append('id', JSON.stringify(CardData.id));
+    formdata.append('PhoneNo', CardData.phoneNo);
+    formdata.append('Address', address ? address : CardData.address);
+    for (let index = 0; index < PersonalCardMeta.length; index++) {
+      const element = PersonalCardMeta[index];
+      formdata.append(`PersonalCardMeta[${index}][id]`, element.id);
+      formdata.append(
+        `PersonalCardMeta[${index}][personalCardId]`,
+        element.personalCardId,
+      );
+      formdata.append(
+        `PersonalCardMeta[${index}][PersonalKey]`,
+        element.PersonalKey,
+      );
+      formdata.append(
+        `PersonalCardMeta[${index}][PersonalValue]`,
+        element.PersonalValue,
+      );
+      formdata.append(`PersonalCardMeta[${index}][Ishidden]`, element.Ishidden);
+    }
+
+    {
+      CardData.profilePicture
+        ? formdata.append('profile_image_file', {
+            uri: profilePic.path,
+            name: profilePicName,
+            type: profilePic.mime,
+          })
+        : formdata.append('profile_image_file', null);
+    }
+
+    // {
+    //   coverPic
+    //     ? formdata.append('cover_image_image', {
+    //         uri: coverPic.path,
+    //         name: coverName,
+    //         type: coverPic.mime,
+    //       })
+    //     : formdata.append('cover_image_image', null);
+    // }
+
+    console.log('formdata', formdata);
+
+    personalCardApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
+          setModalVisible(false);
+        } else {
+          alert('alert');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -84,50 +187,54 @@ export function ContactModal({
                 </Svg>
               </TouchableOpacity>
             </View>
+
             <OutlinedInputBox
               placeholder="Number"
               inputType="text"
-              text={data.phoneNo ? data.phoneNo : null}
-              onChange={value => {
-                setHobbies(value);
-              }}
+              editable={false}
+              text={CardData.phoneNo ? CardData.phoneNo : null}
+              // onChange={value => {
+              //   setHobbies(value);
+              // }}
             />
             <OutlinedInputBox
               placeholder="Email Address"
               inputType="text"
-              text={data.email ? data.email : null}
-              onChange={value => {
-                setHobbies(value);
-              }}
+              editable={false}
+              text={CardData.email ? CardData.email : null}
+              // onChange={value => {
+              //   setHobbies(value);
+              // }}
             />
             <OutlinedInputBox
               placeholder="Address"
               inputType="text"
-              text={data.address ? data.address : null}
+              text={CardData.address ? CardData.address : null}
               onChange={value => {
-                setHobbies(value);
+                setAddress(value);
               }}
             />
             <OutlinedInputBox
               placeholder="City"
               inputType="text"
-              text={arraycity}
+              text={cityarray}
               onChange={value => {
-                setHobbies(value);
+                setCity(value);
               }}
             />
             <OutlinedInputBox
               placeholder="Country"
               inputType="text"
-              text={arraycountry}
+              text={countryarray}
               onChange={value => {
-                setHobbies(value);
+                setCountry(value);
               }}
             />
             <BtnComponent
               placeholder={isEdit ? 'Edit' : 'Add'}
               onPress={() => {
-                setModalVisible(!modalVisible);
+                onEdit();
+                // setModalVisible(!modalVisible);
               }}
             />
           </View>

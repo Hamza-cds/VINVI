@@ -166,7 +166,7 @@ export function EducationModal({
 
   let EditArrayEducation;
   const extractEduHistoryForId = () => {
-    debugger;
+    // debugger;
     EditArrayEducation = _.find(CardData.personalCardMeta, {
       personalKey: 'Education',
     });
@@ -179,7 +179,7 @@ export function EducationModal({
   };
 
   {
-    debugger;
+    // debugger;
     isEdit == true ? extractEduHistoryForId() : null;
   }
 
