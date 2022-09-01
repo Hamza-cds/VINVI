@@ -1,10 +1,17 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
-import {SECONDARY, FIFTH} from '../Constants/Colors';
+import {SECONDARY, FIFTH, PRIMARY} from '../Constants/Colors';
 import Svg, {G, Path} from 'react-native-svg';
 import {EducationCard} from './EducationCard';
 
-export function Education({setEdit, arrayeducation, edit, setEduIndex}) {
+export function Education({
+  setEdit,
+  arrayeducation,
+  edit,
+  setEduIndex,
+  setAdd,
+  UserData,
+}) {
   return (
     <View
       style={{
@@ -78,12 +85,26 @@ export function Education({setEdit, arrayeducation, edit, setEduIndex}) {
             />
           </Svg>
         </View>
-        {/* {edit == true ? (
+        {edit == true ? (
           <TouchableOpacity
+            style={{
+              backgroundColor: PRIMARY,
+              width: 50,
+              height: 30,
+              borderRadius: 5,
+            }}
             onPress={() => {
-              setEdit(true);
+              setAdd(true);
             }}>
-            <Svg
+            <Text
+              style={{
+                color: 'white',
+                alignSelf: 'center',
+                marginVertical: 5,
+              }}>
+              Add
+            </Text>
+            {/* <Svg
               xmlns="http://www.w3.org/2000/svg"
               width={21.004}
               height={21.009}
@@ -94,9 +115,9 @@ export function Education({setEdit, arrayeducation, edit, setEduIndex}) {
                 transform="translate(-4.5 -4.5)"
                 fill="#113066"
               />
-            </Svg>
+            </Svg> */}
           </TouchableOpacity>
-        ) : null} */}
+        ) : null}
       </View>
       <FlatList
         horizontal={false}
@@ -106,6 +127,9 @@ export function Education({setEdit, arrayeducation, edit, setEduIndex}) {
           <EducationCard
             item={item}
             edit={edit}
+            data={UserData}
+            index={index}
+            arrayeducation={arrayeducation}
             onPress={() => {
               setEdit(true);
               setEduIndex(index);

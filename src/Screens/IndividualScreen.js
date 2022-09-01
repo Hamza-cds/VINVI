@@ -31,6 +31,8 @@ import {JobHistoryModal} from './JobHistoryModal';
 import {SkillModal} from './SkillModal';
 import {ContactModal} from './ContactModal';
 import {PersonalModal} from './PersonalModal';
+import {JobHistoryEditModalAdd} from './JobHistoryEditModalAdd';
+import {EducationEditModalAdd} from './EducationEditModalAdd';
 import ImagePicker from 'react-native-image-crop-picker';
 import Loader from '../Components/Loader';
 
@@ -41,6 +43,9 @@ export default function IndividualScreen(props) {
   const [isSkillModalVisible, setIsSkillModalVisible] = useState(false);
   const [isContactModalVisible, setIsContactModalVisible] = useState(false);
   const [isPersonalModalVisible, setIsPersonalModalVisible] = useState(false);
+  const [isJobHistoryEditModalAdd, setIsJobHistoryEditModalAdd] =
+    useState(false);
+  const [isEducationEditModalAdd, setIsEducationEditModalAdd] = useState(false);
   let [userData, setUserData] = useState(null);
   let [data, setdata] = useState('');
   const [favorit, setFavorit] = useState(false);
@@ -48,6 +53,7 @@ export default function IndividualScreen(props) {
   const [Edit, setEdit] = useState(
     props.route.params.edit ? props.route.params.edit : '',
   );
+  const [add, setAdd] = useState(false);
   let [editSkillsArray, setEditSkillsArray] = useState([]);
   let [jobIndex, setJobIndex] = useState('');
   let [eduIndex, setEduIndex] = useState('');
@@ -488,12 +494,16 @@ export default function IndividualScreen(props) {
             setEduIndex={setEduIndex}
             arrayeducation={arrayeducation}
             edit={Edit ? Edit : false}
+            setAdd={setIsEducationEditModalAdd}
+            UserData={data}
           />
           <JobHistory
             setEdit={setIsJobHistoryModalVisible}
             setJobIndex={setJobIndex}
             arrayjobhistory={arrayjobhistory}
             edit={Edit ? Edit : false}
+            setAdd={setIsJobHistoryEditModalAdd}
+            UserData={data}
           />
           <Skills
             arrskills={arrayskills}
@@ -538,11 +548,6 @@ export default function IndividualScreen(props) {
         employeeType={employeeType}
         index={jobIndex}
         CardData={data}
-        // onPress={data => {
-        //   setJobHistoryObject((jobHistoryObject = data));
-        //   FunJobHistoryArray();
-        //   setIsJobHistoryModalVisible(false);
-        // }}
       />
       <SkillModal
         isEdit
@@ -551,9 +556,6 @@ export default function IndividualScreen(props) {
         skillarr={arrayskills}
         CardData={data}
         setEditModalSkill={setEditSkillsArray}
-        // onPress={() => {
-        //   setIsSkillModalVisible(false);
-        // }}
       />
       <ContactModal
         isEdit
@@ -572,6 +574,20 @@ export default function IndividualScreen(props) {
         achievmentarray={arrayachievment}
         birthdayarray={arraybirthday}
         CardData={data}
+      />
+      <JobHistoryEditModalAdd
+        modalVisible={isJobHistoryEditModalAdd}
+        setModalVisible={setIsJobHistoryEditModalAdd}
+        jobhistoryarray={arrayjobhistory}
+        industryType={industryType}
+        employeeType={employeeType}
+      />
+
+      <EducationEditModalAdd
+        modalVisible={isEducationEditModalAdd}
+        setModalVisible={setIsEducationEditModalAdd}
+        educationarray={arrayeducation}
+        degreeData={degreeList}
       />
 
       {/* Edit Profile Handling componants end */}

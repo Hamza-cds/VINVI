@@ -34,6 +34,7 @@ export function SkillModal({
   const [newSkill, setNewSkill] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (isEdit) {
       editModalSkillArray.length <= 0
@@ -54,7 +55,9 @@ export function SkillModal({
   const FunDelSkill = index => {
     // console.log('index', index);
     let newArr = [...modalSkillArray];
-    newArr.splice(index);
+    setModalSKillArray(
+      (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
+    );
     setModalSKillArray(newArr);
     setModalSkill((modalSkillArray = newArr));
   };
@@ -82,17 +85,18 @@ export function SkillModal({
     let neweditModalSkillArray = [...skillarr];
     neweditModalSkillArray.push(newSkill.trim());
     setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
-    setEditModalSkill(modalSkillArray);
+    // setEditModalSkill(modalSkillArray);
     setInputValue('');
   };
 
   const FunEditDelSkill = index => {
-    // debugger;
-    // console.log('index', index);
-    let newArr = [...skillarr];
-    newArr.splice(index);
-    setEditModalSkill(newArr);
-    setEditModalSKillArray((editModalSkillArray = newArr));
+    console.log('index', index);
+    console.log('skillarr', skillarr);
+    skillarr.splice(index, 1);
+    // console.log('afterDelete', afterDelete);
+    // setEditModalSKillArray((editModalSkillArray = afterDelete));
+    // setEditModalSkill(editModalSkillArray);
+    // console.log('hamza new array', editModalSkillArray);
   };
 
   const Add = () => {
