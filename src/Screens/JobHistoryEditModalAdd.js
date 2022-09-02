@@ -12,6 +12,7 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
 import Select from '../Components/Select';
 import Loader from '../Components/Loader';
+import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 
 export function JobHistoryEditModalAdd({
@@ -21,6 +22,7 @@ export function JobHistoryEditModalAdd({
   employeeType,
   jobhistoryarray,
   isEdit,
+  CardData,
 }) {
   console.log('jobhistoryarray of EDIT/ADD Modal', jobhistoryarray);
 
@@ -151,8 +153,18 @@ export function JobHistoryEditModalAdd({
     },
   ];
 
+  let arrJobHistory = [];
+  arrJobHistory = _.find(CardData.personalCardMeta, {
+    personalKey: 'JobHistory',
+  });
+  if (arrJobHistory) {
+    arrJobHistory = arrJobHistory;
+  } else {
+    arrJobHistory = 'Dummy job History';
+  }
+
   const FunJobHistoryArray = () => {
-    let obj = {
+    let data = {
       title: title.trim(),
       companyName: companyName.trim(),
       industryType: industry,
@@ -165,14 +177,39 @@ export function JobHistoryEditModalAdd({
     };
 
     let newJobHistoryArray = jobhistoryarray;
-    newJobHistoryArray.push(obj);
+    newJobHistoryArray.push(data);
     setJobHistoryArray([]);
     setJobHistoryArray((jobHistoryArray = newJobHistoryArray));
-    // onAdd();
   };
 
   const onAdd = () => {
-    console.log('onAdd jobHistoryArray', jobHistoryArray);
+    let obj = {
+      id: arrJobHistory.id,
+      ishidden: true,
+      personalCardId: CardData.id,
+      personalKey: 'JobHistory',
+      personalValue: JSON.stringify(jobhistoryarray),
+    };
+
+    // setIsLoading(true);
+    PersonalCardEditApiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('Edit Skill Data', data);
+
+        if (data.data.status == 200 && data.data.success == true) {
+          // setIsLoading(false);
+          setModalVisible(false);
+        } else {
+          // setIsLoading(false);
+          alert(data.message);
+          console.log('ADD');
+        }
+      })
+      .catch(err => {
+        // setIsLoading(false);
+        console.log('err', err);
+      });
   };
 
   const FunIndustry = value => {

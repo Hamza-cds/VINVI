@@ -47,7 +47,7 @@ export default function HomeDashboardScreen(props) {
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 50,
-              marginTop: 43,
+              marginTop: 32,
               marginRight: 10,
             }}
             onPress={() => {

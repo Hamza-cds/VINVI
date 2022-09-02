@@ -5,15 +5,6 @@ import SkillTag from '../Components/SkillTag';
 import Svg, {G, Path} from 'react-native-svg';
 
 export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
-  // useEffect(() => {
-  //   debugger;
-  //   if (edit) {
-  //     editModalSkillArray.length <= 0
-  //       ? setEditModalSKillArray((editModalSkillArray = arrskills))
-  //       : setEditModalSKillArray(editModalSkillArray);
-  //   }
-  // }, [modalVisible]);
-
   return (
     <View
       style={{
@@ -107,7 +98,7 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
           </TouchableOpacity>
         ) : null}
       </View>
-      {editSkillsArray.length > 0 ? (
+      {/* {editSkillsArray.length > 0 ? (
         <FlatList
           horizontal={true}
           data={editSkillsArray}
@@ -125,15 +116,15 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
             <SkillTag item={item} placeholder="Skill Name" />
           )}
         />
-      )}
-      {/* <FlatList
+      )} */}
+      <FlatList
         horizontal={true}
         data={arrskills}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => (
           <SkillTag item={item} placeholder="Skill Name" />
         )}
-      /> */}
+      />
     </View>
   );
 }

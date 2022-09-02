@@ -11,6 +11,9 @@ import BtnComponent from '../Components/BtnComponent';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {Path} from 'react-native-svg';
 import Select from '../Components/Select';
+import _ from 'lodash';
+import Loader from '../Components/Loader';
+import {PersonalCardEditApiCall} from '../Apis/Repo';
 
 export function EducationEditModalAdd({
   modalVisible,
@@ -18,6 +21,7 @@ export function EducationEditModalAdd({
   degreeData,
   educationarray,
   isEdit,
+  CardData,
 }) {
   console.log('EducationEditModalAdd', educationarray);
 
@@ -28,6 +32,7 @@ export function EducationEditModalAdd({
   let [startDateYear, setStartDateYear] = useState('');
   let [endDateMonth, setEndDateMonth] = useState('');
   let [endDateYear, setEndDateYear] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   let [arrayEducation, setArrayEducation] = useState([]);
 
   const Year = [
@@ -147,6 +152,14 @@ export function EducationEditModalAdd({
     },
   ];
 
+  let arrEducation = [];
+  arrEducation = _.find(CardData.personalCardMeta, {personalKey: 'Education'});
+  if (arrEducation) {
+    arrEducation = arrEducation;
+  } else {
+    arrEducation = 'Dummy education';
+  }
+
   const FunDegree = value => {
     setDegree((degree = value.name));
   };
@@ -168,7 +181,7 @@ export function EducationEditModalAdd({
   };
 
   const FunEducationArray = () => {
-    let obj = {
+    let data = {
       institute: institute.trim(),
       startDateMonth: startDateMonth,
       startDateYear: startDateYear,
@@ -178,10 +191,40 @@ export function EducationEditModalAdd({
     };
 
     let newEducationArray = educationarray;
-    newEducationArray.push(obj);
+    newEducationArray.push(data);
     setArrayEducation([]);
     setArrayEducation((arrayEducation = newEducationArray));
     console.log('hamza sahab', arrayEducation);
+  };
+
+  const onAdd = () => {
+    let obj = {
+      id: arrEducation.id,
+      ishidden: true,
+      personalCardId: CardData.id,
+      personalKey: 'Education',
+      personalValue: JSON.stringify(arrayEducation),
+    };
+
+    setIsLoading(true);
+    PersonalCardEditApiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('Edit Skill Data', data);
+
+        if (data.data.status == 200 && data.data.success == true) {
+          setIsLoading(false);
+          setModalVisible(false);
+        } else {
+          alert(data.message);
+          setIsLoading(false);
+          console.log('ADD');
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
   };
 
   return (
@@ -305,11 +348,14 @@ export function EducationEditModalAdd({
               placeholder={isEdit ? 'Edit' : 'Add'}
               onPress={() => {
                 FunEducationArray();
+                onAdd();
                 // setModalVisible(!modalVisible);
               }}
             />
           </View>
         </View>
+
+        {isLoading ? <Loader /> : null}
       </ScrollView>
     </Modal>
   );

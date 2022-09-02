@@ -12,6 +12,8 @@ import {isNullOrEmpty} from '../Constants/TextUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {signUpApiCall} from '../Apis/Repo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import {useDispatch} from 'react-redux';
+import {UserData} from '../../Store/Action';
 
 export default function NewCardScreen(props, navigation, onCallBack) {
   let [firstName, setFirstName] = useState('');
@@ -20,6 +22,8 @@ export default function NewCardScreen(props, navigation, onCallBack) {
   let [imageName, setImageName] = useState('');
   const [image, setImage] = useState('');
   let [userData, setUserData] = useState('');
+  const dispatch = useDispatch();
+
   console.log('image', image);
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -65,7 +69,7 @@ export default function NewCardScreen(props, navigation, onCallBack) {
       //   type: image.mime,
       // });
       {
-        image
+        !isNullOrEmpty(image)
           ? updateinfo.append('image_file', {
               uri: image.path,
               name: imageName,
@@ -78,9 +82,12 @@ export default function NewCardScreen(props, navigation, onCallBack) {
         .then(res => res.json())
         .then(data => {
           console.log('data', data);
-          AsyncStorage.setItem('user_data', JSON.stringify(data.result));
-          if (data.result.status == 200 && data.result.success == true) {
-            props.navigation.goback();
+          // AsyncStorage.setItem('user_data', JSON.stringify(data.result));
+          // dispatch(UserData(data.result));
+          if (data.status == 200 && data.success == true) {
+            AsyncStorage.setItem('user_data', JSON.stringify(data.result));
+            dispatch(UserData(data.result));
+            alert('successfully updated');
           } else {
             alert(data.message);
           }

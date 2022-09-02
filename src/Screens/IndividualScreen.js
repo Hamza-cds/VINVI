@@ -167,7 +167,7 @@ export default function IndividualScreen(props) {
   useEffect(() => {
     getData();
     getAllLookupdetail();
-  }, []);
+  }, [isSkillModalVisible]);
 
   const getData = () => {
     setIsLoading(true);
@@ -581,6 +581,7 @@ export default function IndividualScreen(props) {
         jobhistoryarray={arrayjobhistory}
         industryType={industryType}
         employeeType={employeeType}
+        CardData={data}
       />
 
       <EducationEditModalAdd
@@ -588,6 +589,7 @@ export default function IndividualScreen(props) {
         setModalVisible={setIsEducationEditModalAdd}
         educationarray={arrayeducation}
         degreeData={degreeList}
+        CardData={data}
       />
 
       {/* Edit Profile Handling componants end */}

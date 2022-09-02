@@ -1,4 +1,8 @@
-import {PERSONALCARDDATA, PERSONALCARDDATACOMPLETE} from './ActionType';
+import {
+  PERSONALCARDDATA,
+  PERSONALCARDDATACOMPLETE,
+  USERDATA,
+} from './ActionType';
 
 export const PCData = data => {
   return {
@@ -10,6 +14,14 @@ export const PCData = data => {
 export const PCDComplete = data => {
   return {
     type: PERSONALCARDDATACOMPLETE,
+    payload: data,
+  };
+};
+
+export const UserData = data => {
+  debugger;
+  return {
+    type: USERDATA,
     payload: data,
   };
 };

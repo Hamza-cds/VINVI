@@ -1,7 +1,12 @@
-import {PERSONALCARDDATA, PERSONALCARDDATACOMPLETE} from './ActionType';
+import {
+  PERSONALCARDDATA,
+  PERSONALCARDDATACOMPLETE,
+  USERDATA,
+} from './ActionType';
 
 const initialState = {
   PCData: null,
+  UserData: null,
 };
 
 export const mainreducer = (state = initialState, action) => {
@@ -10,6 +15,9 @@ export const mainreducer = (state = initialState, action) => {
       return {...state, PCData: {...state.PCData, ...action.payload}};
     case PERSONALCARDDATACOMPLETE:
       return {...state, PCData: action.payload};
+    case USERDATA:
+      debugger;
+      return {...state, UserData: action.payload};
 
     default:
       return state;

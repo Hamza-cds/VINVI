@@ -37,9 +37,9 @@ export function SkillModal({
 
   useEffect(() => {
     if (isEdit) {
-      editModalSkillArray.length <= 0
+      editModalSkillArray.length == 0
         ? setEditModalSKillArray((editModalSkillArray = skillarr))
-        : setEditModalSKillArray(editModalSkillArray);
+        : '';
     }
   }, [modalVisible]);
 
@@ -81,26 +81,23 @@ export function SkillModal({
     isEdit == true ? extractSkillForId() : null;
   }
 
-  const FunEditModalSkillsArray = () => {
-    let neweditModalSkillArray = [...skillarr];
-    neweditModalSkillArray.push(newSkill.trim());
+  const funEditModalSkillsArray = () => {
+    let neweditModalSkillArray = skillarr;
+    neweditModalSkillArray.push(newSkill);
     setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
     // setEditModalSkill(modalSkillArray);
     setInputValue('');
   };
 
-  const FunEditDelSkill = index => {
-    console.log('index', index);
-    console.log('skillarr', skillarr);
-    skillarr.splice(index, 1);
-    // console.log('afterDelete', afterDelete);
-    // setEditModalSKillArray((editModalSkillArray = afterDelete));
+  const funEditDelSkill = index => {
+    var afterDelete = skillarr.filter((x, Index) => Index !== index);
+    console.log('afterDelete', afterDelete);
+    setEditModalSKillArray((editModalSkillArray = afterDelete));
     // setEditModalSkill(editModalSkillArray);
-    // console.log('hamza new array', editModalSkillArray);
   };
 
   const Add = () => {
-    if (isEdit == true) FunEditModalSkillsArray();
+    if (isEdit == true) funEditModalSkillsArray();
     else FunModalSkillsArray();
   };
 
@@ -247,7 +244,7 @@ export function SkillModal({
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        FunEditDelSkill(index);
+                        funEditDelSkill(index);
                       }}>
                       <Entypo
                         name="cross"
