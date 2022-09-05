@@ -24,7 +24,7 @@ import {
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Search} from 'react-native-feather';
-import {isEmpty} from '../Constants/TextUtils';
+import {isEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function Select({
   placeholder,
@@ -41,7 +41,7 @@ export default function Select({
 
   const itemSelection = () => {
     setOpenModal(false);
-    if (selectedItem != null) {
+    if (!isNullOrEmptyArray(selectedItem)) {
       // onCallBack(selectedItem.id);
       onCallBack(selectedItem);
     }

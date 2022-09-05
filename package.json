@@ -36,6 +36,7 @@
     "react-native-indicators": "^0.17.0",
     "react-native-insta-story": "^1.1.8",
     "react-native-linear-gradient": "^2.6.2",
+    "react-native-modal-dropdown": "^1.0.2",
     "react-native-modalbox": "^2.0.2",
     "react-native-paper": "^4.9.2",
     "react-native-qrcode-svg": "^6.1.1",

@@ -21,44 +21,54 @@ import {
 } from '../Constants/Strings';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import PickerComponent from '../Components/PickerComponent';
-import Select from '../Components/Select';
+import MultiSelect from '../Components/MultiSelect';
+import {useDispatch} from 'react-redux';
+import {BCData} from '../../Store/Action';
 
 export default function NewBusinessCardScreen1(props) {
+  const dispatch = useDispatch();
+
   const [businessName, setBusinessName] = useState('');
-  const [businesssType, setBusinessType] = useState('');
-  const [cellNumber, setCellNumber] = useState('');
-  const [location, setLocation] = useState('');
-  const [logo, setLogo] = useState('');
-  const [address, setAddress] = useState('');
-  const [email, setEmail] = useState('');
-  const [image, setImage] = useState('');
-  const [website, setWebsite] = useState('');
-  const [otherInfo, setOtherInfo] = useState('');
+  const [area, setArea] = useState('');
   const [tagline, setTagline] = useState('');
+  const [companyWebsite, setCompanyWebsite] = useState('');
+  const [number, setNumber] = useState('');
+  const [businessAddress, setBusinessAddress] = useState('');
+  const [logo, setLogo] = useState('');
+  const [logoImageName, setLogoImageName] = useState('');
+  const [cover, setCover] = useState('');
+  const [coverImageName, setCoverImageName] = useState('');
+  const [otherInfo, setOtherInfo] = useState('');
 
   const data = [
     {
-      name: 'no data',
+      id: 1,
+      name: 'Lahore',
     },
     {
-      name: 'need data',
+      id: 2,
+      name: 'Karachi',
+    },
+    {
+      id: 3,
+      name: 'Pindi',
     },
   ];
 
-  const businessCardScreen1Array = [
-    {
-      key: 'Type of Business',
-      value: businesssType,
-    },
-    {
-      key: 'Website',
-      value: website,
-    },
-    {
-      key: 'Image',
-      value: image,
-    },
-  ];
+  // const businessCardScreen1Array = [
+  //   {
+  //     key: 'Type of Business',
+  //     value: businesssType,
+  //   },
+  //   {
+  //     key: 'Website',
+  //     value: website,
+  //   },
+  //   {
+  //     key: 'Image',
+  //     value: image,
+  //   },
+  // ];
 
   let [userData, setUserData] = useState(null);
 
@@ -69,69 +79,41 @@ export default function NewBusinessCardScreen1(props) {
     });
   }, []);
 
-  const getBase64 = (image, type) => {
-    console.log('image base 64', image);
-    console.log('type', type);
-    const base64Converted = 'data:image/png;base64,' + image;
-    setImage(base64Converted);
+  const logoImage = image => {
+    console.log('image Logo', image);
+    var imageMime = image.mime;
+    var name = imageMime.split('/')[1];
+    setLogoImageName('Vinvi.' + name);
+    setLogo(image);
   };
 
-  // const onNext = () => {
-  //   if (isNullOrEmpty(businessName)) {
-  //     alert(EMPTY_NAME);
-  //   } else if (isNullOrEmpty(businesssType)) {
-  //     alert(EMPTY_TYPE);
-  //   } else if (isNullOrEmpty(cellNumber)) {
-  //     alert(EMPTY_PHONE);
-  //   } else if (isNullOrEmpty(location)) {
-  //     alert(EMPTY_LOCATION);
-  //   } else if (isNullOrEmpty(logo)) {
-  //     alert(EMPTY_LOGO);
-  //   } else if (isNullOrEmpty(website)) {
-  //     alert(EMPTY_WEBSITE);
-  //   } else {
-  //     props.navigation.push('NewBusinessCard2', {
-  //       paramkey: businessCardScreen1Array,
-  //       businessName: businessName,
-  //       email: email,
-  //       cellNumber: cellNumber,
-  //       logo: logo,
-  //     });
-  //     console.log('BusinessCardScreen1Array', businessCardScreen1Array);
-  //     let object = {
-  //       Name: businessName,
-  //       Email: email,
-  //       Address: address,
-  //       PhoneNo: cellNumber,
-  //       Logo: logo,
-  //       UserId: userData.id,
+  const coverImage = image => {
+    console.log('image cover', image);
+    var imageMime = image.mime;
+    var name = imageMime.split('/')[1];
+    setCoverImageName('Vinvi.' + name);
+    setCover(image);
+  };
 
-  //       BusinessCardMeta: [
-  //         {
-  //           PersonalKey: 'Location',
-  //           PersonalValue: location,
-  //           Ishidden: true,
-  //         },
-  //         {
-  //           PersonalKey: 'Type of Business',
-  //           PersonalValue: businesssType,
-  //           Ishidden: true,
-  //         },
-  //         {
-  //           PersonalKey: 'Website',
-  //           PersonalValue: website,
-  //           Ishidden: true,
-  //         },
-  //         {
-  //           PersonalKey: 'Image',
-  //           PersonalValue: image,
-  //           Ishidden: true,
-  //         },
-  //       ],
-  //     };
-  //     console.log('object', object);
-  //   }
-  // };
+  const onNext = () => {
+    let object = {
+      b_Name: businessName.trim(),
+      b_Area: area,
+      b_Tagline: tagline.trim(),
+      b_Website: companyWebsite.trim(),
+      b_Number: number.trim(),
+      b_Address: businessAddress.trim(),
+      b_OtherInfo: otherInfo.trim(),
+      b_Logo: logo,
+      b_LogoName: logoImageName.trim(),
+      b_Cover: cover,
+      b_CoverName: coverImageName.trim(),
+    };
+
+    console.log('object', object);
+
+    dispatch(BCData(object));
+  };
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -157,13 +139,7 @@ export default function NewBusinessCardScreen1(props) {
               setBusinessName(value);
             }}
           />
-          {/* <PickerComponent
-            placeholder="Area"
-            inline
-            itemLabels={('hello', 'Business Industry')}
-            itemValues={('hello', 'Lahore')}
-          /> */}
-          <Select placeholder="Area" data={data} />
+          <MultiSelect placeholder="Area" data={data} onCallBack={setArea} />
           <OutlinedInputBox
             placeholder="Any Other Information"
             inputType="text"
@@ -182,21 +158,21 @@ export default function NewBusinessCardScreen1(props) {
             placeholder="Company website"
             inputType="text"
             onChange={value => {
-              setCellNumber(value);
+              setCompanyWebsite(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Contact Number"
             inputType="text"
             onChange={value => {
-              setLocation(value);
+              setNumber(value);
             }}
           />
           <OutlinedInputBox
             placeholder="Business Address"
             inputType="text"
             onChange={value => {
-              setLogo(value);
+              setBusinessAddress(value);
             }}
           />
           <View
@@ -313,7 +289,7 @@ export default function NewBusinessCardScreen1(props) {
                 </Svg>
               }
               placeholder="Upload Logo"
-              onCallBack={getBase64}
+              onCallBack={logoImage}
             />
 
             <UploadBtn
@@ -344,7 +320,7 @@ export default function NewBusinessCardScreen1(props) {
                 </Svg>
               }
               placeholder="Upload Cover"
-              onCallBack={getBase64}
+              onCallBack={coverImage}
             />
 
             <BtnComponent
@@ -352,8 +328,6 @@ export default function NewBusinessCardScreen1(props) {
               onPress={() => {
                 // onNext();
                 props.navigation.navigate('NewBusinessCard2');
-
-                // console.log("page 2 data", props.route.params.paramkey)
               }}
             />
           </View>
