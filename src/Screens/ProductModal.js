@@ -6,18 +6,24 @@ import {
   Picker,
   TouchableOpacity,
   Dimensions,
+  Text,
 } from 'react-native';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import UploadBtn from '../Components/UploadBtn';
 import BtnComponent from '../Components/BtnComponent';
 import Svg, {G, Path} from 'react-native-svg';
 import ModalDropdown from 'react-native-modal-dropdown';
+import {PRIMARY, WHITE} from '../Constants/Colors';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function ProductModal({
   visibleModal,
   setModalVisible,
   category,
   onPress,
+  setSelectedIndex,
+  product,
+  setProduct,
 }) {
   console.log('category', category);
 
@@ -35,6 +41,13 @@ export default function ProductModal({
     setProductImg(image);
   };
 
+  const onSelect = (index, value) => {
+    // console.log('value', value);
+    // console.log('index', index);
+    setSelectedIndex(index);
+    setSelectedCategory(value);
+  };
+
   const onSave = () => {
     let obj = {
       productName: productName.trim(),
@@ -43,8 +56,11 @@ export default function ProductModal({
       productImageName: productImageName,
       selectedCategory: selectedCategory,
     };
-    console.log('obj', obj);
-    // onPress(obj)
+    let newArr = product;
+    newArr.push(obj);
+    setProduct((product = newArr));
+    setModalVisible(!visibleModal);
+    // onPress(obj);
   };
 
   return (
@@ -102,6 +118,10 @@ export default function ProductModal({
                 marginLeft: -10,
                 height: 110,
               }}
+              dropdownTextHighlightStyle={{
+                backgroundColor: PRIMARY,
+                color: WHITE,
+              }}
               textStyle={{fontSize: 14, marginLeft: 12, marginVertical: 3}}
               style={{
                 backgroundColor: '#EFEFEF',
@@ -110,8 +130,17 @@ export default function ProductModal({
                 borderRadius: 5,
                 padding: 10,
               }}
-              onSelect={setSelectedCategory}
-            />
+              onSelect={onSelect}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text>{selectedCategory}</Text>
+                <MaterialIcons
+                  name="arrow-drop-down"
+                  size={30}
+                  style={{alignSelf: 'flex-end'}}
+                />
+              </View>
+            </ModalDropdown>
 
             <View style={{marginTop: 10}}>
               <OutlinedInputBox
@@ -163,14 +192,7 @@ export default function ProductModal({
               onCallBack={ProductImage}
             />
 
-            <BtnComponent
-              onPress={() => {
-                onSave();
-                //   setModalVisible(!visibleModal);
-              }}
-              placeholder={'Save'}
-              vertical={5}
-            />
+            <BtnComponent onPress={onSave} placeholder={'Save'} vertical={5} />
           </ScrollView>
         </View>
       </View>

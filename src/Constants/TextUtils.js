@@ -32,3 +32,7 @@ export function isEmptyArray(array) {
 export function phoneLengthNotValid(str) {
   if (str.length != 11) return true;
 }
+
+export function stringsEqual(str1, str2) {
+  return str1 == str2;
+}

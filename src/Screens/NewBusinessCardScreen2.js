@@ -9,13 +9,14 @@ import Svg, {G, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 import {businessCardApiCall} from '../Apis/Repo';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import {PRIMARY, WHITE} from '../Constants/Colors';
+import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Picker} from '@react-native-picker/picker';
 import Loader from '../Components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
 import {BCDComplete} from '../../Store/Action';
 import ProductModal from './ProductModal';
+import {stringsEqual} from '../Constants/TextUtils';
 
 export default function NewBusinessCardScreen2(props) {
   const dispatch = useDispatch();
@@ -25,16 +26,116 @@ export default function NewBusinessCardScreen2(props) {
 
   const [modalVisible, setModalVisible] = useState(false);
   let [productCategory, setProductCategory] = useState([]);
-  // const [product, setProduct] = useState([]);
+  let [product, setProduct] = useState([]);
   const [categoryName, setCategoryName] = useState('');
-  let [productObject, setProductObject] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState('');
   // const [isLoading, setIsLoading] = useState(false);
+  console.log('product', product);
 
   const categoryNameArray = () => {
-    let newCategoryArray = productCategory;
+    let newCategoryArray = [...productCategory];
     newCategoryArray.push(categoryName);
-    // setCategory([]);
     setProductCategory((productCategory = newCategoryArray));
+  };
+
+  const onFinish = () => {
+    let businessCategoryArray = [];
+    let businessProductArray = [];
+    for (let index = 0; index < productCategory.length; index++) {
+      const element = productCategory[index];
+      // console.log('element', element);
+
+      for (let index = 0; index < product.length; index++) {
+        const Element = product[index];
+        // console.log('Element', Element);
+        if (element === Element.selectedCategory) {
+          // console.log('Element', Element.selectedCategory);
+          // console.log('element', element);
+
+          let productObj = {
+            Id: 0,
+            Name: Element.productName,
+            Price: Element.productPrice,
+            Picture: {
+              uri: Element.productImg.path,
+              name: Element.productImageName,
+              type: Element.productImg.mime,
+            },
+            BusinessCategoryIdFk: 0,
+          };
+          businessProductArray.push(productObj);
+        }
+      }
+
+      let categoryObj = {
+        Id: 0,
+        Name: element,
+        BusinessCardIdFk: 0,
+        BusinessCategoryProduct: businessProductArray,
+      };
+
+      businessCategoryArray.push(categoryObj);
+      businessProductArray = [];
+    }
+
+    console.log('businessCategoryArray', businessCategoryArray);
+
+    var formdata = new FormData();
+    formdata.append('id', 0);
+    formdata.append('Name', DATA.b_Name);
+    formdata.append('PhoneNo', DATA.b_Number);
+    formdata.append('Address', DATA.b_Address);
+    formdata.append('Description', DATA.b_OtherInfo);
+    formdata.append('Tagline', DATA.b_Tagline);
+    formdata.append('Website', DATA.b_Website);
+    // formdata.append('UserId', JSON.stringify(userData.id));
+    formdata.append('logo_image_file', {
+      uri: DATA.b_Logo.path,
+      name: DATA.b_LogoName,
+      type: DATA.b_Logo.mime,
+    });
+    formdata.append('cover_image_file', {
+      uri: DATA.b_Cover.path,
+      name: DATA.b_CoverName,
+      type: DATA.b_Cover.mime,
+    });
+
+    for (let index = 0; index < businessCategoryArray.length; index++) {
+      const element = businessCategoryArray[index];
+
+      formdata.append(`BusinessCategory[${index}][Id]`, 0);
+      formdata.append(
+        `BusinessCategory[${index}][Id]`,
+        businessCategoryArray[index].Name,
+      );
+
+      for (
+        let productIndex = 0;
+        productIndex < element.BusinessCategoryProduct.length;
+        productIndex++
+      ) {
+        const data = element.BusinessCategoryProduct[productIndex];
+        formdata.append(
+          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Id]`,
+          data.Id,
+        );
+        formdata.append(
+          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Name]`,
+          data.Name,
+        );
+        formdata.append(
+          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Price]`,
+          data.Price,
+        );
+        formdata.append(
+          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Picture
+        ]`,
+          data.Picture,
+        );
+      }
+    }
+
+    console.log('formdata', formdata);
   };
 
   return (
@@ -52,9 +153,9 @@ export default function NewBusinessCardScreen2(props) {
           visibleModal={modalVisible}
           setModalVisible={setModalVisible}
           category={productCategory}
-          onPres={data => {
-            setProductObject((productObject = data));
-          }}
+          product={product}
+          setProduct={setProduct}
+          setSelectedIndex={setSelectedIndex}
         />
 
         <View
@@ -74,7 +175,7 @@ export default function NewBusinessCardScreen2(props) {
               categoryNameArray();
             }}
             style={{
-              backgroundColor: PRIMARY,
+              backgroundColor: SECONDARY,
               width: '100%',
               height: 45,
               borderRadius: 5,
@@ -128,7 +229,7 @@ export default function NewBusinessCardScreen2(props) {
               setModalVisible(true);
             }}
             style={{
-              backgroundColor: PRIMARY,
+              backgroundColor: SECONDARY,
               width: '100%',
               height: 45,
               borderRadius: 5,
@@ -156,13 +257,16 @@ export default function NewBusinessCardScreen2(props) {
             Newly added
           </Text>
 
-          {/* <FlatList
-            style={{marginHorizontal: 5}}
+          <FlatList
+            style={{marginHorizontal: 5, marginBottom: 240}}
             horizontal={false}
             showsVerticalScrollIndicator={false}
             numColumns={2}
             data={product}
             keyExtractor={item => item.id}
+            ListFooterComponent={() => (
+              <BtnComponent placeholder={'Finish'} onPress={onFinish} />
+            )}
             renderItem={({item, index}) => (
               <View>
                 <View
@@ -173,21 +277,39 @@ export default function NewBusinessCardScreen2(props) {
                     borderRadius: 5,
                     marginHorizontal: 5,
                     marginTop: 15,
+                    marginRight: 30,
                   }}>
                   <Image
-                    source={{uri: item.pic}}
-                    style={{height: 30, width: 30, borderRadius: 5}}
+                    source={{uri: item.productImg.path}}
+                    style={{height: 140, width: 140, borderRadius: 5}}
                   />
                 </View>
 
-                <Text style={{marginHorizontal: 7}}>{item.name}</Text>
-                <Text style={{marginHorizontal: 7}}>{item.price}</Text>
+                <Text style={{marginHorizontal: 7}}>{item.productName}</Text>
+                <Text style={{marginHorizontal: 7}}>{item.productPrice}</Text>
               </View>
             )}
-          /> */}
+          />
         </View>
         {/* {isLoading ? <Loader /> : null} */}
       </View>
     </SafeAreaView>
   );
 }
+
+// let categoryObj = {
+//   Id: 0,
+//   Name: element,
+//   BusinessCardIdFk: 0,
+//   BusinessCategoryProduct: businessProductArray,
+
+//   // BusinessCategoryProduct: [
+//   //   {
+//   //     Id: 0,
+//   //     Name: product.productName,
+//   //     // Picture: product.productImg.path,
+//   //     BusinessCategoryIdFk: 0,
+//   //   },
+//   // ],
+// };
+// businessCategoryArray.push(categoryObj);

@@ -55,21 +55,6 @@ export default function NewBusinessCardScreen1(props) {
     },
   ];
 
-  // const businessCardScreen1Array = [
-  //   {
-  //     key: 'Type of Business',
-  //     value: businesssType,
-  //   },
-  //   {
-  //     key: 'Website',
-  //     value: website,
-  //   },
-  //   {
-  //     key: 'Image',
-  //     value: image,
-  //   },
-  // ];
-
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -326,7 +311,7 @@ export default function NewBusinessCardScreen1(props) {
             <BtnComponent
               placeholder="Next"
               onPress={() => {
-                // onNext();
+                onNext();
                 props.navigation.navigate('NewBusinessCard2');
               }}
             />
