@@ -68,7 +68,7 @@ export default function NewBusinessCardScreen1(props) {
     console.log('image Logo', image);
     var imageMime = image.mime;
     var name = imageMime.split('/')[1];
-    setLogoImageName('Vinvi.' + name);
+    setLogoImageName('vinviLogo.' + name);
     setLogo(image);
   };
 
@@ -76,7 +76,7 @@ export default function NewBusinessCardScreen1(props) {
     console.log('image cover', image);
     var imageMime = image.mime;
     var name = imageMime.split('/')[1];
-    setCoverImageName('Vinvi.' + name);
+    setCoverImageName('vinviCover.' + name);
     setCover(image);
   };
 

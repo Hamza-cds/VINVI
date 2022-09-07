@@ -52,8 +52,8 @@ export default function ProductModal({
     let obj = {
       productName: productName.trim(),
       productPrice: productPrice.trim(),
-      productImg: productImg,
-      productImageName: productImageName,
+      productImg: productImg ? productImg : null,
+      productImageName: productImageName ? productImageName : null,
       selectedCategory: selectedCategory,
     };
     let newArr = product;

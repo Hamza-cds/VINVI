@@ -23,8 +23,12 @@ import {loginApiCall} from '../Apis/Repo';
 import {isInvalidPassword} from '../Constants/Validations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
+import {useDispatch} from 'react-redux';
+import {UserData} from '../../Store/Action';
 
 export default function LoginScreen(props) {
+  const dispatch = useDispatch();
+
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +58,7 @@ export default function LoginScreen(props) {
               'user_data',
               JSON.stringify(response.data.result),
             );
+            dispatch(UserData(response.data.result));
             AsyncStorage.setItem('logedIn', JSON.stringify(logedIn));
             setIsLoading(false);
             // props.navigation.navigate('NewPersonalCard4');

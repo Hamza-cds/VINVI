@@ -16,21 +16,32 @@ import Loader from '../Components/Loader';
 import {useDispatch, useSelector} from 'react-redux';
 import {BCDComplete} from '../../Store/Action';
 import ProductModal from './ProductModal';
-import {stringsEqual} from '../Constants/TextUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function NewBusinessCardScreen2(props) {
   const dispatch = useDispatch();
   const DATA = useSelector(state => state.BCData);
+  console.log('DATA', DATA);
+  let [userData, setUserData] = useState(null);
 
-  console.log('BUSINESS_CARD_DATA_TEST', DATA);
+  useEffect(() => {
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
+
+  // console.log('BUSINESS_CARD_DATA_TEST', DATA);
+  // console.log('userData', userData);
 
   const [modalVisible, setModalVisible] = useState(false);
   let [productCategory, setProductCategory] = useState([]);
   let [product, setProduct] = useState([]);
   const [categoryName, setCategoryName] = useState('');
   const [selectedIndex, setSelectedIndex] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
-  console.log('product', product);
+  const [isLoading, setIsLoading] = useState(false);
+  // console.log('product', product);
 
   const categoryNameArray = () => {
     let newCategoryArray = [...productCategory];
@@ -47,11 +58,7 @@ export default function NewBusinessCardScreen2(props) {
 
       for (let index = 0; index < product.length; index++) {
         const Element = product[index];
-        // console.log('Element', Element);
         if (element === Element.selectedCategory) {
-          // console.log('Element', Element.selectedCategory);
-          // console.log('element', element);
-
           let productObj = {
             Id: 0,
             Name: Element.productName,
@@ -78,34 +85,46 @@ export default function NewBusinessCardScreen2(props) {
       businessProductArray = [];
     }
 
-    console.log('businessCategoryArray', businessCategoryArray);
+    // console.log('businessCategoryArray', businessCategoryArray);
 
     var formdata = new FormData();
-    formdata.append('id', 0);
+    formdata.append('Id', JSON.stringify(0));
     formdata.append('Name', DATA.b_Name);
     formdata.append('PhoneNo', DATA.b_Number);
     formdata.append('Address', DATA.b_Address);
     formdata.append('Description', DATA.b_OtherInfo);
     formdata.append('Tagline', DATA.b_Tagline);
     formdata.append('Website', DATA.b_Website);
-    // formdata.append('UserId', JSON.stringify(userData.id));
-    formdata.append('logo_image_file', {
-      uri: DATA.b_Logo.path,
-      name: DATA.b_LogoName,
-      type: DATA.b_Logo.mime,
-    });
-    formdata.append('cover_image_file', {
-      uri: DATA.b_Cover.path,
-      name: DATA.b_CoverName,
-      type: DATA.b_Cover.mime,
-    });
+    formdata.append('UserId', JSON.stringify(userData.id));
+    // formdata.append('BusinessCardMeta', JSON.stringify([]));
+    {
+      DATA.b_Logo
+        ? formdata.append('logo_image_file', {
+            uri: DATA.b_Logo.path,
+            name: DATA.b_LogoName,
+            type: DATA.b_Logo.mime,
+          })
+        : formdata.append('logo_image_file', null);
+    }
+
+    {
+      DATA.b_Cover
+        ? formdata.append('cover_image_file', {
+            uri: DATA.b_Cover.path,
+            name: DATA.b_CoverName,
+            type: DATA.b_Cover.mime,
+          })
+        : formdata.append('cover_image_file', null);
+    }
+    // formdata.append(`BusinessCategory`, JSON.stringify([]));
+    formdata.append('BusinessCardMeta', JSON.stringify([]));
 
     for (let index = 0; index < businessCategoryArray.length; index++) {
       const element = businessCategoryArray[index];
 
-      formdata.append(`BusinessCategory[${index}][Id]`, 0);
+      formdata.append(`BusinessCategory[${index}].Id`, '0');
       formdata.append(
-        `BusinessCategory[${index}][Id]`,
+        `BusinessCategory[${index}].Name`,
         businessCategoryArray[index].Name,
       );
 
@@ -116,26 +135,44 @@ export default function NewBusinessCardScreen2(props) {
       ) {
         const data = element.BusinessCategoryProduct[productIndex];
         formdata.append(
-          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Id]`,
-          data.Id,
+          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Id`,
+          JSON.stringify(data.Id),
         );
         formdata.append(
-          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Name]`,
+          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Name`,
           data.Name,
         );
         formdata.append(
-          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Price]`,
+          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Price`,
           data.Price,
         );
         formdata.append(
-          `BusinessCategory[${index}][Id][BusinessCategoryProduct][${productIndex}][Picture
-        ]`,
+          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].product_image_file`,
           data.Picture,
         );
       }
     }
 
     console.log('formdata', formdata);
+
+    setIsLoading(true);
+    businessCardApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
+          setIsLoading(false);
+          dispatch(BCDComplete(''));
+          props.navigation.replace('MyCardsDashboardScreen');
+        } else {
+          setIsLoading(false);
+          alert('Invalid Request');
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
   };
 
   return (

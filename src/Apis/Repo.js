@@ -83,10 +83,11 @@ export async function personalCardApiCall(formdata) {
 
   // return await fetch('https://vinvi.dsmeglobal.com/api/PersonalCard/Post', {
   //   method: 'POST',
-  //   body: JSON.stringify(personalcardRequest),
+  //   body: formdata,
   //   headers: {
-  //     'Content-Type': 'multipart/form-data',
-  //     Accept: 'application/json',
+  //     // 'Content-Type': 'multipart/form-data',
+  //     // Accept: 'application/json',
+  //     redirect: 'follow',
   //   },
   // });
 }
@@ -99,6 +100,7 @@ export async function businessCardApiCall(formdata) {
     method: 'POST',
     body: formdata,
     redirect: 'follow',
+    Accept: '*/*',
   };
 
   return fetch(
@@ -115,27 +117,6 @@ export async function businessCardApiCall(formdata) {
   //   },
   // });
 }
-
-// export async function businessCardApiCall(businesscardRequest) {
-//   let route = URL.concat('/api/PersonalCard/Post');
-//   console.log(
-//     `Business card Info Request : ${route} REQUEST`,
-//     businesscardRequest,
-//   );
-//   let apiRes = null;
-//   try {
-//     apiRes = await axios({
-//       method: 'POST',
-//       url: route,
-//       data: businesscardRequest,
-//     });
-//   } catch (err) {
-//     apiRes = err;
-//     return apiRes;
-//   } finally {
-//     return apiRes;
-//   }
-// }
 
 export async function getPersonalCardByIdApiCall(id) {
   let route = URL.concat(`/api/PersonalCard/GetById?id=${id}`);
