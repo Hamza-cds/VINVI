@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
-import {SECONDARY, WHITE, PRIMARY} from '../Constants/Colors';
+import {SECONDARY, WHITE, PRIMARY, FIFTH} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import ProductCard from '../Components/ProductCard';
 import Header from '../Components/Header';
@@ -20,10 +21,12 @@ import _ from 'lodash';
 
 const BuisnessScreen = props => {
   console.log('props', props);
-  const [selectedCategory, setSelectedCategory] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [categoryWiseData, setCategoryWiseData] = useState('');
   const navigation = props.navigation;
-  const [businessData, setBusinessData] = useState([]);
+  let [businessData, setBusinessData] = useState([]);
   const [ID, setID] = useState(props.route.params.id);
+  console.log('selectedCategory', selectedCategory);
 
   useEffect(() => {
     getBusinessData();
@@ -34,7 +37,11 @@ const BuisnessScreen = props => {
       .then(res => {
         console.log('res', res.data.result);
         if (res.data.success) {
-          setBusinessData(res.data.result);
+          setBusinessData((businessData = res.data.result));
+          setSelectedCategory(businessData.businessCategory[0].name);
+          setCategoryWiseData(
+            businessData.businessCategory[0].businessCategoryProduct,
+          );
         } else alert('No record found.');
       })
       .catch(err => {
@@ -42,37 +49,6 @@ const BuisnessScreen = props => {
       });
   };
   console.log('data here', businessData);
-
-  let arrayWebsite;
-  arrayWebsite = _.find(businessData.businessCardMeta, {
-    businessKey: 'Website',
-  });
-  if (arrayWebsite) {
-    arrayWebsite = arrayWebsite.businessValue;
-  } else {
-    arrayWebsite = 'Dummy Website';
-  }
-  ('CategoryName');
-
-  let arrayCategory;
-  arrayCategory = _.find(businessData.businessCardMeta, {
-    businessKey: 'CategoryName',
-  });
-  if (arrayCategory) {
-    arrayCategory = arrayCategory.businessValue;
-  } else {
-    arrayCategory = 'Dummy Category';
-  }
-
-  let arrayProductImg;
-  arrayProductImg = _.find(businessData.businessCardMeta, {
-    businessKey: 'ProductImage',
-  });
-  if (arrayProductImg) {
-    arrayProductImg = arrayProductImg.businessValue;
-  } else {
-    arrayProductImg = 'No Product Image';
-  }
 
   let arrayBusinessType;
   arrayBusinessType = _.find(businessData.businessCardMeta, {
@@ -95,7 +71,12 @@ const BuisnessScreen = props => {
           flex: 1,
         }}>
         <ImageBackground
-          source={require('../Assets/buisnessbanner.png')}
+          // source={require('../Assets/buisnessbanner.png')}
+          source={
+            businessData.cover
+              ? {uri: URL.concat(businessData.cover)}
+              : require('../Assets/buisnessbanner.png')
+          }
           style={{
             width: '100%',
             height: 400,
@@ -320,8 +301,14 @@ const BuisnessScreen = props => {
                   Company Website
                 </Text>
                 <Text
-                  style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
-                  {arrayWebsite}
+                  numberOfLines={2}
+                  style={{
+                    color: PRIMARY,
+                    fontSize: 13,
+                    fontWeight: 'bold',
+                    maxWidth: 110,
+                  }}>
+                  {businessData.website}
                 </Text>
               </View>
             </View>
@@ -424,7 +411,7 @@ const BuisnessScreen = props => {
             }}>
             Products
           </Text>
-          <ScrollView
+          {/* <ScrollView
             style={{marginBottom: 40, marginTop: 20}}
             horizontal={true}>
             <CategoryFilter
@@ -432,8 +419,78 @@ const BuisnessScreen = props => {
               setSelectedCategory={setSelectedCategory}
               title={arrayCategory}
             />
-          </ScrollView>
-          <ScrollView style={{}} horizontal={true}>
+          </ScrollView> */}
+          <FlatList
+            style={{marginBottom: 40, marginTop: 20}}
+            data={businessData.businessCategory}
+            horizontal={true}
+            keyExtractor={item => item.id}
+            renderItem={({item, index}) => (
+              <CategoryFilter
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                setCategoryWiseData={setCategoryWiseData}
+                item={item}
+              />
+            )}
+          />
+
+          <FlatList
+            // data={item.businessCategoryProduct}
+            data={categoryWiseData}
+            horizontal={true}
+            keyExtractor={item => item.id}
+            renderItem={({item, index}) => (
+              // console.log('item', item)
+              <ProductCard
+                productPic={
+                  // require('../Assets/productPic.png')
+                  item
+                    ? item.picture
+                      ? {uri: URL.concat(item.picture)}
+                      : require('../Assets/productPic.png')
+                    : null
+                }
+                productName={item.name}
+                productPrice={item.price}
+              />
+            )}
+          />
+
+          {/* <FlatList
+            style={{marginBottom: 40, marginTop: 20}}
+            data={businessData.businessCategory}
+            horizontal={true}
+            // keyExtractor={item => item.id}
+            renderItem={({item, index}) => (
+              // console.log('item',item)
+              <View>
+                <FlatList
+                  // data={item.businessCategoryProduct}
+                  data={categoryWiseData}
+                  horizontal={true}
+                  keyExtractor={item => item.id}
+                  renderItem={({item, index}) => (
+                    // console.log('item', item)
+                    <ProductCard
+                      productPic={
+                        // require('../Assets/productPic.png')
+                        item
+                          ? item.picture
+                            ? {uri: URL.concat(item.picture)}
+                            : require('../Assets/productPic.png')
+                          : null
+                      }
+                      productName={item.name}
+                      productPrice={item.price}
+                    />
+                  )}
+                />
+              </View>
+            )}
+          /> */}
+
+          {/* <ScrollView style={{}} horizontal={true}>
             <ProductCard
               productPic={
                 arrayProductImg
@@ -443,7 +500,7 @@ const BuisnessScreen = props => {
               productName="Product Name"
               productPrice="$343"
             />
-          </ScrollView>
+          </ScrollView> */}
           <View
             style={{
               width: '100%',
@@ -466,14 +523,21 @@ const BuisnessScreen = props => {
 
 export default BuisnessScreen;
 
-function CategoryFilter({selectedCategory, title, setSelectedCategory}) {
+function CategoryFilter({
+  selectedCategory,
+  item,
+  setSelectedCategory,
+  setCategoryWiseData,
+}) {
+  // console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
   return (
     <TouchableOpacity
       onPress={() => {
-        setSelectedCategory(title);
+        setSelectedCategory(item.name);
+        setCategoryWiseData(item.businessCategoryProduct);
       }}
       style={{
-        backgroundColor: selectedCategory === title ? PRIMARY : '#ffffff',
+        backgroundColor: selectedCategory === item.name ? PRIMARY : FIFTH,
         paddingHorizontal: 25,
         paddingVertical: 10,
         borderRadius: 10,
@@ -481,9 +545,9 @@ function CategoryFilter({selectedCategory, title, setSelectedCategory}) {
       }}>
       <Text
         style={{
-          color: selectedCategory === title ? '#ffffff' : PRIMARY,
+          color: selectedCategory === item.name ? '#ffffff' : PRIMARY,
         }}>
-        {title}
+        {item.name}
       </Text>
     </TouchableOpacity>
   );

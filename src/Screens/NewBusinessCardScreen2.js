@@ -119,6 +119,7 @@ export default function NewBusinessCardScreen2(props) {
     // formdata.append(`BusinessCategory`, JSON.stringify([]));
     formdata.append('BusinessCardMeta', JSON.stringify([]));
 
+    console.log('businessCategoryArray', businessCategoryArray);
     for (let index = 0; index < businessCategoryArray.length; index++) {
       const element = businessCategoryArray[index];
 
@@ -128,27 +129,34 @@ export default function NewBusinessCardScreen2(props) {
         businessCategoryArray[index].Name,
       );
 
-      for (
-        let productIndex = 0;
-        productIndex < element.BusinessCategoryProduct.length;
-        productIndex++
-      ) {
-        const data = element.BusinessCategoryProduct[productIndex];
+      if (element.BusinessCategoryProduct.length > 0) {
+        for (
+          let productIndex = 0;
+          productIndex < element.BusinessCategoryProduct.length;
+          productIndex++
+        ) {
+          const data = element.BusinessCategoryProduct[productIndex];
+          formdata.append(
+            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Id`,
+            JSON.stringify(data.Id),
+          );
+          formdata.append(
+            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Name`,
+            data.Name,
+          );
+          formdata.append(
+            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Price`,
+            data.Price,
+          );
+          formdata.append(
+            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].product_image_file`,
+            data.Picture,
+          );
+        }
+      } else {
         formdata.append(
-          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Id`,
-          JSON.stringify(data.Id),
-        );
-        formdata.append(
-          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Name`,
-          data.Name,
-        );
-        formdata.append(
-          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Price`,
-          data.Price,
-        );
-        formdata.append(
-          `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].product_image_file`,
-          data.Picture,
+          `BusinessCategory[${index}].BusinessCategoryProduct`,
+          '[]',
         );
       }
     }

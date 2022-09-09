@@ -9,21 +9,12 @@ import Svg, {G, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 import LinkBtn from '../Components/LinkBtn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {isNullOrEmpty} from '../Constants/TextUtils';
 import {WHITE} from '../Constants/Colors';
-import {
-  EMPTY_LOCATION,
-  EMPTY_LOGO,
-  EMPTY_NAME,
-  EMPTY_PHONE,
-  EMPTY_TYPE,
-  EMPTY_WEBSITE,
-} from '../Constants/Strings';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import PickerComponent from '../Components/PickerComponent';
 import MultiSelect from '../Components/MultiSelect';
 import {useDispatch} from 'react-redux';
 import {BCData} from '../../Store/Action';
+import Select from '../Components/Select';
+import {GetAllLookupDetailApiCall} from '../Apis/Repo';
 
 export default function NewBusinessCardScreen1(props) {
   const dispatch = useDispatch();
@@ -39,6 +30,14 @@ export default function NewBusinessCardScreen1(props) {
   const [cover, setCover] = useState('');
   const [coverImageName, setCoverImageName] = useState('');
   const [otherInfo, setOtherInfo] = useState('');
+  const [industry, setIndustry] = useState('');
+  const [facebookLink, setFacebookLink] = useState('');
+  const [websiteLink, setWebsiteLink] = useState('');
+  const [twitterLink, setTwitterLink] = useState('');
+  const [instagramLink, setInstagramLink] = useState('');
+  const [youtubeLink, setYoutubeLink] = useState('');
+  let [industryType, setIndustryType] = useState([]);
+  let [lookupData, setLookupData] = useState([]);
 
   const data = [
     {
@@ -61,8 +60,36 @@ export default function NewBusinessCardScreen1(props) {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
+
+      getAllLookupdetail();
     });
   }, []);
+
+  // useEffect(() => {
+  //   getAllLookupdetail();
+  // });
+
+  const getAllLookupdetail = () => {
+    // setIsLoading(true);
+    GetAllLookupDetailApiCall()
+      .then(res => {
+        setLookupData((lookupData = res.data.result));
+        console.log('lookupData', lookupData);
+        // setIsLoading(false);
+
+        for (let index = 0; index < lookupData.length; index++) {
+          const element = lookupData[index];
+          if (element.lookupId == 9) {
+            let arrayIndustryType = industryType;
+            arrayIndustryType.push(element);
+            setIndustryType((industryType = arrayIndustryType));
+          }
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
 
   const logoImage = image => {
     console.log('image Logo', image);
@@ -125,6 +152,11 @@ export default function NewBusinessCardScreen1(props) {
             }}
           />
           <MultiSelect placeholder="Area" data={data} onCallBack={setArea} />
+          <Select
+            placeholder={'Industry type'}
+            data={industryType}
+            onCallBack={setIndustry}
+          />
           <OutlinedInputBox
             placeholder="Any Other Information"
             inputType="text"
@@ -142,6 +174,7 @@ export default function NewBusinessCardScreen1(props) {
           <OutlinedInputBox
             placeholder="Company website"
             inputType="text"
+            KeyboardType={'email-address'}
             onChange={value => {
               setCompanyWebsite(value);
             }}
@@ -149,6 +182,7 @@ export default function NewBusinessCardScreen1(props) {
           <OutlinedInputBox
             placeholder="Contact Number"
             inputType="text"
+            KeyboardType={'phone-pad'}
             onChange={value => {
               setNumber(value);
             }}

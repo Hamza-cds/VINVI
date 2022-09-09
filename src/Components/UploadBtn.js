@@ -65,6 +65,7 @@ const UploadBtn = ({svg, placeholder, onCallBack}) => {
                 cropping: false,
               }).then(image => {
                 onCallBack(image);
+                setModalVisible(false);
                 // console.log(image);
                 // RNFS.readFile(image.path, 'base64').then(res => {
                 //   // console.log("res", res)
@@ -85,6 +86,7 @@ const UploadBtn = ({svg, placeholder, onCallBack}) => {
                 cropping: true,
               }).then(image => {
                 onCallBack(image);
+                setModalVisible = false;
                 // RNFS.readFile(image.path, 'base64').then(res => {
                 //   // console.log("res", res)
                 //   onCallBack(
