@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Modal,
   View,
@@ -17,22 +17,31 @@ import {PRIMARY, WHITE} from '../Constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {editBusinessCardApiCall} from '../Apis/Repo';
 
-export default function ProductModal({
+export default function AddorEditProductModal({
   visibleModal,
   setModalVisible,
   category,
-  onPress,
-  setSelectedIndex,
-  product,
-  setProduct,
+  editProduct,
+  isEdit,
+  editCategory,
 }) {
-  console.log('category', category);
-
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImg, setProductImg] = useState('');
   const [productImageName, setProductImageName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  let [categoryList, setCategoryList] = useState([]);
+
+  useEffect(() => {
+    categoryList.length <= 0
+      ? category.map(e => {
+          let arr = [...categoryList];
+          arr.push(e.name);
+          setCategoryList((categoryList = arr));
+          console.log('categoryList', categoryList);
+        })
+      : setCategoryList(categoryList);
+  }, []);
 
   const ProductImage = image => {
     console.log('Product Image', image);
@@ -42,27 +51,60 @@ export default function ProductModal({
     setProductImg(image);
   };
 
-  const onSelect = (index, value) => {
-    // console.log('value', value);
-    // console.log('index', index);
-    setSelectedIndex(index);
+  const onSelectEdit = (index, value) => {
     setSelectedCategory(value);
   };
 
-  const onSave = () => {
-    let obj = {
-      productName: productName.trim(),
-      productPrice: productPrice.trim(),
-      productImg: productImg ? productImg : null,
-      productImageName: productImageName ? productImageName : null,
-      selectedCategory: selectedCategory,
-    };
-    let newArr = product;
-    newArr.push(obj);
-    setProduct((product = newArr));
-    setModalVisible(!visibleModal);
-    // onPress(obj);
+  const onUpdate = () => {
+    var formdata = new FormData();
+
+    formdata.append(`BusinessCategory.Id`, '0');
+    formdata.append(`BusinessCategory.Name`, selectedCategory);
+    {
+      isEdit == false
+        ? formdata.append(`BusinessCategory.BusinessCategoryProduct.Id`, '0')
+        : formdata.append(
+            `BusinessCategory.BusinessCategoryProduct.Id`,
+            JSON.stringify(editProduct.id),
+          );
+    }
+    formdata.append(
+      `BusinessCategory.BusinessCategoryProduct.Name`,
+      productName ? productName : editProduct.name,
+    );
+    formdata.append(
+      `BusinessCategory.BusinessCategoryProduct.Price`,
+      productPrice ? productPrice : editProduct.price,
+    );
+    formdata.append(
+      `BusinessCategory.BusinessCategoryProduct.product_image_file`,
+      productImg
+        ? {uri: productImg.path, name: productImageName, type: productImg.mime}
+        : editProduct.picture,
+    );
+
+    console.log('formdata', formdata);
+
+    // setIsLoading(true);
+    editBusinessCardApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
+          // setIsLoading(false);
+          props.navigation.replace('MyCardsDashboardScreen');
+        } else {
+          // setIsLoading(false);
+          alert('Invalid Request');
+        }
+      })
+      .catch(err => {
+        // setIsLoading(false);
+        console.log('err', err);
+      });
   };
+
+  //   const onAdd = () => {};
 
   return (
     <Modal animationType="slide" transparent={true} visible={visibleModal}>
@@ -111,7 +153,7 @@ export default function ProductModal({
             /> */}
 
             <ModalDropdown
-              options={category}
+              options={editCategory.length != 0 ? editCategory : categoryList}
               defaultValue={'Select category'}
               dropdownStyle={{
                 width: '80%',
@@ -131,7 +173,7 @@ export default function ProductModal({
                 borderRadius: 5,
                 padding: 10,
               }}
-              onSelect={onSelect}>
+              onSelect={onSelectEdit}>
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text>{selectedCategory}</Text>
@@ -147,6 +189,7 @@ export default function ProductModal({
               <OutlinedInputBox
                 placeholder="Name"
                 inputType="text"
+                text={isEdit == true ? editProduct.name : null}
                 onChange={value => {
                   // console.log('name', value);
                   setProductName(value);
@@ -155,6 +198,7 @@ export default function ProductModal({
               <OutlinedInputBox
                 placeholder="Price"
                 inputType="text"
+                text={isEdit == true ? editProduct.price : null}
                 onChange={value => {
                   // console.log('price', value);
                   setProductPrice(value);
@@ -193,7 +237,11 @@ export default function ProductModal({
               onCallBack={ProductImage}
             />
 
-            <BtnComponent onPress={onSave} placeholder={'Save'} vertical={5} />
+            <BtnComponent
+              onPress={onUpdate}
+              placeholder={'Save'}
+              vertical={5}
+            />
           </ScrollView>
         </View>
       </View>

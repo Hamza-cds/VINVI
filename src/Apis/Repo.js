@@ -118,6 +118,32 @@ export async function businessCardApiCall(formdata) {
   // });
 }
 
+export async function editBusinessCardApiCall(formdata) {
+  let route = URL.concat('/api/BusinessCard/EditCategoryList');
+  console.log(route, formdata);
+
+  var requestOptions = {
+    method: 'POST',
+    body: formdata,
+    redirect: 'follow',
+    Accept: '*/*',
+  };
+
+  return fetch(
+    'https://vinvi.dsmeglobal.com//api/BusinessCard/EditCategoryList',
+    requestOptions,
+  );
+
+  // return await fetch('https://vinvi.dsmeglobal.com/api/PersonalCard/Post', {
+  //   method: 'POST',
+  //   body: JSON.stringify(personalcardRequest),
+  //   headers: {
+  //     'Content-Type': 'multipart/form-data',
+  //     Accept: 'application/json',
+  //   },
+  // });
+}
+
 export async function getPersonalCardByIdApiCall(id) {
   let route = URL.concat(`/api/PersonalCard/GetById?id=${id}`);
   console.log('getPersonalCardById Request : ', route);

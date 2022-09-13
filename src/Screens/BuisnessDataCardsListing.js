@@ -6,7 +6,7 @@ import {View, Text} from 'react-native';
 import {getBusinessCardAllActiveApiCall} from '../Apis/Repo';
 
 export function BuisnessDataCardsListing({navigation}) {
-  const [buisnessData, setBuisnessData] = useState([]);
+  const [businessData, setBusinessData] = useState([]);
   let [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -19,8 +19,9 @@ export function BuisnessDataCardsListing({navigation}) {
   useEffect(() => {
     getBusinessCardAllActiveApiCall()
       .then(res => {
-        console.log('res', res);
-        setBuisnessData(res.data.result);
+        console.log('business response', res);
+        setBusinessData(res.data.result);
+        console.log('buisnessData', businessData);
       })
       .catch(err => {
         console.log('err', err);
@@ -28,9 +29,9 @@ export function BuisnessDataCardsListing({navigation}) {
   }, []);
   return (
     <>
-      {buisnessData != null ? (
+      {businessData != null ? (
         <FlatList
-          data={buisnessData}
+          data={businessData}
           horizontal={false}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => (

@@ -16,8 +16,16 @@ import Header from '../Components/Header';
 import Svg, {Path} from 'react-native-svg';
 import {Height, QRCODE_URL, URL, Width} from '../Constants/Constants';
 import QRCode from 'react-native-qrcode-svg';
-import {getBusinessCardByIdApiCall} from '../Apis/Repo';
+import {
+  getBusinessCardByIdApiCall,
+  GetAllLookupDetailApiCall,
+} from '../Apis/Repo';
 import _ from 'lodash';
+import Feather from 'react-native-vector-icons/Feather';
+import EditBusinessCardModal from './EditBusinessCardModal';
+import BusinessEditCategoryModal from './BusinessEditCategoryModal';
+import Loader from '../Components/Loader';
+import AddorEditProductModal from './AddorEditProductModal';
 
 const BuisnessScreen = props => {
   console.log('props', props);
@@ -26,25 +34,64 @@ const BuisnessScreen = props => {
   const navigation = props.navigation;
   let [businessData, setBusinessData] = useState([]);
   const [ID, setID] = useState(props.route.params.id);
-  console.log('selectedCategory', selectedCategory);
+  const [isBusinessCardModalVisible, setIsBusinessCardModalVisible] =
+    useState(false);
+  const isEdit = props.route.params.edit;
+  let [industryType, setIndustryType] = useState([]);
+  let [lookupData, setLookupData] = useState([]);
+  const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
+  const [isProductModalVisible, setIsProductModalVisible] = useState(false);
+  let [editCategory, setEditCategory] = useState([]);
+  const [editProduct, setEditProduct] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [edit, setEdit] = useState(true);
 
   useEffect(() => {
     getBusinessData();
+    getAllLookupdetail();
   }, []);
 
+  const getAllLookupdetail = () => {
+    // setIsLoading(true);
+    GetAllLookupDetailApiCall()
+      .then(res => {
+        setLookupData((lookupData = res.data.result));
+        console.log('lookupData', lookupData);
+        // setIsLoading(false);
+
+        for (let index = 0; index < lookupData.length; index++) {
+          const element = lookupData[index];
+          if (element.lookupId == 9) {
+            let arrayIndustryType = industryType;
+            arrayIndustryType.push(element);
+            setIndustryType((industryType = arrayIndustryType));
+          }
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
   const getBusinessData = () => {
+    setIsLoading(true);
     getBusinessCardByIdApiCall(ID)
       .then(res => {
         console.log('res', res.data.result);
         if (res.data.success) {
+          setIsLoading(false);
           setBusinessData((businessData = res.data.result));
           setSelectedCategory(businessData.businessCategory[0].name);
           setCategoryWiseData(
             businessData.businessCategory[0].businessCategoryProduct,
           );
-        } else alert('No record found.');
+        } else {
+          setIsLoading(false);
+          alert('No record found.');
+        }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -246,6 +293,23 @@ const BuisnessScreen = props => {
                   </Svg>
                 </TouchableOpacity>
               </View>
+
+              {isEdit == true ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsBusinessCardModalVisible(true);
+                  }}
+                  style={{
+                    height: 30,
+                    width: 50,
+                    alignSelf: 'flex-end',
+                    borderRadius: 5,
+                    marginRight: -5,
+                    marginTop: 10,
+                  }}>
+                  <Feather name="edit" size={30} color={WHITE} />
+                </TouchableOpacity>
+              ) : null}
             </View>
           </View>
         </ImageBackground>
@@ -396,30 +460,72 @@ const BuisnessScreen = props => {
                   Company Address
                 </Text>
                 <Text
-                  style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
+                  numberOfLines={2}
+                  style={{
+                    color: PRIMARY,
+                    fontSize: 13,
+                    fontWeight: 'bold',
+                    maxWidth: 130,
+                  }}>
                   {businessData.address}
                 </Text>
               </View>
             </View>
           </View>
-          <Text
+          <View
             style={{
-              color: PRIMARY,
-              fontSize: 22,
-              fontWeight: 'bold',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
               marginTop: 15,
             }}>
-            Products
-          </Text>
-          {/* <ScrollView
-            style={{marginBottom: 40, marginTop: 20}}
-            horizontal={true}>
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              title={arrayCategory}
-            />
-          </ScrollView> */}
+            <Text
+              style={{
+                color: PRIMARY,
+                fontSize: 22,
+                fontWeight: 'bold',
+              }}>
+              Category
+            </Text>
+            {isEdit == true ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setIsCategoryModalVisible(true);
+                }}
+                style={{
+                  height: 30,
+                  width: 50,
+                  alignSelf: 'flex-end',
+                  borderRadius: 5,
+                  marginRight: -5,
+                  marginTop: 5,
+                }}>
+                <Feather name="edit" size={22} color={SECONDARY} />
+              </TouchableOpacity>
+            ) : null}
+
+            {isCategoryModalVisible ? (
+              <BusinessEditCategoryModal
+                setModalVisible={setIsCategoryModalVisible}
+                modalVisible={isCategoryModalVisible}
+                businessData={businessData}
+                isEdit={isEdit}
+                setEditCategory={setEditCategory}
+                editCategory={editCategory}
+              />
+            ) : null}
+
+            {isProductModalVisible ? (
+              <AddorEditProductModal
+                visibleModal={isProductModalVisible}
+                setModalVisible={setIsProductModalVisible}
+                editProduct={editProduct}
+                editCategory={editCategory}
+                category={businessData.businessCategory}
+                isEdit={edit}
+              />
+            ) : null}
+          </View>
+
           <FlatList
             style={{marginBottom: 40, marginTop: 20}}
             data={businessData.businessCategory}
@@ -435,72 +541,55 @@ const BuisnessScreen = props => {
             )}
           />
 
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 10,
+            }}>
+            <Text
+              style={{
+                color: PRIMARY,
+                fontSize: 22,
+                fontWeight: 'bold',
+              }}>
+              Product
+            </Text>
+            {isEdit == true ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setEdit(false);
+                  setIsProductModalVisible(true);
+                }}
+                style={{
+                  height: 30,
+                  width: 50,
+                  alignSelf: 'flex-end',
+                  borderRadius: 5,
+                  marginRight: -5,
+                  marginTop: 5,
+                }}>
+                <Feather name="edit" size={22} color={SECONDARY} />
+              </TouchableOpacity>
+            ) : null}
+          </View>
+
           <FlatList
             // data={item.businessCategoryProduct}
             data={categoryWiseData}
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => (
-              // console.log('item', item)
               <ProductCard
-                productPic={
-                  // require('../Assets/productPic.png')
-                  item
-                    ? item.picture
-                      ? {uri: URL.concat(item.picture)}
-                      : require('../Assets/productPic.png')
-                    : null
-                }
-                productName={item.name}
-                productPrice={item.price}
+                item={item}
+                isEdit={isEdit}
+                setIsProductModalVisible={setIsProductModalVisible}
+                setEditProduct={setEditProduct}
+                setEdit={setEdit}
               />
             )}
           />
 
-          {/* <FlatList
-            style={{marginBottom: 40, marginTop: 20}}
-            data={businessData.businessCategory}
-            horizontal={true}
-            // keyExtractor={item => item.id}
-            renderItem={({item, index}) => (
-              // console.log('item',item)
-              <View>
-                <FlatList
-                  // data={item.businessCategoryProduct}
-                  data={categoryWiseData}
-                  horizontal={true}
-                  keyExtractor={item => item.id}
-                  renderItem={({item, index}) => (
-                    // console.log('item', item)
-                    <ProductCard
-                      productPic={
-                        // require('../Assets/productPic.png')
-                        item
-                          ? item.picture
-                            ? {uri: URL.concat(item.picture)}
-                            : require('../Assets/productPic.png')
-                          : null
-                      }
-                      productName={item.name}
-                      productPrice={item.price}
-                    />
-                  )}
-                />
-              </View>
-            )}
-          /> */}
-
-          {/* <ScrollView style={{}} horizontal={true}>
-            <ProductCard
-              productPic={
-                arrayProductImg
-                  ? {uri: URL.concat(arrayProductImg)}
-                  : require('../Assets/productPic.png')
-              }
-              productName="Product Name"
-              productPrice="$343"
-            />
-          </ScrollView> */}
           <View
             style={{
               width: '100%',
@@ -508,7 +597,7 @@ const BuisnessScreen = props => {
               alignItems: 'center',
             }}>
             <QRCode
-              value={QRCODE_URL} // logo={{uri: base64Logo}}
+              value={QRCODE_URL}
               logoSize={50}
               logoBackgroundColor="transparent"
               color={SECONDARY}
@@ -516,7 +605,16 @@ const BuisnessScreen = props => {
           </View>
           <BtnComponent placeholder="Block" onPress={() => {}} />
         </View>
+        <EditBusinessCardModal
+          modalVisible={isBusinessCardModalVisible}
+          setModalVisible={setIsBusinessCardModalVisible}
+          isEdit={isEdit}
+          bCardData={businessData}
+          industryType={industryType}
+          props={props}
+        />
       </ScrollView>
+      {isLoading ? <Loader /> : null}
     </SafeAreaView>
   );
 };
@@ -529,7 +627,7 @@ function CategoryFilter({
   setSelectedCategory,
   setCategoryWiseData,
 }) {
-  // console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
+  console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
   return (
     <TouchableOpacity
       onPress={() => {

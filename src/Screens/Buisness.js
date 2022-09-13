@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, Text, View, FlatList} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getPersonalCardAllActiveApiCall} from '../Apis/Repo';
+import {getBusinessCardAllActiveApiCall} from '../Apis/Repo';
 import MyCardBuisness from '../Components/MyCardBuisness';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 
 export function Buisness({navigation}) {
   const [selected, setSelected] = useState(null);
   let [userData, setUserData] = useState(null);
-  const [data, setdata] = useState([]);
+  const [businessData, setBusinessData] = useState([]);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -18,24 +18,22 @@ export function Buisness({navigation}) {
   }, []);
 
   useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = () => {
-    getPersonalCardAllActiveApiCall()
+    getBusinessCardAllActiveApiCall()
       .then(res => {
-        console.log('res', res);
-        setdata(res.data.result);
+        console.log('business response', res);
+        setBusinessData(res.data.result);
+        console.log('buisnessData', businessData);
       })
       .catch(err => {
         console.log('err', err);
       });
-  };
+  }, []);
+
   return (
     <>
-      {data != null ? (
+      {businessData != null ? (
         <FlatList
-          data={data}
+          data={businessData}
           horizontal={false}
           keyExtractor={item => item.id}
           renderItem={({item, index}) => (
@@ -70,7 +68,17 @@ export function Buisness({navigation}) {
             </View>
           }
         />
-      ) : null}
+      ) : (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: 300,
+          }}>
+          <Text style={{color: '#242424'}}>No Cards</Text>
+        </View>
+      )}
     </>
   );
 }
