@@ -15,10 +15,59 @@ import {
 } from 'react-native';
 import {IndividualDataCardsListing} from './IndividualDataCardsListing';
 import {BuisnessDataCardsListing} from './BuisnessDataCardsListing';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useState, useEffect} from 'react';
+import {storyPostApiCall} from '../Apis/Repo';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function HomeDashboardScreen(props) {
+  const [storyImage, setStoryImage] = useState('');
+  let [userData, setUserData] = useState('');
+  let [imageType, setImageType] = useState('');
+  console.log('storyImage', storyImage);
+
+  useEffect(() => {
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
+
+  const onSelecet = () => {
+    var imagetype = storyImage.type;
+    var type = imagetype.split('/')[1];
+    setImageType((imageType = type));
+
+    var formdata = new FormData();
+    formdata.append('Id', '0');
+    formdata.append('Title', 'this is title');
+    formdata.append('Description', 'this is description');
+    formdata.append('UserId', JSON.stringify(userData.id));
+    formdata.append('media_file', {
+      uri: storyImage.uri,
+      name: storyImage.fileName,
+      type: imageType,
+    });
+
+    console.log('formdata', formdata);
+
+    storyPostApiCall(formdata)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
+          // props.navigation.replace('MyCardsDashboardScreen');
+          alert('successfully posted');
+        } else {
+          alert('invalid request');
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
@@ -51,7 +100,14 @@ export default function HomeDashboardScreen(props) {
               marginRight: 10,
             }}
             onPress={() => {
-              launchImageLibrary({mediaType: 'photo'}, () => {});
+              launchImageLibrary({mediaType: 'photo'}, image => {
+                // console.log('image', image);
+                for (let index = 0; index < image.assets.length; index++) {
+                  const element = image.assets[index];
+                  setStoryImage(element);
+                }
+                onSelecet();
+              });
             }}>
             <Text style={{color: '#242424', fontSize: 25}}>+</Text>
           </TouchableOpacity>
