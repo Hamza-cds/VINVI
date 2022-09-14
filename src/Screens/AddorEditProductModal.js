@@ -24,6 +24,7 @@ export default function AddorEditProductModal({
   editProduct,
   isEdit,
   editCategory,
+  userData,
 }) {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -58,26 +59,25 @@ export default function AddorEditProductModal({
   const onUpdate = () => {
     var formdata = new FormData();
 
-    formdata.append(`BusinessCategory.Id`, '0');
-    formdata.append(`BusinessCategory.Name`, selectedCategory);
+    formdata.append(`[0].Id`, '0');
+    formdata.append(`[0].Name`, selectedCategory);
+    formdata.append(`[0].BusinessCardIdFk`, userData.id);
     {
       isEdit == false
-        ? formdata.append(`BusinessCategory.BusinessCategoryProduct.Id`, '0')
-        : formdata.append(
-            `BusinessCategory.BusinessCategoryProduct.Id`,
-            JSON.stringify(editProduct.id),
-          );
+        ? formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0')
+        : formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0');
+      // JSON.stringify(editProduct.id)
     }
     formdata.append(
-      `BusinessCategory.BusinessCategoryProduct.Name`,
+      `[0].BusinessCategoryProduct[0].Name`,
       productName ? productName : editProduct.name,
     );
     formdata.append(
-      `BusinessCategory.BusinessCategoryProduct.Price`,
+      `[0].BusinessCategoryProduct[0].Price`,
       productPrice ? productPrice : editProduct.price,
     );
     formdata.append(
-      `BusinessCategory.BusinessCategoryProduct.product_image_file`,
+      `[0].BusinessCategoryProduct[0].product_image_file`,
       productImg
         ? {uri: productImg.path, name: productImageName, type: productImg.mime}
         : editProduct.picture,
@@ -92,7 +92,7 @@ export default function AddorEditProductModal({
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
           // setIsLoading(false);
-          props.navigation.replace('MyCardsDashboardScreen');
+          setModalVisible(false);
         } else {
           // setIsLoading(false);
           alert('Invalid Request');

@@ -47,13 +47,13 @@ export default function HomeDashboardScreen(props) {
     formdata.append('media_file', {
       uri: storyImage.uri,
       name: storyImage.fileName,
-      type: imageType,
+      type: storyImage.type,
     });
 
     console.log('formdata', formdata);
 
     storyPostApiCall(formdata)
-      // .then(res => res.json())
+      .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {

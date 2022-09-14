@@ -28,7 +28,6 @@ import Loader from '../Components/Loader';
 import AddorEditProductModal from './AddorEditProductModal';
 
 const BuisnessScreen = props => {
-  console.log('props', props);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categoryWiseData, setCategoryWiseData] = useState('');
   const navigation = props.navigation;
@@ -521,6 +520,7 @@ const BuisnessScreen = props => {
                 editProduct={editProduct}
                 editCategory={editCategory}
                 category={businessData.businessCategory}
+                userData={businessData}
                 isEdit={edit}
               />
             ) : null}
