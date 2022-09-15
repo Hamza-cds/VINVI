@@ -24,7 +24,7 @@ export function JobHistoryEditModalAdd({
   isEdit,
   CardData,
 }) {
-  console.log('jobhistoryarray of EDIT/ADD Modal', jobhistoryarray);
+  // console.log('jobhistoryarray of EDIT/ADD Modal', jobhistoryarray);
 
   const [companyName, setCompanyName] = useState('');
   let [startMonth, setStartMonth] = useState('');
@@ -195,7 +195,7 @@ export function JobHistoryEditModalAdd({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('Edit Skill Data', data);
+        // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
           // setIsLoading(false);
@@ -203,7 +203,7 @@ export function JobHistoryEditModalAdd({
         } else {
           // setIsLoading(false);
           alert(data.message);
-          console.log('ADD');
+          // console.log('ADD');
         }
       })
       .catch(err => {
@@ -214,27 +214,27 @@ export function JobHistoryEditModalAdd({
 
   const FunIndustry = value => {
     setIndustry((industry = value.name));
-    console.log('industry', industry);
+    // console.log('industry', industry);
   };
   const FunEmployee = value => {
     setEmployee((employee = value.name));
-    console.log('employee', employee);
+    // console.log('employee', employee);
   };
   const FunstartDateMonth = value => {
     setStartMonth((startMonth = value.name));
-    console.log('startMonth', startMonth);
+    // console.log('startMonth', startMonth);
   };
   const FunstartDateYear = value => {
     setStartYear((startYear = value.name));
-    console.log('startYear', startYear);
+    // console.log('startYear', startYear);
   };
   const FunendDateMonth = value => {
     setEndMonth((endMonth = value.name));
-    console.log('endMonth', endMonth);
+    // console.log('endMonth', endMonth);
   };
   const FunendDateYear = value => {
     setEndYear((endYear = value.name));
-    console.log('endYear', endYear);
+    // console.log('endYear', endYear);
   };
 
   return (

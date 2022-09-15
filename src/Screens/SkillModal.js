@@ -17,6 +17,7 @@ import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 import Loader from '../Components/Loader';
+import {Skills} from './Skills';
 
 export function SkillModal({
   modalVisible,
@@ -45,11 +46,15 @@ export function SkillModal({
 
   /* these funtions used when creating personal cards skills  */
   const FunModalSkillsArray = () => {
-    let newModalSkillArray = [...modalSkillArray];
-    newModalSkillArray.push(newSkill.trim());
-    setModalSKillArray((modalSkillArray = newModalSkillArray));
-    setModalSkill(modalSkillArray);
-    setInputValue('');
+    if (isNullOrEmpty(newSkill)) {
+      alert('Enter atleast one skill');
+    } else {
+      let newModalSkillArray = [...modalSkillArray];
+      newModalSkillArray.push(newSkill.trim());
+      setModalSKillArray((modalSkillArray = newModalSkillArray));
+      setModalSkill(modalSkillArray);
+      setInputValue('');
+    }
   };
 
   const FunDelSkill = index => {
@@ -74,7 +79,7 @@ export function SkillModal({
     } else {
       EditArraySkills = '';
     }
-    console.log('EditArraySkills', EditArraySkills);
+    // console.log('EditArraySkills', EditArraySkills);
   };
 
   {
@@ -82,16 +87,20 @@ export function SkillModal({
   }
 
   const funEditModalSkillsArray = () => {
-    let neweditModalSkillArray = skillarr;
-    neweditModalSkillArray.push(newSkill);
-    setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
-    // setEditModalSkill(modalSkillArray);
-    setInputValue('');
+    if (isNullOrEmpty(newSkill)) {
+      alert('Enter atleast one skill');
+    } else {
+      let neweditModalSkillArray = skillarr;
+      neweditModalSkillArray.push(newSkill);
+      setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
+      // setEditModalSkill(modalSkillArray);
+      setInputValue('');
+    }
   };
 
   const funEditDelSkill = index => {
     var afterDelete = skillarr.filter((x, Index) => Index !== index);
-    console.log('afterDelete', afterDelete);
+    // console.log('afterDelete', afterDelete);
     setEditModalSKillArray((editModalSkillArray = afterDelete));
     // setEditModalSkill(editModalSkillArray);
   };
@@ -114,7 +123,7 @@ export function SkillModal({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('Edit Skill Data', data);
+        // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
@@ -194,8 +203,9 @@ export function SkillModal({
               </TouchableOpacity>
             </View>
             <OutlinedInputBox
-              placeholder="Skill Name"
+              placeholder="Enter Skill Name"
               inputType="text"
+              label={'Skill'}
               // inputValue={inputValue}
               onChange={value => {
                 setNewSkill(value);

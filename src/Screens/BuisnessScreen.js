@@ -19,6 +19,7 @@ import QRCode from 'react-native-qrcode-svg';
 import {
   getBusinessCardByIdApiCall,
   GetAllLookupDetailApiCall,
+  BusinessDeleteProductApiCall,
 } from '../Apis/Repo';
 import _ from 'lodash';
 import Feather from 'react-native-vector-icons/Feather';
@@ -94,7 +95,26 @@ const BuisnessScreen = props => {
         console.log('err', err);
       });
   };
-  console.log('data here', businessData);
+
+  const onDeleteProduct = id => {
+    let obj = {
+      Id: id,
+    };
+
+    BusinessDeleteProductApiCall(obj)
+      .then(res => {
+        console.log('delete product response', res);
+        if (data.data.status == 200 && data.data.success == true) {
+          getBusinessData();
+          alert('product deleted');
+        } else {
+          alert(data.data.message);
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
 
   let arrayBusinessType;
   arrayBusinessType = _.find(businessData.businessCardMeta, {
@@ -586,6 +606,9 @@ const BuisnessScreen = props => {
                 setIsProductModalVisible={setIsProductModalVisible}
                 setEditProduct={setEditProduct}
                 setEdit={setEdit}
+                onPress={() => {
+                  onDeleteProduct(item.id);
+                }}
               />
             )}
           />

@@ -9,9 +9,9 @@ import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 
 export function JobCard({item, edit, onPress, arrayjobhistory, index, data}) {
-  console.log('ali ali', arrayjobhistory);
-  console.log('ali ali ali', data);
-  console.log('ali item', item);
+  // console.log('ali ali', arrayjobhistory);
+  // console.log('ali ali ali', data);
+  // console.log('ali item', item);
 
   let [jobArr, setJobArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,7 @@ export function JobCard({item, edit, onPress, arrayjobhistory, index, data}) {
     JobHistoryArray = 'Dummy job History';
   }
 
-  console.log('JobHistoryArray', JobHistoryArray);
+  // console.log('JobHistoryArray', JobHistoryArray);
 
   const FunDelJobHistory = () => {
     setJobArr(
@@ -39,20 +39,20 @@ export function JobCard({item, edit, onPress, arrayjobhistory, index, data}) {
       personalValue: JSON.stringify(jobArr),
     };
 
-    console.log('ali object', obj);
+    // console.log('ali object', obj);
 
     setIsLoading(true);
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('Edit Skill Data', data);
+        // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
         } else {
           alert(data.message);
           setIsLoading(false);
-          console.log('ADD');
+          // console.log('ADD');
         }
       })
       .catch(err => {

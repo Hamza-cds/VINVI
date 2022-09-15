@@ -296,36 +296,41 @@ export default function NewCardScreen(props) {
       <NewCardStepPanel step1={true} step2={true} step3={true} step4={true} />
       <ScrollView style={{flex: 1, padding: 20, marginBottom: 20}}>
         <OutlinedInputBox
-          placeholder="Introductory Message"
+          placeholder="Introduce your self"
           inputType="text"
+          label={'Intoduction'}
           onChange={value => {
             setMessage(value);
           }}
         />
         <OutlinedInputBox
-          placeholder="QR Code"
+          placeholder="Enter Code"
           inputType="text"
+          label={'QR Code'}
           onChange={value => {
             setQRcode(value);
           }}
         />
         <OutlinedInputBox
-          placeholder="Hobbies"
+          placeholder="Enter Hobbies"
           inputType="text"
+          label={'Hobbies'}
           onChange={value => {
             setHobbies(value);
           }}
         />
         <OutlinedInputBox
-          placeholder="Interests"
+          placeholder="Enter Interests"
           inputType="text"
+          label={'Interests'}
           onChange={value => {
             setInterests(value);
           }}
         />
         <OutlinedInputBox
-          placeholder="Achievements"
+          placeholder="Enter Achievements"
           inputType="text"
+          label={'Achievements'}
           onChange={value => {
             setAchivements(value);
           }}
@@ -345,7 +350,9 @@ export default function NewCardScreen(props) {
               alignItems: 'center',
               marginBottom: 10,
             }}>
-            <Text style={{color: '#242424', fontSize: 16}}>Skills</Text>
+            <Text style={{color: '#242424', fontSize: 16, fontWeight: '700'}}>
+              Skills
+            </Text>
             <TouchableOpacity
               style={{
                 borderWidth: 1,

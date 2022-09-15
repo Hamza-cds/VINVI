@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -10,6 +10,7 @@ import {isNullOrEmpty} from '../Constants/TextUtils';
 import {PCData} from '../../Store/Action';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {ScrollView} from 'react-native-gesture-handler';
 import {
   EMPTY_ADDRESS,
   EMPTY_BIRTHDAY,
@@ -20,6 +21,7 @@ import {
   EMPTY_OCCUPATION,
   EMPTY_PHONE,
 } from '../Constants/Strings';
+import {isInvalidEmail} from '../Constants/Validations';
 
 export default function NewCardScreen(props) {
   const dispatch = useDispatch();
@@ -52,6 +54,8 @@ export default function NewCardScreen(props) {
   ];
 
   let [UserData, setUserData] = useState(null);
+  const [error, setError] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -88,6 +92,17 @@ export default function NewCardScreen(props) {
         Ishidden: true,
       },
     ],
+  };
+
+  const CheckEmail = value => {
+    if (value == '') {
+      setError(false);
+    } else if (isInvalidEmail(value)) {
+      setError(true);
+      setErrorMsg('Invalid Email');
+    } else {
+      setError(false);
+    }
   };
 
   // const onNext = () => {
@@ -172,56 +187,69 @@ export default function NewCardScreen(props) {
             padding: 20,
           }}>
           <OutlinedInputBox
-            placeholder="Name"
+            placeholder="Enter Name"
+            label="Name"
             inputType="text"
             onChange={value => {
               setName(value);
             }}
           />
           <OutlinedInputBox
-            placeholder="Occupation"
+            placeholder="Enter Occupation"
+            label="Occupation"
             inputType="text"
             onChange={value => {
               setOccupation(value);
             }}
           />
           <OutlinedInputBox
-            placeholder="Phone No"
+            placeholder="Enter Phone No"
+            maxLength={11}
+            label="Phone"
             inputType="text"
+            KeyboardType={'numeric'}
             onChange={value => {
               setPhoneNumber(value);
             }}
           />
           <OutlinedInputBox
-            placeholder="Email"
+            placeholder="Enter Email"
+            label="Email"
             inputType="text"
+            error={error}
+            errorMsg={errorMsg}
             onChange={value => {
+              CheckEmail(value);
               setEmail(value);
             }}
           />
           <OutlinedInputBox
-            placeholder="Birthday"
+            placeholder="Enter Birthday"
+            label="Birthday"
             inputType="text"
             onChange={value => {
               setBirthday(value);
             }}
           />
           <OutlinedInputBox
-            placeholder="Address"
+            placeholder="Enter Address"
+            label="Address"
             inputType="text"
             onChange={value => {
               setAddress(value);
             }}
           />
           <OutlinedInputBox
-            placeholder="City"
+            placeholder="Enter City"
+            label="City"
             inputType="text"
             onChange={value => {
               setCity(value);
             }}
           />
           <OutlinedInputBox
-            placeholder="Country"
+            placeholder="Enter Country"
+            label="Country"
             inputType="text"
             onChange={value => {
               setCountry(value);

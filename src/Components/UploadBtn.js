@@ -4,9 +4,11 @@ import {PRIMARY, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNFS from 'react-native-fs';
+import {URL} from '../Constants/Constants';
 
-const UploadBtn = ({svg, placeholder, onCallBack}) => {
+const UploadBtn = ({svg, placeholder, onCallBack, label}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  console.log('svg', svg);
   return (
     <>
       <TouchableOpacity
@@ -14,17 +16,40 @@ const UploadBtn = ({svg, placeholder, onCallBack}) => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          paddingVertical: 20,
+          // paddingVertical: 20,
           borderRadius: 5,
           marginVertical: 10,
           borderWidth: 1,
           borderStyle: 'dashed',
           borderColor: PRIMARY,
+          height: 200,
+          width: '100%',
         }}>
-        <Text style={{fontSize: 14, color: '#242424', fontWeight: 'bold'}}>
-          {placeholder}
-        </Text>
+        {svg ? (
+          <Image
+            source={{uri: svg.path}}
+            style={{height: 200, width: '100%'}}
+          />
+        ) : (
+          <Text
+            style={{
+              fontSize: 14,
+              color: '#A8A8A8',
+              fontWeight: 'bold',
+              marginVertical: 80,
+            }}>
+            {label}
+          </Text>
+        )}
       </TouchableOpacity>
+      <Text
+        style={{
+          fontSize: 14,
+          color: '#242424',
+          fontWeight: 'bold',
+        }}>
+        {placeholder}
+      </Text>
       <Modal
         animationType="fade"
         transparent={true}
@@ -66,7 +91,6 @@ const UploadBtn = ({svg, placeholder, onCallBack}) => {
               }).then(image => {
                 onCallBack(image);
                 setModalVisible(false);
-                // console.log(image);
                 // RNFS.readFile(image.path, 'base64').then(res => {
                 //   // console.log("res", res)
                 //   onCallBack(
@@ -85,6 +109,7 @@ const UploadBtn = ({svg, placeholder, onCallBack}) => {
                 height: 400,
                 cropping: true,
               }).then(image => {
+                console.log('ye ha image ', image);
                 onCallBack(image);
                 setModalVisible(false);
                 // RNFS.readFile(image.path, 'base64').then(res => {

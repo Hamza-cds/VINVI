@@ -19,6 +19,7 @@ import {
   getPersonalCardByIdApiCall,
   personalCardApiCall,
   GetAllLookupDetailApiCall,
+  saveCardAPiCall,
 } from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ContactDetails} from './ContactDetails';
@@ -64,6 +65,8 @@ export default function IndividualScreen(props) {
   let [employeeType, setEmployeeType] = useState([]);
   let [degreeList, setDegreList] = useState([]);
   let [lookupData, setLookupData] = useState([]);
+
+  console.log('favorit', favorit);
 
   let arrayOccupation;
   arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
@@ -177,7 +180,7 @@ export default function IndividualScreen(props) {
         if (res.data.success) {
           setdata((data = res.data.result));
           setIsLoading(false);
-          console.log('data', data);
+          console.log('card data', data);
         } else {
           setIsLoading(false);
           alert('No record found.');
@@ -220,8 +223,8 @@ export default function IndividualScreen(props) {
   };
 
   const onSelectImage = () => {
-    console.log('imageName', imageName);
-    console.log('proImage', proImage);
+    // console.log('imageName', imageName);
+    // console.log('proImage', proImage);
 
     var formdata = new FormData();
     formdata.append('Name', data.name);
@@ -245,7 +248,7 @@ export default function IndividualScreen(props) {
 
     formdata.append('PersonalCardMeta', '[]');
 
-    console.log('formdata', formdata);
+    // console.log('formdata', formdata);
 
     // {
     //   coverPic
@@ -261,7 +264,7 @@ export default function IndividualScreen(props) {
     personalCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
-        console.log('response', data);
+        // console.log('response', data);
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           alert('picture updated successfully');
@@ -269,6 +272,34 @@ export default function IndividualScreen(props) {
           setIsLoading(false);
           alert('alert');
         }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
+  const onCardSave = () => {
+    let obj = {
+      Id: 0,
+      UserId: userData.id,
+      CardType: false,
+      PersonalCardId: data.id,
+    };
+
+    setIsLoading(true);
+    saveCardAPiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        setIsLoading(false);
+        // if (data.status === 200 && data.success === true) {
+        //   setIsLoading(false);
+        //   alert('picture updated successfully');
+        // } else {
+        //   setIsLoading(false);
+        //   alert('alert');
+        // }
       })
       .catch(err => {
         setIsLoading(false);
@@ -358,7 +389,16 @@ export default function IndividualScreen(props) {
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
-                  setFavorit(true);
+                  // setFavorit(true);
+                  if (favorit == true) {
+                    setFavorit(false);
+                    onCardUnSave();
+                    console.log('what');
+                  } else {
+                    setFavorit(true);
+                    console.log('what 1');
+                    onCardSave();
+                  }
                 }}>
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -368,7 +408,7 @@ export default function IndividualScreen(props) {
                   <Path
                     data-name="Icon awesome-heart"
                     d="M20.131 1.334a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
-                    fill={favorit ? 'red' : '#CACFD2'}
+                    fill={favorit == true ? 'red' : '#CACFD2'}
                   />
                 </Svg>
               </TouchableOpacity>

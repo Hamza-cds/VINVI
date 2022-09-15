@@ -27,7 +27,7 @@ export function EducationModal({
   index,
   educationarray,
 }) {
-  console.log('degreeData', degreeData);
+  // console.log('degreeData', degreeData);
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
   const [fieldOfStudy, setFieldOfStudy] = useState('');
@@ -160,7 +160,7 @@ export function EducationModal({
   useEffect(() => {
     if (isEdit) {
       setEditEdu((editEdu = educationarray[index]));
-      console.log('editEdu', editEdu);
+      // console.log('editEdu', editEdu);
       editEduHistoryArray.length <= 0
         ? setEditEducationHistoryArray((editEduHistoryArray = educationarray))
         : setEditEducationHistoryArray(editEduHistoryArray);
@@ -178,7 +178,7 @@ export function EducationModal({
     } else {
       EditArrayEducation = '';
     }
-    console.log('EditArrayEducation', EditArrayEducation);
+    // console.log('EditArrayEducation', EditArrayEducation);
   };
 
   {
@@ -222,7 +222,7 @@ export function EducationModal({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('Edit Skill Data', data);
+        // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
@@ -230,7 +230,7 @@ export function EducationModal({
         } else {
           alert(data.message);
           setIsLoading(false);
-          console.log('ADD');
+          // console.log('ADD');
         }
       })
       .catch(err => {
@@ -257,19 +257,19 @@ export function EducationModal({
   };
   const FunstartDateMonth = value => {
     setStartDateMonth((startDateMonth = value.name));
-    console.log('startDateMonth', startDateMonth);
+    // console.log('startDateMonth', startDateMonth);
   };
   const FunstartDateYear = value => {
     setStartDateYear((startDateYear = value.name));
-    console.log('startDateYear', startDateYear);
+    // console.log('startDateYear', startDateYear);
   };
   const FunendDateMonth = value => {
     setEndDateMonth((endDateMonth = value.name));
-    console.log('endDateMonth', endDateMonth);
+    // console.log('endDateMonth', endDateMonth);
   };
   const FunendDateYear = value => {
     setEndDateYear((endDateYear = value.name));
-    console.log('endDateYear', endDateYear);
+    // console.log('endDateYear', endDateYear);
   };
 
   return (
@@ -352,18 +352,20 @@ export function EducationModal({
               isEdit={isEdit}
             />
             <OutlinedInputBox
-              placeholder="University-Institute"
+              placeholder="Enter University/Institute Name"
               inputType="text"
               text={
                 editEdu ? (editEdu.institute ? editEdu.institute : null) : null
               }
+              label={'University / Institute'}
               onChange={value => {
                 setInstitute(value);
               }}
             />
             <OutlinedInputBox
-              placeholder="Field of study"
+              placeholder="Enter Field of study"
               inputType="text"
+              label={'Field of study'}
               onChange={value => {
                 setFieldOfStudy(value);
               }}

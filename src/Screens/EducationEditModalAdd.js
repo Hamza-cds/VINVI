@@ -23,7 +23,7 @@ export function EducationEditModalAdd({
   isEdit,
   CardData,
 }) {
-  console.log('EducationEditModalAdd', educationarray);
+  // console.log('EducationEditModalAdd', educationarray);
 
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
@@ -165,19 +165,19 @@ export function EducationEditModalAdd({
   };
   const FunstartDateMonth = value => {
     setStartDateMonth((startDateMonth = value.name));
-    console.log('startDateMonth', startDateMonth);
+    // console.log('startDateMonth', startDateMonth);
   };
   const FunstartDateYear = value => {
     setStartDateYear((startDateYear = value.name));
-    console.log('startDateYear', startDateYear);
+    // console.log('startDateYear', startDateYear);
   };
   const FunendDateMonth = value => {
     setEndDateMonth((endDateMonth = value.name));
-    console.log('endDateMonth', endDateMonth);
+    // console.log('endDateMonth', endDateMonth);
   };
   const FunendDateYear = value => {
     setEndDateYear((endDateYear = value.name));
-    console.log('endDateYear', endDateYear);
+    // console.log('endDateYear', endDateYear);
   };
 
   const FunEducationArray = () => {
@@ -194,7 +194,7 @@ export function EducationEditModalAdd({
     newEducationArray.push(data);
     setArrayEducation([]);
     setArrayEducation((arrayEducation = newEducationArray));
-    console.log('hamza sahab', arrayEducation);
+    // console.log('hamza sahab', arrayEducation);
   };
 
   const onAdd = () => {
@@ -210,7 +210,7 @@ export function EducationEditModalAdd({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('Edit Skill Data', data);
+        // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
@@ -218,7 +218,7 @@ export function EducationEditModalAdd({
         } else {
           alert(data.message);
           setIsLoading(false);
-          console.log('ADD');
+          // console.log('ADD');
         }
       })
       .catch(err => {

@@ -27,8 +27,8 @@ export function JobHistoryModal({
   index,
   CardData,
 }) {
-  console.log('isEdit', isEdit);
-  console.log('jobhistoryarray', jobhistoryarray);
+  // console.log('isEdit', isEdit);
+  // console.log('jobhistoryarray', jobhistoryarray);
   // console.log('arrayjobhistory[index]', arrayjobhistory[index]);
 
   const [companyName, setCompanyName] = useState('');
@@ -179,7 +179,7 @@ export function JobHistoryModal({
     } else {
       EditArrayJobHistory = '';
     }
-    console.log('EditArrayJobHistory', EditArrayJobHistory);
+    // console.log('EditArrayJobHistory', EditArrayJobHistory);
   };
 
   {
@@ -208,8 +208,8 @@ export function JobHistoryModal({
     newEditModalJobObj.industryType = industry
       ? industry
       : newEditModalJobObj.industryType;
-    console.log('newEditModalJobObj', newEditModalJobObj);
-    console.log('jobhistoryarray onEdit', jobhistoryarray);
+    // console.log('newEditModalJobObj', newEditModalJobObj);
+    // console.log('jobhistoryarray onEdit', jobhistoryarray);
 
     let obj = {
       id: EditArrayJobHistory.id,
@@ -223,7 +223,7 @@ export function JobHistoryModal({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('Edit Skill Data', data);
+        // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
@@ -231,7 +231,7 @@ export function JobHistoryModal({
         } else {
           setIsLoading(false);
           alert(data.message);
-          console.log('ADD');
+          // console.log('ADD');
         }
       })
       .catch(err => {
@@ -259,27 +259,27 @@ export function JobHistoryModal({
 
   const FunIndustry = value => {
     setIndustry((industry = value.name));
-    console.log('industry', industry);
+    // console.log('industry', industry);
   };
   const FunEmployee = value => {
     setEmployee((employee = value.name));
-    console.log('employee', employee);
+    // console.log('employee', employee);
   };
   const FunstartDateMonth = value => {
     setStartMonth((startMonth = value.name));
-    console.log('startMonth', startMonth);
+    // console.log('startMonth', startMonth);
   };
   const FunstartDateYear = value => {
     setStartYear((startYear = value.name));
-    console.log('startYear', startYear);
+    // console.log('startYear', startYear);
   };
   const FunendDateMonth = value => {
     setEndMonth((endMonth = value.name));
-    console.log('endMonth', endMonth);
+    // console.log('endMonth', endMonth);
   };
   const FunendDateYear = value => {
     setEndYear((endYear = value.name));
-    console.log('endYear', endYear);
+    // console.log('endYear', endYear);
   };
 
   return (
@@ -348,8 +348,9 @@ export function JobHistoryModal({
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{marginTop: 10}}>
               <OutlinedInputBox
-                placeholder="Title"
+                placeholder="Enter Title"
                 inputType="text"
+                label={'Title'}
                 text={editJob ? (editJob.title ? editJob.title : null) : null}
                 onChange={value => {
                   setTitle(value);
@@ -357,7 +358,7 @@ export function JobHistoryModal({
                 }}
               />
               <OutlinedInputBox
-                placeholder="Company Name"
+                placeholder="Enter Company Name"
                 inputType="text"
                 text={
                   editJob
@@ -366,6 +367,7 @@ export function JobHistoryModal({
                       : null
                     : null
                 }
+                label={'Company Name'}
                 onChange={value => {
                   setCompanyName(value);
                 }}

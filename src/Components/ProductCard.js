@@ -18,6 +18,7 @@ export default function ProductCard({
   setIsProductModalVisible,
   setEditProduct,
   setEdit,
+  onPress
 }) {
   return (
     <View
@@ -29,17 +30,6 @@ export default function ProductCard({
         marginRight: 20,
       }}>
       <View>
-        {/* <TouchableOpacity
-          activeOpacity={7}
-          // onPress={onPress}
-          style={{
-            alignSelf: 'flex-end',
-            // marginTop: -10,
-            // padding: 2,
-            // backgroundColor: 'pink',
-          }}>
-          <AntDesign style={{marginLeft: 5}} name="closecircle" size={25} />
-        </TouchableOpacity> */}
 
         <ImageBackground
           // source={productPic}
@@ -56,11 +46,10 @@ export default function ProductCard({
             borderTopRightRadius: 8,
             height: 120,
           }}>
+            {isEdit == true ? 
           <TouchableOpacity
             activeOpacity={7}
-            onPress={() => {
-              console.log('hellooooooooooooooooooo');
-            }}
+            onPress={onPress}
             style={{
               alignSelf: 'flex-end',
               // marginTop: 5,
@@ -73,6 +62,7 @@ export default function ProductCard({
               color={WHITE}
             />
           </TouchableOpacity>
+          :null}
         </ImageBackground>
       </View>
       <View style={{paddingHorizontal: 10, paddingVertical: 15}}>

@@ -107,15 +107,6 @@ export async function businessCardApiCall(formdata) {
     'https://vinvi.dsmeglobal.com/api/BusinessCard/Post',
     requestOptions,
   );
-
-  // return await fetch('https://vinvi.dsmeglobal.com/api/PersonalCard/Post', {
-  //   method: 'POST',
-  //   body: JSON.stringify(personalcardRequest),
-  //   headers: {
-  //     'Content-Type': 'multipart/form-data',
-  //     Accept: 'application/json',
-  //   },
-  // });
 }
 
 export async function editBusinessCardApiCall(formdata) {
@@ -133,15 +124,6 @@ export async function editBusinessCardApiCall(formdata) {
     'https://vinvi.dsmeglobal.com//api/BusinessCard/EditCategoryList',
     requestOptions,
   );
-
-  // return await fetch('https://vinvi.dsmeglobal.com/api/PersonalCard/Post', {
-  //   method: 'POST',
-  //   body: JSON.stringify(personalcardRequest),
-  //   headers: {
-  //     'Content-Type': 'multipart/form-data',
-  //     Accept: 'application/json',
-  //   },
-  // });
 }
 
 export async function storyPostApiCall(formdata) {
@@ -304,6 +286,50 @@ export async function PersonalCardEditApiCall(obj) {
       method: 'POST',
       url: route,
       data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function BusinessDeleteProductApiCall(obj) {
+  let route = URL.concat(`api/BusinessCard/DeleteCategoryProduct`);
+  console.log(`businessCardProduct delete Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+      headers: {
+        'Content-Type ': 'application/json-patch+json',
+        accept: 'text/plain',
+      },
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function saveCardAPiCall(obj) {
+  let route = URL.concat(`/api/SavedCard/AddOrEdit`);
+  console.log(`save card Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+      headers: {
+        'Content-Type ': 'application/json-patch+json',
+        accept: 'text/plain',
+      },
     });
   } catch (err) {
     apiRes = err;

@@ -16,10 +16,6 @@ export function EducationCard({
   data,
   index,
 }) {
-  console.log('hamza hamza', arrayeducation);
-  console.log('hamza hamza hamza', data);
-  console.log('hamza item', item);
-
   let [eduArr, setEduArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,7 +27,7 @@ export function EducationCard({
     EducationArray = 'Dummy education';
   }
 
-  console.log('EducationArray', EducationArray);
+  // console.log('EducationArray', EducationArray);
 
   const FunDelEducation = () => {
     setEduArr(
@@ -50,14 +46,14 @@ export function EducationCard({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('Edit Skill Data', data);
+        // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
         } else {
           alert(data.message);
           setIsLoading(false);
-          console.log('ADD');
+          // console.log('ADD');
         }
       })
       .catch(err => {

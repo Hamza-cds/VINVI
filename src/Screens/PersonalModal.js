@@ -24,7 +24,7 @@ export function PersonalModal({
   birthdayarray,
   CardData,
 }) {
-  console.log('CardData', CardData);
+  // console.log('CardData', CardData);
   const [name, setName] = useState('');
   const [hobbies, setHobbies] = useState('');
   const [interests, setInterests] = useState('');
@@ -167,13 +167,13 @@ export function PersonalModal({
       formdata.append(`PersonalCardMeta[${index}][Ishidden]`, element.Ishidden);
     }
 
-    console.log('formdata', formdata);
+    // console.log('formdata', formdata);
 
     setIsLoading(true);
     personalCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
-        console.log('response', data);
+        // console.log('response', data);
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           setModalVisible(false);

@@ -13,6 +13,9 @@ export default function LoginInputBox({
   KeyboardType,
   text,
   editable,
+  label,
+  error,
+  errorMsg,
 }) {
   const [isfocused, setIsfocused] = useState(false);
   let secureTextEntry;
@@ -42,7 +45,7 @@ export default function LoginInputBox({
           position: 'relative',
           ...style,
         }}>
-        {isfocused ? (
+        {/* {isfocused ? (
           <View
             style={{
               position: 'absolute',
@@ -57,11 +60,20 @@ export default function LoginInputBox({
               {placeholder}
             </Text>
           </View>
-        ) : null}
+        ) : null} */}
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={{marginTop: 2, marginLeft: 20}}>{label}</Text>
+          {error == true ? (
+            <Text style={{color: 'red', marginRight: 15, marginTop: 1}}>
+              {errorMsg}
+            </Text>
+          ) : null}
+        </View>
         <TextInput
           placeholder={placeholder}
+          placeholderTextColor={'#A8A8A8'}
           maxLength={maxLength}
-          placeholderTextColor={TEXT_COLOR}
+          // placeholderTextColor={TEXT_COLOR}
           editable={editable}
           style={{
             width: '100%',
@@ -75,13 +87,19 @@ export default function LoginInputBox({
           keyboardType={KeyboardType}
           secureTextEntry={secureTextEntry}
           onChangeText={onChange}
-          // value={inputValue}
-          onPressIn={() => {
+          onFocus={() => {
             setIsfocused(true);
           }}
           onBlur={() => {
             setIsfocused(false);
           }}
+          // value={inputValue}
+          // onPressIn={() => {
+          //   setIsfocused(true);
+          // }}
+          // onBlur={() => {
+          //   setIsfocused(false);
+          // }}
           multiline={multiline}>
           <Text>{text ? text : null}</Text>
         </TextInput>
