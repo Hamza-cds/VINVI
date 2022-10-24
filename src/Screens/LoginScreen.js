@@ -25,6 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
 import {useDispatch} from 'react-redux';
 import {UserData} from '../../Store/Action';
+import RegisterInputBox from '../Components/RegisterInputBox';
 
 export default function LoginScreen(props) {
   const dispatch = useDispatch();
@@ -116,6 +117,23 @@ export default function LoginScreen(props) {
               }}>
               Login
             </Text>
+
+            {/* <RegisterInputBox
+              placeholder="Phone"
+              keyboardType={'number-pad'}
+              maxLength={12}
+              onChange={value => {
+                setPhoneNumber(value);
+              }}
+            />
+            <RegisterInputBox
+              placeholder="Password"
+              inputType="password"
+              keyboardType={'default'}
+              onChange={value => {
+                setPassword(value);
+              }}
+            /> */}
 
             <OutlinedInputBox
               placeholder="Phone or Username"

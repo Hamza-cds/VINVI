@@ -16,6 +16,7 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import {PRIMARY, WHITE} from '../Constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {editBusinessCardApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 export default function AddorEditProductModal({
   visibleModal,
@@ -32,6 +33,7 @@ export default function AddorEditProductModal({
   const [productImageName, setProductImageName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   let [categoryList, setCategoryList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     categoryList.length <= 0
@@ -85,21 +87,21 @@ export default function AddorEditProductModal({
 
     console.log('formdata', formdata);
 
-    // setIsLoading(true);
+    setIsLoading(true);
     editBusinessCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
-          // setIsLoading(false);
+          setIsLoading(false);
           setModalVisible(false);
         } else {
-          // setIsLoading(false);
+          setIsLoading(false);
           alert('Invalid Request');
         }
       })
       .catch(err => {
-        // setIsLoading(false);
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -243,6 +245,8 @@ export default function AddorEditProductModal({
               vertical={5}
             />
           </ScrollView>
+
+          {isLoading ? <Loader /> : null}
         </View>
       </View>
     </Modal>

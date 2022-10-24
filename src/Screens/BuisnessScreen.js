@@ -27,6 +27,8 @@ import EditBusinessCardModal from './EditBusinessCardModal';
 import BusinessEditCategoryModal from './BusinessEditCategoryModal';
 import Loader from '../Components/Loader';
 import AddorEditProductModal from './AddorEditProductModal';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import EditBusinessAddCategoryModal from './EditBusinessAddCategoryModal';
 
 const BuisnessScreen = props => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -39,12 +41,18 @@ const BuisnessScreen = props => {
   const isEdit = props.route.params.edit;
   let [industryType, setIndustryType] = useState([]);
   let [lookupData, setLookupData] = useState([]);
-  const [isCategoryModalVisible, setIsCategoryModalVisible] = useState(false);
+  const [isEditDelCategoryModalVisible, setIsEditDelCategoryModalVisible] =
+    useState(false);
+  const [isAddCategoryModelVisible, setisAddCategoryModelVisible] =
+    useState(false);
   const [isProductModalVisible, setIsProductModalVisible] = useState(false);
   let [editCategory, setEditCategory] = useState([]);
   const [editProduct, setEditProduct] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [CategoryObject, setCategoryObject] = useState('');
   const [edit, setEdit] = useState(true);
+
+  console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
 
   useEffect(() => {
     getBusinessData();
@@ -101,13 +109,16 @@ const BuisnessScreen = props => {
       Id: id,
     };
 
+    setIsLoading(true);
     BusinessDeleteProductApiCall(obj)
       .then(res => {
         console.log('delete product response', res);
         if (data.data.status == 200 && data.data.success == true) {
-          getBusinessData();
+          setIsLoading(false);
           alert('product deleted');
+          getBusinessData();
         } else {
+          setIsLoading(false);
           alert(data.data.message);
         }
       })
@@ -506,30 +517,56 @@ const BuisnessScreen = props => {
               Category
             </Text>
             {isEdit == true ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setIsCategoryModalVisible(true);
-                }}
-                style={{
-                  height: 30,
-                  width: 50,
-                  alignSelf: 'flex-end',
-                  borderRadius: 5,
-                  marginRight: -5,
-                  marginTop: 5,
-                }}>
-                <Feather name="edit" size={22} color={SECONDARY} />
-              </TouchableOpacity>
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setisAddCategoryModelVisible(true);
+                  }}>
+                  <Ionicons
+                    name="add-circle-sharp"
+                    size={26}
+                    color={PRIMARY}
+                    style={{marginTop: 3, marginRight: 10}}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsEditDelCategoryModalVisible(true);
+                  }}
+                  style={{
+                    height: 30,
+                    width: 50,
+                    alignSelf: 'flex-end',
+                    borderRadius: 5,
+                    marginRight: -5,
+                    marginTop: 5,
+                  }}>
+                  <Feather name="edit" size={22} color={SECONDARY} />
+                </TouchableOpacity>
+              </View>
             ) : null}
 
-            {isCategoryModalVisible ? (
+            {isEditDelCategoryModalVisible ? (
               <BusinessEditCategoryModal
-                setModalVisible={setIsCategoryModalVisible}
-                modalVisible={isCategoryModalVisible}
+                setModalVisible={setIsEditDelCategoryModalVisible}
+                modalVisible={isEditDelCategoryModalVisible}
                 businessData={businessData}
                 isEdit={isEdit}
                 setEditCategory={setEditCategory}
                 editCategory={editCategory}
+                selectedCategory={selectedCategory}
+                categoryId={CategoryObject}
+              />
+            ) : null}
+
+            {isAddCategoryModelVisible ? (
+              <EditBusinessAddCategoryModal
+                setModalVisible={setisAddCategoryModelVisible}
+                modalVisible={isAddCategoryModelVisible}
+                // businessData={businessData}
+                // isEdit={isEdit}
+                // setEditCategory={setEditCategory}
+                // editCategory={editCategory}
               />
             ) : null}
 
@@ -557,6 +594,7 @@ const BuisnessScreen = props => {
                 setSelectedCategory={setSelectedCategory}
                 setCategoryWiseData={setCategoryWiseData}
                 item={item}
+                setCategoryId={setCategoryObject}
               />
             )}
           />
@@ -649,13 +687,15 @@ function CategoryFilter({
   item,
   setSelectedCategory,
   setCategoryWiseData,
+  setCategoryId,
 }) {
   console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
   return (
     <TouchableOpacity
       onPress={() => {
-        setSelectedCategory(item.name);
         setCategoryWiseData(item.businessCategoryProduct);
+        setCategoryId(item.id);
+        setSelectedCategory(item.name);
       }}
       style={{
         backgroundColor: selectedCategory === item.name ? PRIMARY : FIFTH,

@@ -22,10 +22,10 @@ import {storyPostApiCall} from '../Apis/Repo';
 const Tab = createMaterialTopTabNavigator();
 
 export default function HomeDashboardScreen(props) {
-  const [storyImage, setStoryImage] = useState('');
+  let [storyMedia, setStoryMedia] = useState('');
   let [userData, setUserData] = useState('');
   let [imageType, setImageType] = useState('');
-  console.log('storyImage', storyImage);
+  console.log('storyMedia', storyMedia);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -35,8 +35,15 @@ export default function HomeDashboardScreen(props) {
   }, []);
 
   const onSelecet = () => {
-    var imagetype = storyImage.type;
-    var type = imagetype.split('/')[1];
+    for (let index = 0; index < image.assets.length; index++) {
+      const element = image.assets[index];
+      setStoryMedia((storyMedia = element));
+    }
+
+    var mediaType = storyMedia.type;
+    console.log('mediaType', mediaType);
+    var type = mediaType.split('/')[1];
+    console.log('type', type);
     setImageType((imageType = type));
 
     var formdata = new FormData();
@@ -45,9 +52,9 @@ export default function HomeDashboardScreen(props) {
     formdata.append('Description', 'this is description');
     formdata.append('UserId', JSON.stringify(userData.id));
     formdata.append('media_file', {
-      uri: storyImage.uri,
-      name: storyImage.fileName,
-      type: storyImage.type,
+      uri: storyMedia.uri,
+      name: storyMedia.fileName + '.' + imageType,
+      type: storyMedia.type,
     });
 
     console.log('formdata', formdata);
@@ -100,13 +107,12 @@ export default function HomeDashboardScreen(props) {
               marginRight: 10,
             }}
             onPress={() => {
-              launchImageLibrary({mediaType: 'photo'}, image => {
-                // console.log('image', image);
-                for (let index = 0; index < image.assets.length; index++) {
-                  const element = image.assets[index];
-                  setStoryImage(element);
+              launchImageLibrary({mediaType: 'mixed'}, image => {
+                if (image.didCancel) {
+                  console.log('User cancelled image picker');
+                } else {
+                  onSelecet(image);
                 }
-                onSelecet();
               });
             }}>
             <Text style={{color: '#242424', fontSize: 25}}>+</Text>

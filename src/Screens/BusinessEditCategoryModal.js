@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {G, Path} from 'react-native-svg';
-import {PRIMARY, WHITE} from '../Constants/Colors';
+import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {isNullOrEmpty} from '../Constants/TextUtils';
+import {BusinessDeleteCategoryApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 export default function BusinessEditCategoryModal({
   setModalVisible,
@@ -21,44 +23,42 @@ export default function BusinessEditCategoryModal({
   isEdit,
   setEditCategory,
   editCategory,
+  selectedCategory,
+  categoryId,
 }) {
   console.log('businessData.businessCategory', businessData.businessCategory);
-  let [categoryList, setCategoryList] = useState([]);
-  let categoryData = businessData.businessCategory;
+
   const [categoryName, setCategoryName] = useState('');
-  console.log('categoryData', categoryData);
+  const [isLoading, setIsLoading] = useState(false);
+  console.log('selectedCategory', selectedCategory);
+  console.log('categoryId', categoryId);
 
-  useEffect(() => {
-    categoryList.length <= 0
-      ? categoryData.map(e => {
-          let arr = [...categoryList];
-          arr.push(e.name);
-          setCategoryList((categoryList = arr));
-          setEditCategory((editCategory = categoryList));
-        })
-      : setCategoryList(categoryList);
-  }, []);
-
-  const addCategoryNameArray = () => {
-    if (isNullOrEmpty(categoryName)) {
-      alert('enter category');
+  const onDeleteCategory = () => {
+    if (isNullOrEmpty(categoryId)) {
+      alert('plz select a category');
     } else {
-      let newCategoryArray = [...categoryList];
-      newCategoryArray.push(categoryName);
-      setCategoryList((categoryList = newCategoryArray));
-      setEditCategory(categoryList);
+      let obj = {
+        Id: categoryId,
+      };
+
+      setIsLoading(true);
+      BusinessDeleteCategoryApiCall(obj)
+        .then(res => {
+          console.log('delete product response', res);
+          if (res.data.status == 200 && res.data.success == true) {
+            setIsLoading(false);
+            setModalVisible(!modalVisible);
+            // alert('product deleted');
+          } else {
+            setIsLoading(false);
+            alert(data.data.message);
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
     }
   };
-
-  // const delCategory = index => {
-  //   // console.log('index', index);
-  //   let newArr = [...modalSkillArray];
-  //   setModalSKillArray(
-  //     (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
-  //   );
-  //   setModalSKillArray(newArr);
-  //   setModalSkill((modalSkillArray = newArr));
-  // };
 
   return (
     <Modal
@@ -123,12 +123,13 @@ export default function BusinessEditCategoryModal({
           <OutlinedInputBox
             placeholder="Enter Category"
             inputType="text"
+            text={selectedCategory}
             onChange={value => {
               setCategoryName(value);
             }}
           />
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               // Add();
               addCategoryNameArray();
@@ -144,9 +145,9 @@ export default function BusinessEditCategoryModal({
               style={{color: WHITE, alignSelf: 'center', marginVertical: 5}}>
               Add
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          <FlatList
+          {/* <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             data={categoryList}
@@ -182,18 +183,91 @@ export default function BusinessEditCategoryModal({
                 </TouchableOpacity>
               </View>
             )}
-          />
+          /> */}
 
-          <BtnComponent
-            // placeholder={isEdit ? 'Edit' : 'Save'}
+          <TouchableOpacity
+            style={{
+              width: '100%',
+              height: 50,
+              backgroundColor: SECONDARY,
+              borderRadius: 10,
+              marginTop: 20,
+              marginBottom: -10,
+            }}
             onPress={() => {
+              onDeleteCategory();
+              // alert('category deleted successfully');
               // onEdit();
               // setModalVisible(!modalVisible);
             }}
             // onPress={onPress}
+          >
+            <Text
+              style={{
+                color: WHITE,
+                alignSelf: 'center',
+                marginVertical: 15,
+                fontSize: 13,
+              }}>
+              Delete
+            </Text>
+          </TouchableOpacity>
+
+          <BtnComponent
+            placeholder={'Save'}
+            onPress={() => {
+              // onEdit();
+              setModalVisible(!modalVisible);
+            }}
+            // onPress={onPress}
           />
         </View>
+
+        {isLoading ? <Loader /> : null}
       </View>
     </Modal>
   );
 }
+
+// let [categoryList, setCategoryList] = useState([]);
+// let categoryData = businessData.businessCategory;
+// console.log('categoryData', categoryData);
+
+// useEffect(() => {
+//   categoryList.length <= 0
+//     ? categoryData.map(e => {
+//         let arr = [...categoryList];
+//         arr.push(e.name);
+//         setCategoryList((categoryList = arr));
+//         setEditCategory((editCategory = categoryList));
+//       })
+//     : setCategoryList(categoryList);
+// }, []);
+
+// const addCategoryNameArray = () => {
+//   if (isNullOrEmpty(categoryName)) {
+//     alert('enter category');
+//   } else {
+//     let newCategoryArray = [...categoryList];
+//     newCategoryArray.push(categoryName);
+//     setCategoryList((categoryList = newCategoryArray));
+//     setEditCategory(categoryList);
+//   }
+// };
+
+// const funEditDelSkill = index => {
+//   var afterDelete = categoryList.filter((x, Index) => Index !== index);
+//   // console.log('afterDelete', afterDelete);
+//   setCategoryList((categoryList = afterDelete));
+//   // setEditModalSkill(editModalSkillArray);
+// };
+
+// const delCategory = index => {
+//   // console.log('index', index);
+//   let newArr = [...modalSkillArray];
+//   setModalSKillArray(
+//     (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
+//   );
+//   setModalSKillArray(newArr);
+//   setModalSkill((modalSkillArray = newArr));
+// };

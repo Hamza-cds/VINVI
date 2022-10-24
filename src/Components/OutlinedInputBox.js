@@ -45,7 +45,7 @@ export default function LoginInputBox({
           position: 'relative',
           ...style,
         }}>
-        {/* {isfocused ? (
+        {isfocused ? (
           <View
             style={{
               position: 'absolute',
@@ -60,9 +60,11 @@ export default function LoginInputBox({
               {placeholder}
             </Text>
           </View>
-        ) : null} */}
+        ) : null}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{marginTop: 2, marginLeft: 20}}>{label}</Text>
+          <Text style={{marginTop: 2, marginLeft: 20, color: 'black'}}>
+            {label}
+          </Text>
           {error == true ? (
             <Text style={{color: 'red', marginRight: 15, marginTop: 1}}>
               {errorMsg}

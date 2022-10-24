@@ -338,3 +338,21 @@ export async function saveCardAPiCall(obj) {
     return apiRes;
   }
 }
+
+export async function BusinessDeleteCategoryApiCall(obj) {
+  let route = URL.concat('/api/BusinessCard/DeleteCategory');
+  console.log(`delete category Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}

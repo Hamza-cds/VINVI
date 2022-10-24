@@ -30,7 +30,7 @@ export default function AccountCard({item}) {
       }}>
       <Image
         source={
-          item.image != null
+          item.image != null && ''
             ? {uri: item.image.path}
             : require('../Assets/profilePic.png')
         }
@@ -38,9 +38,25 @@ export default function AccountCard({item}) {
       />
       <View style={{marginLeft: 20}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-          {item.userData.firstName + item.userData.lastName}
+          {item
+            ? item.userData
+              ? item.userData.firstName
+                ? item.userData.firstName + item.userData.lastName
+                  ? item.userData.lastName
+                  : 'name'
+                : 'name'
+              : 'name'
+            : 'name'}
         </Text>
-        <Text style={{fontSize: 14}}>{item.userData.email}</Text>
+        <Text style={{fontSize: 14}}>
+          {item
+            ? item.userData
+              ? item.userData.email
+                ? item.userData.email
+                : 'email'
+              : 'email'
+            : 'email'}
+        </Text>
       </View>
       <TouchableOpacity
         onPress={() => {
