@@ -26,6 +26,7 @@ export default function AddorEditProductModal({
   isEdit,
   editCategory,
   userData,
+  setRefresh,
 }) {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
@@ -89,12 +90,13 @@ export default function AddorEditProductModal({
 
     setIsLoading(true);
     editBusinessCardApiCall(formdata)
-      .then(res => res.json())
+      // .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           setModalVisible(false);
+          setRefresh(true);
         } else {
           setIsLoading(false);
           alert('Invalid Request');

@@ -15,6 +15,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 import {BusinessDeleteCategoryApiCall} from '../Apis/Repo';
 import Loader from '../Components/Loader';
+import {BusinessCategoryAddEditApiCall} from '../Apis/Repo';
 
 export default function BusinessEditCategoryModal({
   setModalVisible,
@@ -25,6 +26,8 @@ export default function BusinessEditCategoryModal({
   editCategory,
   selectedCategory,
   categoryId,
+  BusinessCardId,
+  setRefresh,
 }) {
   console.log('businessData.businessCategory', businessData.businessCategory);
 
@@ -44,10 +47,12 @@ export default function BusinessEditCategoryModal({
       setIsLoading(true);
       BusinessDeleteCategoryApiCall(obj)
         .then(res => {
-          console.log('delete product response', res);
+          console.log('delete Category response', res);
           if (res.data.status == 200 && res.data.success == true) {
             setIsLoading(false);
             setModalVisible(!modalVisible);
+            setRefresh(true);
+
             // alert('product deleted');
           } else {
             setIsLoading(false);
@@ -58,6 +63,35 @@ export default function BusinessEditCategoryModal({
           console.log('err', err);
         });
     }
+  };
+
+  const onEdit = () => {
+    let obj = {
+      Id: categoryId,
+      Name: categoryName ? categoryName : selectedCategory,
+      BusinessCardIdFk: BusinessCardId,
+      BusinessCategoryProduct: [],
+    };
+    console.log('obj', obj);
+
+    setIsLoading(true);
+    BusinessCategoryAddEditApiCall(obj)
+      .then(res => {
+        console.log('Add Category response', res);
+        if (res.data.status == 200 && res.data.success == true) {
+          setIsLoading(false);
+          setModalVisible(!modalVisible);
+
+          setRefresh(true);
+          // alert('product deleted');
+        } else {
+          setIsLoading(false);
+          alert(data.data.message);
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
   };
 
   return (
@@ -216,8 +250,8 @@ export default function BusinessEditCategoryModal({
           <BtnComponent
             placeholder={'Save'}
             onPress={() => {
-              // onEdit();
-              setModalVisible(!modalVisible);
+              onEdit();
+              // setModalVisible(!modalVisible);
             }}
             // onPress={onPress}
           />

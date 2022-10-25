@@ -50,14 +50,17 @@ const BuisnessScreen = props => {
   const [editProduct, setEditProduct] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [CategoryObject, setCategoryObject] = useState('');
+  const [businessCardId, setBusinessCardId] = useState('');
   const [edit, setEdit] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
 
   useEffect(() => {
     getBusinessData();
     getAllLookupdetail();
-  }, []);
+    setRefresh(false);
+  }, [refresh]);
 
   const getAllLookupdetail = () => {
     // setIsLoading(true);
@@ -508,43 +511,49 @@ const BuisnessScreen = props => {
               justifyContent: 'space-between',
               marginTop: 15,
             }}>
-            <Text
+            <View
               style={{
-                color: PRIMARY,
-                fontSize: 22,
-                fontWeight: 'bold',
+                flexDirection: 'row',
               }}>
-              Category
-            </Text>
+              <Text
+                style={{
+                  color: PRIMARY,
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                }}>
+                Category
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setisAddCategoryModelVisible(true);
+                }}>
+                <Ionicons
+                  name="add-circle-sharp"
+                  size={26}
+                  color={PRIMARY}
+                  style={{marginTop: 3, marginLeft: 10}}
+                />
+              </TouchableOpacity>
+            </View>
             {isEdit == true ? (
-              <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setisAddCategoryModelVisible(true);
-                  }}>
-                  <Ionicons
-                    name="add-circle-sharp"
-                    size={26}
-                    color={PRIMARY}
-                    style={{marginTop: 3, marginRight: 10}}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsEditDelCategoryModalVisible(true);
-                  }}
-                  style={{
-                    height: 30,
-                    width: 50,
-                    alignSelf: 'flex-end',
-                    borderRadius: 5,
-                    marginRight: -5,
-                    marginTop: 5,
-                  }}>
-                  <Feather name="edit" size={22} color={SECONDARY} />
-                </TouchableOpacity>
-              </View>
-            ) : null}
+              // <View style={{flexDirection: 'row'}}>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setIsEditDelCategoryModalVisible(true);
+                }}
+                style={{
+                  height: 30,
+                  width: 50,
+                  alignSelf: 'flex-end',
+                  borderRadius: 5,
+                  marginRight: -5,
+                  marginTop: 5,
+                }}>
+                <Feather name="edit" size={22} color={SECONDARY} />
+              </TouchableOpacity>
+            ) : // </View>
+            null}
 
             {isEditDelCategoryModalVisible ? (
               <BusinessEditCategoryModal
@@ -556,6 +565,8 @@ const BuisnessScreen = props => {
                 editCategory={editCategory}
                 selectedCategory={selectedCategory}
                 categoryId={CategoryObject}
+                BusinessCardId={businessCardId}
+                setRefresh={setRefresh}
               />
             ) : null}
 
@@ -563,6 +574,8 @@ const BuisnessScreen = props => {
               <EditBusinessAddCategoryModal
                 setModalVisible={setisAddCategoryModelVisible}
                 modalVisible={isAddCategoryModelVisible}
+                BusinessCardId={ID}
+                setRefresh={setRefresh}
                 // businessData={businessData}
                 // isEdit={isEdit}
                 // setEditCategory={setEditCategory}
@@ -579,6 +592,7 @@ const BuisnessScreen = props => {
                 category={businessData.businessCategory}
                 userData={businessData}
                 isEdit={edit}
+                setRefresh={setRefresh}
               />
             ) : null}
           </View>
@@ -595,6 +609,7 @@ const BuisnessScreen = props => {
                 setCategoryWiseData={setCategoryWiseData}
                 item={item}
                 setCategoryId={setCategoryObject}
+                setBusinessCardIdFk={setBusinessCardId}
               />
             )}
           />
@@ -688,12 +703,14 @@ function CategoryFilter({
   setSelectedCategory,
   setCategoryWiseData,
   setCategoryId,
+  setBusinessCardIdFk,
 }) {
   console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
   return (
     <TouchableOpacity
       onPress={() => {
         setCategoryWiseData(item.businessCategoryProduct);
+        setBusinessCardIdFk(item.businessCardIdFk);
         setCategoryId(item.id);
         setSelectedCategory(item.name);
       }}

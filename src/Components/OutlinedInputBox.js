@@ -49,8 +49,8 @@ export default function LoginInputBox({
           <View
             style={{
               position: 'absolute',
-              top: -20,
-              left: 0,
+              top: 5,
+              left: 5,
             }}>
             <Text
               style={{

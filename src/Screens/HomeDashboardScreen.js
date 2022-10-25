@@ -17,7 +17,8 @@ import {IndividualDataCardsListing} from './IndividualDataCardsListing';
 import {BuisnessDataCardsListing} from './BuisnessDataCardsListing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState, useEffect} from 'react';
-import {storyPostApiCall} from '../Apis/Repo';
+import {storyPostApiCall, DashboardStoriesApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -25,16 +26,20 @@ export default function HomeDashboardScreen(props) {
   let [storyMedia, setStoryMedia] = useState('');
   let [userData, setUserData] = useState('');
   let [imageType, setImageType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  let [userStories, setUserStories] = useState([]);
   console.log('storyMedia', storyMedia);
+  console.log('userStories', userStories);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
+      getDashboardStories();
       console.log('userdata', userData);
     });
   }, []);
 
-  const onSelecet = () => {
+  const onSelecet = image => {
     for (let index = 0; index < image.assets.length; index++) {
       const element = image.assets[index];
       setStoryMedia((storyMedia = element));
@@ -59,18 +64,47 @@ export default function HomeDashboardScreen(props) {
 
     console.log('formdata', formdata);
 
+    setIsLoading(true);
     storyPostApiCall(formdata)
       .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
+          setIsLoading(false);
           // props.navigation.replace('MyCardsDashboardScreen');
           alert('successfully posted');
         } else {
+          setIsLoading(false);
           alert('invalid request');
         }
       })
       .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
+  const getDashboardStories = () => {
+    let obj = {
+      userId: 0,
+      pageNumber: 1,
+      limit: 10,
+    };
+    setIsLoading(true);
+    DashboardStoriesApiCall(obj)
+      .then(res => {
+        console.log('res', res.data.result);
+        if (res.data.success) {
+          setUserStories((userStories = res.data.result));
+          console.log('yaha dekho bacha', userStories);
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          alert('No record found.');
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -118,7 +152,7 @@ export default function HomeDashboardScreen(props) {
             <Text style={{color: '#242424', fontSize: 25}}>+</Text>
           </TouchableOpacity>
           <View style={{width: '81%'}}>
-            <DashboardStories />
+            <DashboardStories userStories={userStories} />
           </View>
         </View>
         <Tab.Navigator
@@ -148,6 +182,7 @@ export default function HomeDashboardScreen(props) {
           />
           <Tab.Screen name="Buisness" component={BuisnessDataCardsListing} />
         </Tab.Navigator>
+        {isLoading ? <Loader /> : null}
       </ImageBackground>
     </SafeAreaView>
   );

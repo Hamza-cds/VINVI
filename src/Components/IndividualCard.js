@@ -12,8 +12,6 @@ export default function IndividualCard({
   navigationPath,
   item,
 }) {
-  console.log('data list card show', item);
-
   let arrayOccupation;
   arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
   if (arrayOccupation) {
@@ -32,7 +30,7 @@ export default function IndividualCard({
         display: 'flex',
         flexDirection: 'row',
         padding: 20,
-        backgroundColor: WHITE,
+        backgroundColor: SECONDARY,
         shadowColor: '#000',
         shadowOffset: {
           width: 5,
@@ -63,12 +61,12 @@ export default function IndividualCard({
         />
       </View>
       <View style={{marginHorizontal: 10}}>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{item.name}</Text>
+        <Text style={{fontSize: 14, color: WHITE}}>{item.name}</Text>
         <Text
           style={{
             fontSize: 16,
             fontWeight: 'bold',
-            color: SECONDARY,
+            color: WHITE,
             marginBottom: 10,
             width: 200,
           }}>
@@ -76,10 +74,10 @@ export default function IndividualCard({
         </Text>
         <Text
           numberOfLines={2}
-          style={{fontSize: 14, color: SECONDARY, maxWidth: 190}}>
+          style={{fontSize: 14, color: WHITE, maxWidth: 190}}>
           {item.email}
         </Text>
-        <Text style={{fontSize: 14, color: SECONDARY, width: 200}}>
+        <Text style={{fontSize: 14, color: WHITE, width: 200}}>
           {item.address}
         </Text>
       </View>

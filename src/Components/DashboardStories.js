@@ -1,10 +1,52 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, View, FlatList} from 'react-native';
 import InstaStory from 'react-native-insta-story';
 import {SECONDARY, WHITE} from '../Constants/Colors';
+import {URL} from '../Constants/Constants';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
-export default function DashboardStories() {
-  const data = [
+export default function DashboardStories({userStories}) {
+  let [data, setData] = useState('');
+
+  useEffect(() => {
+    mapData(userStories);
+  }, []);
+
+  const mapData = list => {
+    var finalList = [];
+
+    for (let index = 0; index < list.length; index++) {
+      const element = list[index];
+
+      let storiesArray = [];
+      for (let index = 0; index < element.stories.length; index++) {
+        const item = element.stories[index];
+        let storiesObject = {
+          story_id: item.id,
+          story_image: !isNullOrEmpty(item.media)
+            ? URL.concat(item.media)
+            : null,
+          swipeText: item.title,
+        };
+        storiesArray.push(storiesObject);
+      }
+
+      let object = {
+        user_id: element.userId,
+        user_image: !isNullOrEmpty(element.profilePicture)
+          ? URL.concat(element.profilePicture)
+          : null,
+        user_name: element.userName,
+        stories: storiesArray,
+      };
+
+      finalList.push(object);
+    }
+
+    setData(finalList);
+  };
+
+  const DATA = [
     {
       user_id: 1,
       user_image:
@@ -12,16 +54,9 @@ export default function DashboardStories() {
       user_name: 'Ahmet Çağlar Durmuş',
       stories: [
         {
-          story_id: 1,
-          story_image:
-            'https://image.freepik.com/free-vector/universe-mobile-wallpaper-with-planets_79603-600.jpg',
-          swipeText: 'Custom swipe text for this story',
-          onPress: () => console.log('story 1 swiped'),
-        },
-        {
           story_id: 2,
           story_image:
-            'https://image.freepik.com/free-vector/mobile-wallpaper-with-fluid-shapes_79603-601.jpg',
+            'https://vinvi.dsmeglobal.com/BusinessProduct//c33ff48d-7a18-45fa-a94b-d5cc6ff0d1f1.mp4',
         },
       ],
     },
@@ -34,35 +69,36 @@ export default function DashboardStories() {
         {
           story_id: 1,
           story_image:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjORKvjcbMRGYPR3QIs3MofoWkD4wHzRd_eg&usqp=CAU',
+            'https://vinvi.dsmeglobal.com/BusinessProduct//c33ff48d-7a18-45fa-a94b-d5cc6ff0d1f1.mp4',
           swipeText: 'Custom swipe text for this story',
           onPress: () => console.log('story 1 swiped'),
-        },
-        {
-          story_id: 2,
-          story_image:
-            'https://files.oyebesmartest.com/uploads/preview/vivo-u20-mobile-wallpaper-full-hd-(1)qm6qyz9v60.jpg',
-          swipeText: 'Custom swipe text for this story',
-          onPress: () => console.log('story 2 swiped'),
         },
       ],
     },
   ];
 
   return (
-    <InstaStory
-      data={data}
-      duration={10}
-      unPressedBorderColor={SECONDARY}
-      pressedBorderColor={WHITE}
-      onStart={item => console.log(item)}
-      onClose={item => console.log('close: ', item)}
-      customSwipeUpComponent={
-        <View>
-          <Text>Swipe</Text>
-        </View>
-      }
-      style={{marginTop: 40}}
-    />
+    <View>
+      {DATA ? (
+        <InstaStory
+          data={DATA}
+          duration={10}
+          unPressedBorderColor={SECONDARY}
+          pressedBorderColor={WHITE}
+          onStart={item => console.log('item', item)}
+          onClose={item => console.log('close: ', item)}
+          customSwipeUpComponent={
+            <View>
+              <Text>Swipe</Text>
+            </View>
+          }
+          style={{marginTop: 40}}
+        />
+      ) : (
+        <Text style={{color: 'white', fontSize: 15, alignSelf: 'center'}}>
+          Loading...
+        </Text>
+      )}
+    </View>
   );
 }

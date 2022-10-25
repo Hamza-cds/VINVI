@@ -16,6 +16,7 @@ import MultiSelect from '../Components/MultiSelect';
 import UploadBtn from '../Components/UploadBtn';
 import BtnComponent from '../Components/BtnComponent';
 import {businessCardApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 export default function EditBusinessCardModal({
   modalVisible,
@@ -28,6 +29,7 @@ export default function EditBusinessCardModal({
   console.log('bCardData', bCardData);
   const [businessName, setBusinessName] = useState('');
   const [industry, setIndustryType] = useState('');
+  console.log('industry', industry);
   const [otherInfo, setOtherInfo] = useState('');
   const [tagline, setTagline] = useState('');
   const [comoanyWebsite, setCompanyWebsite] = useState('');
@@ -37,12 +39,17 @@ export default function EditBusinessCardModal({
   const [cover, setCover] = useState('');
   const [logoImageName, setLogoImageName] = useState('');
   const [coverImageName, setCoverImageName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSave = () => {
     var formdata = new FormData();
     formdata.append('Id', JSON.stringify(bCardData.id));
     formdata.append('Name', businessName ? businessName : bCardData.name);
     formdata.append('PhoneNo', phone ? phone : bCardData.phoneNo);
+    formdata.append(
+      'IndustryTypeLookupDetailId',
+      industry ? industry.id : null,
+    );
     formdata.append('Address', address ? address : bCardData.address);
     formdata.append(
       'Description',
@@ -83,22 +90,22 @@ export default function EditBusinessCardModal({
 
     console.log('formdata', formdata);
 
-    // setIsLoading(true);
+    setIsLoading(true);
     businessCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
-          // setIsLoading(false);
+          setIsLoading(false);
           // dispatch(BCDComplete(''));
           props.navigation.replace('MyCardsDashboardScreen');
         } else {
-          // setIsLoading(false);
+          setIsLoading(false);
           alert('Invalid Request');
         }
       })
       .catch(err => {
-        // setIsLoading(false);
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -196,7 +203,7 @@ export default function EditBusinessCardModal({
               <Select
                 placeholder={'Industry type'}
                 data={industryType}
-                // onCallBack={setIndustry}
+                onCallBack={setIndustryType}
               />
               <OutlinedInputBox
                 placeholder="Any Other Information"
@@ -403,6 +410,7 @@ export default function EditBusinessCardModal({
               />
             </View>
           </ScrollView>
+          {isLoading ? <Loader /> : null}
         </View>
       </View>
     </Modal>

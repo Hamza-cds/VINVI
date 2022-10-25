@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import {SECONDARY, FIFTH, WHITE} from '../Constants/Colors';
+import {SECONDARY, FIFTH, WHITE, PRIMARY} from '../Constants/Colors';
 import Feather from 'react-native-vector-icons/Feather';
 import {URL} from '../Constants/Constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,7 +18,7 @@ export default function ProductCard({
   setIsProductModalVisible,
   setEditProduct,
   setEdit,
-  onPress
+  onPress,
 }) {
   return (
     <View
@@ -28,43 +28,34 @@ export default function ProductCard({
         width: 150,
         borderRadius: 8,
         marginRight: 20,
+        marginTop: 10,
       }}>
-      <View>
-
-        <ImageBackground
-          // source={productPic}
-          source={
-            item
-              ? item.picture
-                ? {uri: URL.concat(item.picture)}
-                : require('../Assets/productPic.png')
-              : null
-          }
+      <Image
+        source={
+          item
+            ? item.picture
+              ? {uri: URL.concat(item.picture)}
+              : require('../Assets/productPic.png')
+            : null
+        }
+        style={{
+          width: '100%',
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          height: 120,
+        }}></Image>
+      {isEdit ? (
+        <TouchableOpacity
+          activeOpacity={7}
+          onPress={onPress}
           style={{
-            width: '100%',
-            borderTopLeftRadius: 8,
-            borderTopRightRadius: 8,
-            height: 120,
+            position: 'absolute',
+            top: -10,
+            right: -10,
           }}>
-            {isEdit == true ? 
-          <TouchableOpacity
-            activeOpacity={7}
-            onPress={onPress}
-            style={{
-              alignSelf: 'flex-end',
-              // marginTop: 5,
-              padding: 2,
-            }}>
-            <AntDesign
-              style={{marginLeft: 5}}
-              name="closecircle"
-              size={25}
-              color={WHITE}
-            />
-          </TouchableOpacity>
-          :null}
-        </ImageBackground>
-      </View>
+          <AntDesign name="closecircle" size={22} color={SECONDARY} />
+        </TouchableOpacity>
+      ) : null}
       <View style={{paddingHorizontal: 10, paddingVertical: 15}}>
         <Text
           style={{
@@ -80,7 +71,7 @@ export default function ProductCard({
           {item.price}
         </Text>
 
-        {isEdit == true ? (
+        {isEdit ? (
           <TouchableOpacity
             onPress={() => {
               setEdit(true);

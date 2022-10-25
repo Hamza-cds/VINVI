@@ -4,6 +4,9 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import Svg, {G, Path} from 'react-native-svg';
 import {PRIMARY, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
+import {BusinessCategoryAddEditApiCall} from '../Apis/Repo';
+import {isNullOrEmpty} from '../Constants/TextUtils';
+import Loader from '../Components/Loader';
 
 export default function EditBusinessAddCategoryModal({
   setModalVisible,
@@ -12,11 +15,43 @@ export default function EditBusinessAddCategoryModal({
   isEdit,
   setEditCategory,
   editCategory,
+  setRefresh,
+  BusinessCardId,
 }) {
   const [categoryName, setCategoryName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const onAdd = () => {
-    alert('category added successfully');
+    if (isNullOrEmpty(categoryName)) {
+      alert('Enter Category Name');
+    } else {
+      let obj = {
+        Id: 0,
+        Name: categoryName,
+        BusinessCardIdFk: BusinessCardId,
+        BusinessCategoryProduct: [],
+      };
+      console.log('obj', obj);
+
+      setIsLoading(true);
+      BusinessCategoryAddEditApiCall(obj)
+        .then(res => {
+          console.log('Add Category response', res);
+          if (res.data.status == 200 && res.data.success == true) {
+            setIsLoading(false);
+            setModalVisible(!modalVisible);
+
+            setRefresh(true);
+            // alert('product deleted');
+          } else {
+            setIsLoading(false);
+            alert(data.data.message);
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
   };
 
   return (
@@ -149,6 +184,8 @@ export default function EditBusinessAddCategoryModal({
             }}
           />
         </View>
+
+        {isLoading ? <Loader /> : null}
       </View>
     </Modal>
   );

@@ -356,3 +356,39 @@ export async function BusinessDeleteCategoryApiCall(obj) {
     return apiRes;
   }
 }
+
+export async function BusinessCategoryAddEditApiCall(obj) {
+  let route = URL.concat('/api/BusinessCard/CategoryPost');
+  console.log(`Add and Edit category Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function DashboardStoriesApiCall(obj) {
+  let route = URL.concat('/api/UserStory/GetByUserId');
+  console.log(`dashboard Stories Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
