@@ -24,7 +24,7 @@ export default function BottomTabsNavigator() {
           position: 'absolute',
           left: 10,
           right: 10,
-          bottom: 5,
+          bottom: 0,
           elevation: 0,
           borderBottomLeftRadius: 15,
           borderBottomRightRadius: 15,

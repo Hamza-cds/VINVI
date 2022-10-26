@@ -377,13 +377,30 @@ export async function BusinessCategoryAddEditApiCall(obj) {
 
 export async function DashboardStoriesApiCall(obj) {
   let route = URL.concat('/api/UserStory/GetByUserId');
-  console.log(`dashboard Stories Request : ${route} REQUEST`, obj);
+  console.log(`dashboard Stories Request : ${route} REQUEST :`, obj);
   let apiRes = null;
   try {
     apiRes = await axios({
       method: 'POST',
       url: route,
       data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function GetSavedCardByIdApiCall(id) {
+  let route = URL.concat(`/api/SavedCard/GetByLookupId?userId=${id}`);
+  console.log('getBusinessCardAllActive Request : ', route);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: route,
     });
   } catch (err) {
     apiRes = err;

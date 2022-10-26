@@ -29,7 +29,3 @@ const App = props => {
 };
 
 export default App;
-
-// useEffect(() => {
-//   SplashScreen.hide();
-// }, []);

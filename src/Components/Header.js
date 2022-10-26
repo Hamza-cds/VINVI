@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {TouchableOpacity, View, Text, Image} from 'react-native';
 import Svg, {Path, G, Rect} from 'react-native-svg';
-import {LIGHT_TEXT_COLOR, SECONDARY, WHITE} from '../Constants/Colors';
+import {LIGHT_TEXT_COLOR, PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 
 export default function Header({
   navigation,
@@ -25,14 +25,15 @@ export default function Header({
       <View
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          // flexDirection: 'row',
+          // justifyContent: 'space-between',
+          alignItems: 'flex-end',
           paddingHorizontal: 20,
-          paddingVertical: 25,
+          paddingVertical: 12,
           zIndex: 999,
+          backgroundColor: PRIMARY,
         }}>
-        <TouchableOpacity onPress={onPress}>
+        {/* <TouchableOpacity onPress={onPress}>
           <Svg
             xmlns="http://www.w3.org/2000/svg"
             width={20.957}
@@ -44,7 +45,7 @@ export default function Header({
               fill={SECONDARY}
             />
           </Svg>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <View
           style={{
             display: 'flex',
@@ -54,7 +55,7 @@ export default function Header({
           }}>
           {headerIcon}
           {isheaderName ? (
-            <Text style={{marginLeft: 10, fontSize: 20, color: SECONDARY}}>
+            <Text style={{marginLeft: 10, fontSize: 20, color: WHITE}}>
               {headerName}
             </Text>
           ) : null}
@@ -111,8 +112,9 @@ export default function Header({
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingHorizontal: 20,
-          paddingVertical: 25,
+          paddingVertical: 15,
           zIndex: 999,
+          backgroundColor: PRIMARY,
         }}>
         <TouchableOpacity onPress={onPress}>
           <Svg
@@ -123,7 +125,7 @@ export default function Header({
             <G
               data-name="Group 588"
               transform="translate(-37 -37)"
-              fill={WHITE}>
+              fill={'white'}>
               <Rect
                 data-name="Rectangle 1461"
                 width={13}
@@ -159,7 +161,7 @@ export default function Header({
             viewBox="0 0 24.936 25.828">
             <Path
               d="M24.557 23.525l-6.147-6.393a10.424 10.424 0 10-7.982 3.724 10.316 10.316 0 005.974-1.887l6.194 6.442a1.36 1.36 0 101.96-1.886zM10.428 2.72a7.708 7.708 0 11-7.712 7.708 7.716 7.716 0 017.712-7.708z"
-              fill={WHITE}
+              fill={'white'}
             />
           </Svg>
         </TouchableOpacity>

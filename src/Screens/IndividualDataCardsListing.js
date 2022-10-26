@@ -38,6 +38,7 @@ export function IndividualDataCardsListing({navigation}) {
           data={individualData}
           horizontal={false}
           keyExtractor={item => item.id}
+          contentContainerStyle={{paddingBottom: 70}}
           renderItem={({item, index}) => (
             <IndividualCard
               cta={true}

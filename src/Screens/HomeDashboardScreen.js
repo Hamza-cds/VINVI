@@ -28,8 +28,8 @@ export default function HomeDashboardScreen(props) {
   let [imageType, setImageType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   let [userStories, setUserStories] = useState([]);
-  console.log('storyMedia', storyMedia);
-  console.log('userStories', userStories);
+  // console.log('storyMedia', storyMedia);
+  // console.log('userStories', userStories);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -71,6 +71,7 @@ export default function HomeDashboardScreen(props) {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
+          getDashboardStories();
           // props.navigation.replace('MyCardsDashboardScreen');
           alert('successfully posted');
         } else {
@@ -93,14 +94,13 @@ export default function HomeDashboardScreen(props) {
     setIsLoading(true);
     DashboardStoriesApiCall(obj)
       .then(res => {
-        console.log('res', res.data.result);
+        console.log('stories res', res);
         if (res.data.success) {
           setUserStories((userStories = res.data.result));
-          console.log('yaha dekho bacha', userStories);
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          alert('No record found.');
+          alert('No stories found.');
         }
       })
       .catch(err => {
@@ -110,80 +110,79 @@ export default function HomeDashboardScreen(props) {
   };
 
   return (
-    <SafeAreaView style={{height: Height, width: Width}}>
-      <ImageBackground
+    <SafeAreaView
+      style={{width: Width, height: Height, flex: 1, backgroundColor: 'white'}}>
+      {/* <View> */}
+      {/* <ImageBackground
         source={require('../Assets/dashboardbg.png')}
-        style={{flex: 1, paddingBottom: 80}}>
-        <Header
-          navigation={props.navigation}
-          variant="drawer"
-          onPress={() => {
-            props.navigation.toggleDrawer();
-          }}
-        />
-        <View
+        style={{flex: 1, paddingBottom: 80}}> */}
+      <Header
+        navigation={props.navigation}
+        variant="drawer"
+        onPress={() => {
+          props.navigation.toggleDrawer();
+        }}
+      />
+      <View
+        style={{
+          paddingHorizontal: 20,
+          marginTop: 5,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          // zIndex: 5,
+        }}>
+        <TouchableOpacity
           style={{
-            paddingHorizontal: 20,
-            marginTop: -65,
-            flexDirection: 'row',
+            width: 45,
+            height: 45,
+            backgroundColor: PRIMARY,
+            justifyContent: 'center',
             alignItems: 'center',
-            zIndex: 5,
-          }}>
-          <TouchableOpacity
-            style={{
-              width: '17%',
-              height: 55,
-              backgroundColor: '#ffffff',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 50,
-              marginTop: 32,
-              marginRight: 10,
-            }}
-            onPress={() => {
-              launchImageLibrary({mediaType: 'mixed'}, image => {
-                if (image.didCancel) {
-                  console.log('User cancelled image picker');
-                } else {
-                  onSelecet(image);
-                }
-              });
-            }}>
-            <Text style={{color: '#242424', fontSize: 25}}>+</Text>
-          </TouchableOpacity>
-          <View style={{width: '81%'}}>
-            <DashboardStories userStories={userStories} />
-          </View>
-        </View>
-        <Tab.Navigator
-          initialRouteName="Individual"
-          tabBarOptions={{
-            indicatorStyle: {backgroundColor: '#ffffff'},
-            labelStyle: {
-              fontSize: 12,
-              color: 'white',
-              fontWeight: 'bold',
-            },
-            style: {
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              elevation: 0,
-              marginHorizontal: 20,
-              marginTop: 10,
-              marginBottom: 20,
-              color: useIsFocused ? PRIMARY : null,
-            },
-            bounces: true,
+            borderRadius: 50,
+            // marginTop: 10,
           }}
-          sceneContainerStyle={{backgroundColor: 'transprent'}}>
-          <Tab.Screen
-            name="Individual"
-            component={IndividualDataCardsListing}
-          />
-          <Tab.Screen name="Buisness" component={BuisnessDataCardsListing} />
-        </Tab.Navigator>
-        {isLoading ? <Loader /> : null}
-      </ImageBackground>
+          onPress={() => {
+            launchImageLibrary({mediaType: 'photo'}, image => {
+              if (image.didCancel) {
+                console.log('User cancelled image picker');
+              } else {
+                onSelecet(image);
+              }
+            });
+          }}>
+          <Text style={{color: 'white', fontSize: 25}}>+</Text>
+        </TouchableOpacity>
+        <View style={{width: '81%'}}>
+          <DashboardStories userStories={userStories} />
+        </View>
+      </View>
+      <Tab.Navigator
+        initialRouteName="Individual"
+        tabBarOptions={{
+          indicatorStyle: {backgroundColor: PRIMARY},
+          labelStyle: {
+            fontSize: 12,
+            color: PRIMARY,
+            fontWeight: 'bold',
+          },
+          style: {
+            backgroundColor: 'transparent',
+            borderWidth: 0,
+            elevation: 0,
+            marginHorizontal: 20,
+            // marginTop: 10,
+            marginBottom: 10,
+            color: useIsFocused ? PRIMARY : null,
+          },
+          bounces: true,
+        }}
+        sceneContainerStyle={{backgroundColor: 'transprent'}}>
+        <Tab.Screen name="Individual" component={IndividualDataCardsListing} />
+        <Tab.Screen name="Buisness" component={BuisnessDataCardsListing} />
+      </Tab.Navigator>
+      {isLoading ? <Loader /> : null}
+      {/* </ImageBackground> */}
     </SafeAreaView>
   );
 }

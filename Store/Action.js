@@ -4,6 +4,7 @@ import {
   USERDATA,
   BUSINESSCARDDATA,
   BUSINESSCARDDATACOMPLTE,
+  USERCREDENTIAL,
 } from './ActionType';
 
 export const PCData = data => {
@@ -35,9 +36,14 @@ export const BCDComplete = data => {
 };
 
 export const UserData = data => {
-  debugger;
   return {
     type: USERDATA,
+    payload: data,
+  };
+};
+export const UserCredential = data => {
+  return {
+    type: USERCREDENTIAL,
     payload: data,
   };
 };

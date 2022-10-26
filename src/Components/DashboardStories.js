@@ -6,14 +6,15 @@ import {URL} from '../Constants/Constants';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function DashboardStories({userStories}) {
-  let [data, setData] = useState('');
+  let [data, setData] = useState([]);
+  console.log('stories data here', userStories);
 
   useEffect(() => {
     mapData(userStories);
   }, []);
 
   const mapData = list => {
-    var finalList = [];
+    let finalList = [];
 
     for (let index = 0; index < list.length; index++) {
       const element = list[index];
@@ -39,11 +40,12 @@ export default function DashboardStories({userStories}) {
         user_name: element.userName,
         stories: storiesArray,
       };
-
       finalList.push(object);
     }
+    debugger;
 
     setData(finalList);
+    console.log('kalsudfhkasdzv   data', data);
   };
 
   const DATA = [
@@ -79,9 +81,9 @@ export default function DashboardStories({userStories}) {
 
   return (
     <View>
-      {DATA ? (
+      {data.length > 0 ? (
         <InstaStory
-          data={DATA}
+          data={data}
           duration={10}
           unPressedBorderColor={SECONDARY}
           pressedBorderColor={WHITE}
@@ -92,10 +94,17 @@ export default function DashboardStories({userStories}) {
               <Text>Swipe</Text>
             </View>
           }
-          style={{marginTop: 40}}
+          avatarSize={50}
+          style={{marginTop: 15}}
         />
       ) : (
-        <Text style={{color: 'white', fontSize: 15, alignSelf: 'center'}}>
+        <Text
+          style={{
+            color: SECONDARY,
+            fontSize: 15,
+            alignSelf: 'center',
+            marginTop: 15,
+          }}>
           Loading...
         </Text>
       )}

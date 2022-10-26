@@ -40,7 +40,7 @@ export default function StackNavigation() {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="welcome"
+        name="Welcome"
         component={IntroSc}
         options={{headerShown: false}}
       />

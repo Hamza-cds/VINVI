@@ -61,6 +61,9 @@ export default function LoginScreen(props) {
             );
             dispatch(UserData(response.data.result));
             AsyncStorage.setItem('logedIn', JSON.stringify(logedIn));
+
+            AsyncStorage.setItem('phone', phoneNumber);
+            AsyncStorage.setItem('password', password);
             setIsLoading(false);
             // props.navigation.navigate('NewPersonalCard4');
             props.navigation.replace('Dashboard', {
@@ -74,7 +77,6 @@ export default function LoginScreen(props) {
             });
           } else {
             setIsLoading(false);
-            alert(response.data.message);
             console.log('Wrong');
           }
         })

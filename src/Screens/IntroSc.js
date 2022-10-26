@@ -13,6 +13,7 @@ import Svg, {Path} from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function IntroSc(props) {
+  console.log('IntroSc props', props);
   //   const [firstTime, setFirstTime] = useState(true);
   const firstTime = true;
 
