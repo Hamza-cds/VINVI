@@ -6,12 +6,12 @@ import {URL} from '../Constants/Constants';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function DashboardStories({userStories}) {
-  let [data, setData] = useState([]);
+  const [data, setData] = useState([]);
   console.log('stories data here', userStories);
 
   useEffect(() => {
     mapData(userStories);
-  }, []);
+  }, [userStories]);
 
   const mapData = list => {
     let finalList = [];
@@ -42,10 +42,8 @@ export default function DashboardStories({userStories}) {
       };
       finalList.push(object);
     }
-    debugger;
-
+    // debugger;
     setData(finalList);
-    console.log('kalsudfhkasdzv   data', data);
   };
 
   const DATA = [

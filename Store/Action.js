@@ -42,6 +42,7 @@ export const UserData = data => {
   };
 };
 export const UserCredential = data => {
+  debugger;
   return {
     type: USERCREDENTIAL,
     payload: data,

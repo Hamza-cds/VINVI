@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {ImageBackground, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashScreen from 'react-native-splash-screen';
+// import SplashScreen from 'react-native-splash-screen';
 import {UserData, UserCredential} from '../../Store/Action';
 import {useDispatch} from 'react-redux';
 import {loginApiCall} from '../Apis/Repo';
@@ -94,7 +94,7 @@ export default function Splash(props) {
         //   goToRespectivePage('Login');
         // } else
         if (response.data.status == 200) {
-          SplashScreen.hide();
+          // SplashScreen.hide();
           dispatch(UserData(response.data.result));
           dispatch(UserCredential(password));
           AsyncStorage.setItem(
@@ -117,7 +117,7 @@ export default function Splash(props) {
 
   const goToRespectivePage = pageName => {
     // props.navigation.replace(pageName);
-    SplashScreen.hide();
+    // SplashScreen.hide();
     props.navigation.reset({
       index: 0,
       routes: [{name: pageName}],

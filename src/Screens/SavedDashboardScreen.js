@@ -9,10 +9,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GetSavedCardByIdApiCall} from '../Apis/Repo';
 import {PRIMARY, WHITE} from '../Constants/Colors';
 import {useSelector} from 'react-redux';
+import Loader from '../Components/Loader';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {useIsFocused} from '@react-navigation/native';
+import IndividualSavedCard from './IndividualSavedCard';
+import BusinessSavedCard from './BusinessSavedCard';
+
+const Tab = createMaterialTopTabNavigator();
 
 export default function SavedDashboardScreen(props, navigation) {
   let [userData, setUserData] = useState(null);
   const [data, setdata] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const DATA = useSelector(state => state.UserData);
   console.log('DATA', DATA);
@@ -24,20 +33,23 @@ export default function SavedDashboardScreen(props, navigation) {
     });
   }, []);
 
-  useEffect(() => {
-    getSavedCard();
-  }, []);
+  // useEffect(() => {
+  //   getSavedCard();
+  // }, [DATA.id]);
 
-  const getSavedCard = () => {
-    GetSavedCardByIdApiCall(DATA.id)
-      .then(res => {
-        console.log('saved res', res);
-        setdata(res.data.result);
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
-  };
+  // const getSavedCard = () => {
+  //   setIsLoading(true);
+  //   GetSavedCardByIdApiCall(DATA.id)
+  //     .then(res => {
+  //       console.log('saved res', res);
+  //       setdata(res.data.result);
+  //       setIsLoading(false);
+  //     })
+  //     .catch(err => {
+  //       setIsLoading(false);
+  //       console.log('err', err);
+  //     });
+  // };
 
   return (
     <SafeAreaView
@@ -66,7 +78,33 @@ export default function SavedDashboardScreen(props, navigation) {
           </Svg>
         }
       />
-      {data != null ? (
+
+      <Tab.Navigator
+        initialRouteName="Individual"
+        tabBarOptions={{
+          indicatorStyle: {backgroundColor: 'black'},
+          labelStyle: {
+            fontSize: 12,
+            color: WHITE,
+            fontWeight: 'bold',
+          },
+          style: {
+            backgroundColor: PRIMARY,
+            borderWidth: 0,
+            elevation: 0,
+            // marginHorizontal: 20,
+            // marginTop: 10,
+            // marginBottom: 10,
+            color: useIsFocused ? WHITE : null,
+          },
+          bounces: true,
+        }}
+        sceneContainerStyle={{backgroundColor: WHITE}}>
+        <Tab.Screen name="Individual" component={IndividualSavedCard} />
+        <Tab.Screen name="Buisness" component={BusinessSavedCard} />
+      </Tab.Navigator>
+
+      {/* {data != null ? (
         <FlatList
           data={data}
           horizontal={false}
@@ -82,7 +120,7 @@ export default function SavedDashboardScreen(props, navigation) {
             />
           )}
         />
-      ) : null}
+      ) : null} */}
       {/* </ImageBackground> */}
     </SafeAreaView>
   );

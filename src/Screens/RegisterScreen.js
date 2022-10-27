@@ -31,6 +31,7 @@ import {
   phoneLengthNotValid,
   stringsNotEqual,
 } from '../Constants/TextUtils';
+import Loader from '../Components/Loader';
 
 export default function RegisterScreen(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -42,6 +43,7 @@ export default function RegisterScreen(props) {
   const [passErrorMsg, setPassErrorMsg] = useState(false);
   const [confirmpassError, setConfirmPassError] = useState(false);
   const [confirmpassErrorMsg, setConfirmPassErrorMsg] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // console.log('password', password);
   // console.log('confirmPassword', confirmPassword);
 
@@ -58,23 +60,19 @@ export default function RegisterScreen(props) {
   };
 
   const PasswordCheck = value => {
-    if (value == '') {
+    if (isNullOrEmpty(value)) {
       setPassError(true);
       setPassErrorMsg('Enter Password');
-    } else if (isPassword(value)) {
-      setPassError(true);
-      setPassErrorMsg('Inavlid Password');
     } else {
       setPassError(false);
     }
   };
 
   const ConfirmPassCheck = value => {
-    console.log('value', confirmPassword);
-    if (value == '') {
+    if (isNullOrEmpty(value)) {
       setConfirmPassError(true);
-      setConfirmPassErrorMsg('Enter Confirm Password');
-    } else if (stringsNotEqual(value, password)) {
+      setConfirmPassErrorMsg('Enter Password');
+    } else if (stringsNotEqual(password, value)) {
       setConfirmPassError(true);
       setConfirmPassErrorMsg('Password !match');
     } else {
@@ -99,22 +97,26 @@ export default function RegisterScreen(props) {
       let updateinfo = new FormData();
       updateinfo.append('Model', JSON.stringify(object));
 
+      setIsLoading(true);
       signUpApiCall(updateinfo)
         .then(res => res.json())
         .then(data => {
           console.log('data', data);
 
           if (data.status == 335) {
+            setIsLoading(false);
             props.navigation.push('PhoneVerification', {
               paramKey: phoneNumber,
               paramKey1: password,
             });
           } else {
+            setIsLoading(false);
             alert(data.message);
             console.log('ADD');
           }
         })
         .catch(err => {
+          setIsLoading(false);
           console.log('err', err);
         });
     }
@@ -156,7 +158,7 @@ export default function RegisterScreen(props) {
             <RegisterInputBox
               placeholder="Phone"
               keyboardType={'number-pad'}
-              maxLength={12}
+              maxLength={11}
               ERROR={Error}
               ERROR_MESSAGE={ErrorMsg}
               onChange={value => {
@@ -182,7 +184,7 @@ export default function RegisterScreen(props) {
               ERROR={confirmpassError}
               ERROR_MESSAGE={confirmpassErrorMsg}
               onChange={value => {
-                ConfirmPassCheck();
+                ConfirmPassCheck(value);
                 setConfirmPassword(value);
               }}
             />
@@ -222,6 +224,7 @@ export default function RegisterScreen(props) {
               </TouchableOpacity>
             </View>
           </View>
+          {isLoading ? <Loader /> : null}
         </ImageBackground>
       </ScrollView>
     </SafeAreaView>

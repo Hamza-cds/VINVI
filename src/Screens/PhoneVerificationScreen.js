@@ -10,37 +10,41 @@ import {isNullOrEmpty} from '../Constants/TextUtils';
 import {CODE_ERROR} from '../Constants/Strings';
 import {verifyUserApiCall} from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../Components/Loader';
 
 export default function PhoneVerificationScreen(props, navigation) {
   console.log('props', props);
   const [code, setCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const onVerify = () => {
     if (isNullOrEmpty(code)) alert(CODE_ERROR);
     else {
       let object = {
         VerificationCode: code,
-        Phoneno: props.route.params.paramKey,
-        LoginPassword: props.route.params.paramKey1,
+        Phoneno: props.route.params.phone,
+        LoginPassword: props.route.params.password,
       };
       console.log('object', object);
 
+      setIsLoading(true);
       verifyUserApiCall(object)
         .then(response => {
           console.log('response', response);
 
-          if (response.data.status == 98) alert(CODE_ERROR);
-          else
-            AsyncStorage.setItem(
-              'user_data',
-              JSON.stringify(response.data.result),
-            );
+          if (response.data.status == 98) {
+            setIsLoading(false);
+            alert(CODE_ERROR);
+          } else setIsLoading(false);
+          AsyncStorage.setItem(
+            'user_data',
+            JSON.stringify(response.data.result),
+          );
 
-          props.navigation.push('Dashboard', {
-            paramKey: props.route.params.paramKey,
-          });
+          props.navigation.replace('Login');
         })
         .catch(err => {
+          setIsLoading(false);
           console.log('err', err);
         });
     }
@@ -97,6 +101,7 @@ export default function PhoneVerificationScreen(props, navigation) {
             // }}
           />
         </View>
+        {isLoading ? <Loader /> : null}
       </ImageBackground>
     </SafeAreaView>
   );

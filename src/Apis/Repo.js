@@ -381,7 +381,7 @@ export async function DashboardStoriesApiCall(obj) {
   let apiRes = null;
   try {
     apiRes = await axios({
-      method: 'POST',
+      method: 'GET',
       url: route,
       data: obj,
     });
@@ -393,14 +393,34 @@ export async function DashboardStoriesApiCall(obj) {
   }
 }
 
-export async function GetSavedCardByIdApiCall(id) {
-  let route = URL.concat(`/api/SavedCard/GetByLookupId?userId=${id}`);
-  console.log('getBusinessCardAllActive Request : ', route);
+export async function GetSavedCardByIdApiCall(id, type) {
+  let route = URL.concat(
+    `/api/SavedCard/GetByUserId?userId=${id}&type=${type}`,
+  );
+  console.log('getBusinessCardAllActive Request  : ', route);
   let apiRes = null;
   try {
     apiRes = await axios({
       method: 'GET',
       url: route,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function ChangePasswordApiCall(obj) {
+  let route = URL.concat('/api/User/ChangePassword');
+  console.log(`change password Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
     });
   } catch (err) {
     apiRes = err;

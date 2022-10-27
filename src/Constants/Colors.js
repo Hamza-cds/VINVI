@@ -8,4 +8,5 @@ module.exports = {
   TEXT_COLOR: '#242424',
   LIGHT_TEXT_COLOR: '#707070',
   WHITE: '#FFFFFF',
+  GREY: '#EFEFEF',
 };

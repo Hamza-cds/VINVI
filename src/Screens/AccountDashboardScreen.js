@@ -7,11 +7,15 @@ import Svg, {G, Path} from 'react-native-svg';
 import {Height, URL, Width} from '../Constants/Constants';
 import AccountCard from '../Components/AccountCard';
 import LinkButton from '../Components/LinkButton';
+import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AccountDashboardScreen = props => {
   const [image, setImage] = useState('');
   let [userData, setUserData] = useState('');
+
+  const DATA = useSelector(state => state.UserData);
+  console.log('dispatch DATA', DATA);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -54,7 +58,7 @@ const AccountDashboardScreen = props => {
             </Svg>
           }
         />
-        <AccountCard item={{userData, image}} />
+        <AccountCard item={DATA} />
         <ScrollView
           style={{
             flex: 1,

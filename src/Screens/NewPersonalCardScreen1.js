@@ -11,6 +11,8 @@ import {PCData} from '../../Store/Action';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
+import RegisterInputBox from '../Components/RegisterInputBox';
+import {GREY, WHITE} from '../Constants/Colors';
 import {
   EMPTY_ADDRESS,
   EMPTY_BIRTHDAY,
@@ -165,7 +167,8 @@ export default function NewCardScreen(props) {
   // };
 
   return (
-    <SafeAreaView style={{height: Height, width: Width}}>
+    <SafeAreaView
+      style={{height: Height, width: Width, backgroundColor: WHITE}}>
       <Header
         navigation={props.navigation}
         variant="dark"
@@ -188,8 +191,10 @@ export default function NewCardScreen(props) {
           }}>
           <OutlinedInputBox
             placeholder="Enter Name"
+            backgroundColor={WHITE}
             label="Name"
             inputType="text"
+            maxLength={30}
             onChange={value => {
               setName(value);
             }}
@@ -198,6 +203,8 @@ export default function NewCardScreen(props) {
             placeholder="Enter Occupation"
             label="Occupation"
             inputType="text"
+            backgroundColor={GREY}
+            maxLength={30}
             onChange={value => {
               setOccupation(value);
             }}
@@ -205,6 +212,7 @@ export default function NewCardScreen(props) {
           <OutlinedInputBox
             placeholder="Enter Phone No"
             maxLength={11}
+            backgroundColor={GREY}
             label="Phone"
             inputType="text"
             KeyboardType={'numeric'}
@@ -216,6 +224,8 @@ export default function NewCardScreen(props) {
             placeholder="Enter Email"
             label="Email"
             inputType="text"
+            backgroundColor={GREY}
+            maxLength={30}
             error={error}
             errorMsg={errorMsg}
             onChange={value => {
@@ -226,6 +236,8 @@ export default function NewCardScreen(props) {
           <OutlinedInputBox
             placeholder="Enter Birthday"
             label="Birthday"
+            maxLength={20}
+            backgroundColor={GREY}
             inputType="text"
             onChange={value => {
               setBirthday(value);
@@ -234,6 +246,8 @@ export default function NewCardScreen(props) {
           <OutlinedInputBox
             placeholder="Enter Address"
             label="Address"
+            maxLength={50}
+            backgroundColor={GREY}
             inputType="text"
             onChange={value => {
               setAddress(value);
@@ -242,7 +256,9 @@ export default function NewCardScreen(props) {
           <OutlinedInputBox
             placeholder="Enter City"
             label="City"
+            maxLength={30}
             inputType="text"
+            backgroundColor={GREY}
             onChange={value => {
               setCity(value);
             }}
@@ -250,6 +266,8 @@ export default function NewCardScreen(props) {
           <OutlinedInputBox
             placeholder="Enter Country"
             label="Country"
+            maxLength={30}
+            backgroundColor={GREY}
             inputType="text"
             onChange={value => {
               setCountry(value);

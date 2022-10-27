@@ -10,6 +10,7 @@ export default function RegisterInputBox({
   ERROR_MESSAGE,
   maxLength,
   keyboardType,
+  backgroundColor,
 }) {
   const [isfocused, setIsfocused] = useState(false);
   let secureTextEntry;
@@ -30,9 +31,11 @@ export default function RegisterInputBox({
         activeOpacity={1}
         style={{
           width: '100%',
-          backgroundColor: 'rgba(255,255,255,.7)',
+          backgroundColor: backgroundColor
+            ? backgroundColor
+            : 'rgba(255,255,255,.7)',
           borderRadius: 5,
-          marginVertical: 10,
+          marginTop: 10,
         }}>
         {isfocused ? (
           <View style={{flexDirection: 'row'}}>

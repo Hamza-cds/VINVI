@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState, useEffect} from 'react';
 import {storyPostApiCall, DashboardStoriesApiCall} from '../Apis/Repo';
 import Loader from '../Components/Loader';
+import {useFocusEffect} from '@react-navigation/core';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -38,6 +39,12 @@ export default function HomeDashboardScreen(props) {
       console.log('userdata', userData);
     });
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getDashboardStories();
+    }, [props.navigation]),
+  );
 
   const onSelecet = image => {
     for (let index = 0; index < image.assets.length; index++) {

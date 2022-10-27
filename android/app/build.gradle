@@ -158,10 +158,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('vinviSingedKey.keystore')
-            storePassword 'globallinks'
-            keyAlias 'GlobalLinks'
-            keyPassword 'globallinks'
+            storeFile file('vinvi.keystore')
+            storePassword 'vinvi123'
+            keyAlias 'vinvi'
+            keyPassword 'vinvi123'
         }
     }
     buildTypes {
@@ -172,7 +172,7 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             crunchPngs false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             // minifyEnabled enableProguardInReleaseBuilds
             // proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

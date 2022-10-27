@@ -45,7 +45,7 @@ export default function LoginInputBox({
           position: 'relative',
           ...style,
         }}>
-        {isfocused ? (
+        {/* {isfocused ? (
           <View
             style={{
               position: 'absolute',
@@ -60,13 +60,29 @@ export default function LoginInputBox({
               {placeholder}
             </Text>
           </View>
-        ) : null}
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{marginTop: 2, marginLeft: 20, color: 'black'}}>
+        ) : null} */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            height: 20,
+          }}>
+          <Text
+            style={{
+              marginTop: 3,
+              marginLeft: 20,
+              color: 'black',
+              fontSize: 12,
+            }}>
             {label}
           </Text>
           {error == true ? (
-            <Text style={{color: 'red', marginRight: 15, marginTop: 1}}>
+            <Text
+              style={{
+                color: 'red',
+                marginRight: 15,
+                marginTop: 2,
+              }}>
               {errorMsg}
             </Text>
           ) : null}
@@ -80,10 +96,10 @@ export default function LoginInputBox({
           style={{
             width: '100%',
             paddingHorizontal: 20,
-            height: multiline ? 200 : 45,
+            height: multiline ? 200 : 30,
             textAlignVertical: multiline ? 'top' : 'center',
             color: SECONDARY,
-            paddingVertical: multiline ? 15 : 0,
+            paddingVertical: multiline ? 10 : 2,
           }}
           type={inputType}
           keyboardType={KeyboardType}

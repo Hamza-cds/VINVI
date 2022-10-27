@@ -392,7 +392,6 @@ export default function IndividualScreen(props) {
                   // setFavorit(true);
                   if (favorit == true) {
                     setFavorit(false);
-                    onCardUnSave();
                     console.log('what');
                   } else {
                     setFavorit(true);

@@ -20,6 +20,7 @@ import {
   getBusinessCardByIdApiCall,
   GetAllLookupDetailApiCall,
   BusinessDeleteProductApiCall,
+  saveCardAPiCall,
 } from '../Apis/Repo';
 import _ from 'lodash';
 import Feather from 'react-native-vector-icons/Feather';
@@ -29,6 +30,7 @@ import Loader from '../Components/Loader';
 import AddorEditProductModal from './AddorEditProductModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EditBusinessAddCategoryModal from './EditBusinessAddCategoryModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BuisnessScreen = props => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -53,8 +55,17 @@ const BuisnessScreen = props => {
   const [businessCardId, setBusinessCardId] = useState('');
   const [edit, setEdit] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  const [favorit, setFavorit] = useState(false);
+  let [userData, setUserData] = useState(null);
 
   console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
+
+  useEffect(() => {
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
 
   useEffect(() => {
     getBusinessData();
@@ -126,6 +137,34 @@ const BuisnessScreen = props => {
         }
       })
       .catch(err => {
+        console.log('err', err);
+      });
+  };
+
+  const onCardSave = () => {
+    let obj = {
+      Id: 0,
+      UserId: userData.id,
+      CardType: true,
+      BusinessCardId: businessData.id,
+    };
+
+    setIsLoading(true);
+    saveCardAPiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        setIsLoading(false);
+        // if (data.status === 200 && data.success === true) {
+        //   setIsLoading(false);
+        //   alert('picture updated successfully');
+        // } else {
+        //   setIsLoading(false);
+        //   alert('alert');
+        // }
+      })
+      .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -360,7 +399,7 @@ const BuisnessScreen = props => {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               alignItems: 'center',
               paddingBottom: 30,
             }}>
@@ -370,6 +409,33 @@ const BuisnessScreen = props => {
               width={true}
               widthValue="50%"
             />
+            <View style={{marginTop: -20}}>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => {
+                  // setFavorit(true);
+                  if (favorit == true) {
+                    setFavorit(false);
+                    console.log('what');
+                  } else {
+                    setFavorit(true);
+                    console.log('what 1');
+                    onCardSave();
+                  }
+                }}>
+                <Svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={22.295}
+                  height={19.508}
+                  viewBox="0 0 22.295 19.508">
+                  <Path
+                    data-name="Icon awesome-heart"
+                    d="M20.131 1.334a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
+                    fill={favorit == true ? 'red' : '#CACFD2'}
+                  />
+                </Svg>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={{width: '100%', flexWrap: 'wrap', flexDirection: 'row'}}>
             <View
@@ -523,17 +589,19 @@ const BuisnessScreen = props => {
                 }}>
                 Category
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  setisAddCategoryModelVisible(true);
-                }}>
-                <Ionicons
-                  name="add-circle-sharp"
-                  size={26}
-                  color={PRIMARY}
-                  style={{marginTop: 3, marginLeft: 10}}
-                />
-              </TouchableOpacity>
+              {isEdit ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setisAddCategoryModelVisible(true);
+                  }}>
+                  <Ionicons
+                    name="add-circle-sharp"
+                    size={26}
+                    color={PRIMARY}
+                    style={{marginTop: 3, marginLeft: 10}}
+                  />
+                </TouchableOpacity>
+              ) : null}
             </View>
             {isEdit == true ? (
               // <View style={{flexDirection: 'row'}}>

@@ -14,6 +14,7 @@ import {signUpApiCall} from '../Apis/Repo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useDispatch} from 'react-redux';
 import {UserData} from '../../Store/Action';
+import Loader from '../Components/Loader';
 
 export default function NewCardScreen(props, navigation, onCallBack) {
   let [firstName, setFirstName] = useState('');
@@ -23,6 +24,7 @@ export default function NewCardScreen(props, navigation, onCallBack) {
   const [image, setImage] = useState('');
   let [userData, setUserData] = useState('');
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log('image', image);
   useEffect(() => {
@@ -41,61 +43,52 @@ export default function NewCardScreen(props, navigation, onCallBack) {
     }
   }, []);
   const onSave = () => {
-    console.log('firstName', firstName);
-    console.log('lastName', lastName);
-    console.log('email', email);
-    console.log('image', image);
-
-    if (isNullOrEmpty(firstName)) {
-      alert('enter first name');
-    } else if (isNullOrEmpty(lastName)) {
-      alert('enter last name');
-    } else if (isNullOrEmpty(email)) {
-      alert('enter email');
-    } else {
-      let object = {
-        Id: userData.id,
-        Phoneno: userData.phoneno,
-        FirstName: firstName,
-        LastName: lastName,
-        Email: email,
-      };
-      console.log('object', object);
-      let updateinfo = new FormData();
-      updateinfo.append('Model', JSON.stringify(object));
-      // updateinfo.append('image_file', {
-      //   uri: image.path,
-      //   name: imageName,
-      //   type: image.mime,
-      // });
-      {
-        !isNullOrEmpty(image)
-          ? updateinfo.append('image_file', {
-              uri: image.path,
-              name: imageName,
-              type: image.mime,
-            })
-          : updateinfo.append('image_file', userData.profileImage);
-      }
-
-      signUpApiCall(updateinfo)
-        .then(res => res.json())
-        .then(data => {
-          console.log('data', data);
-          // AsyncStorage.setItem('user_data', JSON.stringify(data.result));
-          // dispatch(UserData(data.result));
-          if (data.status == 200 && data.success == true) {
-            AsyncStorage.setItem('user_data', JSON.stringify(data.result));
-            dispatch(UserData(data.result));
-            alert('successfully updated');
-          } else {
-            alert(data.message);
-          }
-        })
-        .catch(err => {
-          console.log('err', err);
-        });
+    let object = {
+      Id: userData.id,
+      Phoneno: userData.phoneno,
+      FirstName: firstName ? firstName : userData.firstName,
+      LastName: lastName ? lastName : userData.lastName,
+      Email: email ? email : userData.email,
+    };
+    console.log('object', object);
+    let updateinfo = new FormData();
+    updateinfo.append('Model', JSON.stringify(object));
+    // updateinfo.append('image_file', {
+    //   uri: image.path,
+    //   name: imageName,
+    //   type: image.mime,
+    // });
+    {
+      !isNullOrEmpty(image)
+        ? updateinfo.append('image_file', {
+            uri: image.path,
+            name: imageName,
+            type: image.mime,
+          })
+        : updateinfo.append('image_file', userData.profileImage);
     }
+
+    setIsLoading(true);
+    signUpApiCall(updateinfo)
+      .then(res => res.json())
+      .then(data => {
+        console.log('data', data);
+        // AsyncStorage.setItem('user_data', JSON.stringify(data.result));
+        // dispatch(UserData(data.result));
+        if (data.status == 200 && data.success == true) {
+          setIsLoading(false);
+          AsyncStorage.setItem('user_data', JSON.stringify(data.result));
+          dispatch(UserData(data.result));
+          alert('successfully updated');
+        } else {
+          setIsLoading(false);
+          alert(data.message);
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
   };
 
   return (
@@ -217,6 +210,8 @@ export default function NewCardScreen(props, navigation, onCallBack) {
             }}
           />
         </View>
+
+        {isLoading ? <Loader /> : null}
       </ImageBackground>
     </SafeAreaView>
   );

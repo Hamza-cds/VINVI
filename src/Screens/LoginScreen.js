@@ -8,7 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {SECONDARY, TEXT_COLOR, WHITE} from '../Constants/Colors';
+import {GREY, SECONDARY, TEXT_COLOR, WHITE} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
 import {Height, Width} from '../Constants/Constants';
@@ -77,7 +77,7 @@ export default function LoginScreen(props) {
             });
           } else {
             setIsLoading(false);
-            console.log('Wrong');
+            alert(response.data.message);
           }
         })
         .catch(err => {
@@ -137,25 +137,27 @@ export default function LoginScreen(props) {
               }}
             /> */}
 
-            <OutlinedInputBox
-              placeholder="Phone or Username"
-              KeyboardType={'number-pad'}
+            <RegisterInputBox
+              placeholder="Phone"
+              keyboardType={'numeric'}
+              backgroundColor={GREY}
               maxLength={11}
               onChange={value => {
                 setPhoneNumber(value);
               }}
             />
-            <OutlinedInputBox
+            <RegisterInputBox
               placeholder="Password"
               inputType="password"
               KeyboardType={'default'}
+              backgroundColor={GREY}
               onChange={value => {
                 setPassword(value);
               }}
             />
             <View
               style={{
-                marginTop: 20,
+                marginTop: -5,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
@@ -192,12 +194,12 @@ export default function LoginScreen(props) {
 
             <View
               style={{
-                marginTop: 20,
+                // marginTop: 20,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-              <Text style={{color: WHITE, fontSize: 14, marginBottom: 50}}>
+              <Text style={{color: WHITE, fontSize: 14, marginBottom: 80}}>
                 Dont have an account?
               </Text>
               <TouchableOpacity

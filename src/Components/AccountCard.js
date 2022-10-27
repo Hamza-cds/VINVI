@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
-import {USER_NAME, USER_EMAIL} from '../Constants/Constants';
+import {USER_NAME, USER_EMAIL, URL} from '../Constants/Constants';
 import {useNavigation} from '@react-navigation/native';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function AccountCard({item}) {
   console.log('item', item);
@@ -30,32 +31,18 @@ export default function AccountCard({item}) {
       }}>
       <Image
         source={
-          item.image != null && ''
-            ? {uri: item.image.path}
+          !isNullOrEmpty(item)
+            ? {uri: URL.concat(item.profileImage)}
             : require('../Assets/profilePic.png')
         }
         style={{height: 70, width: 70, borderRadius: 35}}
       />
       <View style={{marginLeft: 20}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-          {item
-            ? item.userData
-              ? item.userData.firstName
-                ? item.userData.firstName + item.userData.lastName
-                  ? item.userData.lastName
-                  : 'name'
-                : 'name'
-              : 'name'
-            : 'name'}
+          {item ? (item.firstName ? item.firstName : 'name') : 'name'}
         </Text>
         <Text style={{fontSize: 14}}>
-          {item
-            ? item.userData
-              ? item.userData.email
-                ? item.userData.email
-                : 'email'
-              : 'email'
-            : 'email'}
+          {item ? (item.email ? item.email : 'email') : 'email'}
         </Text>
       </View>
       <TouchableOpacity

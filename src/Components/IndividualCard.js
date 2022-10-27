@@ -17,7 +17,7 @@ export default function IndividualCard({
   navigationPath,
   item,
 }) {
-  console.log('item', item);
+  console.log('IndividualCard item..................', item);
   let arrayOccupation;
   arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
   if (arrayOccupation) {

@@ -253,6 +253,7 @@ export function EducationModal({
   };
 
   const FunDegree = value => {
+    console.log('FunDegree', value);
     setDegree((degree = value.name));
   };
   const FunstartDateMonth = value => {

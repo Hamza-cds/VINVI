@@ -140,7 +140,7 @@ export default function Select({
           {isEdit == true ? (
             <Text
               style={{
-                color: 'rgba(0,0,0,.5)',
+                color: 'black',
                 fontSize: 14,
               }}>
               {editText}
@@ -151,7 +151,7 @@ export default function Select({
                 color: 'rgba(0,0,0,.5)',
                 fontSize: 14,
               }}>
-              {selectedItem ? selectedItem.title : placeholder}
+              {editText ? editText : placeholder}
             </Text>
           )}
         </TouchableOpacity>

@@ -1,13 +1,113 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, ImageBackground, SafeAreaView} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import ChangePasswordInputBox from '../Components/ChangePasswordInputBox';
 import Header from '../Components/Header';
 import Svg, {Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
+import {ChangePasswordApiCall} from '../Apis/Repo';
+import {useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../Components/Loader';
+import {isNullOrEmpty, stringsNotEqual} from '../Constants/TextUtils';
+import RegisterInputBox from '../Components/RegisterInputBox';
 
 const ChangePassowrdScreen = props => {
+  let [userData, setUserData] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const DATA = useSelector(state => state.UserData);
+  console.log('dispatch DATA', DATA);
+  const credential = useSelector(state => state.UserCredential);
+  console.log('credential', credential);
+
+  useEffect(() => {
+    AsyncStorage.getItem('user_data').then(response => {
+      setUserData((userData = JSON.parse(response)));
+      console.log('userdata', userData);
+    });
+  }, []);
+
   const navigation = props.navigation;
+  const [oldPass, setOldPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [conPass, setConPass] = useState('');
+  const [Error, setError] = useState(false);
+  const [ErrorMsg, setErrorMsg] = useState(false);
+  const [passError, setPassError] = useState(false);
+  const [passErrorMsg, setPassErrorMsg] = useState(false);
+  const [confirmpassError, setConfirmPassError] = useState(false);
+  const [confirmpassErrorMsg, setConfirmPassErrorMsg] = useState(false);
+
+  const oldPassCheck = value => {
+    if (isNullOrEmpty(value)) {
+      setError(true);
+      setErrorMsg('Enter password');
+    } else if (stringsNotEqual(credential, value)) {
+      setError(true);
+      setErrorMsg('Password !match');
+    } else {
+      setError(false);
+    }
+  };
+
+  const PasswordCheck = value => {
+    if (isNullOrEmpty(value)) {
+      setPassError(true);
+      setPassErrorMsg('Enter Password');
+    } else {
+      setPassError(false);
+    }
+  };
+
+  const ConfirmPassCheck = value => {
+    if (isNullOrEmpty(value)) {
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Enter Password');
+    } else if (stringsNotEqual(newPass, value)) {
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Password !match');
+    } else {
+      setConfirmPassError(false);
+    }
+  };
+
+  const onChange = () => {
+    if (isNullOrEmpty(oldPass)) {
+      alert('enter old password');
+    } else if (isNullOrEmpty(newPass)) {
+      alert('enter new password');
+    } else if (isNullOrEmpty(conPass)) {
+      alert('enter confirm password');
+    } else {
+      let object = {
+        Id: DATA.id,
+        OldPassword: oldPass,
+        NewPassword: newPass,
+      };
+      console.log('object', object);
+
+      setIsLoading(true);
+      ChangePasswordApiCall(object)
+        .then(response => {
+          //console.log("response", response)
+
+          if (response.data.status == 200) {
+            setIsLoading(false);
+            alert('Password changed successfully');
+            navigation.replace('Login');
+          } else {
+            setIsLoading(false);
+            alert('wrong old password');
+          }
+        })
+        .catch(err => {
+          setIsLoading(false);
+          console.log('err', err);
+        });
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -52,13 +152,46 @@ const ChangePassowrdScreen = props => {
             style={{
               marginTop: 15,
             }}>
-            <ChangePasswordInputBox placeholder="Enter Previous Password" />
-            <ChangePasswordInputBox placeholder="Enter New Password" />
-            <ChangePasswordInputBox placeholder="Re-Enter New Password" />
+            <RegisterInputBox
+              placeholder="Enter Previous Password"
+              ERROR={Error}
+              ERROR_MESSAGE={ErrorMsg}
+              backgroundColor={'#EFEFEF'}
+              onChange={value => {
+                setOldPass(value);
+                oldPassCheck(value);
+              }}
+            />
+            <RegisterInputBox
+              placeholder="Enter New Password"
+              ERROR={passError}
+              ERROR_MESSAGE={passErrorMsg}
+              backgroundColor={'#EFEFEF'}
+              onChange={value => {
+                setNewPass(value);
+                PasswordCheck(value);
+              }}
+            />
+            <RegisterInputBox
+              placeholder="Re-Enter New Password"
+              ERROR={confirmpassError}
+              ERROR_MESSAGE={confirmpassErrorMsg}
+              backgroundColor={'#EFEFEF'}
+              onChange={value => {
+                setConPass(value);
+                ConfirmPassCheck(value);
+              }}
+            />
           </View>
-          <BtnComponent placeholder="Chnage Password" onPress={() => {}} />
+          <BtnComponent
+            placeholder="Chnage Password"
+            onPress={() => {
+              onChange();
+            }}
+          />
         </View>
       </ImageBackground>
+      {isLoading ? <Loader /> : null}
     </SafeAreaView>
   );
 };

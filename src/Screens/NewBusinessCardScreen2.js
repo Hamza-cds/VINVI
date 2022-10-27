@@ -190,7 +190,7 @@ export default function NewBusinessCardScreen2(props) {
         variant="white"
         headerName="Add Card"
         onPress={() => {
-          props.navigation.push('NewBuisnessCard1');
+          props.navigation.push('Dashboard');
         }}
       />
       <View style={{backgroundColor: WHITE, flex: 1, paddingBottom: 100}}>

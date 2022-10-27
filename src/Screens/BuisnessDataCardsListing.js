@@ -4,6 +4,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import BuisnessCard from '../Components/BuisnessCard';
 import {View, Text} from 'react-native';
 import {getBusinessCardAllActiveApiCall} from '../Apis/Repo';
+import {useFocusEffect} from '@react-navigation/core';
 
 export function BuisnessDataCardsListing({navigation}) {
   const [businessData, setBusinessData] = useState([]);
@@ -16,7 +17,17 @@ export function BuisnessDataCardsListing({navigation}) {
     });
   }, []);
 
-  useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
+      getBusinessList();
+    }, [navigation]),
+  );
+
+  // useEffect(() => {
+
+  // }, []);
+
+  const getBusinessList = () => {
     getBusinessCardAllActiveApiCall()
       .then(res => {
         console.log('business response', res);
@@ -26,7 +37,7 @@ export function BuisnessDataCardsListing({navigation}) {
       .catch(err => {
         console.log('err', err);
       });
-  }, []);
+  };
   return (
     <>
       {businessData != null ? (
@@ -34,6 +45,7 @@ export function BuisnessDataCardsListing({navigation}) {
           data={businessData}
           horizontal={false}
           keyExtractor={item => item.id}
+          contentContainerStyle={{paddingBottom: 70}}
           renderItem={({item, index}) => (
             <BuisnessCard
               cta={true}

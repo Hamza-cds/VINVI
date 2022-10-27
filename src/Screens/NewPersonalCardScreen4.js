@@ -299,6 +299,7 @@ export default function NewCardScreen(props) {
           placeholder="Introduce your self"
           inputType="text"
           label={'Intoduction'}
+          maxLength={50}
           onChange={value => {
             setMessage(value);
           }}
@@ -306,6 +307,7 @@ export default function NewCardScreen(props) {
         <OutlinedInputBox
           placeholder="Enter Code"
           inputType="text"
+          maxLength={5}
           label={'QR Code'}
           onChange={value => {
             setQRcode(value);
@@ -314,6 +316,7 @@ export default function NewCardScreen(props) {
         <OutlinedInputBox
           placeholder="Enter Hobbies"
           inputType="text"
+          maxLength={20}
           label={'Hobbies'}
           onChange={value => {
             setHobbies(value);
@@ -322,6 +325,7 @@ export default function NewCardScreen(props) {
         <OutlinedInputBox
           placeholder="Enter Interests"
           inputType="text"
+          maxLength={20}
           label={'Interests'}
           onChange={value => {
             setInterests(value);
@@ -330,6 +334,7 @@ export default function NewCardScreen(props) {
         <OutlinedInputBox
           placeholder="Enter Achievements"
           inputType="text"
+          maxLength={30}
           label={'Achievements'}
           onChange={value => {
             setAchivements(value);
