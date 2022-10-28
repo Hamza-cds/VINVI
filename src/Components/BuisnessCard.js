@@ -87,7 +87,7 @@ export default function BuisnessCard({
               source={
                 item.logo
                   ? {uri: URL.concat(item.logo)}
-                  : require('../Assets/EmptyProfile.png')
+                  : require('../Assets/profilePic.png')
               }
               style={{
                 width: 60,

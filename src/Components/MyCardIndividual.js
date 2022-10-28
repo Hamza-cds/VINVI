@@ -79,7 +79,7 @@ export default function MyCardIndividual({
           source={
             item.profilePicture
               ? {uri: URL.concat(item.profilePicture)}
-              : require('../Assets/EmptyProfile.png')
+              : require('../Assets/profilePic.png')
           }
           style={{width: 80, height: 80, borderRadius: 40}}
         />

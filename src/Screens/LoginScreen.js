@@ -52,7 +52,7 @@ export default function LoginScreen(props) {
       setIsLoading(true);
       loginApiCall(object)
         .then(response => {
-          //console.log("response", response)
+          console.log('response', response);
 
           if (response.data.status == 200) {
             AsyncStorage.setItem(
@@ -72,8 +72,8 @@ export default function LoginScreen(props) {
           } else if (response.data.status == 335) {
             setIsLoading(false);
             props.navigation.push('PhoneVerification', {
-              paramKey: phoneNumber,
-              paramKey1: password,
+              phone: phoneNumber,
+              password: password,
             });
           } else {
             setIsLoading(false);

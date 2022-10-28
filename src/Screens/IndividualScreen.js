@@ -352,7 +352,7 @@ export default function IndividualScreen(props) {
                 source={
                   data.profilePicture
                     ? {uri: URL.concat(data.profilePicture)}
-                    : require('../Assets/EmptyProfile.png')
+                    : require('../Assets/profilePic.png')
                 }
                 style={{width: 100, height: 100, borderRadius: 50}}
               />

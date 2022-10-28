@@ -27,7 +27,6 @@ export const mainreducer = (state = initialState, action) => {
     case USERDATA:
       return {...state, UserData: action.payload};
     case USERCREDENTIAL:
-      debugger;
       return {...state, UserCredential: action.payload};
     default:
       return state;

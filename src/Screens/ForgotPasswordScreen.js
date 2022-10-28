@@ -7,12 +7,16 @@ import {Height, Width} from '../Constants/Constants';
 import RegisterInputBox from '../Components/RegisterInputBox';
 import {isNullOrEmpty, stringsNotEqual} from '../Constants/TextUtils';
 import {PhoneNumber} from '../Constants/Validations';
+import {GenerateCodeApiCall} from '../Apis/Repo';
+import Loader from '../Components/Loader';
 
 const ForgetPasswordScreen = props => {
+  console.log('props', props);
   const navigation = props.navigation;
   const [phone, setPhone] = useState('');
   const [pass, setPass] = useState('');
   const [conPass, setConPass] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [Error, setError] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState(false);
@@ -21,7 +25,43 @@ const ForgetPasswordScreen = props => {
   const [confirmpassError, setConfirmPassError] = useState(false);
   const [confirmpassErrorMsg, setConfirmPassErrorMsg] = useState(false);
 
-  const onSend = () => {};
+  const onSend = () => {
+    if (isNullOrEmpty(phone)) {
+      setError(true);
+      setErrorMsg('Enter Number');
+    } else if (isNullOrEmpty(pass)) {
+      setPass(true);
+      setPassErrorMsg('Enter Password');
+    } else if (isNullOrEmpty(conPass)) {
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Enter Password');
+    } else {
+      let object = {
+        phoneno: phone,
+      };
+      console.log('object', object);
+
+      setIsLoading(true);
+      GenerateCodeApiCall(object)
+        .then(response => {
+          console.log('response', response);
+
+          if (response.data.status == 200) {
+            setIsLoading(false);
+            navigation.navigate('PhoneVerification', {
+              phone: phone,
+              password: pass,
+            });
+          } else {
+            setIsLoading(false);
+            alert(response.data.message);
+          }
+        })
+        .catch(err => {
+          console.log('err', err);
+        });
+    }
+  };
 
   const PasswordCheck = value => {
     if (isNullOrEmpty(value)) {
@@ -145,13 +185,11 @@ const ForgetPasswordScreen = props => {
           <BtnComponent
             placeholder="Send Code"
             onPress={() => {
-              navigation.navigate('PhoneVerification', {
-                phone: phone,
-                password: pass,
-              });
+              onSend();
             }}
           />
         </View>
+        {isLoading ? <Loader /> : null}
       </ImageBackground>
     </SafeAreaView>
   );

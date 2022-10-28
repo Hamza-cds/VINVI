@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function AccountCard({item}) {
-  console.log('item', item);
+  console.log('jkahslfsnd asjdfhasdkfj item', item);
   const navigation = useNavigation();
   return (
     <View
@@ -32,10 +32,16 @@ export default function AccountCard({item}) {
       <Image
         source={
           !isNullOrEmpty(item)
-            ? {uri: URL.concat(item.profileImage)}
+            ? !isNullOrEmpty(item.profileImage)
+              ? {uri: URL.concat(item.profileImage)}
+              : require('../Assets/profilePic.png')
             : require('../Assets/profilePic.png')
         }
-        style={{height: 70, width: 70, borderRadius: 35}}
+        style={{
+          height: 70,
+          width: 70,
+          borderRadius: 35,
+        }}
       />
       <View style={{marginLeft: 20}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>

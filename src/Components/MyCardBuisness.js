@@ -100,7 +100,7 @@ export default function MyCardBuisness({
           source={
             item.logo
               ? {uri: URL.concat(item.logo)}
-              : require('../Assets/EmptyProfile.png')
+              : require('../Assets/profilePic.png')
           }
           style={{width: 80, height: 80, borderRadius: 40}}
         />

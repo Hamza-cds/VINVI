@@ -111,7 +111,7 @@ export default function IndividualCard({
               source={
                 item.profilePicture
                   ? {uri: URL.concat(item.profilePicture)}
-                  : require('../Assets/EmptyProfile.png')
+                  : require('../Assets/profilePic.png')
               }
               style={{
                 width: 60,

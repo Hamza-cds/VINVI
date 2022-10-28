@@ -7,12 +7,14 @@ import Svg, {G, Path} from 'react-native-svg';
 import {Height, URL, Width} from '../Constants/Constants';
 import AccountCard from '../Components/AccountCard';
 import LinkButton from '../Components/LinkButton';
-import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import {UserData} from '../../Store/Action';
 
 const AccountDashboardScreen = props => {
   const [image, setImage] = useState('');
   let [userData, setUserData] = useState('');
+  const dispatch = useDispatch();
 
   const DATA = useSelector(state => state.UserData);
   console.log('dispatch DATA', DATA);
@@ -232,6 +234,7 @@ const AccountDashboardScreen = props => {
               placeholder="Logout"
               onPress={() => {
                 AsyncStorage.removeItem('user_data');
+                dispatch(UserData(''));
                 props.navigation.replace('Login');
               }}
               // onPress={() => {

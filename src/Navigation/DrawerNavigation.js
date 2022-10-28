@@ -11,6 +11,7 @@ import BroadCastScreen from '../Screens/BroadCastScreen';
 import MyCardsDashboardScreen from '../Screens/MyCardsDashboardScreen';
 import RequestsDashboardScreen from '../Screens/RequestsDashboardScreen';
 import ChatsDashboardScreen from '../Screens/ChatsDashboardScreen';
+import VideoWallScreen from '../Screens/VideoWallScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -238,7 +239,7 @@ export default function DrawerNavigator() {
       />
       <Drawer.Screen
         name="VideoWall"
-        component={TermsConditionScreen}
+        component={VideoWallScreen}
         options={{
           drawerLabel: 'Video Wall',
           drawerIcon: ({focused}) => {

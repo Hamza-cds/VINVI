@@ -429,3 +429,40 @@ export async function ChangePasswordApiCall(obj) {
     return apiRes;
   }
 }
+
+export async function GenerateCodeApiCall(obj) {
+  let route = URL.concat('/api/User/ForgotPassword');
+  console.log(`generate code Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function GetDataVideoWallApi(page, limit) {
+  let route = URL.concat(
+    `/api/UserStory/GetAll?PageNumber=${page}&Limit=${limit}`,
+  );
+  console.log('getVideoWall Data Request  : ', route);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: route,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
