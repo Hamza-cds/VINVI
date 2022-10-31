@@ -223,7 +223,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-    compile project(':react-native-image-crop-picker')
+    implementation project(':react-native-image-crop-picker')
     implementation project(':react-native-fs')
 }
 
