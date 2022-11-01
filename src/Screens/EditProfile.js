@@ -16,7 +16,7 @@ import {useDispatch} from 'react-redux';
 import {UserData} from '../../Store/Action';
 import Loader from '../Components/Loader';
 
-export default function NewCardScreen(props, navigation, onCallBack) {
+export default function NewCardScreen({navigation, route}) {
   let [firstName, setFirstName] = useState('');
   let [lastName, setLastName] = useState('');
   let [email, setEmail] = useState('');
@@ -79,6 +79,7 @@ export default function NewCardScreen(props, navigation, onCallBack) {
           setIsLoading(false);
           AsyncStorage.setItem('user_data', JSON.stringify(data.result));
           dispatch(UserData(data.result));
+          navigation.goBack();
           alert('successfully updated');
         } else {
           setIsLoading(false);
@@ -101,7 +102,7 @@ export default function NewCardScreen(props, navigation, onCallBack) {
           variant="light2"
           headerName="Edit Profile"
           onPress={() => {
-            props.navigation.push('Dashboard');
+            navigation.goBack();
           }}
           headerIcon={
             <Svg
@@ -206,7 +207,6 @@ export default function NewCardScreen(props, navigation, onCallBack) {
             placeholder="Save"
             onPress={() => {
               onSave();
-              // props.navigation.push('Dashboard');
             }}
           />
         </View>

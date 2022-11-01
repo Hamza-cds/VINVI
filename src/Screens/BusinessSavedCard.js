@@ -56,19 +56,22 @@ export default function BusinessSavedCard(props) {
           data={data}
           horizontal={false}
           keyExtractor={item => item.id}
+          contentContainerStyle={{paddingBottom: 70}}
           renderItem={({item, index}) => (
             <BuisnessCard
               cta={true}
               variant="closed"
               navigation={props.navigation}
-              navigationPath="BuisnessScreen"
+              navigationPath="BusinessScreen"
               item={item.businessCard}
               key={index}
             />
           )}
         />
       ) : (
-        <Text style={{alignSelf: 'center', marginTop: 250}}>no saved card</Text>
+        <Text style={{alignSelf: 'center', marginTop: 250}}>
+          No saved cards
+        </Text>
       )}
 
       {isLoading ? <Loader /> : null}

@@ -14,7 +14,7 @@ export default function BtnComponent({
         height: 50,
         width: width ? widthValue : '100%',
         backgroundColor: SECONDARY,
-        marginVertical: 20,
+        marginBottom: 20,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

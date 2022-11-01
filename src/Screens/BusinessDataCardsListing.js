@@ -6,7 +6,7 @@ import {View, Text} from 'react-native';
 import {getBusinessCardAllActiveApiCall} from '../Apis/Repo';
 import {useFocusEffect} from '@react-navigation/core';
 
-export function BuisnessDataCardsListing({navigation}) {
+export function BusinessDataCardsListing({navigation}) {
   const [businessData, setBusinessData] = useState([]);
   let [userData, setUserData] = useState(null);
 
@@ -51,7 +51,7 @@ export function BuisnessDataCardsListing({navigation}) {
               cta={true}
               variant="closed"
               navigation={navigation}
-              navigationPath="BuisnessScreen"
+              navigationPath="BusinessScreen"
               item={item}
               key={index}
             />

@@ -20,7 +20,12 @@ import {
   INCOMPLETE_PASSWORD,
 } from '../Constants/Strings';
 import {loginApiCall} from '../Apis/Repo';
-import {isInvalidPassword} from '../Constants/Validations';
+import {
+  isInvalidPassword,
+  isInvalidPhoneNumber,
+  notValidNumber,
+  PhoneNumber,
+} from '../Constants/Validations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
 import {useDispatch} from 'react-redux';
@@ -34,6 +39,8 @@ export default function LoginScreen(props) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [logedIn, setLogedIn] = useState(true);
+  const [Error, setError] = useState(false);
+  const [ErrorMsg, setErrorMsg] = useState(false);
 
   const onLogin = () => {
     if (isNullOrEmpty(phoneNumber)) {
@@ -86,6 +93,19 @@ export default function LoginScreen(props) {
     }
   };
 
+  const NumberCheck = value => {
+    // debugger;
+    if (value == '') {
+      setError(true);
+      setErrorMsg('Enter Number');
+    } else if (PhoneNumber(value)) {
+      setError(true);
+      setErrorMsg('Inavlid Number');
+    } else {
+      setError(false);
+    }
+  };
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ScrollView style={{flex: 1}}>
@@ -104,7 +124,7 @@ export default function LoginScreen(props) {
             <Image
               source={require('../Assets/vinvilogo.png')}
               style={{
-                marginVertical: 20,
+                marginTop: 20,
                 alignSelf: 'center',
                 width: 100,
                 height: 55,
@@ -115,7 +135,7 @@ export default function LoginScreen(props) {
                 fontSize: 30,
                 color: SECONDARY,
                 fontWeight: 'bold',
-                marginBottom: 20,
+                // marginBottom: 20,
               }}>
               Login
             </Text>
@@ -142,7 +162,10 @@ export default function LoginScreen(props) {
               keyboardType={'numeric'}
               backgroundColor={GREY}
               maxLength={11}
+              ERROR={Error}
+              ERROR_MESSAGE={ErrorMsg}
               onChange={value => {
+                NumberCheck(value);
                 setPhoneNumber(value);
               }}
             />
@@ -199,20 +222,21 @@ export default function LoginScreen(props) {
                 flexDirection: 'row',
                 justifyContent: 'center',
               }}>
-              <Text style={{color: WHITE, fontSize: 14, marginBottom: 80}}>
-                Dont have an account?
+              <Text style={{color: GREY, fontSize: 14, marginBottom: 80}}>
+                Don't have an account?
               </Text>
               <TouchableOpacity
-                style={{marginLeft: 10}}
+                style={{marginLeft: 5}}
                 onPress={() => {
                   props.navigation.push('Register');
                 }}>
                 <Text
                   style={{
-                    color: SECONDARY,
+                    color: WHITE,
                     textDecorationStyle: 'solid',
                     textDecorationLine: 'underline',
                     fontSize: 14,
+                    fontWeight: 'bold',
                   }}>
                   Register
                 </Text>

@@ -478,12 +478,14 @@ export default function NewCardScreen(props) {
             )}
           />
         </View>
-        <BtnComponent
-          placeholder="Finish"
-          onPress={() => {
-            onFinish();
-          }}
-        />
+        <View style={{marginVertical: 20}}>
+          <BtnComponent
+            placeholder="Finish"
+            onPress={() => {
+              onFinish();
+            }}
+          />
+        </View>
 
         {isLoading ? <Loader /> : null}
       </ScrollView>

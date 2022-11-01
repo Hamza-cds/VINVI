@@ -34,7 +34,9 @@ allprojects {
 
         google()
         mavenCentral()
+        gradlePluginPortal()
         // jcenter()
         maven { url 'https://www.jitpack.io' }
+        maven { url "https://maven.aliyun.com/repository/jcenter" }
     }
 }

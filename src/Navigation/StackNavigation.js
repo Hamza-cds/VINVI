@@ -18,7 +18,7 @@ import SearchResultScreen from '../Screens/SearchResultScreen';
 import MessagesScreen from '../Screens/MessagesScreen';
 import ChangePassowrdScreen from '../Screens/ChangePassowrdScreen';
 import RequestScreen from '../Screens/RequestScreen';
-import BuisnessScreen from '../Screens/BuisnessScreen';
+import BusinessScreen from '../Screens/BusinessScreen';
 import IndividualScreen from '../Screens/IndividualScreen';
 import EditProfile from '../Screens/EditProfile';
 import NewBusinessCardScreen2 from '../Screens/NewBusinessCardScreen2';
@@ -78,7 +78,7 @@ export default function StackNavigation() {
       <Stack.Screen name="SearchResult" component={SearchResultScreen} />
       <Stack.Screen name="Messages" component={MessagesScreen} />
       <Stack.Screen name="IndividualScreen" component={IndividualScreen} />
-      <Stack.Screen name="BuisnessScreen" component={BuisnessScreen} />
+      <Stack.Screen name="BusinessScreen" component={BusinessScreen} />
       <Stack.Screen name="ChangePassowrd" component={ChangePassowrdScreen} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen

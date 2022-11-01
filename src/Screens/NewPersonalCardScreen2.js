@@ -24,7 +24,7 @@ export default function NewCardScreen(props) {
         style={{flex: 1}}>
         <Header
           navigation={props.navigation}
-          variant="dark"
+          variant="light2"
           // headerIcon={
           //   <Svg
           //     xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ export default function NewCardScreen(props) {
           //     />
           //   </Svg>
           // }
-          headerName="New Card"
+          headerName="Add Card"
           onPress={() => {
             props.navigation.push('NewPersonalCard1');
           }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import SearchIndividualScreen from '../Screens/SearchIndividualScreen';
-import SearchBuisnessScreen from '../Screens/SearchBuisnessScreen';
+import SearchBusinessScreen from '../Screens/SearchBusinessScreen';
 import SentRequestScreen from '../Screens/SentRequestScreen';
 import RecievedRequestScreen from '../Screens/RecievedRequestScreen';
 import {PRIMARY1, WHITE} from '../Constants/Colors';
@@ -31,7 +31,7 @@ export default function TopTabsNavigator({variant}) {
           name="Search Individual"
           component={SearchIndividualScreen}
         />
-        <Tab.Screen name="Search Buisness" component={SearchBuisnessScreen} />
+        <Tab.Screen name="Search Buisness" component={SearchBusinessScreen} />
       </Tab.Navigator>
     );
   } else if (variant === 'request') {

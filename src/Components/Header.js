@@ -26,6 +26,50 @@ export default function Header({
       <View
         style={{
           display: 'flex',
+          // flexDirection: 'row',
+          // justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          paddingHorizontal: 20,
+          paddingVertical: 12,
+          zIndex: 999,
+          backgroundColor: PRIMARY,
+        }}>
+        {back == true ? (
+          <TouchableOpacity onPress={onPress}>
+            <Svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={20.957}
+              height={20.957}
+              viewBox="0 0 17.957 17.957">
+              <Path
+                data-name="Icon material-arrow_back"
+                d="M17.957 7.856H4.3l6.274-6.274L8.979 0 0 8.979l8.979 8.979 1.582-1.582L4.3 10.1h13.657z"
+                fill={WHITE}
+              />
+            </Svg>
+          </TouchableOpacity>
+        ) : null}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          {headerIcon}
+          {isheaderName ? (
+            <Text style={{marginLeft: 10, fontSize: 20, color: WHITE}}>
+              {headerName}
+            </Text>
+          ) : null}
+        </View>
+      </View>
+    );
+  } else if (variant === 'hamza') {
+    return (
+      <View
+        style={{
+          display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'flex-end',

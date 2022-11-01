@@ -55,7 +55,7 @@ const UploadBtn = ({svg, placeholder, onCallBack, label}) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          alert('Modal has been closed.');
+          // alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}
         style={{

@@ -18,7 +18,11 @@ export default function BuisnessCard({
 }) {
   console.log('item', item);
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => {
+        navigation.navigate(navigationPath, {id: item.id});
+      }}
       style={{
         // backgroundColor: selected === index ? PRIMARY : WHITE,
         backgroundColor: WHITE,
@@ -198,8 +202,13 @@ export default function BuisnessCard({
           />
           <Text style={{color: WHITE, marginLeft: 7}}>0</Text>
         </View>
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+}
 
-        {/* <View style={{position: 'absolute', bottom: 0}}>
+{
+  /* <View style={{position: 'absolute', bottom: 0}}>
         <Svg
           xmlns="http://www.w3.org/2000/svg"
           width={76.449}
@@ -220,8 +229,5 @@ export default function BuisnessCard({
             fill={'#dcdee8'}
           />
         </Svg>
-      </View> */}
-      </LinearGradient>
-    </View>
-  );
+      </View> */
 }

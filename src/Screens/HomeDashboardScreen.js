@@ -14,7 +14,7 @@ import {
   Text,
 } from 'react-native';
 import {IndividualDataCardsListing} from './IndividualDataCardsListing';
-import {BuisnessDataCardsListing} from './BuisnessDataCardsListing';
+import {BusinessDataCardsListing} from './BusinessDataCardsListing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState, useEffect} from 'react';
 import {storyPostApiCall, DashboardStoriesApiCall} from '../Apis/Repo';
@@ -59,7 +59,7 @@ export default function HomeDashboardScreen(props) {
     setImageType((imageType = type));
 
     var formdata = new FormData();
-    formdata.append('Id', '0');
+    formdata.append('Id', 1);
     formdata.append('Title', 'this is title');
     formdata.append('Description', 'this is description');
     formdata.append('UserId', JSON.stringify(userData.id));
@@ -107,7 +107,7 @@ export default function HomeDashboardScreen(props) {
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          alert('No stories found.');
+          // alert('No stories found.');
         }
       })
       .catch(err => {
@@ -186,7 +186,7 @@ export default function HomeDashboardScreen(props) {
         }}
         sceneContainerStyle={{backgroundColor: 'transprent'}}>
         <Tab.Screen name="Individual" component={IndividualDataCardsListing} />
-        <Tab.Screen name="Buisness" component={BuisnessDataCardsListing} />
+        <Tab.Screen name="Business" component={BusinessDataCardsListing} />
       </Tab.Navigator>
       {isLoading ? <Loader /> : null}
       {/* </ImageBackground> */}

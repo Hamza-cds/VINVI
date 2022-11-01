@@ -60,6 +60,7 @@ export default function IndividualSavedCard(props) {
           data={data}
           horizontal={false}
           keyExtractor={item => item.id}
+          contentContainerStyle={{paddingBottom: 70}}
           renderItem={({item, index}) => (
             <IndividualCard
               cta={true}
@@ -72,7 +73,9 @@ export default function IndividualSavedCard(props) {
           )}
         />
       ) : (
-        <Text style={{alignSelf: 'center', marginTop: 250}}>no saved card</Text>
+        <Text style={{alignSelf: 'center', marginTop: 250}}>
+          No saved cards
+        </Text>
       )}
 
       {isLoading ? <Loader /> : null}

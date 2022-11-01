@@ -63,7 +63,15 @@ export default function RegisterScreen(props) {
     if (isNullOrEmpty(value)) {
       setPassError(true);
       setPassErrorMsg('Enter Password');
+    } else if (isInvalidPassword(value)) {
+      setPassError(true);
+      setPassErrorMsg('Min 8 characters');
+    } else if (stringsNotEqual(confirmPassword, value)) {
+      setPassError(false);
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Passwords do not match');
     } else {
+      setConfirmPassError(false);
       setPassError(false);
     }
   };
@@ -71,10 +79,10 @@ export default function RegisterScreen(props) {
   const ConfirmPassCheck = value => {
     if (isNullOrEmpty(value)) {
       setConfirmPassError(true);
-      setConfirmPassErrorMsg('Enter Password');
+      setConfirmPassErrorMsg('Enter Confirm Password');
     } else if (stringsNotEqual(password, value)) {
       setConfirmPassError(true);
-      setConfirmPassErrorMsg('Password !match');
+      setConfirmPassErrorMsg('Passwords do not match');
     } else {
       setConfirmPassError(false);
     }
@@ -85,7 +93,8 @@ export default function RegisterScreen(props) {
     else if (phoneLengthNotValid(phoneNumber)) alert(PHONE_LENGTH_ERROR);
     else if (isNullOrEmpty(password)) alert(PASSWORD_ERROR);
     else if (isInvalidPassword(password)) alert(MINIMUM_PASSWORD);
-    else if (isNullOrEmpty(confirmPassword)) alert(PASSWORD_ERROR);
+    else if (isNullOrEmpty(confirmPassword))
+      alert("Confirm password can't be empty");
     else if (stringsNotEqual(password, confirmPassword)) alert(MATCH_ERROR);
     else {
       let object = {
@@ -171,6 +180,7 @@ export default function RegisterScreen(props) {
               inputType="password"
               keyboardType={'default'}
               ERROR={passError}
+              secure={true}
               ERROR_MESSAGE={passErrorMsg}
               onChange={value => {
                 PasswordCheck(value);
@@ -181,6 +191,7 @@ export default function RegisterScreen(props) {
             <RegisterInputBox
               placeholder="Confirm Password"
               inputType="password"
+              secure={true}
               ERROR={confirmpassError}
               ERROR_MESSAGE={confirmpassErrorMsg}
               onChange={value => {

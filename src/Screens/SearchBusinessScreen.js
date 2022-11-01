@@ -6,7 +6,7 @@ import InputBoxWOPlaceholder from '../Components/InputBoxWOPlaceholder';
 import Slider from '@react-native-community/slider';
 import Select from '../Components/Select';
 
-export default function SearchBuisnessScreen(props) {
+export default function SearchBusinessScreen(props) {
   const [range, setRange] = useState(0);
   const [DATA, setDATA] = useState('');
 

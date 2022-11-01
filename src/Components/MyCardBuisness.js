@@ -56,7 +56,7 @@ export default function MyCardBuisness({
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate('BuisnessScreen', {
+          navigation.navigate('BusinessScreen', {
             id: item.id,
             edit: EDIT,
           });

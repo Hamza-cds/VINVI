@@ -32,7 +32,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import EditBusinessAddCategoryModal from './EditBusinessAddCategoryModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BuisnessScreen = props => {
+const BusinessScreen = props => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categoryWiseData, setCategoryWiseData] = useState('');
   const navigation = props.navigation;
@@ -763,7 +763,7 @@ const BuisnessScreen = props => {
   );
 };
 
-export default BuisnessScreen;
+export default BusinessScreen;
 
 function CategoryFilter({
   selectedCategory,

@@ -96,16 +96,19 @@ export default function NewCardScreen(props) {
             label={'Upload Cover Picture'}
             onCallBack={coverImageFun}
           />
-          <BtnComponent
-            placeholder="Next"
-            onPress={() => {
-              dispatch(PCData(object));
-              // dispatch(PCDComplete(''));
 
-              props.navigation.navigate('NewPersonalCard4');
-              // onNext();
-            }}
-          />
+          <View style={{marginVertical: 10}}>
+            <BtnComponent
+              placeholder="Next"
+              onPress={() => {
+                dispatch(PCData(object));
+                // dispatch(PCDComplete(''));
+
+                props.navigation.navigate('NewPersonalCard4');
+                // onNext();
+              }}
+            />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

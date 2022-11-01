@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import {
   Black,
+  GREY,
   PRIMARY,
   PRIMARY1,
   SECONDARY,
@@ -37,6 +38,7 @@ export default function Select({
   const [openModal, setOpenModal] = useState(false);
   let [selectedItem, setSelectedItem] = useState([]);
   let [searchText, setSearchText] = useState('');
+  console.log('selectedItem', selectedItem);
 
   const itemSelection = () => {
     setOpenModal(false);
@@ -109,15 +111,14 @@ export default function Select({
           paddingHorizontal: 10,
           flexDirection: 'row',
         }}>
-        <TouchableOpacity
-          onPress={() => onOpenModal()}
-          style={{flex: 1, justifyContent: 'center'}}>
+        <TouchableOpacity onPress={() => onOpenModal()} style={{flex: 1}}>
           <Text
             style={{
               color: 'rgba(0,0,0,.5)',
-              fontSize: 14,
+              fontSize: 12,
             }}>
-            {selectedItem ? selectedItem.title : placeholder}
+            {/* {selectedItem ? selectedItem.name : placeholder} */}
+            {placeholder}
           </Text>
         </TouchableOpacity>
       </View>

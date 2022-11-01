@@ -6,7 +6,7 @@ import Header from '../Components/Header';
 import {Height, Width} from '../Constants/Constants';
 import RegisterInputBox from '../Components/RegisterInputBox';
 import {isNullOrEmpty, stringsNotEqual} from '../Constants/TextUtils';
-import {PhoneNumber} from '../Constants/Validations';
+import {isInvalidPassword, PhoneNumber} from '../Constants/Validations';
 import {GenerateCodeApiCall} from '../Apis/Repo';
 import Loader from '../Components/Loader';
 
@@ -26,15 +26,25 @@ const ForgetPasswordScreen = props => {
   const [confirmpassErrorMsg, setConfirmPassErrorMsg] = useState(false);
 
   const onSend = () => {
+    // debugger;
     if (isNullOrEmpty(phone)) {
       setError(true);
       setErrorMsg('Enter Number');
+      alert("Phone number can't be empty");
+    } else if (PhoneNumber(phone)) {
+      alert('Invalid Phone Number');
     } else if (isNullOrEmpty(pass)) {
-      setPass(true);
+      setPassError(true);
       setPassErrorMsg('Enter Password');
+      alert("Password can't be empty");
     } else if (isNullOrEmpty(conPass)) {
       setConfirmPassError(true);
       setConfirmPassErrorMsg('Enter Password');
+      alert("Confirm Password can't be empty");
+    } else if (stringsNotEqual(pass, conPass)) {
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Passwords do not match');
+      alert('Passwords do not match');
     } else {
       let object = {
         phoneno: phone,
@@ -67,18 +77,29 @@ const ForgetPasswordScreen = props => {
     if (isNullOrEmpty(value)) {
       setPassError(true);
       setPassErrorMsg('Enter Password');
+    } else if (isInvalidPassword(value)) {
+      setPassError(true);
+      setPassErrorMsg('Min 8 characters');
+    } else if (!isNullOrEmpty(conPass)) {
+      if (stringsNotEqual(conPass, value)) {
+        setPassError(false);
+        setConfirmPassError(true);
+        setConfirmPassErrorMsg('Passwords do not match');
+      }
     } else {
+      setConfirmPassError(false);
       setPassError(false);
     }
   };
 
   const ConfirmPassCheck = value => {
+    console.log('value', value);
     if (isNullOrEmpty(value)) {
       setConfirmPassError(true);
-      setConfirmPassErrorMsg('Enter Password');
+      setConfirmPassErrorMsg('Enter Confirm Password');
     } else if (stringsNotEqual(pass, value)) {
       setConfirmPassError(true);
-      setConfirmPassErrorMsg('Password !match');
+      setConfirmPassErrorMsg('Passwords do not match');
     } else {
       setConfirmPassError(false);
     }
@@ -182,12 +203,14 @@ const ForgetPasswordScreen = props => {
               }}
             />
           </View>
-          <BtnComponent
-            placeholder="Send Code"
-            onPress={() => {
-              onSend();
-            }}
-          />
+          <View style={{marginBottom: 110}}>
+            <BtnComponent
+              placeholder="Send Code"
+              onPress={() => {
+                onSend();
+              }}
+            />
+          </View>
         </View>
         {isLoading ? <Loader /> : null}
       </ImageBackground>

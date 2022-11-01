@@ -92,7 +92,7 @@ export default function MyCardsDashboardScreen({navigation}) {
             // component={<Individual data={data} />}
           />
           <Tab.Screen
-            name="Buisness"
+            name="Business"
             component={Buisness}
             // component={<Buisness data={data} />}
           />

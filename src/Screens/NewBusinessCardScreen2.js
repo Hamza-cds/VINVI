@@ -17,7 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {BCDComplete} from '../../Store/Action';
 import ProductModal from './ProductModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {isNullOrEmpty} from '../Constants/TextUtils';
+import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function NewBusinessCardScreen2(props) {
   const dispatch = useDispatch();
@@ -41,12 +41,16 @@ export default function NewBusinessCardScreen2(props) {
   const [categoryName, setCategoryName] = useState('');
   const [selectedIndex, setSelectedIndex] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // console.log('product', product);
+  console.log('categoryName', categoryName);
 
   const categoryNameArray = () => {
-    let newCategoryArray = [...productCategory];
-    newCategoryArray.push(categoryName);
-    setProductCategory((productCategory = newCategoryArray));
+    if (!isNullOrEmpty(categoryName)) {
+      let newCategoryArray = [...productCategory];
+      newCategoryArray.push(categoryName);
+      setProductCategory((productCategory = newCategoryArray));
+    } else {
+      alert('Please add category');
+    }
   };
 
   const onFinish = () => {
@@ -310,7 +314,9 @@ export default function NewBusinessCardScreen2(props) {
             data={product}
             keyExtractor={item => item.id}
             ListFooterComponent={() => (
-              <BtnComponent placeholder={'Finish'} onPress={onFinish} />
+              <View style={{marginTop: 20}}>
+                <BtnComponent placeholder={'Finish'} onPress={onFinish} />
+              </View>
             )}
             renderItem={({item, index}) => (
               <View>
@@ -336,7 +342,7 @@ export default function NewBusinessCardScreen2(props) {
             )}
           />
         </View>
-        {/* {isLoading ? <Loader /> : null} */}
+        {isLoading ? <Loader /> : null}
       </View>
     </SafeAreaView>
   );

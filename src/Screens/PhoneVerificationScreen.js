@@ -87,19 +87,21 @@ export default function PhoneVerificationScreen(props, navigation) {
                 color: LIGHT_TEXT_COLOR,
                 marginBottom: 20,
               }}>
-              Enter the 6-Digit Code you Recieved on you phone
+              Enter the 6-Digit Code you recieved on your phone
             </Text>
             <PhoneVerificationCell onChange={text => setCode(text)} />
           </View>
-          <BtnComponent
-            placeholder="Verify"
-            onPress={() => {
-              onVerify();
-            }}
-            // onPress={() => {
-            //   navigation.navigate('PhoneVerification');
-            // }}
-          />
+          <View style={{marginBottom: 200}}>
+            <BtnComponent
+              placeholder="Verify"
+              onPress={() => {
+                onVerify();
+              }}
+              // onPress={() => {
+              //   navigation.navigate('PhoneVerification');
+              // }}
+            />
+          </View>
         </View>
         {isLoading ? <Loader /> : null}
       </ImageBackground>

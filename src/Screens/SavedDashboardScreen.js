@@ -101,7 +101,7 @@ export default function SavedDashboardScreen(props, navigation) {
         }}
         sceneContainerStyle={{backgroundColor: WHITE}}>
         <Tab.Screen name="Individual" component={IndividualSavedCard} />
-        <Tab.Screen name="Buisness" component={BusinessSavedCard} />
+        <Tab.Screen name="Business" component={BusinessSavedCard} />
       </Tab.Navigator>
 
       {/* {data != null ? (
