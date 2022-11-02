@@ -7,17 +7,19 @@ import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function DashboardStories({userStories}) {
   const [data, setData] = useState([]);
-  console.log('stories data here', userStories);
+  console.log('stories ***************', userStories);
 
   useEffect(() => {
     mapData(userStories);
   }, [userStories]);
 
   const mapData = list => {
+    console.log('list*************', list);
     let finalList = [];
 
     for (let index = 0; index < list.length; index++) {
-      const element = list[index];
+      let element = list[index];
+      console.log('element element', element);
 
       let storiesArray = [];
       for (let index = 0; index < element.stories.length; index++) {
@@ -45,37 +47,6 @@ export default function DashboardStories({userStories}) {
     // debugger;
     setData(finalList);
   };
-
-  const DATA = [
-    {
-      user_id: 1,
-      user_image:
-        'https://pbs.twimg.com/profile_images/1222140802475773952/61OmyINj.jpg',
-      user_name: 'Ahmet Çağlar Durmuş',
-      stories: [
-        {
-          story_id: 2,
-          story_image:
-            'https://vinvi.dsmeglobal.com/BusinessProduct//c33ff48d-7a18-45fa-a94b-d5cc6ff0d1f1.mp4',
-        },
-      ],
-    },
-    {
-      user_id: 2,
-      user_image:
-        'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-      user_name: 'Test User',
-      stories: [
-        {
-          story_id: 1,
-          story_image:
-            'https://vinvi.dsmeglobal.com/BusinessProduct//c33ff48d-7a18-45fa-a94b-d5cc6ff0d1f1.mp4',
-          swipeText: 'Custom swipe text for this story',
-          onPress: () => console.log('story 1 swiped'),
-        },
-      ],
-    },
-  ];
 
   return (
     <View>

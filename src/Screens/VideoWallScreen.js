@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   FlatList,
   View,
@@ -21,6 +21,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {storyPostApiCall} from '../Apis/Repo';
 import {isValidImage, isValidVideo} from '../Constants/Validations';
 import {VLCPlayer, VlCPlayerView} from 'react-native-vlc-media-player';
+import Video from 'react-native-video';
 
 export default function VideoWallScreen({navigation, route}) {
   const [numOfColoums, setNumOfColoums] = useState(3);
@@ -32,8 +33,10 @@ export default function VideoWallScreen({navigation, route}) {
   let [image, setImage] = useState('');
   let [uplaodMedia, setUploadMedia] = useState('');
   let [mediaType, setMediaType] = useState('');
+  let [fileType, setFileType] = useState('');
+  let uploadType = 2;
   let page = 1;
-  let limit = 20;
+  let limit = 10;
 
   const DATA = useSelector(state => state.UserData);
   console.log('dispatch DATA', DATA);
@@ -44,11 +47,12 @@ export default function VideoWallScreen({navigation, route}) {
 
   const GetVideoWallData = () => {
     setIsLoading(true);
-    GetDataVideoWallApi(page, limit)
+    GetDataVideoWallApi(uploadType, page, limit)
       .then(res => {
         console.log('video wall res', res);
         if (res.data.success) {
           setData((data = res.data.result));
+          console.log('data video wall', data);
           setIsLoading(false);
         } else {
           setIsLoading(false);
@@ -75,7 +79,8 @@ export default function VideoWallScreen({navigation, route}) {
     setMediaType((mediaType = type));
 
     var formdata = new FormData();
-    formdata.append('Id', 2);
+    formdata.append('Id', '0');
+    formdata.append('UploadType', 2);
     formdata.append('Title', 'this is title');
     formdata.append('Description', 'this is description');
     formdata.append('UserId', JSON.stringify(DATA.id));
@@ -105,6 +110,14 @@ export default function VideoWallScreen({navigation, route}) {
         console.log('err', err);
       });
   };
+
+  // const getFileType = () => {
+  //   console.log('image....', image);
+  //   var Type = image.media;
+  //   console.log('imageType', Type);
+  //   var type = Type.split('.')[1];
+  //   console.log('type', type);
+  // };
 
   const checkMedia = image => {
     console.log('image....', image);
@@ -153,16 +166,28 @@ export default function VideoWallScreen({navigation, route}) {
                     aspectRatio: 1,
                     marginRight: 0.9,
                     backgroundColor: GREY,
+                    marginTop: 10,
                   }}>
-                  <Image
-                    source={{uri: URL.concat(item.media)}}
-                    style={{
-                      width: '100%',
-                      aspectRatio: 1,
-                      marginRight: 0.9,
-                      backgroundColor: GREY,
-                    }}
-                  />
+                  {!item.media.includes('.mp4') ? (
+                    <Image
+                      source={{uri: URL.concat(item.media)}}
+                      style={{
+                        width: '100%',
+                        aspectRatio: 1,
+                        marginRight: 0.9,
+                        backgroundColor: GREY,
+                      }}
+                    />
+                  ) : (
+                    <VLCPlayer
+                      style={{flex: 1}}
+                      videoAspectRatio="16:9"
+                      source={{uri: URL.concat(image.media)}}
+                      // showBack={true}
+                      seek={0.2}
+                      paused={true}
+                    />
+                  )}
                 </TouchableOpacity>
               </>
             )}
@@ -175,7 +200,7 @@ export default function VideoWallScreen({navigation, route}) {
               width: '100%',
               height: 300,
             }}>
-            <Text style={{color: '#242424'}}>No data !</Text>
+            <Text style={{color: '#242424'}}>No data!</Text>
           </View>
         )}
 
@@ -227,12 +252,40 @@ export default function VideoWallScreen({navigation, route}) {
         }}>
         <View
           style={{flex: 1, backgroundColor: 'black', justifyContent: 'center'}}>
+          {/* <Video
+            source={{uri: URL.concat(image.media)}} // Can be a URL or a local file.
+            ref={ref => {
+              let player = ref;
+            }} // Store reference
+            //  onBuffer={this.onBuffer}                // Callback when remote video is buffering
+            //  onError={this.videoError}               // Callback when video cannot be loaded
+            style={{height: '100%', width: '100%'}}
+          /> */}
+
           <VLCPlayer
             style={{flex: 1}}
-            videoAspectRatio="16:9"
+            // videoAspectRatio="16:9"
+            // autoAspectRatio={true}
             source={{uri: URL.concat(image.media)}}
+            showBack={true}
+            resizeMode={'contain'}
+            playInBackground={false}
+            repeat={true}
+            paused={false}
+            onProgress={() => {
+              setIsLoading(true);
+              console.log('progress');
+            }}
+            onPlaying={() => {
+              setIsLoading(false);
+              console.log('playing');
+            }}
+            onBuffering={() => {
+              setIsLoading(true);
+            }}
           />
         </View>
+        {isLoading ? <Loader /> : null}
       </Modal>
 
       <Modal
@@ -299,128 +352,3 @@ export default function VideoWallScreen({navigation, route}) {
     </>
   );
 }
-
-// import React, {useState, useRef} from 'react';
-// import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-// import Video from 'react-native-video';
-// import MediaControls, {PLAYER_STATES} from 'react-native-media-controls';
-
-// export default function VideoWallScreen() {
-//   const videoPlayer = useRef(null);
-//   const [currentTime, setCurrentTime] = useState(0);
-//   const [duration, setDuration] = useState(0);
-//   const [isFullScreen, setIsFullScreen] = useState(false);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [paused, setPaused] = useState(false);
-//   const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
-//   const [screenType, setScreenType] = useState('content');
-
-//   const onSeek = seek => {
-//     //Handler for change in seekbar
-//     videoPlayer.current.seek(seek);
-//   };
-
-//   const onPaused = playerState => {
-//     //Handler for Video Pause
-//     setPaused(!paused);
-//     setPlayerState(playerState);
-//   };
-
-//   const onReplay = () => {
-//     //Handler for Replay
-//     setPlayerState(PLAYER_STATES.PLAYING);
-//     videoPlayer.current.seek(0);
-//   };
-
-//   const onProgress = data => {
-//     // Video Player will progress continue even if it ends
-//     if (!isLoading && playerState !== PLAYER_STATES.ENDED) {
-//       setCurrentTime(data.currentTime);
-//     }
-//   };
-
-//   const onLoad = data => {
-//     setDuration(data.duration);
-//     setIsLoading(false);
-//   };
-
-//   const onLoadStart = data => setIsLoading(true);
-
-//   const onEnd = () => setPlayerState(PLAYER_STATES.ENDED);
-
-//   const onError = () => alert('Oh! ', error);
-
-//   const exitFullScreen = () => {
-//     alert('Exit full screen');
-//   };
-
-//   const enterFullScreen = () => {};
-
-//   const onFullScreen = () => {
-//     setIsFullScreen(isFullScreen);
-//     if (screenType == 'content') setScreenType('cover');
-//     else setScreenType('content');
-//   };
-
-//   const renderToolbar = () => (
-//     <View>
-//       <Text style={styles.toolbar}> toolbar </Text>
-//     </View>
-//   );
-
-//   const onSeeking = currentTime => setCurrentTime(currentTime);
-
-//   return (
-//     <View style={{flex: 1}}>
-//       <Video
-//         onEnd={onEnd}
-//         onLoad={onLoad}
-//         onLoadStart={onLoadStart}
-//         onProgress={onProgress}
-//         paused={paused}
-//         ref={videoPlayer}
-//         resizeMode={screenType}
-//         onFullScreen={isFullScreen}
-//         source={{
-//           uri: '../Assets/hamtum.mp4',
-//         }}
-//         style={styles.mediaPlayer}
-//         volume={10}
-//       />
-//       <MediaControls
-//         duration={duration}
-//         isLoading={isLoading}
-//         mainColor="#333"
-//         onFullScreen={onFullScreen}
-//         onPaused={onPaused}
-//         onReplay={onReplay}
-//         onSeek={onSeek}
-//         onSeeking={onSeeking}
-//         playerState={playerState}
-//         progress={currentTime}
-//         toolbar={renderToolbar()}
-//       />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   toolbar: {
-//     marginTop: 30,
-//     backgroundColor: 'white',
-//     padding: 10,
-//     borderRadius: 5,
-//   },
-//   mediaPlayer: {
-//     position: 'absolute',
-//     top: 0,
-//     left: 0,
-//     bottom: 0,
-//     right: 0,
-//     backgroundColor: 'black',
-//     justifyContent: 'center',
-//   },
-// });

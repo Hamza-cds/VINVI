@@ -448,9 +448,9 @@ export async function GenerateCodeApiCall(obj) {
   }
 }
 
-export async function GetDataVideoWallApi(page, limit) {
+export async function GetDataVideoWallApi(UploadType, page, limit) {
   let route = URL.concat(
-    `/api/UserStory/GetAll?PageNumber=${page}&Limit=${limit}`,
+    `/api/UserStory/GetAll?UploadType=${UploadType}&PageNumber=${page}&Limit=${limit}`,
   );
   console.log('getVideoWall Data Request  : ', route);
   let apiRes = null;

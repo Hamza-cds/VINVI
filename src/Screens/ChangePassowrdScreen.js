@@ -12,6 +12,7 @@ import Loader from '../Components/Loader';
 import {isNullOrEmpty, stringsNotEqual} from '../Constants/TextUtils';
 import RegisterInputBox from '../Components/RegisterInputBox';
 import {UserCredential} from '../../Store/Action';
+import {isInvalidPassword} from '../Constants/Validations';
 
 const ChangePassowrdScreen = ({navigation, route}) => {
   let [userData, setUserData] = useState('');
@@ -46,17 +47,59 @@ const ChangePassowrdScreen = ({navigation, route}) => {
       setErrorMsg('Enter password');
     } else if (stringsNotEqual(credential, value)) {
       setError(true);
-      setErrorMsg('Password do not match');
+      setErrorMsg('Incorrect old password');
     } else {
       setError(false);
     }
   };
 
+  // const PasswordCheck = value => {
+  //   if (isNullOrEmpty(value)) {
+  //     setPassError(true);
+  //     setPassErrorMsg('Enter Password');
+  //   } else {
+  //     setPassError(false);
+  //   }
+  // };
+  console.log('newPass', newPass);
+  console.log('conPass', conPass);
+  // const PasswordCheck = value => {
+  //   if (isNullOrEmpty(value)) {
+  //     setPassError(true);
+  //     setPassErrorMsg('Enter Password');
+  //   } else if (isInvalidPassword(value)) {
+  //     setPassError(true);
+  //     setPassErrorMsg('Min 8 characters');
+  //   } else if (stringsNotEqual(conPass, newPass)) {
+  //     setPassError(false);
+  //     setConfirmPassError(true);
+  //     setConfirmPassErrorMsg('Passwords do not match');
+  //   } else {
+  //     setConfirmPassError(false);
+  //     setPassError(false);
+  //   }
+  // };
+
   const PasswordCheck = value => {
     if (isNullOrEmpty(value)) {
       setPassError(true);
       setPassErrorMsg('Enter Password');
+    } else if (isInvalidPassword(value)) {
+      setPassError(true);
+      setPassErrorMsg('Min 8 characters');
+      if (stringsNotEqual(conPass, value)) {
+        // setPassError(false);
+        setConfirmPassError(true);
+        setConfirmPassErrorMsg('Passwords do not match');
+      }
+    } else if (!isNullOrEmpty(conPass)) {
+      if (stringsNotEqual(conPass, value)) {
+        setPassError(false);
+        setConfirmPassError(true);
+        setConfirmPassErrorMsg('Passwords do not match');
+      }
     } else {
+      setConfirmPassError(false);
       setPassError(false);
     }
   };
@@ -64,7 +107,7 @@ const ChangePassowrdScreen = ({navigation, route}) => {
   const ConfirmPassCheck = value => {
     if (isNullOrEmpty(value)) {
       setConfirmPassError(true);
-      setConfirmPassErrorMsg('Enter Password');
+      setConfirmPassErrorMsg('Re-Enter Password');
     } else if (stringsNotEqual(newPass, value)) {
       setConfirmPassError(true);
       setConfirmPassErrorMsg('Password do not match');
@@ -77,12 +120,19 @@ const ChangePassowrdScreen = ({navigation, route}) => {
     if (isNullOrEmpty(oldPass)) {
       setError(true);
       setErrorMsg('Enter password');
+      alert('Previous password cannot be empty');
+    } else if (stringsNotEqual(credential, oldPass)) {
+      alert('Invalid old password');
     } else if (isNullOrEmpty(newPass)) {
       setPassError(true);
       setPassErrorMsg('Enter Password');
+      alert('New password cannot be empty');
     } else if (isNullOrEmpty(conPass)) {
       setConfirmPassError(true);
       setConfirmPassErrorMsg('Enter Password');
+      alert('Re-Enter password cannot be empty');
+    } else if (stringsNotEqual(newPass, conPass)) {
+      alert('Passowrds do not match');
     } else {
       let object = {
         Id: DATA.id,
@@ -163,6 +213,7 @@ const ChangePassowrdScreen = ({navigation, route}) => {
               <RegisterInputBox
                 placeholder="Enter Previous Password"
                 ERROR={Error}
+                maxLength={100}
                 ERROR_MESSAGE={ErrorMsg}
                 backgroundColor={'#EFEFEF'}
                 onChange={value => {
@@ -173,6 +224,7 @@ const ChangePassowrdScreen = ({navigation, route}) => {
               <RegisterInputBox
                 placeholder="Enter New Password"
                 ERROR={passError}
+                maxLength={100}
                 ERROR_MESSAGE={passErrorMsg}
                 backgroundColor={'#EFEFEF'}
                 onChange={value => {
@@ -182,6 +234,7 @@ const ChangePassowrdScreen = ({navigation, route}) => {
               />
               <RegisterInputBox
                 placeholder="Re-Enter New Password"
+                maxLength={100}
                 ERROR={confirmpassError}
                 ERROR_MESSAGE={confirmpassErrorMsg}
                 backgroundColor={'#EFEFEF'}

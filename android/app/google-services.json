@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "118416595994",
+    "project_id": "vinvi-f7578",
+    "storage_bucket": "vinvi-f7578.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118416595994:android:3628a5d072a361d26685a3",
+        "android_client_info": {
+          "package_name": "com.vinvi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "118416595994-5n061nl5dg3dvr6uts0pq02mmp67obf1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinvi",
+            "certificate_hash": "2bcecbf8bad73a972966f99ff66a9f13bf0821e7"
+          }
+        },
+        {
+          "client_id": "118416595994-6lbokrgghgir6t624jhndn1l0c3nkktv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-qpVW9fF0ho7GBXpDW_Qu4brW8M51LpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "118416595994-6lbokrgghgir6t624jhndn1l0c3nkktv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

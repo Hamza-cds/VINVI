@@ -29,7 +29,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
 import {useDispatch} from 'react-redux';
-import {UserData} from '../../Store/Action';
+import {UserData, UserCredential} from '../../Store/Action';
 import RegisterInputBox from '../Components/RegisterInputBox';
 
 export default function LoginScreen(props) {
@@ -45,8 +45,9 @@ export default function LoginScreen(props) {
   const onLogin = () => {
     if (isNullOrEmpty(phoneNumber)) {
       alert(PHONE_EMPTY_ERROR);
-    } else if (phoneLengthNotValid(phoneNumber)) alert(PHONE_LENGTH_ERROR);
-    else if (isNullOrEmpty(password)) {
+    } else if (phoneLengthNotValid(phoneNumber)) {
+      alert(PHONE_LENGTH_ERROR);
+    } else if (isNullOrEmpty(password)) {
       alert(PASSWORD_ERROR);
     } else if (isInvalidPassword(password)) alert(INCOMPLETE_PASSWORD);
     else {
@@ -67,6 +68,7 @@ export default function LoginScreen(props) {
               JSON.stringify(response.data.result),
             );
             dispatch(UserData(response.data.result));
+            dispatch(UserCredential(password));
             AsyncStorage.setItem('logedIn', JSON.stringify(logedIn));
 
             AsyncStorage.setItem('phone', phoneNumber);

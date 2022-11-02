@@ -17,18 +17,29 @@ import {IndividualDataCardsListing} from './IndividualDataCardsListing';
 import {BusinessDataCardsListing} from './BusinessDataCardsListing';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState, useEffect} from 'react';
-import {storyPostApiCall, DashboardStoriesApiCall} from '../Apis/Repo';
+import {
+  storyPostApiCall,
+  DashboardStoriesApiCall,
+  GetDataVideoWallApi,
+} from '../Apis/Repo';
 import Loader from '../Components/Loader';
 import {useFocusEffect} from '@react-navigation/core';
+// import {useSelector} from 'react-redux';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function HomeDashboardScreen(props) {
+  // const credential = useSelector(state => state.UserCredential);
+  // console.log('credential', credential);
+
   let [storyMedia, setStoryMedia] = useState('');
   let [userData, setUserData] = useState('');
   let [imageType, setImageType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   let [userStories, setUserStories] = useState([]);
+  let uploadType = 1;
+  let page = 1;
+  let limit = 10;
   // console.log('storyMedia', storyMedia);
   // console.log('userStories', userStories);
 
@@ -59,7 +70,8 @@ export default function HomeDashboardScreen(props) {
     setImageType((imageType = type));
 
     var formdata = new FormData();
-    formdata.append('Id', 1);
+    formdata.append('Id', '0');
+    formdata.append('UploadType', 1);
     formdata.append('Title', 'this is title');
     formdata.append('Description', 'this is description');
     formdata.append('UserId', JSON.stringify(userData.id));
@@ -93,13 +105,13 @@ export default function HomeDashboardScreen(props) {
   };
 
   const getDashboardStories = () => {
-    let obj = {
-      userId: 0,
-      pageNumber: 1,
-      limit: 10,
-    };
+    // let obj = {
+    //   userId: 0,
+    //   pageNumber: 1,
+    //   limit: 10,
+    // };
     setIsLoading(true);
-    DashboardStoriesApiCall(obj)
+    DashboardStoriesApiCall(page, limit)
       .then(res => {
         console.log('stories res', res);
         if (res.data.success) {
