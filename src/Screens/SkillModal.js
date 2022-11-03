@@ -58,13 +58,18 @@ export function SkillModal({
   };
 
   const FunDelSkill = index => {
-    // console.log('index', index);
     let newArr = [...modalSkillArray];
     setModalSKillArray(
       (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
     );
-    setModalSKillArray(newArr);
-    setModalSkill((modalSkillArray = newArr));
+    // setModalSKillArray((modalSkillArray = newArr));
+    // console.log('index', index);
+    // let newArr = [...modalSkillArray];
+    // setModalSKillArray(
+    //   (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
+    // );
+    // setModalSKillArray(newArr);
+    // setModalSkill((modalSkillArray = newArr));
   };
 
   /*These functions used when editing personal cards skill*/
@@ -222,6 +227,7 @@ export function SkillModal({
                 width: 50,
                 alignSelf: 'flex-end',
                 borderRadius: 5,
+                marginVertical: 5,
               }}>
               <Text
                 style={{color: WHITE, alignSelf: 'center', marginVertical: 5}}>
@@ -270,6 +276,7 @@ export function SkillModal({
               <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                style={{marginBottom: 15}}
                 data={modalSkillArray}
                 keyExtractor={item => item.id}
                 renderItem={({item, index}) => (

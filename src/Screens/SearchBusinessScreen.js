@@ -92,7 +92,7 @@ export default function SearchBusinessScreen(props) {
       <BtnComponent
         placeholder="Search"
         onPress={() => {
-          props.navigation.navigate('SearchResult');
+          // props.navigation.navigate('SearchResult');
         }}
       />
     </View>

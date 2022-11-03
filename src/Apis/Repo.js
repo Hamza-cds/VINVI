@@ -177,8 +177,8 @@ export async function getBusinessCardByIdApiCall(id) {
   }
 }
 
-export async function getPersonalCardByUserIdApiCall() {
-  let route = URL.concat('/api/PersonalCard/GetByUserId');
+export async function getPersonalCardByUserIdApiCall(id) {
+  let route = URL.concat(`/api/PersonalCard/GetByUserId?id=${id}`);
   console.log('getPersonalCardByUserId Request : ', route);
   let apiRes = null;
   try {

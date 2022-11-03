@@ -29,7 +29,7 @@ export default function ChangePasswordInputBox({
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={TEXT_COLOR}
-        style={{paddingHorizontal: 20}}
+        style={{paddingHorizontal: 20, flex: 1}}
         onChangeText={onChange}
         onFocus={() => {
           setFocus(true);

@@ -240,7 +240,7 @@ export default function Select({
               </View>
               {/************SEARCH BAR HERE************* */}
 
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -288,7 +288,7 @@ export default function Select({
                     style={{alignSelf: 'center'}}
                   />
                 </TouchableOpacity>
-              </View>
+              </View> */}
 
               {/* **************SEARCH BAR END************** */}
 
@@ -335,7 +335,7 @@ export default function Select({
                   </TouchableOpacity>
                 )}
               />
-              <View style={{marginHorizontal: 20}}>
+              <View style={{marginHorizontal: 20, marginTop: 10}}>
                 <BtnComponent
                   placeholder={'Select'}
                   TextColor={White}

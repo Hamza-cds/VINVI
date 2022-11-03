@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import RegisterInputBox from '../Components/RegisterInputBox';
@@ -133,111 +134,114 @@ export default function RegisterScreen(props) {
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
-      <ScrollView style={{flex: 1}}>
-        <ImageBackground
-          source={require('../Assets/registerbg.png')}
-          style={{flex: 1, minHeight: Height}}>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              paddingVertical: 20,
-              paddingHorizontal: 20,
-              paddingBottom: 50,
-              display: 'flex',
-              justifyContent: 'space-evenly',
-            }}>
-            <Image
-              source={require('../Assets/vinvilightlogo.png')}
-              style={{
-                marginVertical: 20,
-                alignSelf: 'center',
-                width: 100,
-                height: 55,
-              }}></Image>
-            <Text
-              style={{
-                fontSize: 30,
-                color: WHITE,
-                fontWeight: 'bold',
-                marginBottom: 5,
-              }}>
-              Join Us
-            </Text>
-            <RegisterInputBox
-              placeholder="Phone"
-              keyboardType={'number-pad'}
-              maxLength={11}
-              ERROR={Error}
-              ERROR_MESSAGE={ErrorMsg}
-              onChange={value => {
-                NumberCheck(value);
-                setPhoneNumber(value);
-              }}
-            />
-            <RegisterInputBox
-              placeholder="Password"
-              inputType="password"
-              keyboardType={'default'}
-              ERROR={passError}
-              secure={true}
-              ERROR_MESSAGE={passErrorMsg}
-              onChange={value => {
-                PasswordCheck(value);
-                setPassword(value);
-              }}
-            />
-
-            <RegisterInputBox
-              placeholder="Confirm Password"
-              inputType="password"
-              secure={true}
-              ERROR={confirmpassError}
-              ERROR_MESSAGE={confirmpassErrorMsg}
-              onChange={value => {
-                ConfirmPassCheck(value);
-                setConfirmPassword(value);
-              }}
-            />
-            <BtnComponent
-              placeholder="Sign Up"
-              onPress={() => {
-                onSignUp();
-              }}
-            />
-            <Text style={{alignSelf: 'center', color: WHITE, marginBottom: 10}}>
-              OR
-            </Text>
+      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+        <ScrollView style={{flex: 1}}>
+          <ImageBackground
+            source={require('../Assets/registerbg.png')}
+            style={{flex: 1, minHeight: Height}}>
             <View
               style={{
-                marginTop: 20,
+                width: '100%',
+                height: '100%',
+                paddingVertical: 20,
+                paddingHorizontal: 20,
+                paddingBottom: 50,
                 display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
+                justifyContent: 'space-evenly',
               }}>
-              <Text style={{color: WHITE, fontSize: 14}}>
-                Already have an account?
-              </Text>
-              <TouchableOpacity
-                style={{marginLeft: 10}}
-                onPress={() => {
-                  props.navigation.push('Login');
+              <Image
+                source={require('../Assets/vinvilightlogo.png')}
+                style={{
+                  marginVertical: 20,
+                  alignSelf: 'center',
+                  width: 100,
+                  height: 55,
+                }}></Image>
+              <Text
+                style={{
+                  fontSize: 30,
+                  color: WHITE,
+                  fontWeight: 'bold',
+                  marginBottom: 5,
                 }}>
-                <Text
-                  style={{
-                    color: SECONDARY,
-                    textDecorationStyle: 'solid',
-                    textDecorationLine: 'underline',
-                    fontSize: 14,
-                  }}>
-                  Login
+                Join Us
+              </Text>
+              <RegisterInputBox
+                placeholder="Phone"
+                keyboardType={'number-pad'}
+                maxLength={11}
+                ERROR={Error}
+                ERROR_MESSAGE={ErrorMsg}
+                onChange={value => {
+                  NumberCheck(value);
+                  setPhoneNumber(value);
+                }}
+              />
+              <RegisterInputBox
+                placeholder="Password"
+                inputType="password"
+                keyboardType={'default'}
+                ERROR={passError}
+                secure={true}
+                ERROR_MESSAGE={passErrorMsg}
+                onChange={value => {
+                  PasswordCheck(value);
+                  setPassword(value);
+                }}
+              />
+
+              <RegisterInputBox
+                placeholder="Confirm Password"
+                inputType="password"
+                secure={true}
+                ERROR={confirmpassError}
+                ERROR_MESSAGE={confirmpassErrorMsg}
+                onChange={value => {
+                  ConfirmPassCheck(value);
+                  setConfirmPassword(value);
+                }}
+              />
+              <BtnComponent
+                placeholder="Sign Up"
+                onPress={() => {
+                  onSignUp();
+                }}
+              />
+              <Text
+                style={{alignSelf: 'center', color: WHITE, marginBottom: 10}}>
+                OR
+              </Text>
+              <View
+                style={{
+                  marginTop: 20,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                <Text style={{color: WHITE, fontSize: 14}}>
+                  Already have an account?
                 </Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={{marginLeft: 10}}
+                  onPress={() => {
+                    props.navigation.push('Login');
+                  }}>
+                  <Text
+                    style={{
+                      color: SECONDARY,
+                      textDecorationStyle: 'solid',
+                      textDecorationLine: 'underline',
+                      fontSize: 14,
+                    }}>
+                    Login
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          {isLoading ? <Loader /> : null}
-        </ImageBackground>
-      </ScrollView>
+            {isLoading ? <Loader /> : null}
+          </ImageBackground>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

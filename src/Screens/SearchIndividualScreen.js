@@ -223,7 +223,7 @@ const SearchIndividualScreen = props => {
       <BtnComponent
         placeholder="Search"
         onPress={() => {
-          navigation.navigate('SearchResult');
+          // props.navigation.navigate('SearchResult');
         }}
       />
     </View>

@@ -143,7 +143,7 @@ export default function VideoWallScreen({navigation, route}) {
           headerName="Video Wall"
           back={true}
           onPress={() => {
-            props.navigation.navigate('Home');
+            navigation.navigate('Home');
           }}
         />
 
@@ -179,13 +179,13 @@ export default function VideoWallScreen({navigation, route}) {
                       }}
                     />
                   ) : (
-                    <VLCPlayer
-                      style={{flex: 1}}
-                      videoAspectRatio="16:9"
-                      source={{uri: URL.concat(image.media)}}
-                      // showBack={true}
-                      seek={0.2}
-                      paused={true}
+                    <Video
+                      source={{uri: URL.concat(item.media)}} // Can be a URL or a local file.
+                      paused={false}
+                      muted={true}
+                      repeat={true}
+                      // seek={0.2}
+                      style={{height: '100%', width: '100%'}}
                     />
                   )}
                 </TouchableOpacity>
@@ -273,11 +273,11 @@ export default function VideoWallScreen({navigation, route}) {
             repeat={true}
             paused={false}
             onProgress={() => {
-              setIsLoading(true);
+              setIsLoading(false);
               console.log('progress');
             }}
             onPlaying={() => {
-              setIsLoading(false);
+              setIsLoading(true);
               console.log('playing');
             }}
             onBuffering={() => {

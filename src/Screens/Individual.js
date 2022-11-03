@@ -1,16 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {TouchableOpacity, Text, View, FlatList} from 'react-native';
-import {getPersonalCardAllActiveApiCall} from '../Apis/Repo';
+import {
+  getPersonalCardAllActiveApiCall,
+  getPersonalCardByUserIdApiCall,
+} from '../Apis/Repo';
 import MyCardIndividual from '../Components/MyCardIndividual';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import Loader from '../Components/Loader';
+import {useSelector} from 'react-redux';
 
 export function Individual({navigation}) {
   const [selected, setSelected] = useState(null);
   let [userData, setUserData] = useState(null);
-  const [data, setdata] = useState([]);
+  let [data, setdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  console.log('data yaha ha *********', data);
+
+  const DATA = useSelector(state => state.UserData);
+  console.log('dispatch DATA', DATA);
 
   console.log('my card list', data);
 
@@ -29,8 +37,8 @@ export function Individual({navigation}) {
     setIsLoading(true);
     getPersonalCardAllActiveApiCall()
       .then(res => {
-        console.log('res', res);
-        setdata(res.data.result);
+        console.log('res ++++++++++++', res);
+        setdata((data = res.data.result));
         setIsLoading(false);
       })
       .catch(err => {
@@ -38,6 +46,7 @@ export function Individual({navigation}) {
         console.log('err', err);
       });
   };
+
   return (
     <>
       {data != null ? (
@@ -60,13 +69,17 @@ export function Individual({navigation}) {
           )}
           style={{flex: 1}}
           ListFooterComponent={
-            <View style={{width: '100%', paddingHorizontal: 20}}>
+            <View
+              style={{
+                width: '100%',
+                paddingHorizontal: 20,
+                marginVertical: 20,
+              }}>
               <TouchableOpacity
                 style={{
                   height: 50,
                   width: '100%',
                   backgroundColor: SECONDARY,
-                  marginVertical: 20,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {KeyboardAvoidingView, View} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -169,120 +169,122 @@ export default function NewCardScreen(props) {
   return (
     <SafeAreaView
       style={{height: Height, width: Width, backgroundColor: WHITE}}>
-      <Header
-        navigation={props.navigation}
-        variant="dark"
-        headerName="Add Card"
-        onPress={() => {
-          props.navigation.navigate('AddCard');
-        }}
-      />
-      <NewCardStepPanel
-        step1={true}
-        step2={false}
-        step3={false}
-        step4={false}
-      />
-      <ScrollView style={{flex: 1}}>
-        <View
-          style={{
-            width: '100%',
-            padding: 20,
-          }}>
-          <OutlinedInputBox
-            placeholder="Enter Name"
-            backgroundColor={WHITE}
-            label="Name"
-            inputType="text"
-            maxLength={30}
-            onChange={value => {
-              setName(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Enter Occupation"
-            label="Occupation"
-            inputType="text"
-            backgroundColor={GREY}
-            maxLength={30}
-            onChange={value => {
-              setOccupation(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Enter Phone No"
-            maxLength={11}
-            backgroundColor={GREY}
-            label="Phone"
-            inputType="text"
-            KeyboardType={'numeric'}
-            onChange={value => {
-              setPhoneNumber(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Enter Email"
-            label="Email"
-            inputType="text"
-            backgroundColor={GREY}
-            maxLength={30}
-            error={error}
-            errorMsg={errorMsg}
-            onChange={value => {
-              CheckEmail(value);
-              setEmail(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Enter Birthday"
-            label="Birthday"
-            maxLength={20}
-            backgroundColor={GREY}
-            inputType="text"
-            onChange={value => {
-              setBirthday(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Enter Address"
-            label="Address"
-            maxLength={50}
-            backgroundColor={GREY}
-            inputType="text"
-            onChange={value => {
-              setAddress(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Enter City"
-            label="City"
-            maxLength={30}
-            inputType="text"
-            backgroundColor={GREY}
-            onChange={value => {
-              setCity(value);
-            }}
-          />
-          <OutlinedInputBox
-            placeholder="Enter Country"
-            label="Country"
-            maxLength={30}
-            backgroundColor={GREY}
-            inputType="text"
-            onChange={value => {
-              setCountry(value);
-            }}
-          />
-          <BtnComponent
-            placeholder="Next"
-            onPress={() => {
-              // onNext();
-              dispatch(PCData(object));
-              props.navigation.navigate('NewPersonalCard2');
-            }}
-          />
-        </View>
-      </ScrollView>
+      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+        <Header
+          navigation={props.navigation}
+          variant="dark"
+          headerName="Add Card"
+          onPress={() => {
+            props.navigation.navigate('AddCard');
+          }}
+        />
+        <NewCardStepPanel
+          step1={true}
+          step2={false}
+          step3={false}
+          step4={false}
+        />
+        <ScrollView>
+          <View
+            style={{
+              width: '100%',
+              padding: 20,
+            }}>
+            <OutlinedInputBox
+              placeholder="Enter Name"
+              backgroundColor={WHITE}
+              label="Name"
+              inputType="text"
+              maxLength={30}
+              onChange={value => {
+                setName(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Enter Occupation"
+              label="Occupation"
+              inputType="text"
+              backgroundColor={GREY}
+              maxLength={30}
+              onChange={value => {
+                setOccupation(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Enter Phone No"
+              maxLength={11}
+              backgroundColor={GREY}
+              label="Phone"
+              inputType="text"
+              KeyboardType={'numeric'}
+              onChange={value => {
+                setPhoneNumber(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Enter Email"
+              label="Email"
+              inputType="text"
+              backgroundColor={GREY}
+              maxLength={30}
+              error={error}
+              errorMsg={errorMsg}
+              onChange={value => {
+                CheckEmail(value);
+                setEmail(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Enter Birthday"
+              label="Birthday"
+              maxLength={20}
+              backgroundColor={GREY}
+              inputType="text"
+              onChange={value => {
+                setBirthday(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Enter Address"
+              label="Address"
+              maxLength={50}
+              backgroundColor={GREY}
+              inputType="text"
+              onChange={value => {
+                setAddress(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Enter City"
+              label="City"
+              maxLength={30}
+              inputType="text"
+              backgroundColor={GREY}
+              onChange={value => {
+                setCity(value);
+              }}
+            />
+            <OutlinedInputBox
+              placeholder="Enter Country"
+              label="Country"
+              maxLength={30}
+              backgroundColor={GREY}
+              inputType="text"
+              onChange={value => {
+                setCountry(value);
+              }}
+            />
+            <BtnComponent
+              placeholder="Next"
+              onPress={() => {
+                // onNext();
+                dispatch(PCData(object));
+                props.navigation.navigate('NewPersonalCard2');
+              }}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
