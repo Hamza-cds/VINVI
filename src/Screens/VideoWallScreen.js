@@ -20,11 +20,11 @@ import {useSelector} from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {storyPostApiCall} from '../Apis/Repo';
 import {isValidImage, isValidVideo} from '../Constants/Validations';
-import {VLCPlayer, VlCPlayerView} from 'react-native-vlc-media-player';
+import VLCPlayer from 'react-native-vlc-media-player/VLCPlayer';
 import Video from 'react-native-video';
 
 export default function VideoWallScreen({navigation, route}) {
-  const [numOfColoums, setNumOfColoums] = useState(3);
+  const [numOfColoums, setNumOfColoums] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
   let [data, setData] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -162,7 +162,7 @@ export default function VideoWallScreen({navigation, route}) {
                     // setModalVisible(true);
                   }}
                   style={{
-                    width: '33.25%',
+                    width: '16.40%',
                     aspectRatio: 1,
                     marginRight: 0.9,
                     backgroundColor: GREY,

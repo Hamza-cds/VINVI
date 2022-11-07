@@ -9,6 +9,7 @@ import MyCardIndividual from '../Components/MyCardIndividual';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import Loader from '../Components/Loader';
 import {useSelector} from 'react-redux';
+import {AlphabetList} from 'react-native-section-alphabet-list';
 
 export function Individual({navigation}) {
   const [selected, setSelected] = useState(null);
@@ -35,7 +36,7 @@ export function Individual({navigation}) {
 
   const getData = () => {
     setIsLoading(true);
-    getPersonalCardAllActiveApiCall()
+    getPersonalCardByUserIdApiCall(DATA.id)
       .then(res => {
         console.log('res ++++++++++++', res);
         setdata((data = res.data.result));
@@ -49,7 +50,19 @@ export function Individual({navigation}) {
 
   return (
     <>
-      {data != null ? (
+      <AlphabetList
+        data={data}
+        indexLetterStyle={{
+          color: 'blue',
+          fontSize: 15,
+        }}
+        renderCustomItem={item => (
+          <View style={{flex: 1}}>
+            <Text style={{}}>{item.value}</Text>
+          </View>
+        )}
+      />
+      {/* {data != null ? (
         <FlatList
           data={data}
           horizontal={false}
@@ -90,7 +103,7 @@ export function Individual({navigation}) {
             </View>
           }
         />
-      ) : null}
+      ) : null} */}
 
       {isLoading ? <Loader /> : null}
     </>

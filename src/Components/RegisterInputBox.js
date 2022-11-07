@@ -47,7 +47,7 @@ export default function RegisterInputBox({
               ? backgroundColor
               : 'rgba(255,255,255,.7)',
             borderRadius: 5,
-            marginTop: 10,
+            marginTop: 8,
           }}>
           {isfocused ? (
             <View>

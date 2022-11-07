@@ -15,12 +15,14 @@ import BtnComponent from '../Components/BtnComponent';
 import {Height, Width} from '../Constants/Constants';
 import {signUpApiCall} from '../Apis/Repo';
 import {
+  isInvalidEmail,
   isInvalidPassword,
   isInvalidPhoneNumber,
   isPassword,
   PhoneNumber,
 } from '../Constants/Validations';
 import {
+  EMPTY_OTHERINFO,
   MATCH_ERROR,
   MINIMUM_PASSWORD,
   PASSWORD_ERROR,
@@ -45,8 +47,24 @@ export default function RegisterScreen(props) {
   const [confirmpassError, setConfirmPassError] = useState(false);
   const [confirmpassErrorMsg, setConfirmPassErrorMsg] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // console.log('password', password);
-  // console.log('confirmPassword', confirmPassword);
+  const [nameErr, setNameErr] = useState(false);
+  const [nameErrMsg, setNameErrMsg] = useState('');
+  const [emailErr, setEmailErr] = useState(false);
+  const [emailErrMsg, setEmailErrMsg] = useState('');
+  const [cityErr, setCityErr] = useState(false);
+  const [cityErrMsg, setCityErrMsg] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [city, setCity] = useState('');
+
+  const NameCheck = value => {
+    if (value == '') {
+      setNameErr(true);
+      setNameErrMsg('Enter Name');
+    } else {
+      setNameErr(false);
+    }
+  };
 
   const NumberCheck = value => {
     if (value == '') {
@@ -57,6 +75,27 @@ export default function RegisterScreen(props) {
       setErrorMsg('Inavlid Number');
     } else {
       setError(false);
+    }
+  };
+
+  const EmailCheck = value => {
+    if (value == '') {
+      setEmailErr(true);
+      setEmailErrMsg('Enter Email');
+    } else if (isInvalidEmail(value)) {
+      setEmailErr(true);
+      setEmailErrMsg('Enter Valid Email');
+    } else {
+      setEmailErr(false);
+    }
+  };
+
+  const CityCheck = value => {
+    if (value == '') {
+      setCityErr(true);
+      setCityErrMsg('Enter City');
+    } else {
+      setCityErr(false);
     }
   };
 
@@ -90,16 +129,25 @@ export default function RegisterScreen(props) {
   };
 
   const onSignUp = () => {
-    if (isNullOrEmpty(phoneNumber)) alert(PHONE_EMPTY_ERROR);
-    else if (phoneLengthNotValid(phoneNumber)) alert(PHONE_LENGTH_ERROR);
+    if (isNullOrEmpty(name)) {
+      alert('Enter name');
+    } else if (isNullOrEmpty(phoneNumber)) alert(PHONE_EMPTY_ERROR);
+    else if (isNullOrEmpty(email)) {
+      alert('Enter email');
+    } else if (isNullOrEmpty(city)) {
+      alert('Enter city');
+    }
+    // else if (phoneLengthNotValid(phoneNumber)) alert(PHONE_LENGTH_ERROR);
     else if (isNullOrEmpty(password)) alert(PASSWORD_ERROR);
-    else if (isInvalidPassword(password)) alert(MINIMUM_PASSWORD);
     else if (isNullOrEmpty(confirmPassword))
       alert("Confirm password can't be empty");
     else if (stringsNotEqual(password, confirmPassword)) alert(MATCH_ERROR);
     else {
       let object = {
+        FirstName: name,
         Phoneno: phoneNumber,
+        Email: email,
+        City: city,
         LoginPassword: password,
       };
       console.log('object', object);
@@ -152,7 +200,8 @@ export default function RegisterScreen(props) {
               <Image
                 source={require('../Assets/vinvilightlogo.png')}
                 style={{
-                  marginVertical: 20,
+                  marginBottom: 20,
+                  marginTop: 30,
                   alignSelf: 'center',
                   width: 100,
                   height: 55,
@@ -167,6 +216,18 @@ export default function RegisterScreen(props) {
                 Join Us
               </Text>
               <RegisterInputBox
+                placeholder="Name"
+                keyboardType={'default'}
+                maxLength={30}
+                ERROR={nameErr}
+                ERROR_MESSAGE={nameErrMsg}
+                onChange={value => {
+                  NameCheck(value);
+                  setName(value);
+                }}
+              />
+
+              <RegisterInputBox
                 placeholder="Phone"
                 keyboardType={'number-pad'}
                 maxLength={11}
@@ -177,10 +238,35 @@ export default function RegisterScreen(props) {
                   setPhoneNumber(value);
                 }}
               />
+
+              <RegisterInputBox
+                placeholder="Email"
+                keyboardType={'email-address'}
+                maxLength={30}
+                ERROR={emailErr}
+                ERROR_MESSAGE={emailErrMsg}
+                onChange={value => {
+                  EmailCheck(value);
+                  setEmail(value);
+                }}
+              />
+
+              <RegisterInputBox
+                placeholder="City"
+                keyboardType={'default'}
+                maxLength={30}
+                ERROR={cityErr}
+                ERROR_MESSAGE={cityErrMsg}
+                onChange={value => {
+                  CityCheck(value);
+                  setCity(value);
+                }}
+              />
               <RegisterInputBox
                 placeholder="Password"
                 inputType="password"
                 keyboardType={'default'}
+                maxLength={100}
                 ERROR={passError}
                 secure={true}
                 ERROR_MESSAGE={passErrorMsg}
@@ -194,6 +280,8 @@ export default function RegisterScreen(props) {
                 placeholder="Confirm Password"
                 inputType="password"
                 secure={true}
+                maxLength={100}
+                keyboardType={'default'}
                 ERROR={confirmpassError}
                 ERROR_MESSAGE={confirmpassErrorMsg}
                 onChange={value => {
@@ -201,19 +289,21 @@ export default function RegisterScreen(props) {
                   setConfirmPassword(value);
                 }}
               />
-              <BtnComponent
-                placeholder="Sign Up"
-                onPress={() => {
-                  onSignUp();
-                }}
-              />
+              <View style={{marginTop: 20}}>
+                <BtnComponent
+                  placeholder="Sign Up"
+                  onPress={() => {
+                    onSignUp();
+                  }}
+                />
+              </View>
               <Text
                 style={{alignSelf: 'center', color: WHITE, marginBottom: 10}}>
                 OR
               </Text>
               <View
                 style={{
-                  marginTop: 20,
+                  marginTop: 10,
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'center',

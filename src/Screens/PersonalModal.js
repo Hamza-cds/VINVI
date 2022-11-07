@@ -173,7 +173,7 @@ export function PersonalModal({
     personalCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
-        // console.log('response', data);
+        console.log('response', data);
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           setModalVisible(false);
