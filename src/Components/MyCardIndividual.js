@@ -4,6 +4,7 @@ import {PRIMARY, PRIMARY1, SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
 import _ from 'lodash';
 import {URL} from '../Constants/Constants';
+import Feather from 'react-native-vector-icons/Feather';
 
 export default function MyCardIndividual({
   cta,
@@ -12,8 +13,11 @@ export default function MyCardIndividual({
   selected,
   setSelected,
   navigation,
+  setCardID,
+  setUserID,
+  setCall,
 }) {
-  console.log('item', item);
+  // console.log('item', item);
   const EDIT = true;
 
   let arrayOccupation;
@@ -51,8 +55,8 @@ export default function MyCardIndividual({
           });
         }}
         style={{
-          backgroundColor: selected === index ? WHITE : '#3F4D87',
-          width: 40,
+          // backgroundColor: selected === index ? WHITE : '#3F4D87',
+          width: 30,
           height: 25,
           alignSelf: 'flex-end',
           borderRadius: 4,
@@ -60,18 +64,27 @@ export default function MyCardIndividual({
           marginRight: -10,
           padding: 1,
         }}>
-        <Text
+        <Feather
+          name="edit"
+          size={20}
+          color={selected === index ? WHITE : '#3F4D87'}
+          style={{alignSelf: 'center'}}
+        />
+        {/* <Text
           style={{
             alignSelf: 'center',
             marginVertical: 3,
             color: selected === index ? PRIMARY : WHITE,
           }}>
           Edit
-        </Text>
+        </Text> */}
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
           setSelected(index);
+          setUserID(item.userId);
+          setCardID(item.id);
+          setCall(true);
         }}
         activeOpacity={0.9}
         style={{flexDirection: 'row', marginTop: -15}}>

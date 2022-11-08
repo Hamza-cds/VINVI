@@ -9,6 +9,7 @@ import Svg, {G, Path} from 'react-native-svg';
 import LinearGradient from 'react-native-linear-gradient';
 import AddCardScreen from '../Screens/AddCardScreen';
 import HomeDashboardScreen from '../Screens/HomeDashboardScreen';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,19 +76,24 @@ export default function BottomTabsNavigator() {
         options={{
           tabBarIcon: ({focused}) => {
             return (
-              <Svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={25.297}
-                height={25.511}
-                viewBox="0 0 24.297 21.511">
-                <Path
-                  data-name="Icon awesome-heart"
-                  d="M21.132 2.337a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
-                  fill={focused ? SECONDARY : '#ffffff'}
-                  stroke={focused ? SECONDARY : '#A9D6EB'}
-                  strokeWidth={2}
-                />
-              </Svg>
+              <AntDesign
+                name="contacts"
+                size={25}
+                color={focused ? SECONDARY : '#A9D6EB'}
+              />
+              // <Svg
+              //   xmlns="http://www.w3.org/2000/svg"
+              //   width={25.297}
+              //   height={25.511}
+              //   viewBox="0 0 24.297 21.511">
+              //   <Path
+              //     data-name="Icon awesome-heart"
+              //     d="M21.132 2.337a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
+              //     fill={focused ? SECONDARY : '#ffffff'}
+              //     stroke={focused ? SECONDARY : '#A9D6EB'}
+              //     strokeWidth={2}
+              //   />
+              // </Svg>
             );
           },
         }}

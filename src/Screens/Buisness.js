@@ -53,6 +53,9 @@ export function Buisness({navigation}) {
           ListFooterComponent={
             <View style={{width: '100%', paddingHorizontal: 20}}>
               <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('NewBuisnessCard1');
+                }}
                 style={{
                   height: 50,
                   width: '100%',

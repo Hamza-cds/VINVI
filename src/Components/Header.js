@@ -197,7 +197,7 @@ export default function Header({
             </G>
           </Svg>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.navigate('Search');
           }}>
@@ -211,7 +211,7 @@ export default function Header({
               fill={'white'}
             />
           </Svg>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   } else if (variant === 'account') {

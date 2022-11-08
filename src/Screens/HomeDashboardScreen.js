@@ -6,6 +6,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useIsFocused} from '@react-navigation/native';
 import {PRIMARY} from '../Constants/Colors';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   View,
   ImageBackground,
@@ -24,6 +25,7 @@ import {
 } from '../Apis/Repo';
 import Loader from '../Components/Loader';
 import {useFocusEffect} from '@react-navigation/core';
+import {TextInput} from 'react-native-gesture-handler';
 // import {useSelector} from 'react-redux';
 
 const Tab = createMaterialTopTabNavigator();
@@ -176,6 +178,25 @@ export default function HomeDashboardScreen(props) {
           <DashboardStories userStories={userStories} />
         </View>
       </View>
+
+      <View style={{paddingHorizontal: 30, flexDirection: 'row'}}>
+        <TextInput
+          style={{height: 40, flex: 1, marginBottom: -5}}
+          placeholder="search"
+        />
+        <TouchableOpacity>
+          <AntDesign name="search1" size={23} style={{marginTop: 8}} />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          borderWidth: 0.5,
+          borderColor: PRIMARY,
+          marginHorizontal: 30,
+          marginBottom: 10,
+        }}
+      />
+
       <Tab.Navigator
         initialRouteName="Individual"
         tabBarOptions={{

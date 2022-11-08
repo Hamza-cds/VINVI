@@ -4,24 +4,33 @@ import {TouchableOpacity, Text, View, FlatList} from 'react-native';
 import {
   getPersonalCardAllActiveApiCall,
   getPersonalCardByUserIdApiCall,
+  setOneActiveCard,
 } from '../Apis/Repo';
 import MyCardIndividual from '../Components/MyCardIndividual';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Loader from '../Components/Loader';
 import {useSelector} from 'react-redux';
-import {AlphabetList} from 'react-native-section-alphabet-list';
+import {Switch} from 'react-native-paper';
 
 export function Individual({navigation}) {
-  const [selected, setSelected] = useState(null);
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
+  const [selected, setSelected] = useState(0);
   let [userData, setUserData] = useState(null);
   let [data, setdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log('data yaha ha *********', data);
+  const [cardID, setCardID] = useState('');
+  const [userID, setUserID] = useState('');
+  const [call, setCall] = useState(false);
+  // console.log('data yaha ha *********', data);
 
   const DATA = useSelector(state => state.UserData);
-  console.log('dispatch DATA', DATA);
+  // console.log('dispatch DATA', DATA);
 
-  console.log('my card list', data);
+  console.log('selected', selected);
+  console.log('cardID', cardID);
+  console.log('userID', userID);
+  console.log('call', call);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -48,21 +57,43 @@ export function Individual({navigation}) {
       });
   };
 
+  const onToggleSwitch = () => {
+    if (isSwitchOn == true) {
+      setIsSwitchOn(false);
+      alert('CLOSE\n\nNo one can view your card until they search you.');
+    } else if (isSwitchOn == false) {
+      setIsSwitchOn(true);
+      alert('OPEN\n\nYour card is visible to all users.');
+    }
+  };
+
+  {
+    call == true
+      ? setOneActiveCard(cardID, userID)
+          .then(res => {
+            console.log('selected card response', res);
+            if (res.data.success) {
+              alert('card is selected successfully');
+              setCall(false);
+            } else {
+              alert(res.data.message);
+            }
+          })
+          .catch(err => {
+            console.log('err', err);
+          })
+      : null;
+  }
+
   return (
     <>
-      <AlphabetList
-        data={data}
-        indexLetterStyle={{
-          color: 'blue',
-          fontSize: 15,
-        }}
-        renderCustomItem={item => (
-          <View style={{flex: 1}}>
-            <Text style={{}}>{item.value}</Text>
-          </View>
-        )}
+      <Switch
+        value={isSwitchOn}
+        onValueChange={onToggleSwitch}
+        color={PRIMARY}
+        style={{marginHorizontal: 10, marginBottom: 5}}
       />
-      {/* {data != null ? (
+      {data != null ? (
         <FlatList
           data={data}
           horizontal={false}
@@ -77,6 +108,9 @@ export function Individual({navigation}) {
               key={index}
               selected={selected}
               setSelected={setSelected}
+              setCardID={setCardID}
+              setUserID={setUserID}
+              setCall={setCall}
               index={index}
             />
           )}
@@ -89,6 +123,9 @@ export function Individual({navigation}) {
                 marginVertical: 20,
               }}>
               <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('NewPersonalCard1');
+                }}
                 style={{
                   height: 50,
                   width: '100%',
@@ -103,7 +140,7 @@ export function Individual({navigation}) {
             </View>
           }
         />
-      ) : null} */}
+      ) : null}
 
       {isLoading ? <Loader /> : null}
     </>

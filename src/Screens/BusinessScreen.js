@@ -395,47 +395,51 @@ const BusinessScreen = props => {
             borderTopRightRadius: 50,
             marginTop: -50,
           }}>
-          <View
+          {/* <View
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
               alignItems: 'center',
               paddingBottom: 30,
             }}>
             <BtnComponent
-              placeholder="Connect"
+              placeholder="Announcment"
               onPress={() => {}}
               width={true}
-              widthValue="50%"
-            />
-            <View style={{marginTop: -20}}>
-              <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={() => {
-                  // setFavorit(true);
-                  if (favorit == true) {
-                    setFavorit(false);
-                    console.log('what');
-                  } else {
-                    setFavorit(true);
-                    console.log('what 1');
-                    onCardSave();
-                  }
-                }}>
-                <Svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={22.295}
-                  height={19.508}
-                  viewBox="0 0 22.295 19.508">
-                  <Path
-                    data-name="Icon awesome-heart"
-                    d="M20.131 1.334a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
-                    fill={favorit == true ? 'red' : '#CACFD2'}
-                  />
-                </Svg>
-              </TouchableOpacity>
-            </View>
+              widthValue="40%"
+            /> */}
+          <View
+            style={{
+              alignSelf: 'flex-end',
+              marginVertical: 10,
+              marginRight: 10,
+            }}>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                // setFavorit(true);
+                if (favorit == true) {
+                  setFavorit(false);
+                  console.log('what');
+                } else {
+                  setFavorit(true);
+                  console.log('what 1');
+                  onCardSave();
+                }
+              }}>
+              <Svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={22.295}
+                height={19.508}
+                viewBox="0 0 22.295 19.508">
+                <Path
+                  data-name="Icon awesome-heart"
+                  d="M20.131 1.334a5.955 5.955 0 00-8.13.592l-.858.884-.858-.884a5.954 5.954 0 00-8.125-.592 6.253 6.253 0 00-.431 9.053l8.426 8.7a1.365 1.365 0 001.973 0l8.426-8.7a6.249 6.249 0 00-.427-9.053z"
+                  fill={favorit == true ? 'red' : '#CACFD2'}
+                />
+              </Svg>
+            </TouchableOpacity>
+            {/* </View> */}
           </View>
           <View style={{width: '100%', flexWrap: 'wrap', flexDirection: 'row'}}>
             <View

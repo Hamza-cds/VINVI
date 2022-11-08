@@ -1,8 +1,13 @@
-import React from 'react';
-import {View, Image, TouchableOpacity, Text} from 'react-native';
+import React, {useState} from 'react';
+import {View, Image, TouchableOpacity, Text, Modal} from 'react-native';
 import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
 import {URL} from '../Constants/Constants';
+import Feather from 'react-native-vector-icons/Feather';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {Height, Width} from '../Constants/Constants';
+import RegisterInputBox from './RegisterInputBox';
+import UploadBtn from './UploadBtn';
 
 export default function MyCardBuisness({
   item,
@@ -13,6 +18,7 @@ export default function MyCardBuisness({
 }) {
   console.log('B item', item);
   const EDIT = true;
+  const [isModalVisible, setisModalVisible] = useState(false);
 
   return (
     <View
@@ -54,32 +60,57 @@ export default function MyCardBuisness({
         </Svg>
       </View>
 
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('BusinessScreen', {
-            id: item.id,
-            edit: EDIT,
-          });
-        }}
-        style={{
-          backgroundColor: selected === index ? WHITE : '#3F4D87',
-          width: 40,
-          height: 25,
-          alignSelf: 'flex-end',
-          marginTop: -13,
-          marginRight: -10,
-          borderRadius: 4,
-          padding: 1,
-        }}>
-        <Text
+      <View style={{alignSelf: 'flex-end', flexDirection: 'row'}}>
+        <TouchableOpacity
+          onPress={() => {
+            setisModalVisible(true);
+          }}
+          style={{
+            marginTop: -12,
+            marginRight: 5,
+            width: 30,
+            padding: 3,
+          }}>
+          <Entypo
+            name="megaphone"
+            size={21}
+            color={selected === index ? WHITE : '#3F4D87'}
+            style={{alignSelf: 'center'}}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('BusinessScreen', {
+              id: item.id,
+              edit: EDIT,
+            });
+          }}
+          style={{
+            width: 30,
+            height: 25,
+            // alignSelf: 'flex-end',
+            marginTop: -13,
+            marginRight: -15,
+            borderRadius: 4,
+            padding: 3,
+          }}>
+          <Feather
+            name="edit"
+            size={20}
+            color={selected === index ? WHITE : '#3F4D87'}
+            style={{alignSelf: 'center'}}
+          />
+          {/* <Text
           style={{
             alignSelf: 'center',
             marginVertical: 3,
             color: selected === index ? PRIMARY : WHITE,
           }}>
           Edit
-        </Text>
-      </TouchableOpacity>
+        </Text> */}
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity
         onPress={() => {
@@ -133,9 +164,9 @@ export default function MyCardBuisness({
             numberOfLines={5}
             style={{
               fontSize: 16,
-              fontWeight: 'bold',
-              // color: selected === index ? WHITE : SECONDARY,
-              color: SECONDARY,
+              // fontWeight: 'bold',
+              color: selected === index ? WHITE : SECONDARY,
+              // color: SECONDARY,
               maxWidth: 165,
               // marginBottom: 30,
             }}>
@@ -152,6 +183,76 @@ export default function MyCardBuisness({
           </Text>
         </View>
       </TouchableOpacity>
+
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        style={{alignItems: 'center'}}
+        onRequestClose={() => {
+          setisModalVisible(!isModalVisible);
+        }}>
+        <View
+          style={{
+            backgroundColor: '#F0F0F0',
+            width: Width - 20,
+            height: '90%',
+            alignSelf: 'center',
+            marginVertical: 20,
+            borderRadius: 30,
+            paddingHorizontal: 20,
+          }}>
+          <Text style={{color: 'black', fontSize: 20, marginVertical: 20}}>
+            Announcment
+          </Text>
+          <RegisterInputBox
+            placeholder="Title"
+            // inputType="password"
+            keyboardType={'default'}
+            onChange={value => {
+              console.log('Title', value);
+            }}
+          />
+          <RegisterInputBox
+            placeholder="Description"
+            // inputType="password"
+            keyboardType={'default'}
+            onChange={value => {
+              console.log('Description', value);
+            }}
+          />
+          <RegisterInputBox
+            placeholder="City/Area"
+            // inputType="password"
+            keyboardType={'default'}
+            onChange={value => {
+              console.log('city', value);
+            }}
+          />
+          <UploadBtn
+            placeholder="Select Image"
+            label={'Upload announcment post/banner'}
+          />
+
+          <TouchableOpacity
+            onPress={() => {
+              setisModalVisible(!isModalVisible);
+            }}
+            style={{
+              backgroundColor: SECONDARY,
+              height: 50,
+              width: '100%',
+              borderRadius: 10,
+              position: 'absolute',
+              alignSelf: 'center',
+              bottom: 20,
+            }}>
+            <Text
+              style={{color: 'white', alignSelf: 'center', marginVertical: 14}}>
+              Submit
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }

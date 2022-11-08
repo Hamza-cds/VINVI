@@ -466,3 +466,22 @@ export async function GetDataVideoWallApi(UploadType, page, limit) {
     return apiRes;
   }
 }
+
+export async function setOneActiveCard(cardID, userID) {
+  let route = URL.concat(
+    `/api/PersonalCard/SetCardStatusById?card_id=${cardID}&user_id=${userID}`,
+  );
+  console.log('getVideoWall Data Request  : ', route);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: route,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}

@@ -49,7 +49,7 @@ export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
           </TouchableOpacity>
         ) : null}
       </View>
-      <ContactDetailsRow
+      {/* <ContactDetailsRow
         placeholder={data != null ? data.phoneNo : 'Phone No.'}
         svg={
           <Svg
@@ -64,7 +64,7 @@ export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
             />
           </Svg>
         }
-      />
+      /> */}
       <ContactDetailsRow
         placeholder={data != null ? data.email : 'Email'}
         svg={
@@ -81,7 +81,7 @@ export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
           </Svg>
         }
       />
-      <ContactDetailsRow
+      {/* <ContactDetailsRow
         placeholder={data != null ? data.address : 'Address'}
         svg={
           <Svg
@@ -96,7 +96,7 @@ export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
             />
           </Svg>
         }
-      />
+      /> */}
       <ContactDetailsRow
         placeholder={arraycity + ',' + arraycountry}
         svg={

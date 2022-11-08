@@ -80,7 +80,7 @@ export default function SavedDashboardScreen(props, navigation) {
       />
 
       <Tab.Navigator
-        initialRouteName="Individual"
+        initialRouteName="Phone-Book"
         tabBarOptions={{
           indicatorStyle: {backgroundColor: 'black'},
           labelStyle: {
@@ -100,8 +100,8 @@ export default function SavedDashboardScreen(props, navigation) {
           bounces: true,
         }}
         sceneContainerStyle={{backgroundColor: WHITE}}>
-        <Tab.Screen name="Individual" component={IndividualSavedCard} />
-        <Tab.Screen name="Business" component={BusinessSavedCard} />
+        <Tab.Screen name="Phone-Book" component={IndividualSavedCard} />
+        <Tab.Screen name="Saved" component={BusinessSavedCard} />
       </Tab.Navigator>
 
       {/* {data != null ? (

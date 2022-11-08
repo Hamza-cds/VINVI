@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ImageBackground, SafeAreaView} from 'react-native';
 import Header from '../Components/Header';
 import Svg, {G, Path} from 'react-native-svg';
@@ -7,10 +7,15 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {useIsFocused} from '@react-navigation/native';
 import {Buisness} from './Buisness';
 import {Individual} from './Individual';
+// import {Switch} from 'react-native-paper';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function MyCardsDashboardScreen({navigation}) {
+  // const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+
+  // const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
@@ -68,6 +73,9 @@ export default function MyCardsDashboardScreen({navigation}) {
             </Svg>
           }
         />
+
+        {/* <Switch value={isSwitchOn} onValueChange={onToggleSwitch} /> */}
+
         <Tab.Navigator
           initialRouteName="Individual"
           tabBarOptions={{
