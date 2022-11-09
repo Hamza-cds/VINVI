@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, TouchableOpacity, Text} from 'react-native';
-import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
+import {GREY, PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
 import {URL} from '../Constants/Constants';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,6 +15,7 @@ export default function BuisnessCard({
   navigation,
   navigationPath,
   cta,
+  type,
 }) {
   console.log('item', item);
   return (
@@ -145,8 +146,8 @@ export default function BuisnessCard({
               alignItems: 'center',
               justifyContent: 'center',
               position: 'absolute',
-              top: 5,
-              right: 5,
+              top: 10,
+              right: 15,
               shadowColor: '#000',
               shadowOffset: {
                 width: 5,
@@ -156,17 +157,28 @@ export default function BuisnessCard({
               shadowRadius: 4,
               elevation: 3,
             }}>
-            <Svg
-              xmlns="http://www.w3.org/2000/svg"
-              width={13.855}
-              height={13.855}
-              viewBox="0 0 13.855 13.855">
-              <Path
-                data-name="Icon material-arrow_back"
-                d="M0 7.793h10.538l-4.841 4.841 1.23 1.221 6.928-6.928L6.927-.001 5.706 1.22l4.832 4.842H0z"
-                fill="#151269"
-              />
-            </Svg>
+            {type ? (
+              <Text
+                style={{
+                  color: SECONDARY,
+                  fontFamily: 'sans-serif-light',
+                  fontWeight: '700',
+                }}>
+                {type}
+              </Text>
+            ) : (
+              <Svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={13.855}
+                height={13.855}
+                viewBox="0 0 13.855 13.855">
+                <Path
+                  data-name="Icon material-arrow_back"
+                  d="M0 7.793h10.538l-4.841 4.841 1.23 1.221 6.928-6.928L6.927-.001 5.706 1.22l4.832 4.842H0z"
+                  fill="#151269"
+                />
+              </Svg>
+            )}
           </View>
         ) : null}
 

@@ -16,6 +16,7 @@ export default function IndividualCard({
   navigation,
   navigationPath,
   item,
+  type,
 }) {
   console.log('IndividualCard item..................', item);
   let arrayOccupation;
@@ -304,17 +305,28 @@ export default function IndividualCard({
                 shadowRadius: 4,
                 elevation: 3,
               }}>
-              <Svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={13.855}
-                height={13.855}
-                viewBox="0 0 13.855 13.855">
-                <Path
-                  data-name="Icon material-arrow_back"
-                  d="M0 7.793h10.538l-4.841 4.841 1.23 1.221 6.928-6.928L6.927-.001 5.706 1.22l4.832 4.842H0z"
-                  fill={PRIMARY}
-                />
-              </Svg>
+              {type ? (
+                <Text
+                  style={{
+                    color: SECONDARY,
+                    fontFamily: 'sans-serif-light',
+                    fontWeight: '700',
+                  }}>
+                  {type}
+                </Text>
+              ) : (
+                <Svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width={13.855}
+                  height={13.855}
+                  viewBox="0 0 13.855 13.855">
+                  <Path
+                    data-name="Icon material-arrow_back"
+                    d="M0 7.793h10.538l-4.841 4.841 1.23 1.221 6.928-6.928L6.927-.001 5.706 1.22l4.832 4.842H0z"
+                    fill={PRIMARY}
+                  />
+                </Svg>
+              )}
             </View>
           ) : null}
         </View>

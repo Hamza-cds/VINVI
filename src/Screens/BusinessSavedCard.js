@@ -6,11 +6,12 @@ import {useSelector} from 'react-redux';
 import Loader from '../Components/Loader';
 import BuisnessCard from '../Components/BuisnessCard';
 import {useFocusEffect} from '@react-navigation/core';
+import IndividualCard from '../Components/IndividualCard';
 
 export default function BusinessSavedCard(props) {
   let [userData, setUserData] = useState(null);
   const [data, setdata] = useState([]);
-  const type = 1;
+  const type = 2;
   console.log('business saved data', data);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,16 +58,29 @@ export default function BusinessSavedCard(props) {
           horizontal={false}
           keyExtractor={item => item.id}
           contentContainerStyle={{paddingBottom: 70}}
-          renderItem={({item, index}) => (
-            <BuisnessCard
-              cta={true}
-              variant="closed"
-              navigation={props.navigation}
-              navigationPath="BusinessScreen"
-              item={item.businessCard}
-              key={index}
-            />
-          )}
+          renderItem={({item, index}) =>
+            item.cardType == true ? (
+              <BuisnessCard
+                cta={true}
+                variant="closed"
+                navigation={props.navigation}
+                navigationPath="BusinessScreen"
+                type={'B'}
+                item={item.businessCard}
+                key={index}
+              />
+            ) : (
+              <IndividualCard
+                cta={true}
+                variant="closed"
+                navigation={props.navigation}
+                navigationPath="IndividualScreen"
+                type={'P'}
+                item={item.personalCard}
+                key={index}
+              />
+            )
+          }
         />
       ) : (
         <Text style={{alignSelf: 'center', marginTop: 250}}>

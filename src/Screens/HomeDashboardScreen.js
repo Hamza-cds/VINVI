@@ -6,13 +6,13 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useIsFocused} from '@react-navigation/native';
 import {PRIMARY} from '../Constants/Colors';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   View,
   ImageBackground,
   SafeAreaView,
   TouchableOpacity,
   Text,
+  TextInput,
 } from 'react-native';
 import {IndividualDataCardsListing} from './IndividualDataCardsListing';
 import {BusinessDataCardsListing} from './BusinessDataCardsListing';
@@ -25,8 +25,9 @@ import {
 } from '../Apis/Repo';
 import Loader from '../Components/Loader';
 import {useFocusEffect} from '@react-navigation/core';
-import {TextInput} from 'react-native-gesture-handler';
 // import {useSelector} from 'react-redux';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {value} from 'deprecated-react-native-prop-types/DeprecatedTextInputPropTypes';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -39,10 +40,11 @@ export default function HomeDashboardScreen(props) {
   let [imageType, setImageType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   let [userStories, setUserStories] = useState([]);
+  let [search, setSearch] = useState('');
   let uploadType = 1;
   let page = 1;
   let limit = 10;
-  // console.log('storyMedia', storyMedia);
+  console.log('search', search);
   // console.log('userStories', userStories);
 
   useEffect(() => {
@@ -147,7 +149,7 @@ export default function HomeDashboardScreen(props) {
       <View
         style={{
           paddingHorizontal: 20,
-          marginTop: 5,
+          marginTop: -10,
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
@@ -179,23 +181,40 @@ export default function HomeDashboardScreen(props) {
         </View>
       </View>
 
-      <View style={{paddingHorizontal: 30, flexDirection: 'row'}}>
+      <View style={{paddingHorizontal: 20, flexDirection: 'row'}}>
         <TextInput
-          style={{height: 40, flex: 1, marginBottom: -5}}
-          placeholder="search"
+          style={{
+            height: 40,
+            flex: 1,
+            marginTop: -10,
+            marginBottom: -5,
+            backgroundColor: '#F0F0F0',
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+            padding: 10,
+          }}
+          onChangeText={value => {
+            setSearch((search = value));
+          }}
+          placeholder="Search"
         />
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate('Individual', {
+              search: search,
+            });
+          }}
+          style={{
+            backgroundColor: '#F0F0F0',
+            height: 40,
+            width: 30,
+            borderTopRightRadius: 10,
+            marginTop: -10,
+            borderBottomRightRadius: 10,
+          }}>
           <AntDesign name="search1" size={23} style={{marginTop: 8}} />
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          borderWidth: 0.5,
-          borderColor: PRIMARY,
-          marginHorizontal: 30,
-          marginBottom: 10,
-        }}
-      />
 
       <Tab.Navigator
         initialRouteName="Individual"
@@ -218,8 +237,16 @@ export default function HomeDashboardScreen(props) {
           bounces: true,
         }}
         sceneContainerStyle={{backgroundColor: 'transprent'}}>
-        <Tab.Screen name="Individual" component={IndividualDataCardsListing} />
-        <Tab.Screen name="Business" component={BusinessDataCardsListing} />
+        <Tab.Screen
+          name="Individual"
+          component={IndividualDataCardsListing}
+          // initialParams={{search: search}}
+        />
+        <Tab.Screen
+          name="Business"
+          component={BusinessDataCardsListing}
+          initialParams={{search: search}}
+        />
       </Tab.Navigator>
       {isLoading ? <Loader /> : null}
       {/* </ImageBackground> */}
