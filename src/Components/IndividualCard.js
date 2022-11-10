@@ -294,7 +294,7 @@ export default function IndividualCard({
                 alignItems: 'center',
                 justifyContent: 'center',
                 position: 'absolute',
-                top: -3,
+                top: -120,
                 right: -5,
                 shadowColor: '#000',
                 shadowOffset: {

@@ -6629,6 +6629,11 @@ react-native-modalbox@^2.0.2:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-pager-view@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.1.0.tgz#6cb13fb6f2db8836c89ee8261b07603e97527ceb"
+  integrity sha512-wBtc77l+lWRDS1FlpeO+rE0iG/ecRtVhHrERMkm7CACQvhB+ty8NL2zlAzOCCbS83DZrIdtWuPu9VqziKHzJPw==
+
 react-native-paper@^4.9.2:
   version "4.9.2"
   resolved "https://registry.npmjs.org/react-native-paper/-/react-native-paper-4.9.2.tgz"

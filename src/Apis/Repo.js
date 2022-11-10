@@ -227,8 +227,8 @@ export async function getBusinessCardAllActiveApiCall() {
   }
 }
 
-export async function searchIndividualApiCall() {
-  let route = '/api/PersonalCard/Search';
+export async function searchIndividualApiCall(Limit, Page, search) {
+  let route = `/api/PersonalCard/Search?limit=${Limit}&page=${Page}&name=${search}`;
   let apiRes = null;
   try {
     apiRes = await axios({

@@ -49,7 +49,7 @@ export default function DashboardStories({userStories}) {
   };
 
   return (
-    <View>
+    <View style={{marginTop: 20, height: 80}}>
       {data.length > 0 ? (
         <InstaStory
           data={data}
@@ -64,7 +64,7 @@ export default function DashboardStories({userStories}) {
             </View>
           }
           avatarSize={50}
-          style={{marginTop: 15}}
+          // style={{marginTop: 15}}
         />
       ) : (
         <Text
@@ -72,7 +72,7 @@ export default function DashboardStories({userStories}) {
             color: SECONDARY,
             fontSize: 15,
             alignSelf: 'center',
-            marginTop: 15,
+            marginTop: 20,
           }}>
           Loading...
         </Text>

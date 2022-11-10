@@ -1,50 +1,52 @@
-import React from 'react';
-import Header from '../Components/Header';
-import DashboardStories from '../Components/DashboardStories';
-import {Height, Width} from '../Constants/Constants';
+import React, {useState, useEffect, useRef} from 'react';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {useIsFocused} from '@react-navigation/native';
-import {PRIMARY} from '../Constants/Colors';
+import {GREY, PRIMARY, SECONDARY} from '../Constants/Colors';
 import {
   View,
-  ImageBackground,
   SafeAreaView,
   TouchableOpacity,
   Text,
   TextInput,
 } from 'react-native';
-import {IndividualDataCardsListing} from './IndividualDataCardsListing';
-import {BusinessDataCardsListing} from './BusinessDataCardsListing';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useState, useEffect} from 'react';
+import IndividualCard from '../Components/IndividualCard';
+import BuisnessCard from '../Components/BuisnessCard';
+import Loader from '../Components/Loader';
+import Header from '../Components/Header';
+import DashboardStories from '../Components/DashboardStories';
 import {
+  getPersonalCardAllActiveApiCall,
+  getBusinessCardAllActiveApiCall,
+  searchIndividualApiCall,
   storyPostApiCall,
   DashboardStoriesApiCall,
-  GetDataVideoWallApi,
 } from '../Apis/Repo';
-import Loader from '../Components/Loader';
+import {
+  AlphabetList,
+  DEFAULT_CHAR_INDEX,
+} from 'react-native-section-alphabet-list';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/core';
-// import {useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {value} from 'deprecated-react-native-prop-types/DeprecatedTextInputPropTypes';
+import PagerView from 'react-native-pager-view';
+import {isNullOrEmptyArray} from '../Constants/TextUtils';
+import {Height, Width} from '../Constants/Constants';
 
-const Tab = createMaterialTopTabNavigator();
-
-export default function HomeDashboardScreen(props) {
-  // const credential = useSelector(state => state.UserCredential);
-  // console.log('credential', credential);
-
+export default function HomeDashboardScreen({navigation, route}) {
   let [storyMedia, setStoryMedia] = useState('');
   let [userData, setUserData] = useState('');
   let [imageType, setImageType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   let [userStories, setUserStories] = useState([]);
   let [search, setSearch] = useState('');
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [individualData, setIndividualData] = useState([]);
+  const [businessData, setBusinessData] = useState([]);
+  const pagerRef = useRef(null);
   let uploadType = 1;
   let page = 1;
   let limit = 10;
-  console.log('search', search);
+  let value = null;
+  // console.log('search', search);
   // console.log('userStories', userStories);
 
   useEffect(() => {
@@ -58,7 +60,9 @@ export default function HomeDashboardScreen(props) {
   useFocusEffect(
     React.useCallback(() => {
       getDashboardStories();
-    }, [props.navigation]),
+      getAllIndividual();
+      getBusinessList();
+    }, [selectedPage]),
   );
 
   const onSelecet = image => {
@@ -95,7 +99,7 @@ export default function HomeDashboardScreen(props) {
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           getDashboardStories();
-          // props.navigation.replace('MyCardsDashboardScreen');
+          // navigation.replace('MyCardsDashboardScreen');
           alert('successfully posted');
         } else {
           setIsLoading(false);
@@ -109,11 +113,6 @@ export default function HomeDashboardScreen(props) {
   };
 
   const getDashboardStories = () => {
-    // let obj = {
-    //   userId: 0,
-    //   pageNumber: 1,
-    //   limit: 10,
-    // };
     setIsLoading(true);
     DashboardStoriesApiCall(page, limit)
       .then(res => {
@@ -132,18 +131,104 @@ export default function HomeDashboardScreen(props) {
       });
   };
 
+  const handlePageChange = pageNumber => {
+    // setSelectedPage(pageNumber);
+    pagerRef.current.setPage(pageNumber);
+    setSelectedPage(pageNumber);
+  };
+  const onPageScroolEvent = event => {
+    setSelectedPage(event.nativeEvent.position);
+  };
+
+  const getAllIndividual = () => {
+    setIsLoading(true);
+    getPersonalCardAllActiveApiCall()
+      .then(({data}) => {
+        console.log('data', data);
+        if (data.success == true) {
+          for (let index = 0; index < data.result.length; index++) {
+            const element = data.result[index];
+            element.value = element.name;
+            element.key = JSON.stringify(element.id);
+          }
+          console.log('hamza..................................', data.result);
+          setIsLoading(false);
+          setIndividualData(data.result);
+        } else {
+          setIsLoading(false);
+          setIndividualData([]);
+        }
+      })
+
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
+  const getBusinessList = () => {
+    getBusinessCardAllActiveApiCall()
+      .then(({data}) => {
+        if (data.success == true) {
+          for (let index = 0; index < data.result.length; index++) {
+            const element = data.result[index];
+            element.value = element.name;
+            element.key = JSON.stringify(element.id);
+          }
+          console.log('business response', data);
+          setBusinessData(data.result);
+          console.log('buisnessData', businessData);
+        } else {
+          setIsLoading(false);
+          setBusinessData([]);
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
+
+  console.log('selected page', selectedPage);
+
+  const onCheck = () => {
+    setIsLoading(true);
+    searchIndividualApiCall(limit, page, search)
+      .then(({data}) => {
+        console.log('search response', data);
+        if (data.success == true) {
+          for (let index = 0; index < data.result.length; index++) {
+            const element = data.result[index];
+            element.value = element.name;
+            element.key = JSON.stringify(element.id);
+          }
+          setIsLoading(false);
+          if (selectedPage == 0) {
+            setIndividualData(data.result);
+          } else if (selectedPage == 1) {
+            setBusinessData(data.result);
+          }
+        } else {
+          setIsLoading(false);
+          if (selectedPage == 0) {
+            setIndividualData([]);
+          } else if (selectedPage == 1) {
+            setBusinessData([]);
+          }
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
   return (
-    <SafeAreaView
-      style={{width: Width, height: Height, flex: 1, backgroundColor: 'white'}}>
-      {/* <View> */}
-      {/* <ImageBackground
-        source={require('../Assets/dashboardbg.png')}
-        style={{flex: 1, paddingBottom: 80}}> */}
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <Header
-        navigation={props.navigation}
+        navigation={navigation}
         variant="drawer"
         onPress={() => {
-          props.navigation.toggleDrawer();
+          navigation.toggleDrawer();
         }}
       />
       <View
@@ -163,7 +248,7 @@ export default function HomeDashboardScreen(props) {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 50,
-            // marginTop: 10,
+            marginTop: 10,
           }}
           onPress={() => {
             launchImageLibrary({mediaType: 'photo'}, image => {
@@ -181,7 +266,7 @@ export default function HomeDashboardScreen(props) {
         </View>
       </View>
 
-      <View style={{paddingHorizontal: 20, flexDirection: 'row'}}>
+      <View style={{paddingHorizontal: 30, flexDirection: 'row'}}>
         <TextInput
           style={{
             height: 40,
@@ -197,13 +282,10 @@ export default function HomeDashboardScreen(props) {
             setSearch((search = value));
           }}
           placeholder="Search"
+          value={value}
         />
         <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate('Individual', {
-              search: search,
-            });
-          }}
+          onPress={onCheck}
           style={{
             backgroundColor: '#F0F0F0',
             height: 40,
@@ -216,7 +298,174 @@ export default function HomeDashboardScreen(props) {
         </TouchableOpacity>
       </View>
 
-      <Tab.Navigator
+      {/* ++++++++Here pager view code start +++++++++++ */}
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          marginTop: 20,
+          marginBottom: 10,
+          borderRadius: 10,
+          height: 40,
+          backgroundColor: GREY,
+          paddingHorizontal: 5,
+        }}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => handlePageChange(0)}>
+          <Text
+            style={{
+              fontSize: 13,
+              color: selectedPage == 0 ? 'white' : SECONDARY,
+              backgroundColor: selectedPage == 0 ? SECONDARY : null,
+              height: 30,
+              borderRadius: 10,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              marginVertical: 5,
+            }}>
+            Individual Cards
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => handlePageChange(1)}>
+          <Text
+            style={{
+              fontSize: 13,
+              color: selectedPage == 1 ? 'white' : SECONDARY,
+              backgroundColor: selectedPage == 1 ? SECONDARY : null,
+              height: 30,
+              borderRadius: 10,
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              marginVertical: 5,
+            }}>
+            Business Cards
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* pager view screens start here */}
+
+      <PagerView
+        style={{flex: 1}}
+        initialPage={0}
+        ref={pagerRef}
+        onPageSelected={event => {
+          onPageScroolEvent(event);
+        }}>
+        {/* ********** */}
+        {/* Individual Page */}
+        {/* ********** */}
+        <View key="1">
+          {!isNullOrEmptyArray(individualData) ? (
+            <AlphabetList
+              data={individualData}
+              index={DEFAULT_CHAR_INDEX}
+              indexLetterStyle={{
+                color: 'black',
+                fontSize: 12,
+              }}
+              indexContainerStyle={{marginHorizontal: 6, marginVertical: 3}}
+              indexLetterContainerStyle={{height: 15, width: 10}}
+              contentContainerStyle={{paddingBottom: 70}}
+              renderCustomItem={(item, index) => (
+                <IndividualCard
+                  cta={true}
+                  variant="closed"
+                  navigation={navigation}
+                  navigationPath="IndividualScreen"
+                  item={item}
+                  key={index}
+                />
+              )}
+              renderCustomSectionHeader={section => (
+                <View style={{backgroundColor: '#F5F5F5'}}>
+                  <Text style={{color: 'black', marginLeft: 10}}>
+                    {section.title}
+                  </Text>
+                </View>
+              )}
+            />
+          ) : (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                height: 300,
+              }}>
+              <Text style={{color: '#242424'}}>No record found</Text>
+            </View>
+          )}
+
+          {isLoading ? <Loader /> : null}
+        </View>
+
+        {/* ********** */}
+        {/* Business Page */}
+        {/* ********** */}
+        <View key="2">
+          {!isNullOrEmptyArray(businessData) ? (
+            <AlphabetList
+              data={businessData}
+              index={DEFAULT_CHAR_INDEX}
+              indexLetterStyle={{
+                color: 'black',
+                fontSize: 12,
+              }}
+              indexContainerStyle={{marginHorizontal: 6, marginVertical: 3}}
+              indexLetterContainerStyle={{height: 15, width: 10}}
+              contentContainerStyle={{paddingBottom: 70}}
+              renderCustomItem={(item, index) => (
+                <BuisnessCard
+                  cta={true}
+                  variant="closed"
+                  navigation={navigation}
+                  navigationPath="BusinessScreen"
+                  item={item}
+                  key={index}
+                />
+                // <View style={{backgroundColor: 'red'}}>
+                //   <Text style={{color: 'white'}}>{item.value}</Text>
+                // </View>
+              )}
+              renderCustomSectionHeader={section => (
+                <View style={{backgroundColor: '#F5F5F5'}}>
+                  <Text style={{color: 'black', marginLeft: 10}}>
+                    {section.title}
+                  </Text>
+                </View>
+              )}
+            />
+          ) : (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                height: 300,
+              }}>
+              <Text style={{color: '#242424'}}>No record found</Text>
+            </View>
+          )}
+        </View>
+      </PagerView>
+
+      {/* pager view screens end here */}
+
+      {/* ++++++++Here pager view code end +++++++++++ */}
+
+      {isLoading ? <Loader /> : null}
+    </SafeAreaView>
+  );
+}
+
+{
+  /* <Tab.Navigator
         initialRouteName="Individual"
         tabBarOptions={{
           indicatorStyle: {backgroundColor: PRIMARY},
@@ -247,9 +496,5 @@ export default function HomeDashboardScreen(props) {
           component={BusinessDataCardsListing}
           initialParams={{search: search}}
         />
-      </Tab.Navigator>
-      {isLoading ? <Loader /> : null}
-      {/* </ImageBackground> */}
-    </SafeAreaView>
-  );
+      </Tab.Navigator> */
 }
