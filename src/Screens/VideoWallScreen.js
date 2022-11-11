@@ -17,7 +17,8 @@ import BtnComponent from '../Components/BtnComponent';
 // import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector} from 'react-redux';
 // import VideoComponant from '../Components/VideoComponant';
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import {storyPostApiCall} from '../Apis/Repo';
 import {isValidImage, isValidVideo} from '../Constants/Validations';
 import VLCPlayer from 'react-native-vlc-media-player/VLCPlayer';
@@ -322,7 +323,17 @@ export default function VideoWallScreen({navigation, route}) {
           <BtnComponent
             placeholder="Open Camera"
             onPress={() => {
-              launchImageLibrary({mediaType: 'mixed'}, image => {
+              let options = {
+                mediaType: 'mixed',
+                maxWidth: 300,
+                maxHeight: 550,
+                quality: 0.7,
+                videoQuality: 'low',
+                durationLimit: 15, //Video max duration in seconds
+                // saveToPhotos: true,
+              };
+              launchCamera(options, image => {
+                console.log('image', image);
                 if (image.didCancel) {
                   console.log('User cancelled image picker');
                 } else {
@@ -335,6 +346,7 @@ export default function VideoWallScreen({navigation, route}) {
             placeholder="Upload Image"
             onPress={() => {
               launchImageLibrary({mediaType: 'mixed'}, image => {
+                console.log('hamza friday', image);
                 if (image.didCancel) {
                   console.log('User cancelled image picker');
                 } else {

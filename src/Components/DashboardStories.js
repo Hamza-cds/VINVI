@@ -73,9 +73,8 @@ export default function DashboardStories({userStories}) {
             fontSize: 15,
             alignSelf: 'center',
             marginTop: 20,
-          }}>
-          Loading...
-        </Text>
+          }}
+        />
       )}
     </View>
   );

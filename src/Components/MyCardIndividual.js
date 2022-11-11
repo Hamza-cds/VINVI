@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {PRIMARY, PRIMARY1, SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
@@ -17,6 +17,10 @@ export default function MyCardIndividual({
   setUserID,
   setCall,
 }) {
+  useEffect(() => {
+    setUserID(item.userId);
+    setCardID(item.id);
+  }, []);
   // console.log('item', item);
   const EDIT = true;
 

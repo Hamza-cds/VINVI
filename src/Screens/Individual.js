@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {TouchableOpacity, Text, View, FlatList} from 'react-native';
+import {TouchableOpacity, Text, View, FlatList, Alert} from 'react-native';
 import {
   getPersonalCardAllActiveApiCall,
   getPersonalCardByUserIdApiCall,
   setOneActiveCard,
+  OpenandCloseCardApiCall,
 } from '../Apis/Repo';
 import MyCardIndividual from '../Components/MyCardIndividual';
 import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
@@ -13,7 +14,7 @@ import {useSelector} from 'react-redux';
 import {Switch} from 'react-native-paper';
 
 export function Individual({navigation}) {
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const [isSwitchOn, setIsSwitchOn] = useState(true);
 
   const [selected, setSelected] = useState(0);
   let [userData, setUserData] = useState(null);
@@ -22,26 +23,28 @@ export function Individual({navigation}) {
   const [cardID, setCardID] = useState('');
   const [userID, setUserID] = useState('');
   const [call, setCall] = useState(false);
+  let [cardStatus, setCardStatus] = useState('');
   // console.log('data yaha ha *********', data);
 
   const DATA = useSelector(state => state.UserData);
   // console.log('dispatch DATA', DATA);
 
-  console.log('selected', selected);
-  console.log('cardID', cardID);
-  console.log('userID', userID);
-  console.log('call', call);
+  // console.log('selected', selected);
+  // console.log('cardID', cardID);
+  // console.log('userID', userID);
+  // console.log('call', call);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
+      getData();
       console.log('userdata', userData);
     });
   }, []);
 
-  useEffect(() => {
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
   const getData = () => {
     setIsLoading(true);
@@ -57,15 +60,70 @@ export function Individual({navigation}) {
       });
   };
 
+  // open close card setup start
+
+  const inActiveAlert = () => {
+    Alert.alert('CLOSE', 'No one can view your card until they search you.', [
+      {
+        text: 'ok',
+        onPress: () => {
+          setCardStatus((cardStatus = 1));
+          showAndHideCard();
+        },
+      },
+    ]);
+  };
+
+  const activeAlert = () => {
+    Alert.alert('OPEN', 'Your card is visible to all users.', [
+      {
+        text: 'ok',
+        onPress: () => {
+          setCardStatus((cardStatus = 0));
+          showAndHideCard();
+        },
+      },
+    ]);
+  };
+
+  const showAndHideCard = () => {
+    // debugger;
+    let obj = {
+      UserId: userID,
+      PersonalCardId: cardID,
+      IsClosed: cardStatus,
+    };
+    console.log('obj', obj);
+    setIsLoading(true);
+    OpenandCloseCardApiCall(obj)
+      .then(res => {
+        console.log('open close card response __________________', res);
+        if (res.data.status == 200 && res.data.success == true) {
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          alert(res.data.message);
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
   const onToggleSwitch = () => {
     if (isSwitchOn == true) {
       setIsSwitchOn(false);
-      alert('CLOSE\n\nNo one can view your card until they search you.');
+      inActiveAlert();
+      // alert('CLOSE\n\nNo one can view your card until they search you.');
     } else if (isSwitchOn == false) {
       setIsSwitchOn(true);
-      alert('OPEN\n\nYour card is visible to all users.');
+      activeAlert();
+      // alert('OPEN\n\nYour card is visible to all users.');
     }
   };
+
+  // open close card setup end
 
   {
     call == true

@@ -17,6 +17,7 @@ export default function BottomTabsNavigator() {
   return (
     <Tab.Navigator
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         showLabel: false,
         style: {
           backgroundColor: 'transparent',

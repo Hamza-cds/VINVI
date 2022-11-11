@@ -485,3 +485,21 @@ export async function setOneActiveCard(cardID, userID) {
     return apiRes;
   }
 }
+
+export async function OpenandCloseCardApiCall(obj) {
+  let route = URL.concat('/api/PersonalCard/UpdateCloseStatus');
+  console.log(`open and close card Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}

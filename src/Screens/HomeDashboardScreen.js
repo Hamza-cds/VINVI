@@ -282,7 +282,7 @@ export default function HomeDashboardScreen({navigation, route}) {
             setSearch((search = value));
           }}
           placeholder="Search"
-          value={value}
+          value={search}
         />
         <TouchableOpacity
           onPress={onCheck}
@@ -314,7 +314,10 @@ export default function HomeDashboardScreen({navigation, route}) {
         }}>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => handlePageChange(0)}>
+          onPress={() => {
+            handlePageChange(0);
+            setSearch('');
+          }}>
           <Text
             style={{
               fontSize: 13,
@@ -331,7 +334,10 @@ export default function HomeDashboardScreen({navigation, route}) {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => handlePageChange(1)}>
+          onPress={() => {
+            handlePageChange(1);
+            setSearch('');
+          }}>
           <Text
             style={{
               fontSize: 13,
