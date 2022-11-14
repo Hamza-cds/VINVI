@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, View, Text, Image} from 'react-native';
+import {TouchableOpacity, View, Text, Image, Modal} from 'react-native';
 import Svg, {Path, G, Rect} from 'react-native-svg';
 import {LIGHT_TEXT_COLOR, PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Header({
   navigation,
@@ -21,6 +22,8 @@ export default function Header({
     isheaderName = false;
   }
   const [favorit, setFavorit] = useState(false);
+  const [modal, setModal] = useState(false);
+
   if (variant === 'light') {
     return (
       <View
@@ -197,23 +200,50 @@ export default function Header({
             </G>
           </Svg>
         </TouchableOpacity>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           onPress={() => {
             navigation.navigate('Search');
+            // setModal(true);
           }}>
-          <Svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={24.936}
-            height={25.828}
-            viewBox="0 0 24.936 25.828">
-            <Path
-              d="M24.557 23.525l-6.147-6.393a10.424 10.424 0 10-7.982 3.724 10.316 10.316 0 005.974-1.887l6.194 6.442a1.36 1.36 0 101.96-1.886zM10.428 2.72a7.708 7.708 0 11-7.712 7.708 7.716 7.716 0 017.712-7.708z"
-              fill={'white'}
-            />
-          </Svg>
-        </TouchableOpacity> */}
+          <MaterialCommunityIcons
+            name="qrcode-scan"
+            size={20}
+            color={'white'}
+          />
+        </TouchableOpacity>
+        {/* <Modal
+          visible={modal}
+          transparent={true}
+          onRequestClose={() => {
+            setModal(!modal);
+          }}>
+          <View
+            style={{
+              height: '50%',
+              width: '80%',
+              borderRadius: 10,
+              backgroundColor: 'red',
+              alignSelf: 'center',
+              marginVertical: 150,
+            }}></View>
+        </Modal> */}
       </View>
     );
+    //   <TouchableOpacity
+    //   onPress={() => {
+    //     navigation.navigate('Search');
+    //   }}>
+    //   <Svg
+    //     xmlns="http://www.w3.org/2000/svg"
+    //     width={24.936}
+    //     height={25.828}
+    //     viewBox="0 0 24.936 25.828">
+    //     <Path
+    //       d="M24.557 23.525l-6.147-6.393a10.424 10.424 0 10-7.982 3.724 10.316 10.316 0 005.974-1.887l6.194 6.442a1.36 1.36 0 101.96-1.886zM10.428 2.72a7.708 7.708 0 11-7.712 7.708 7.716 7.716 0 017.712-7.708z"
+    //       fill={'white'}
+    //     />
+    //   </Svg>
+    // </TouchableOpacity>
   } else if (variant === 'account') {
     return (
       <View
