@@ -17,6 +17,7 @@ import _ from 'lodash';
 import QRCode from 'react-native-qrcode-svg';
 import {
   getPersonalCardByIdApiCall,
+  getPersonalCardByUserIdApiCall,
   personalCardApiCall,
   GetAllLookupDetailApiCall,
   saveCardAPiCall,
@@ -36,6 +37,9 @@ import {JobHistoryEditModalAdd} from './JobHistoryEditModalAdd';
 import {EducationEditModalAdd} from './EducationEditModalAdd';
 import ImagePicker from 'react-native-image-crop-picker';
 import Loader from '../Components/Loader';
+import CryptoJS from 'react-native-crypto-js';
+import {isNullOrEmpty} from '../Constants/TextUtils';
+// import {useSelector} from 'react-redux';
 
 export default function IndividualScreen(props) {
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
@@ -50,7 +54,12 @@ export default function IndividualScreen(props) {
   let [userData, setUserData] = useState(null);
   let [data, setdata] = useState('');
   const [favorit, setFavorit] = useState(false);
-  const [ID, setID] = useState(props.route.params.id);
+  const [ID, setID] = useState(
+    props.route.params.id ? props.route.params.id : '',
+  );
+  const [scanById, setCardByUserId] = useState(
+    props.route.params.param ? props.route.params.param : '',
+  );
   const [Edit, setEdit] = useState(
     props.route.params.edit ? props.route.params.edit : '',
   );
@@ -65,6 +74,20 @@ export default function IndividualScreen(props) {
   let [employeeType, setEmployeeType] = useState([]);
   let [degreeList, setDegreList] = useState([]);
   let [lookupData, setLookupData] = useState([]);
+  var date = new Date();
+
+  // const DATA = useSelector(state => state.UserData);
+  // console.log('Header dispatch DATA', DATA);
+  let ciphertext = CryptoJS.AES.encrypt(
+    date.getTime() +
+      '_' +
+      JSON.stringify(ID) +
+      '_' +
+      date.getTime() +
+      '|' +
+      'crd',
+    'secret key 123',
+  ).toString();
 
   console.log('favorit', favorit);
 
@@ -169,27 +192,127 @@ export default function IndividualScreen(props) {
 
   useEffect(() => {
     getData();
+    // getCardDataByUserId();
     getAllLookupdetail();
   }, [isSkillModalVisible]);
 
   const getData = () => {
-    setIsLoading(true);
-    getPersonalCardByIdApiCall(ID)
-      .then(res => {
-        console.log('res', res.data.result);
-        if (res.data.success) {
-          setdata((data = res.data.result));
+    let check = CryptoJS.AES.decrypt(scanById, 'secret key 123');
+    let decryptedData = check.toString(CryptoJS.enc.Utf8);
+    var scName = decryptedData.split('|')[1];
+    console.log('sapna sapna sapna', scName);
+
+    if (!isNullOrEmpty(ID)) {
+      setIsLoading(true);
+      getPersonalCardByIdApiCall(ID)
+        .then(res => {
+          console.log('res', res.data.result);
+          if (res.data.success) {
+            setdata((data = res.data.result));
+            setIsLoading(false);
+            console.log('card data', data);
+          } else {
+            setIsLoading(false);
+            alert('No record found.');
+          }
+        })
+        .catch(err => {
           setIsLoading(false);
-          console.log('card data', data);
-        } else {
+          console.log('err', err);
+        });
+    } else if (scName == 'crd') {
+      // debugger;
+      let bytes = CryptoJS.AES.decrypt(scanById, 'secret key 123');
+      let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+      var id = decryptedData.split('_')[1];
+      console.log('here is id ', id);
+
+      setIsLoading(true);
+      getPersonalCardByIdApiCall(id)
+        .then(res => {
+          console.log('res', res.data.result);
+          if (res.data.success) {
+            setdata((data = res.data.result));
+            setIsLoading(false);
+            console.log('card data', data);
+          } else {
+            setIsLoading(false);
+            alert('No record found.');
+          }
+        })
+        .catch(err => {
           setIsLoading(false);
-          alert('No record found.');
-        }
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log('err', err);
-      });
+          console.log('err', err);
+        });
+    } else if (scName == 'qr') {
+      // debugger;
+      let bytes = CryptoJS.AES.decrypt(scanById, 'secret key 123');
+      let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+      var id = decryptedData.split('_')[1];
+      console.log('here is id ', id);
+
+      setIsLoading(true);
+      getPersonalCardByUserIdApiCall(id)
+        .then(res => {
+          console.log('res', res.data.result);
+          if (res.data.success) {
+            setdata((data = res.data.result));
+            setIsLoading(false);
+            console.log('card data', data);
+          } else {
+            setIsLoading(false);
+            alert('No record found.');
+          }
+        })
+        .catch(err => {
+          setIsLoading(false);
+          console.log('err', err);
+        });
+    }
+
+    // if (!isNullOrEmpty(ID)) {
+    //   setIsLoading(true);
+    //   getPersonalCardByIdApiCall(ID)
+    //     .then(res => {
+    //       console.log('res', res.data.result);
+    //       if (res.data.success) {
+    //         setdata((data = res.data.result));
+    //         setIsLoading(false);
+    //         console.log('card data', data);
+    //       } else {
+    //         setIsLoading(false);
+    //         alert('No record found.');
+    //       }
+    //     })
+    //     .catch(err => {
+    //       setIsLoading(false);
+    //       console.log('err', err);
+    //     });
+    // } else if (!isNullOrEmpty(scanById)) {
+    //   let bytes = CryptoJS.AES.decrypt(scanById, 'secret key 123');
+    //   let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+    //   // console.log('decryptedData', decryptedData);
+    //   var id = decryptedData.split('_')[1];
+    //   // console.log('sapna sapna sapna', id);
+
+    //   setIsLoading(true);
+    //   getPersonalCardByUserIdApiCall(id)
+    //     .then(res => {
+    //       console.log('res', res.data.result);
+    //       if (res.data.success) {
+    //         setdata((data = res.data.result));
+    //         setIsLoading(false);
+    //         console.log('card data', data);
+    //       } else {
+    //         setIsLoading(false);
+    //         alert('No record found.');
+    //       }
+    //     })
+    //     .catch(err => {
+    //       setIsLoading(false);
+    //       console.log('err', err);
+    //     });
+    // }
   };
 
   const getAllLookupdetail = () => {
@@ -556,7 +679,7 @@ export default function IndividualScreen(props) {
           <View
             style={{width: '100%', marginVertical: 70, alignItems: 'center'}}>
             <QRCode
-              value={QRCODE_URL}
+              value={ciphertext}
               logoSize={30}
               logoBackgroundColor="transparent"
               color={SECONDARY}

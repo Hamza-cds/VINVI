@@ -21,7 +21,6 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import {storyPostApiCall} from '../Apis/Repo';
 import {isValidImage, isValidVideo} from '../Constants/Validations';
-import VLCPlayer from 'react-native-vlc-media-player/VLCPlayer';
 import Video from 'react-native-video';
 
 export default function VideoWallScreen({navigation, route}) {
@@ -251,8 +250,7 @@ export default function VideoWallScreen({navigation, route}) {
         onRequestClose={() => {
           setViewModal(false);
         }}>
-        <View
-          style={{flex: 1, backgroundColor: 'black', justifyContent: 'center'}}>
+        <View style={{height: '100%', width: '100%', backgroundColor: 'black'}}>
           {/* <Video
             source={{uri: URL.concat(image.media)}} // Can be a URL or a local file.
             ref={ref => {
@@ -262,8 +260,22 @@ export default function VideoWallScreen({navigation, route}) {
             //  onError={this.videoError}               // Callback when video cannot be loaded
             style={{height: '100%', width: '100%'}}
           /> */}
-
-          <VLCPlayer
+          <Video
+            source={{uri: URL.concat(image.media)}} // Can be a URL or a local file.
+            paused={false}
+            muted={false}
+            resizeMode="contain"
+            repeat={true}
+            fullscreen={true}
+            onLoadStart={() => {
+              setIsLoading(true);
+            }}
+            onLoad={() => {
+              setIsLoading(false);
+            }}
+            style={{height: '100%', width: '100%'}}
+          />
+          {/* <VLCPlayer
             style={{flex: 1}}
             // videoAspectRatio="16:9"
             // autoAspectRatio={true}
@@ -284,7 +296,7 @@ export default function VideoWallScreen({navigation, route}) {
             onBuffering={() => {
               setIsLoading(true);
             }}
-          />
+          /> */}
         </View>
         {isLoading ? <Loader /> : null}
       </Modal>

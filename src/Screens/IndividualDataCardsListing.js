@@ -52,6 +52,16 @@ export function IndividualDataCardsListing({navigation, route}) {
 
   return (
     <>
+      {/* <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: 300,
+        }}>
+        <Text style={{color: '#242424'}}>No Cards</Text>
+      </View> */}
+
       {!isNullOrEmptyArray(individualData) ? (
         <AlphabetList
           data={individualData}

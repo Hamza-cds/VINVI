@@ -164,8 +164,8 @@ export default function RegisterScreen(props) {
           if (data.status == 335) {
             setIsLoading(false);
             props.navigation.push('PhoneVerification', {
-              paramKey: phoneNumber,
-              paramKey1: password,
+              phone: phoneNumber,
+              password: password,
             });
           } else {
             setIsLoading(false);

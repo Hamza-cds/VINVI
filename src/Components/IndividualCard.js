@@ -9,6 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Foundation from 'react-native-vector-icons/Foundation';
 import LinearGradient from 'react-native-linear-gradient';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function IndividualCard({
   cta,
@@ -40,7 +41,7 @@ export default function IndividualCard({
   let arrayEducation;
   let eductaion;
   arrayEducation = _.find(item.personalCardMeta, {personalKey: 'Education'});
-  if (arrayEducation) {
+  if (isNullOrEmpty(arrayEducation) && arrayEducation) {
     arrayEducation = JSON.parse(arrayEducation.personalValue);
     console.log('arrayEducation', arrayEducation);
     eductaion = arrayEducation[0];
@@ -51,7 +52,7 @@ export default function IndividualCard({
   let arrayJobHistory;
   let experience;
   arrayJobHistory = _.find(item.personalCardMeta, {personalKey: 'Education'});
-  if (arrayJobHistory) {
+  if (isNullOrEmpty(arrayJobHistory) && arrayJobHistory) {
     arrayJobHistory = JSON.parse(arrayJobHistory.personalValue);
     let tempExperience = arrayJobHistory[0];
     console.log('tempExperience', tempExperience);
@@ -134,7 +135,7 @@ export default function IndividualCard({
                 color: WHITE,
                 maxWidth: '100%',
               }}>
-              {item.phoneNo}
+              {item.email}
             </Text>
             <View style={{flexDirection: 'row'}}>
               <Entypo

@@ -10,7 +10,13 @@ export default function MyQrCodeSc() {
   const DATA = useSelector(state => state.UserData);
   console.log('Header dispatch DATA', DATA);
   let ciphertext = CryptoJS.AES.encrypt(
-    date.getTime() + '_' + JSON.stringify(DATA.id) + '-_' + date.getTime(),
+    date.getTime() +
+      '_' +
+      JSON.stringify(DATA.id) +
+      '_' +
+      date.getTime() +
+      '|' +
+      'qr',
     'secret key 123',
   ).toString();
 
