@@ -186,15 +186,15 @@ export function ContactModal({
               </TouchableOpacity>
             </View>
 
-            <OutlinedInputBox
+            {/* <OutlinedInputBox
               placeholder="Number"
               inputType="text"
               editable={false}
-              text={CardData.phoneNo ? CardData.phoneNo : null}
+              text={CardData.phoneNo ? CardData.phoneNo : Number}
               // onChange={value => {
               //   setHobbies(value);
               // }}
-            />
+            /> */}
             <OutlinedInputBox
               placeholder="Email Address"
               inputType="text"

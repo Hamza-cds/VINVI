@@ -20,6 +20,7 @@ const Tab = createMaterialTopTabNavigator();
 export default function SavedDashboardScreen(props, navigation) {
   let [userData, setUserData] = useState(null);
   const [data, setdata] = useState([]);
+  let isfocused = useIsFocused();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -82,20 +83,16 @@ export default function SavedDashboardScreen(props, navigation) {
       <Tab.Navigator
         initialRouteName="Phone-Book"
         tabBarOptions={{
-          indicatorStyle: {backgroundColor: 'black'},
+          indicatorStyle: {backgroundColor: '#B0B0B0', height: 3},
           labelStyle: {
             fontSize: 12,
-            color: WHITE,
+            color: isfocused ? WHITE : '#B0B0B0',
             fontWeight: 'bold',
           },
           style: {
             backgroundColor: PRIMARY,
             borderWidth: 0,
             elevation: 0,
-            // marginHorizontal: 20,
-            // marginTop: 10,
-            // marginBottom: 10,
-            color: useIsFocused ? WHITE : null,
           },
           bounces: true,
         }}

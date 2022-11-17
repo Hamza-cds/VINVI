@@ -8,16 +8,18 @@ import {SECONDARY, WHITE} from '../Constants/Colors';
 import {URL} from '../Constants/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
 
 const CustomSidebarMenu = props => {
-  let [userData, setUserData] = useState('');
+  // let [userData, setUserData] = useState('');
+  const DATA = useSelector(state => state.UserData);
 
-  useEffect(() => {
-    AsyncStorage.getItem('user_data').then(response => {
-      setUserData((userData = JSON.parse(response)));
-      console.log('userdata', userData);
-    });
-  }, []);
+  // useEffect(() => {
+  //   AsyncStorage.getItem('user_data').then(response => {
+  //     setUserData((userData = JSON.parse(response)));
+  //     console.log('userdata', userData);
+  //   });
+  // }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: SECONDARY}}>
@@ -32,13 +34,14 @@ const CustomSidebarMenu = props => {
           paddingVertical: 40,
           position: 'absolute',
           top: 0,
+          left: -5,
           backgroundColor: SECONDARY,
           zIndex: 1,
         }}>
-        {userData.profileImage ? (
+        {DATA.profileImage ? (
           <Image
-            style={{height: 50, width: 50, borderRadius: 25, marginLeft: -30}}
-            source={{uri: URL.concat(userData.profileImage)}}
+            style={{height: 50, width: 50, borderRadius: 25}}
+            source={{uri: URL.concat(DATA.profileImage)}}
           />
         ) : (
           <Ionicons
@@ -56,15 +59,19 @@ const CustomSidebarMenu = props => {
         )}
         <View style={{marginLeft: 15}}>
           <Text style={{color: WHITE, fontSize: 18, fontWeight: 'bold'}}>
-            {userData.firstName + '' + userData.lastName}
+            {/* {userData.firstName + '' + userData.lastName} */}
+            {DATA.firstName ? DATA.firstName : 'name'}
           </Text>
-          <Text style={{color: WHITE, fontSize: 14}}>{userData.phoneno}</Text>
+          <Text style={{color: WHITE, fontSize: 14}}>
+            {DATA.phoneno ? DATA.phoneno : 'number'}
+          </Text>
         </View>
       </View>
       <View style={{marginTop: 90}}></View>
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
+      <Text>hamza</Text>
     </SafeAreaView>
   );
 };

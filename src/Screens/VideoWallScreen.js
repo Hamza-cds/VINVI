@@ -34,7 +34,6 @@ export default function VideoWallScreen({navigation, route}) {
   let [uplaodMedia, setUploadMedia] = useState('');
   let [mediaType, setMediaType] = useState('');
   let [fileType, setFileType] = useState('');
-  let uploadType = 2;
   let page = 1;
   let limit = 10;
 
@@ -47,7 +46,7 @@ export default function VideoWallScreen({navigation, route}) {
 
   const GetVideoWallData = () => {
     setIsLoading(true);
-    GetDataVideoWallApi(uploadType, page, limit)
+    GetDataVideoWallApi(page, limit)
       .then(res => {
         console.log('video wall res', res);
         if (res.data.success) {
@@ -56,7 +55,7 @@ export default function VideoWallScreen({navigation, route}) {
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          alert('No data found!');
+          // alert('No data found!');
         }
       })
       .catch(err => {
@@ -159,7 +158,6 @@ export default function VideoWallScreen({navigation, route}) {
                   onPress={() => {
                     setImage((image = item));
                     checkMedia(image);
-                    // setModalVisible(true);
                   }}
                   style={{
                     width: '16.40%',
@@ -333,10 +331,10 @@ export default function VideoWallScreen({navigation, route}) {
             height: '45%',
           }}>
           <BtnComponent
-            placeholder="Open Camera"
+            placeholder="Record Video"
             onPress={() => {
               let options = {
-                mediaType: 'mixed',
+                mediaType: 'video',
                 maxWidth: 300,
                 maxHeight: 550,
                 quality: 0.7,
@@ -355,9 +353,9 @@ export default function VideoWallScreen({navigation, route}) {
             }}
           />
           <BtnComponent
-            placeholder="Upload Image"
+            placeholder="Upload Video"
             onPress={() => {
-              launchImageLibrary({mediaType: 'mixed'}, image => {
+              launchImageLibrary({mediaType: 'video'}, image => {
                 console.log('hamza friday', image);
                 if (image.didCancel) {
                   console.log('User cancelled image picker');

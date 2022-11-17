@@ -83,10 +83,13 @@ export default function Splash(props) {
   const onHandleLogin = async () => {
     let phone = await AsyncStorage.getItem('phone');
     let password = await AsyncStorage.getItem('password');
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
     let object = {
       Phoneno: phone,
       Password: password,
+      FCMToken: fcmToken,
     };
+    console.log('object logni', object);
     loginApiCall(object)
       .then(response => {
         console.log('splash login response', response);

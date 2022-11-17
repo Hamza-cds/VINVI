@@ -4,6 +4,7 @@ import {SECONDARY, WHITE} from '../Constants/Colors';
 import {USER_NAME, USER_EMAIL, URL} from '../Constants/Constants';
 import {useNavigation} from '@react-navigation/native';
 import {isNullOrEmpty} from '../Constants/TextUtils';
+import Feather from 'react-native-vector-icons/Feather';
 
 export default function AccountCard({item}) {
   console.log('jkahslfsnd asjdfhasdkfj item', item);
@@ -44,7 +45,13 @@ export default function AccountCard({item}) {
         }}
       />
       <View style={{marginLeft: 20}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+        <Text
+          numberOfLines={1}
+          style={{
+            fontSize: 18,
+            fontWeight: 'bold',
+            width: 150,
+          }}>
           {item ? (item.firstName ? item.firstName : 'name') : 'name'}
         </Text>
         <Text style={{fontSize: 14}}>
@@ -59,12 +66,12 @@ export default function AccountCard({item}) {
           borderRadius: 5,
           borderColor: SECONDARY,
           position: 'absolute',
-          top: 1,
-          right: 1,
-          backgroundColor: WHITE,
+          top: 3,
+          right: 4,
+          backgroundColor: SECONDARY,
           padding: 5,
         }}>
-        <Image source={require('../Assets/editProf.png')} />
+        <Feather name="edit" size={16} color={'white'} />
       </TouchableOpacity>
     </View>
   );

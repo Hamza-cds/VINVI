@@ -3,7 +3,7 @@ import {Text, View, FlatList} from 'react-native';
 import InstaStory from 'react-native-insta-story';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import {URL} from '../Constants/Constants';
-import {isNullOrEmpty} from '../Constants/TextUtils';
+import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function DashboardStories({userStories}) {
   const [data, setData] = useState([]);
@@ -17,35 +17,38 @@ export default function DashboardStories({userStories}) {
     console.log('list*************', list);
     let finalList = [];
 
-    for (let index = 0; index < list.length; index++) {
-      let element = list[index];
-      console.log('element element', element);
+    if (list.length > 0) {
+      for (let index = 0; index < list.length; index++) {
+        let element = list[index];
+        console.log('element element', element);
 
-      let storiesArray = [];
-      for (let index = 0; index < element.stories.length; index++) {
-        const item = element.stories[index];
-        let storiesObject = {
-          story_id: item.id,
-          story_image: !isNullOrEmpty(item.media)
-            ? URL.concat(item.media)
+        let storiesArray = [];
+        for (let index = 0; index < element.stories.length; index++) {
+          const item = element.stories[index];
+          let storiesObject = {
+            story_id: item.id,
+            story_image: !isNullOrEmpty(item.media)
+              ? URL.concat(item.media)
+              : null,
+            swipeText: item.title,
+          };
+          storiesArray.push(storiesObject);
+        }
+
+        let object = {
+          user_id: element.userId,
+          user_image: !isNullOrEmpty(element.profilePicture)
+            ? URL.concat(element.profilePicture)
             : null,
-          swipeText: item.title,
+          user_name: element.userName,
+          stories: storiesArray,
         };
-        storiesArray.push(storiesObject);
+        list.length > 0 ? finalList.push(object) : finalList;
       }
-
-      let object = {
-        user_id: element.userId,
-        user_image: !isNullOrEmpty(element.profilePicture)
-          ? URL.concat(element.profilePicture)
-          : null,
-        user_name: element.userName,
-        stories: storiesArray,
-      };
-      finalList.push(object);
+      setData(finalList);
+    } else {
+      setData([]);
     }
-    // debugger;
-    setData(finalList);
   };
 
   return (

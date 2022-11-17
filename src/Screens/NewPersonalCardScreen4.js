@@ -174,7 +174,7 @@ export default function NewCardScreen(props) {
 
   const onFinish = () => {
     if (isNullOrEmpty(message)) {
-      alert(EMPTY_MESSAGE);
+      alert("Introduction can't be empty");
     } else if (isNullOrEmpty(qrCode)) {
       alert(EMPTY_QRCODE);
     } else if (isNullOrEmpty(hobbies)) {
@@ -302,13 +302,13 @@ export default function NewCardScreen(props) {
           placeholder="Introduce your self"
           inputType="text"
           label={'Intoduction'}
-          maxLength={50}
+          maxLength={100}
           onChange={value => {
             setMessage(value);
           }}
         />
         <OutlinedInputBox
-          placeholder="Enter Code"
+          placeholder="Enter code"
           inputType="text"
           maxLength={5}
           label={'QR Code'}
@@ -317,27 +317,27 @@ export default function NewCardScreen(props) {
           }}
         />
         <OutlinedInputBox
-          placeholder="Enter Hobbies"
+          placeholder="Enter hobbies"
           inputType="text"
-          maxLength={20}
+          maxLength={100}
           label={'Hobbies'}
           onChange={value => {
             setHobbies(value);
           }}
         />
         <OutlinedInputBox
-          placeholder="Enter Interests"
+          placeholder="Enter interests"
           inputType="text"
-          maxLength={20}
+          maxLength={100}
           label={'Interests'}
           onChange={value => {
             setInterests(value);
           }}
         />
         <OutlinedInputBox
-          placeholder="Enter Achievements"
+          placeholder="Enter achievements"
           inputType="text"
-          maxLength={30}
+          maxLength={100}
           label={'Achievements'}
           onChange={value => {
             setAchivements(value);

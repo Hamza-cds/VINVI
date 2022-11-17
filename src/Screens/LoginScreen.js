@@ -41,6 +41,13 @@ export default function LoginScreen(props) {
   const [logedIn, setLogedIn] = useState(true);
   const [Error, setError] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState(false);
+  const [fcmToken, setFcmToken] = useState('');
+
+  useEffect(() => {
+    AsyncStorage.getItem('fcmToken').then(data => {
+      if (!isNullOrEmpty(data)) setFcmToken(data);
+    });
+  }, []);
 
   const onLogin = () => {
     if (isNullOrEmpty(phoneNumber)) {
@@ -54,6 +61,7 @@ export default function LoginScreen(props) {
       let object = {
         Phoneno: phoneNumber,
         Password: password,
+        FCMToken: fcmToken,
       };
       console.log('object', object);
 

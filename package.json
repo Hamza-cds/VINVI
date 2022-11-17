@@ -32,6 +32,7 @@
     "react-native": "0.69",
     "react-native-bouncy-checkbox": "^3.0.2",
     "react-native-camera-kit": "^13.0.0",
+    "react-native-compressor": "^1.6.1",
     "react-native-confirmation-code-field": "^7.1.0",
     "react-native-crypto-js": "^1.0.0",
     "react-native-dropdown-picker": "^5.4.2",

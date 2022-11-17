@@ -238,6 +238,7 @@ export function SkillModal({
               <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                style={{marginVertical: 20}}
                 data={editModalSkillArray}
                 keyExtractor={item => item.id}
                 renderItem={({item, index}) => (
@@ -248,7 +249,7 @@ export function SkillModal({
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       borderRadius: 3,
-                      marginTop: 10,
+                      // marginTop: 10,
                     }}>
                     <Text
                       style={{

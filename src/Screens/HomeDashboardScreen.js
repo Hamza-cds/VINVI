@@ -367,7 +367,7 @@ export default function HomeDashboardScreen({navigation, route}) {
         {/* Individual Page */}
         {/* ********** */}
         <View key="1">
-          {!isNullOrEmptyArray(individualData) ? (
+          {individualData.length > 0 ? (
             <AlphabetList
               data={individualData}
               index={DEFAULT_CHAR_INDEX}
@@ -415,7 +415,7 @@ export default function HomeDashboardScreen({navigation, route}) {
         {/* Business Page */}
         {/* ********** */}
         <View key="2">
-          {!isNullOrEmptyArray(businessData) ? (
+          {businessData.length > 0 ? (
             <AlphabetList
               data={businessData}
               index={DEFAULT_CHAR_INDEX}

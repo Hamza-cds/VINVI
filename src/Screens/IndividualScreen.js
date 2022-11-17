@@ -194,7 +194,13 @@ export default function IndividualScreen(props) {
     getData();
     // getCardDataByUserId();
     getAllLookupdetail();
-  }, [isSkillModalVisible]);
+  }, [
+    isSkillModalVisible,
+    isEducationEditModalAdd,
+    isJobHistoryEditModalAdd,
+    isContactModalVisible,
+    isPersonalModalVisible,
+  ]);
 
   const getData = () => {
     let check = CryptoJS.AES.decrypt(scanById, 'secret key 123');
@@ -456,20 +462,21 @@ export default function IndividualScreen(props) {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
+            // alignItems: 'flex-end',
+            // justifyContent: 'center',
             width: '100%',
             position: 'absolute',
-            top: 270,
+            top: 250,
           }}>
           <View style={{flexDirection: 'row'}}>
             <View
               style={{
-                marginLeft: 30,
+                marginLeft: 10,
                 backgroundColor: '#E0E0E0',
-                width: 100,
-                height: 100,
-                borderRadius: 50,
+                width: 80,
+                height: 80,
+                borderRadius: 80,
+                marginTop: 20,
               }}>
               <Image
                 source={
@@ -477,7 +484,7 @@ export default function IndividualScreen(props) {
                     ? {uri: URL.concat(data.profilePicture)}
                     : require('../Assets/profilePic.png')
                 }
-                style={{width: 100, height: 100, borderRadius: 50}}
+                style={{width: 80, height: 80, borderRadius: 80}}
               />
             </View>
             {Edit == true ? (
@@ -505,10 +512,33 @@ export default function IndividualScreen(props) {
             ) : null}
           </View>
 
-          <View style={{paddingHorizontal: 10, marginBottom: 20}}>
-            <Text style={{color: SECONDARY, fontSize: 20}}>{data.name}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 50,
+              width: '70%',
+            }}>
+            <View
+              style={{
+                paddingHorizontal: 10,
+                // marginBottom: 20,
+              }}>
+              <Text
+                numberOfLines={2}
+                style={{
+                  color: SECONDARY,
+                  fontSize: 18,
+                  width: 200,
+                }}>
+                {data.name}
+              </Text>
 
-            <View style={{marginLeft: 170, marginTop: -20}}>
+              <Text style={{fontSize: 14, color: FORTH}}>
+                {arrayOccupation}
+              </Text>
+            </View>
+            <View style={{marginTop: 5}}>
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
@@ -535,8 +565,6 @@ export default function IndividualScreen(props) {
                 </Svg>
               </TouchableOpacity>
             </View>
-
-            <Text style={{fontSize: 14, color: FORTH}}>{arrayOccupation}</Text>
           </View>
         </View>
         <View style={{marginTop: 70, paddingHorizontal: 20, paddingBottom: 50}}>

@@ -37,28 +37,39 @@ export function Individual({navigation}) {
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
-      getData();
+      // getData();
       console.log('userdata', userData);
     });
   }, []);
 
-  // useEffect(() => {
-  //   getData();
-  // }, []);
-
-  const getData = () => {
+  useEffect(() => {
     setIsLoading(true);
     getPersonalCardByUserIdApiCall(DATA.id)
       .then(res => {
         console.log('res ++++++++++++', res);
         setdata((data = res.data.result));
+        console.log('data ++++++++++++', data);
         setIsLoading(false);
       })
       .catch(err => {
         setIsLoading(false);
         console.log('err', err);
       });
-  };
+  }, []);
+
+  // const getData = () => {
+  //   setIsLoading(true);
+  //   getPersonalCardByUserIdApiCall(DATA.id)
+  //     .then(res => {
+  //       console.log('res ++++++++++++', res);
+  //       setdata((data = res.data.result));
+  //       setIsLoading(false);
+  //     })
+  //     .catch(err => {
+  //       setIsLoading(false);
+  //       console.log('err', err);
+  //     });
+  // };
 
   // open close card setup start
 
@@ -198,7 +209,43 @@ export function Individual({navigation}) {
             </View>
           }
         />
-      ) : null}
+      ) : (
+        <>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              height: 300,
+            }}>
+            <Text style={{color: '#242424'}}>No Cards</Text>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              paddingHorizontal: 20,
+              marginVertical: 20,
+              position: 'absolute',
+              bottom: 20,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('NewPersonalCard1');
+              }}
+              style={{
+                height: 50,
+                width: '100%',
+                backgroundColor: SECONDARY,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 5,
+              }}>
+              <Text style={{color: WHITE, fontSize: 14}}>Make New Card</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
 
       {isLoading ? <Loader /> : null}
     </>

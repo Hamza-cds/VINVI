@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {View, Image, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  Text,
+  ImageBackground,
+} from 'react-native';
 import {PRIMARY, PRIMARY1, SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
 import _ from 'lodash';
@@ -92,21 +98,25 @@ export default function MyCardIndividual({
         }}
         activeOpacity={0.9}
         style={{flexDirection: 'row', marginTop: -15}}>
-        <Image
-          source={
-            item.profilePicture
-              ? {uri: URL.concat(item.profilePicture)}
-              : require('../Assets/profilePic.png')
-          }
-          style={{width: 80, height: 80, borderRadius: 40}}
-        />
+        <ImageBackground
+          source={require('../Assets/profilePic.png')}
+          style={{width: 80, height: 80, borderRadius: 40}}>
+          <Image
+            source={
+              item.profilePicture
+                ? {uri: URL.concat(item.profilePicture)}
+                : require('../Assets/profilePic.png')
+            }
+            style={{width: 80, height: 80, borderRadius: 40}}
+          />
+        </ImageBackground>
         <View style={{marginHorizontal: 10}}>
           <Text
             style={{
               fontSize: 14,
               color: selected === index ? WHITE : SECONDARY,
             }}>
-            {item.name}
+            {item.name ? item.name : 'dum'}
           </Text>
           <Text
             style={{
@@ -116,7 +126,7 @@ export default function MyCardIndividual({
               marginBottom: 10,
               width: 200,
             }}>
-            {item.occupation}
+            {/* {item.occupation} */}
             {arrayOccupation}
           </Text>
           <Text
@@ -124,7 +134,7 @@ export default function MyCardIndividual({
               fontSize: 12,
               color: selected === index ? WHITE : SECONDARY,
             }}>
-            {item.email}
+            {item.email ? item.email : 'email'}
           </Text>
           <Text
             style={{
@@ -132,7 +142,7 @@ export default function MyCardIndividual({
               color: selected === index ? WHITE : SECONDARY,
               width: 200,
             }}>
-            {item.address}
+            {item.address ? item.address : 'address'}
           </Text>
         </View>
         {selected === index ? (

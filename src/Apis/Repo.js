@@ -160,7 +160,7 @@ export async function getPersonalCardByIdApiCall(id) {
   }
 }
 
-export async function getPersonalCardByUserIdApiCall(id) {
+export async function getActivePersonalCardByUserIdApiCall(id) {
   let route = URL.concat(`/api/PersonalCard/GetActiveCardByUserId?id=${id}`);
   console.log('getPersonalCardById Request : ', route);
   let apiRes = null;
@@ -194,22 +194,22 @@ export async function getBusinessCardByIdApiCall(id) {
   }
 }
 
-// export async function getPersonalCardByUserIdApiCall(id) {
-//   let route = URL.concat(`/api/PersonalCard/GetByUserId?id=${id}`);
-//   console.log('getPersonalCardByUserId Request : ', route);
-//   let apiRes = null;
-//   try {
-//     apiRes = await axios({
-//       method: 'GET',
-//       url: route,
-//     });
-//   } catch (err) {
-//     apiRes = err;
-//     return apiRes;
-//   } finally {
-//     return apiRes;
-//   }
-// }
+export async function getPersonalCardByUserIdApiCall(id) {
+  let route = URL.concat(`/api/PersonalCard/GetByUserId?id=${id}`);
+  console.log('getPersonalCardByUserId Request : ', route);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: route,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
 
 export async function getPersonalCardAllActiveApiCall() {
   let route = URL.concat('/api/PersonalCard/GetAllActive');
@@ -465,9 +465,9 @@ export async function GenerateCodeApiCall(obj) {
   }
 }
 
-export async function GetDataVideoWallApi(UploadType, page, limit) {
+export async function GetDataVideoWallApi(page, limit) {
   let route = URL.concat(
-    `/api/UserStory/GetAll?UploadType=${UploadType}&PageNumber=${page}&Limit=${limit}`,
+    `/api/UserStory/GetVideoWall?PageNumber=${page}&Limit=${limit}`,
   );
   console.log('getVideoWall Data Request  : ', route);
   let apiRes = null;
