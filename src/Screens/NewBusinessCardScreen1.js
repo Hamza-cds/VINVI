@@ -15,6 +15,7 @@ import {useDispatch} from 'react-redux';
 import {BCData} from '../../Store/Action';
 import Select from '../Components/Select';
 import {GetAllLookupDetailApiCall} from '../Apis/Repo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function NewBusinessCardScreen1(props) {
   const dispatch = useDispatch();
@@ -284,12 +285,14 @@ export default function NewBusinessCardScreen1(props) {
               svg={logo}
               placeholder="Upload Logo"
               onCallBack={logoImage}
+              label={'select logo'}
             />
 
             <UploadBtn
               svg={cover}
               placeholder="Upload Cover"
               onCallBack={coverImage}
+              label={'select cover'}
             />
 
             <View style={{marginVertical: 10}}>

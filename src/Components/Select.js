@@ -36,6 +36,7 @@ export default function Select({
   isEdit,
   editText,
 }) {
+  console.log('error', error);
   const [openModal, setOpenModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
 
@@ -92,9 +93,10 @@ export default function Select({
         position: 'relative',
         // borderWidth: 1,
         borderRadius: 7,
+        borderWidth: 0.7,
         borderColor: error ? 'red' : PRIMARY,
         backgroundColor: '#EFEFEF',
-        height: 50,
+        // height: 50,
       }}>
       {error ? (
         <Text
@@ -102,9 +104,9 @@ export default function Select({
           style={{
             color: 'red',
             position: 'absolute',
-            top: 5,
+            top: 2,
             right: 5,
-            left: '50%',
+            left: '35%',
             fontSize: 11,
             textAlign: 'right',
           }}>
@@ -115,7 +117,7 @@ export default function Select({
       <Text
         style={{
           flex: 1,
-          color: Black,
+          color: error ? 'red' : Black,
           marginBottom: 5,
           fontSize: 12,
           position: 'absolute',

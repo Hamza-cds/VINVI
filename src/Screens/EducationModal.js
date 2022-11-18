@@ -39,72 +39,21 @@ export function EducationModal({
   let [editEdu, setEditEdu] = useState('');
   let [editEduHistoryArray, setEditEducationHistoryArray] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [endYearError, setEndYearError] = useState(false);
+  const [endYearErrorMsg, setEndYearErrorMsg] = useState('');
+  const [startYearError, setStartYearError] = useState(false);
+  const [startYearErrorMsg, setStartYearErrorMsg] = useState('');
 
-  const Year = [
-    {id: 1, name: '1960'},
-    {id: 2, name: '1961'},
-    {id: 3, name: '1962'},
-    {id: 4, name: '1963'},
-    {id: 5, name: '1964'},
-    {id: 6, name: '1965'},
-    {id: 7, name: '1966'},
-    {id: 8, name: '1967'},
-    {id: 9, name: '1968'},
-    {id: 10, name: '1969'},
-    {id: 11, name: '1970'},
-    {id: 12, name: '1971'},
-    {id: 13, name: '1972'},
-    {id: 14, name: '1973'},
-    {id: 15, name: '1974'},
-    {id: 16, name: '1975'},
-    {id: 17, name: '1976'},
-    {id: 18, name: '1977'},
-    {id: 19, name: '1978'},
-    {id: 20, name: '1979'},
-    {id: 21, name: '1980'},
-    {id: 22, name: '1981'},
-    {id: 23, name: '1982'},
-    {id: 24, name: '1983'},
-    {id: 25, name: '1984'},
-    {id: 26, name: '1985'},
-    {id: 27, name: '1986'},
-    {id: 28, name: '1987'},
-    {id: 29, name: '1988'},
-    {id: 30, name: '1989'},
-    {id: 31, name: '1990'},
-    {id: 32, name: '1991'},
-    {id: 33, name: '1992'},
-    {id: 34, name: '1993'},
-    {id: 35, name: '1994'},
-    {id: 36, name: '1995'},
-    {id: 37, name: '1996'},
-    {id: 38, name: '1997'},
-    {id: 39, name: '1998'},
-    {id: 40, name: '1999'},
-    {id: 41, name: '2000'},
-    {id: 42, name: '2001'},
-    {id: 43, name: '2002'},
-    {id: 44, name: '2003'},
-    {id: 45, name: '2004'},
-    {id: 46, name: '2005'},
-    {id: 47, name: '2006'},
-    {id: 48, name: '2007'},
-    {id: 49, name: '2008'},
-    {id: 50, name: '2009'},
-    {id: 51, name: '2010'},
-    {id: 52, name: '2011'},
-    {id: 53, name: '2012'},
-    {id: 54, name: '2013'},
-    {id: 55, name: '2014'},
-    {id: 56, name: '2015'},
-    {id: 57, name: '2016'},
-    {id: 58, name: '2017'},
-    {id: 59, name: '2018'},
-    {id: 60, name: '2019'},
-    {id: 61, name: '2020'},
-    {id: 62, name: '2021'},
-    {id: 63, name: '2022'},
-  ];
+  const getYears = () => {
+    let id = 1;
+    let formattedYearsData = [];
+    let currentYear = new Date().getFullYear();
+    for (let index = 1960; index <= currentYear; index++) {
+      formattedYearsData.push({name: index, id: id++});
+    }
+    console.log('formattedYearsData', formattedYearsData);
+    return formattedYearsData.reverse();
+  };
 
   const Months = [
     {
@@ -261,16 +210,27 @@ export function EducationModal({
     // console.log('startDateMonth', startDateMonth);
   };
   const FunstartDateYear = value => {
+    console.log('FunstartDateYear', value);
     setStartDateYear((startDateYear = value.name));
-    // console.log('startDateYear', startDateYear);
+    if (value.name < endDateYear) {
+      setStartYearError(false);
+    } else {
+      setStartYearError(true);
+      setStartYearErrorMsg('Start date must be before end date');
+    }
   };
   const FunendDateMonth = value => {
     setEndDateMonth((endDateMonth = value.name));
-    // console.log('endDateMonth', endDateMonth);
   };
   const FunendDateYear = value => {
+    console.log('FunendDateYear', value);
     setEndDateYear((endDateYear = value.name));
-    // console.log('endDateYear', endDateYear);
+    if (value.name > startDateYear) {
+      setEndYearError(false);
+    } else {
+      setEndYearError(true);
+      setEndYearErrorMsg('End date must be after start date');
+    }
   };
 
   return (
@@ -392,7 +352,7 @@ export function EducationModal({
             />
 
             <Select
-              data={Year}
+              data={getYears()}
               placeholder={'Start year'}
               editText={
                 startDateYear
@@ -403,6 +363,8 @@ export function EducationModal({
                     : null
                   : null
               }
+              error={startYearError}
+              errorMessage={startYearErrorMsg}
               onCallBack={FunstartDateYear}
               isEdit={isEdit}
             />
@@ -427,7 +389,7 @@ export function EducationModal({
             />
 
             <Select
-              data={Year}
+              data={getYears()}
               placeholder={'End year'}
               editText={
                 endDateYear
@@ -438,6 +400,8 @@ export function EducationModal({
                     : null
                   : null
               }
+              error={endYearError}
+              errorMessage={endYearErrorMsg}
               onCallBack={FunendDateYear}
               isEdit={isEdit}
             />

@@ -189,6 +189,7 @@ export default function ProductModal({
               svg={productImg}
               placeholder="Upload Photo"
               onCallBack={ProductImage}
+              label={'Select product image'}
             />
             <View style={{marginVertical: 10}}>
               <BtnComponent
