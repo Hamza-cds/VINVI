@@ -134,6 +134,7 @@ export default function NewBusinessCardScreen1(props) {
       console.log('object', object);
 
       dispatch(BCData(object));
+      props.navigation.navigate('NewBusinessCard2');
     }
   };
 
@@ -309,7 +310,6 @@ export default function NewBusinessCardScreen1(props) {
                 placeholder="Next"
                 onPress={() => {
                   onNext();
-                  props.navigation.navigate('NewBusinessCard2');
                 }}
               />
             </View>

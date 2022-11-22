@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {TouchableOpacity, Text, View, FlatList, Alert} from 'react-native';
 import {
   getPersonalCardAllActiveApiCall,
-  getPersonalCardByUserIdApiCall,
+  getMyPersonalCardByUserIdApiCall,
   setOneActiveCard,
   OpenandCloseCardApiCall,
 } from '../Apis/Repo';
@@ -14,7 +14,9 @@ import {useSelector} from 'react-redux';
 import {Switch} from 'react-native-paper';
 
 export function Individual({navigation}) {
-  const [isSwitchOn, setIsSwitchOn] = useState(true);
+  const [isSwitchOn, setIsSwitchOn] = useState(
+    resStatus == 0 ? setIsSwitchOn(false) : true,
+  );
 
   const [selected, setSelected] = useState(0);
   let [userData, setUserData] = useState(null);
@@ -24,12 +26,13 @@ export function Individual({navigation}) {
   const [userID, setUserID] = useState('');
   const [call, setCall] = useState(false);
   let [cardStatus, setCardStatus] = useState('');
+  let [resStatus, setResStatus] = useState(cardStatus);
   // console.log('data yaha ha *********', data);
 
   const DATA = useSelector(state => state.UserData);
   // console.log('dispatch DATA', DATA);
 
-  // console.log('selected', selected);
+  console.log('isSwitchOn', isSwitchOn);
   // console.log('cardID', cardID);
   // console.log('userID', userID);
   // console.log('call', call);
@@ -43,33 +46,45 @@ export function Individual({navigation}) {
   }, []);
 
   useEffect(() => {
+    getData();
+  }, []);
+
+  // setIsLoading(true);
+  // getPersonalCardByUserIdApiCall(DATA.id)
+  //   .then(res => {
+  //     console.log('personal res', res);
+  //     setdata((data = res.data.result));
+  //     console.log('personal data', data);
+  //     setIsLoading(false);
+  //   })
+  //   .catch(err => {
+  //     setIsLoading(false);
+  //     console.log('err', err);
+  //   });
+
+  const getData = () => {
     setIsLoading(true);
-    getPersonalCardByUserIdApiCall(DATA.id)
+    getMyPersonalCardByUserIdApiCall(DATA.id)
       .then(res => {
         console.log('res ++++++++++++', res);
-        setdata((data = res.data.result));
-        console.log('data ++++++++++++', data);
-        setIsLoading(false);
+        if (res.data.success == true) {
+          // debugger;
+          const element = res.data.result[0];
+          console.log('element', element);
+          setResStatus((resStatus = element.status));
+          console.log('resStatus', resStatus);
+
+          setdata((data = res.data.result));
+          setIsLoading(false);
+        } else {
+          alert(res.data.message);
+        }
       })
       .catch(err => {
         setIsLoading(false);
         console.log('err', err);
       });
-  }, []);
-
-  // const getData = () => {
-  //   setIsLoading(true);
-  //   getPersonalCardByUserIdApiCall(DATA.id)
-  //     .then(res => {
-  //       console.log('res ++++++++++++', res);
-  //       setdata((data = res.data.result));
-  //       setIsLoading(false);
-  //     })
-  //     .catch(err => {
-  //       setIsLoading(false);
-  //       console.log('err', err);
-  //     });
-  // };
+  };
 
   // open close card setup start
 

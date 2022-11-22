@@ -18,16 +18,20 @@ export function Buisness({navigation}) {
   }, []);
 
   useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
     getBusinessCardAllActiveApiCall()
       .then(res => {
         console.log('business response', res);
         setBusinessData((businessData = res.data.result));
-        console.log('buisnessData', businessData);
+        console.log('buisnessData ----', businessData);
       })
       .catch(err => {
         console.log('err', err);
       });
-  }, []);
+  };
 
   return (
     <>

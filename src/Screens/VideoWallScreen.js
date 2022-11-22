@@ -17,10 +17,10 @@ import BtnComponent from '../Components/BtnComponent';
 // import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector} from 'react-redux';
 // import VideoComponant from '../Components/VideoComponant';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+// import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import {storyPostApiCall} from '../Apis/Repo';
-import {isValidImage, isValidVideo} from '../Constants/Validations';
+import {isValidVideo} from '../Constants/Validations';
 import Video from 'react-native-video';
 
 export default function VideoWallScreen({navigation, route}) {
@@ -67,20 +67,19 @@ export default function VideoWallScreen({navigation, route}) {
   };
 
   const onSelecet = image => {
-    console.log('image', image);
     setIsVisible(false);
     console.log('image', image);
-    for (let index = 0; index < image.assets.length; index++) {
-      const element = image.assets[index];
-      setUploadMedia((uplaodMedia = element));
-    }
-    var imageType = uplaodMedia.type;
+    // for (let index = 0; index < image.assets.length; index++) {
+    //   const element = image.assets[index];
+    //   setUploadMedia((uplaodMedia = element));
+    // }
+    var imageType = image.mime;
     console.log('imageType', imageType);
     var type = imageType.split('/')[1];
     console.log('type', type);
     setMediaType((mediaType = type));
 
-    console.log('mediaType', mediaType);
+    // console.log('mediaType', mediaType);
 
     if (isValidVideo(mediaType)) {
       var formdata = new FormData();
@@ -90,9 +89,9 @@ export default function VideoWallScreen({navigation, route}) {
       formdata.append('Description', 'this is description');
       formdata.append('UserId', JSON.stringify(DATA.id));
       formdata.append('media_file', {
-        uri: uplaodMedia.uri,
-        name: uplaodMedia.fileName + '.' + mediaType,
-        type: uplaodMedia.type,
+        uri: image.path,
+        name: 'vinvi' + '.' + mediaType,
+        type: image.mime,
       });
       console.log('formdata', formdata);
       setIsLoading(true);
@@ -288,6 +287,12 @@ export default function VideoWallScreen({navigation, route}) {
             resizeMode="contain"
             repeat={true}
             fullscreen={true}
+            bufferConfig={{
+              minBufferMs: 15000,
+              maxBufferMs: 50000,
+              bufferForPlaybackMs: 2500,
+              bufferForPlaybackAfterRebufferMs: 5000,
+            }}
             onLoadStart={() => {
               setIsLoading(true);
             }}
@@ -355,39 +360,49 @@ export default function VideoWallScreen({navigation, route}) {
           <BtnComponent
             placeholder="Record Video"
             onPress={() => {
-              let options = {
+              ImagePicker.openCamera({
                 mediaType: 'video',
-                maxWidth: 300,
-                maxHeight: 550,
-                quality: 0.7,
-                videoQuality: 'low',
-                durationLimit: 15, //Video max duration in seconds
-                // saveToPhotos: true,
-              };
-              launchCamera(options, image => {
-                console.log('image', image);
-                if (image.didCancel) {
-                  console.log('User cancelled image picker');
-                } else {
-                  onSelecet(image);
-                }
+              }).then(image => {
+                onSelecet(image);
               });
+              // let options = {
+              //   mediaType: 'video',
+              //   maxWidth: 300,
+              //   maxHeight: 550,
+              //   quality: 0.7,
+              //   videoQuality: 'low',
+              //   durationLimit: 15, //Video max duration in seconds
+              //   // saveToPhotos: true,
+              // };
+              // launchCamera(options, image => {
+              //   console.log('image', image);
+              //   if (image.didCancel) {
+              //     console.log('User cancelled image picker');
+              //   } else {
+              //     onSelecet(image);
+              //   }
+              // });
             }}
           />
           <BtnComponent
             placeholder="Upload Video"
             onPress={() => {
-              launchImageLibrary(
-                {mediaType: 'video', durationLimit: 15},
-                image => {
-                  console.log('hamza friday', image);
-                  if (image.didCancel) {
-                    console.log('User cancelled image picker');
-                  } else {
-                    onSelecet(image);
-                  }
-                },
-              );
+              ImagePicker.openPicker({
+                mediaType: 'video',
+              }).then(image => {
+                onSelecet(image);
+              });
+              // launchImageLibrary(
+              //   {mediaType: 'video', durationLimit: 15},
+              //   image => {
+              //     console.log('hamza friday', image);
+              //     if (image.didCancel) {
+              //       console.log('User cancelled image picker');
+              //     } else {
+              //       onSelecet(image);
+              //     }
+              //   },
+              // );
             }}
           />
           <BtnComponent

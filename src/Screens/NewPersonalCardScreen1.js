@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ScrollView} from 'react-native-gesture-handler';
 import {GREY, WHITE} from '../Constants/Colors';
 import {isInvalidEmail} from '../Constants/Validations';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function NewCardScreen(props) {
   const dispatch = useDispatch();
@@ -36,6 +37,18 @@ export default function NewCardScreen(props) {
     });
   }, []);
 
+  const onNext = () => {
+    if (isNullOrEmpty(name)) {
+      alert('Enter name');
+    } else if (isNullOrEmpty(city)) {
+      alert('Enter city');
+    } else if (isNullOrEmpty(occupation)) {
+      alert('Enter occupation');
+    } else {
+      dispatch(PCData(object));
+      props.navigation.navigate('NewPersonalCard2');
+    }
+  };
   let object = {
     Name: name.trim(),
     Email: email.trim(),
@@ -188,9 +201,9 @@ export default function NewCardScreen(props) {
             <BtnComponent
               placeholder="Next"
               onPress={() => {
-                // onNext();
-                dispatch(PCData(object));
-                props.navigation.navigate('NewPersonalCard2');
+                onNext();
+                // dispatch(PCData(object));
+                // props.navigation.navigate('NewPersonalCard2');
               }}
             />
           </View>

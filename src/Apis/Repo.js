@@ -194,8 +194,25 @@ export async function getBusinessCardByIdApiCall(id) {
   }
 }
 
-export async function getPersonalCardByUserIdApiCall(id) {
+export async function getMyPersonalCardByUserIdApiCall(id) {
   let route = URL.concat(`/api/PersonalCard/GetByUserId?id=${id}`);
+  console.log('getPersonalCardByUserId Request : ', route);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: route,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function getPersonalCardByUserIdApiCall(id) {
+  let route = URL.concat(`/api/PersonalCard/GetActiveCardByUserId?id=${id}`);
   console.log('getPersonalCardByUserId Request : ', route);
   let apiRes = null;
   try {
