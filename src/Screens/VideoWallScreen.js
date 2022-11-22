@@ -40,6 +40,8 @@ export default function VideoWallScreen({navigation, route}) {
   const DATA = useSelector(state => state.UserData);
   console.log('dispatch DATA', DATA);
 
+  console.log('viewModal', viewModal);
+
   useEffect(() => {
     GetVideoWallData();
   }, []);
@@ -65,6 +67,7 @@ export default function VideoWallScreen({navigation, route}) {
   };
 
   const onSelecet = image => {
+    console.log('image', image);
     setIsVisible(false);
     console.log('image', image);
     for (let index = 0; index < image.assets.length; index++) {
@@ -77,37 +80,43 @@ export default function VideoWallScreen({navigation, route}) {
     console.log('type', type);
     setMediaType((mediaType = type));
 
-    var formdata = new FormData();
-    formdata.append('Id', '0');
-    formdata.append('UploadType', 2);
-    formdata.append('Title', 'this is title');
-    formdata.append('Description', 'this is description');
-    formdata.append('UserId', JSON.stringify(DATA.id));
-    formdata.append('media_file', {
-      uri: uplaodMedia.uri,
-      name: uplaodMedia.fileName + '.' + mediaType,
-      type: uplaodMedia.type,
-    });
-    console.log('formdata', formdata);
-    setIsLoading(true);
-    storyPostApiCall(formdata)
-      .then(res => res.json())
-      .then(data => {
-        console.log('response', data);
-        if (data.status === 200 && data.success === true) {
-          setIsLoading(false);
-          GetVideoWallData();
-          // props.navigation.replace('MyCardsDashboardScreen');
-          alert('successfully posted');
-        } else {
-          setIsLoading(false);
-          alert('invalid request');
-        }
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log('err', err);
+    console.log('mediaType', mediaType);
+
+    if (isValidVideo(mediaType)) {
+      var formdata = new FormData();
+      formdata.append('Id', '0');
+      formdata.append('UploadType', 2);
+      formdata.append('Title', 'this is title');
+      formdata.append('Description', 'this is description');
+      formdata.append('UserId', JSON.stringify(DATA.id));
+      formdata.append('media_file', {
+        uri: uplaodMedia.uri,
+        name: uplaodMedia.fileName + '.' + mediaType,
+        type: uplaodMedia.type,
       });
+      console.log('formdata', formdata);
+      setIsLoading(true);
+      storyPostApiCall(formdata)
+        .then(res => res.json())
+        .then(data => {
+          console.log('response', data);
+          if (data.status === 200 && data.success === true) {
+            setIsLoading(false);
+            GetVideoWallData();
+            // props.navigation.replace('MyCardsDashboardScreen');
+            alert('successfully posted');
+          } else {
+            setIsLoading(false);
+            alert('invalid request');
+          }
+        })
+        .catch(err => {
+          setIsLoading(false);
+          console.log('err', err);
+        });
+    } else {
+      alert('Please only select videos');
+    }
   };
 
   // const getFileType = () => {
@@ -118,20 +127,20 @@ export default function VideoWallScreen({navigation, route}) {
   //   console.log('type', type);
   // };
 
-  const checkMedia = image => {
-    console.log('image....', image);
-    var Type = image.media;
-    console.log('imageType', Type);
-    var type = Type.split('.')[1];
-    console.log('type', type);
-    // setMediaType((mediaType = type));
+  // const checkMedia = image => {
+  //   console.log('image....', image);
+  //   var Type = image.media;
+  //   console.log('imageType', Type);
+  //   var type = Type.split('.')[1];
+  //   console.log('type', type);
+  //   // setMediaType((mediaType = type));
 
-    if (isValidImage(image.media)) {
-      setModalVisible(true);
-    } else if (isValidVideo(image.media)) {
-      setViewModal(true);
-    }
-  };
+  //   if (isValidImage(image.media)) {
+  //     setModalVisible(true);
+  //   } else if (isValidVideo(image.media)) {
+  //     setViewModal(true);
+  //   }
+  // };
 
   return (
     <>
@@ -157,7 +166,8 @@ export default function VideoWallScreen({navigation, route}) {
                 <TouchableOpacity
                   onPress={() => {
                     setImage((image = item));
-                    checkMedia(image);
+                    // checkMedia(image);
+                    setViewModal(true);
                   }}
                   style={{
                     width: '16.40%',
@@ -166,17 +176,7 @@ export default function VideoWallScreen({navigation, route}) {
                     backgroundColor: GREY,
                     marginTop: 10,
                   }}>
-                  {!item.media.includes('.mp4') ? (
-                    <Image
-                      source={{uri: URL.concat(item.media)}}
-                      style={{
-                        width: '100%',
-                        aspectRatio: 1,
-                        marginRight: 0.9,
-                        backgroundColor: GREY,
-                      }}
-                    />
-                  ) : (
+                  {!item.media.includes('.mp4') ? null : (
                     <Video
                       source={{uri: URL.concat(item.media)}} // Can be a URL or a local file.
                       paused={false}
@@ -246,9 +246,31 @@ export default function VideoWallScreen({navigation, route}) {
         transparent={false}
         visible={viewModal}
         onRequestClose={() => {
-          setViewModal(false);
+          setViewModal(!viewModal);
         }}>
         <View style={{height: '100%', width: '100%', backgroundColor: 'black'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginVertical: 20,
+              marginHorizontal: 20,
+            }}>
+            <Image
+              source={{uri: URL.concat(image.profileImage)}}
+              style={{height: 50, width: 50, borderRadius: 50}}
+            />
+
+            <Text
+              numberOfLines={1}
+              style={{
+                color: 'white',
+                fontSize: 15,
+                marginLeft: 15,
+                marginVertical: 13,
+              }}>
+              {image.firstName}
+            </Text>
+          </View>
           {/* <Video
             source={{uri: URL.concat(image.media)}} // Can be a URL or a local file.
             ref={ref => {
@@ -258,6 +280,7 @@ export default function VideoWallScreen({navigation, route}) {
             //  onError={this.videoError}               // Callback when video cannot be loaded
             style={{height: '100%', width: '100%'}}
           /> */}
+
           <Video
             source={{uri: URL.concat(image.media)}} // Can be a URL or a local file.
             paused={false}
@@ -271,7 +294,7 @@ export default function VideoWallScreen({navigation, route}) {
             onLoad={() => {
               setIsLoading(false);
             }}
-            style={{height: '100%', width: '100%'}}
+            style={{height: '80%', width: '100%'}}
           />
           {/* <VLCPlayer
             style={{flex: 1}}
@@ -304,7 +327,6 @@ export default function VideoWallScreen({navigation, route}) {
         transparent={true}
         visible={isVisible}
         onRequestClose={() => {
-          // alert('Modal has been closed.');
           setIsVisible(!isVisible);
         }}
         style={{
@@ -355,14 +377,17 @@ export default function VideoWallScreen({navigation, route}) {
           <BtnComponent
             placeholder="Upload Video"
             onPress={() => {
-              launchImageLibrary({mediaType: 'video'}, image => {
-                console.log('hamza friday', image);
-                if (image.didCancel) {
-                  console.log('User cancelled image picker');
-                } else {
-                  onSelecet(image);
-                }
-              });
+              launchImageLibrary(
+                {mediaType: 'video', durationLimit: 15},
+                image => {
+                  console.log('hamza friday', image);
+                  if (image.didCancel) {
+                    console.log('User cancelled image picker');
+                  } else {
+                    onSelecet(image);
+                  }
+                },
+              );
             }}
           />
           <BtnComponent
@@ -374,3 +399,13 @@ export default function VideoWallScreen({navigation, route}) {
     </>
   );
 }
+
+// <Image
+//   source={{uri: URL.concat(item.media)}}
+//   style={{
+//     width: '100%',
+//     aspectRatio: 1,
+//     marginRight: 0.9,
+//     backgroundColor: GREY,
+//   }}
+// />

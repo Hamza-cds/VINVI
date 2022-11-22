@@ -5,6 +5,7 @@ import {
   BUSINESSCARDDATACOMPLTE,
   USERDATA,
   USERCREDENTIAL,
+  PERSONALCARDSCREEN2DATA,
 } from './ActionType';
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   BCData: null,
   UserData: null,
   USERCREDENTIAL: null,
+  PCScreen2Data: null,
 };
 
 export const mainreducer = (state = initialState, action) => {
@@ -28,6 +30,8 @@ export const mainreducer = (state = initialState, action) => {
       return {...state, UserData: action.payload};
     case USERCREDENTIAL:
       return {...state, UserCredential: action.payload};
+    case PERSONALCARDSCREEN2DATA:
+      return {...state, PCScreen2Data: action.payload};
     default:
       return state;
   }

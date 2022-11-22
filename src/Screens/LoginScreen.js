@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -179,19 +179,21 @@ export default function LoginScreen(props) {
                 setPhoneNumber(value);
               }}
             />
-            <RegisterInputBox
-              placeholder="Password"
-              inputType="password"
-              KeyboardType={'default'}
-              backgroundColor={GREY}
-              onChange={value => {
-                setPassword(value);
-              }}
-            />
+            <View style={{marginTop: -30}}>
+              <RegisterInputBox
+                placeholder="Password"
+                inputType="password"
+                KeyboardType={'default'}
+                backgroundColor={GREY}
+                onChange={value => {
+                  setPassword(value);
+                }}
+              />
+            </View>
             <View
               style={{
-                marginTop: -5,
-                display: 'flex',
+                marginTop: -35,
+                // display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
               }}>

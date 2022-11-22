@@ -32,13 +32,15 @@ import {FlatList} from 'react-native-gesture-handler';
 import {PRIMARY, TEXT_COLOR, WHITE} from '../Constants/Colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {PCDComplete} from '../../Store/Action';
-import {useTheme} from 'react-native-paper';
+import {PCScreen2Data} from '../../Store/Action';
 import Loader from '../Components/Loader';
 
 export default function NewCardScreen(props) {
   const dispatch = useDispatch();
-  const DATA_TEST = useSelector(state => state.PCData);
-  // console.log('PERSONAL_CARD_3_DATA_TEST', DATA_TEST);
+  const PCScreen1 = useSelector(state => state.PCData);
+  const PCScreen2 = useSelector(state => state.PCScreen2Data);
+  console.log('PERSONAL_CARD_3_DATA_TEST', PCScreen1);
+  console.log('PERSONAL_CARD_2_DATA_TEST', PCScreen2);
 
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
   const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
@@ -51,16 +53,17 @@ export default function NewCardScreen(props) {
   const [achivements, setAchivements] = useState('');
   const [skillsArray, setSkillsArray] = useState([]);
   const [modalSkill, setModalSkill] = useState([]);
-  const [profilePic, setProfilePic] = useState(DATA_TEST.ProfilePicture);
-  const [profilePicName, setProfilePicName] = useState(DATA_TEST.profileName);
-  const [coverPic, setCoverPic] = useState(DATA_TEST.CoverPicture);
-  const [coverName, setCoverName] = useState(DATA_TEST.coverName);
+  const [profilePic, setProfilePic] = useState(PCScreen1.ProfilePicture);
+  const [profilePicName, setProfilePicName] = useState(PCScreen1.profileName);
+  const [coverPic, setCoverPic] = useState(PCScreen1.CoverPicture);
+  const [coverName, setCoverName] = useState(PCScreen1.coverName);
   const [educationArray, setEducationArray] = useState([]);
   let [educationObject, setEducationObject] = useState('');
   const [jobHistoryArray, setJobHistoryArray] = useState([]);
   let [jobHistoryObject, setJobHistoryObject] = useState('');
   let [userData, setUserData] = useState(null);
-  const newArray1 = DATA_TEST.PersonalcardScreen1Array;
+  const newArray1 = PCScreen1.PersonalcardScreen1Array;
+  const personalScreen2Array = PCScreen2.PersonalcardScreen2Array;
   let [industryType, setIndustryType] = useState([]);
   let [employeeType, setEmployeeType] = useState([]);
   let [degreeList, setDegreList] = useState([]);
@@ -83,7 +86,6 @@ export default function NewCardScreen(props) {
     {
       key: 'Education',
       value: JSON.stringify(educationArray),
-      // value: educationArray,
     },
     {
       key: 'Interests',
@@ -209,22 +211,32 @@ export default function NewCardScreen(props) {
         PersonalCardMeta.push(newObject);
       }
 
-      for (let index = 0; index < PersonalcardScreen4Array.length; index++) {
-        const element1 = PersonalcardScreen4Array[index];
+      for (let index = 0; index < personalScreen2Array.length; index++) {
+        const element = personalScreen2Array[index];
         let newObject1 = {
-          PersonalKey: element1.key,
-          PersonalValue: element1.value.trim(),
+          PersonalKey: element.PersonalKey,
+          PersonalValue: element.PersonalValue.trim(),
           Ishidden: true,
         };
         PersonalCardMeta.push(newObject1);
       }
 
+      for (let index = 0; index < PersonalcardScreen4Array.length; index++) {
+        const element1 = PersonalcardScreen4Array[index];
+        let newObject2 = {
+          PersonalKey: element1.key,
+          PersonalValue: element1.value.trim(),
+          Ishidden: true,
+        };
+        PersonalCardMeta.push(newObject2);
+      }
+
       var formdata = new FormData();
-      formdata.append('Name', DATA_TEST.Name);
-      formdata.append('Email', DATA_TEST.Email);
+      formdata.append('Name', PCScreen1.Name);
+      formdata.append('Email', PCScreen1.Email);
       formdata.append('UserId', JSON.stringify(userData.id));
-      formdata.append('PhoneNo', DATA_TEST.PhoneNo);
-      formdata.append('Address', DATA_TEST.Address);
+      formdata.append('PhoneNo', PCScreen1.PhoneNo);
+      formdata.append('Address', PCScreen1.Address);
       for (let index = 0; index < PersonalCardMeta.length; index++) {
         const element = PersonalCardMeta[index];
         formdata.append(
@@ -260,6 +272,8 @@ export default function NewCardScreen(props) {
             })
           : formdata.append('cover_image_image', null);
       }
+
+      console.log('formdata', formdata);
 
       setIsLoading(true);
       personalCardApiCall(formdata)

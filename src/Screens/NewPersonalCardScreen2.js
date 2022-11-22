@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, ImageBackground, ScrollView} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
@@ -8,14 +8,61 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Svg, {Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 import {useSelector, useDispatch} from 'react-redux';
-import {stat} from 'react-native-fs';
+import {PCScreen2Data} from '../../Store/Action';
 
 export default function NewCardScreen(props) {
-  console.log('props', props);
+  const [facebook, setFacebook] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [youtube, setYoutube] = useState('');
+  const [snapchat, setSnapchat] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [website, setWebsite] = useState('');
+
   const dispatch = useDispatch();
 
   const DATA_TEST = useSelector(state => state.PCData);
   console.log('DATA_TEST', DATA_TEST);
+
+  let object = {
+    PersonalcardScreen2Array: [
+      {
+        PersonalKey: 'facebook link',
+        PersonalValue: facebook.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'twitter link',
+        PersonalValue: twitter.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'instagram link',
+        PersonalValue: instagram.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'youtube link',
+        PersonalValue: youtube.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'snapchat link',
+        PersonalValue: snapchat.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'whatsapp link',
+        PersonalValue: whatsapp.trim(),
+        Ishidden: true,
+      },
+      {
+        PersonalKey: 'website link',
+        PersonalValue: website.trim(),
+        Ishidden: true,
+      },
+    ],
+  };
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -68,6 +115,9 @@ export default function NewCardScreen(props) {
                   />
                 </Svg>
               }
+              onChange={value => {
+                setFacebook(value);
+              }}
               placeholder="Facebook Link"
             />
             <LinkBtn
@@ -84,6 +134,9 @@ export default function NewCardScreen(props) {
                   />
                 </Svg>
               }
+              onChange={value => {
+                setTwitter(value);
+              }}
               placeholder="Twitter Link"
             />
             <LinkBtn
@@ -100,6 +153,9 @@ export default function NewCardScreen(props) {
                   />
                 </Svg>
               }
+              onChange={value => {
+                setInstagram(value);
+              }}
               placeholder="Instagram Link"
             />
             <LinkBtn
@@ -116,6 +172,9 @@ export default function NewCardScreen(props) {
                   />
                 </Svg>
               }
+              onChange={value => {
+                setYoutube(value);
+              }}
               placeholder="YouTube Link"
             />
             <LinkBtn
@@ -132,6 +191,9 @@ export default function NewCardScreen(props) {
                   />
                 </Svg>
               }
+              onChange={value => {
+                setSnapchat(value);
+              }}
               placeholder="Snapchat Link"
             />
             <LinkBtn
@@ -148,6 +210,9 @@ export default function NewCardScreen(props) {
                   />
                 </Svg>
               }
+              onChange={value => {
+                setWhatsapp(value);
+              }}
               placeholder="Whatsapp Link"
             />
             <LinkBtn
@@ -164,20 +229,16 @@ export default function NewCardScreen(props) {
                   />
                 </Svg>
               }
+              onChange={value => {
+                setWebsite(value);
+              }}
               placeholder="Website Link"
             />
             <BtnComponent
               placeholder="Next"
               onPress={() => {
+                dispatch(PCScreen2Data(object));
                 props.navigation.navigate('NewPersonalCard3');
-                // props.navigation.push('NewPersonalCard3', {
-                //   paramKey: props.route.params.paramkey,
-                //   name: props.route.params.name,
-                //   email: props.route.params.email,
-                //   address: props.route.params.address,
-                // });
-
-                // console.log('page 2 data', props.route.params);
               }}
             />
           </View>

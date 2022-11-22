@@ -16,6 +16,7 @@ import {BCData} from '../../Store/Action';
 import Select from '../Components/Select';
 import {GetAllLookupDetailApiCall} from '../Apis/Repo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function NewBusinessCardScreen1(props) {
   const dispatch = useDispatch();
@@ -109,23 +110,31 @@ export default function NewBusinessCardScreen1(props) {
   };
 
   const onNext = () => {
-    let object = {
-      b_Name: businessName.trim(),
-      b_Area: area,
-      b_Tagline: tagline.trim(),
-      b_Website: companyWebsite.trim(),
-      b_Number: number.trim(),
-      b_Address: businessAddress.trim(),
-      b_OtherInfo: otherInfo.trim(),
-      b_Logo: logo,
-      b_LogoName: logoImageName.trim(),
-      b_Cover: cover,
-      b_CoverName: coverImageName.trim(),
-    };
+    if (isNullOrEmpty(businessName)) {
+      alert('Enter business name');
+    } else if (isNullOrEmpty(number)) {
+      alert('Enter number');
+    } else if (isNullOrEmpty(businessAddress)) {
+      alert('Enter business address');
+    } else {
+      let object = {
+        b_Name: businessName.trim(),
+        b_Area: area,
+        b_Tagline: tagline.trim(),
+        b_Website: companyWebsite.trim(),
+        b_Number: number.trim(),
+        b_Address: businessAddress.trim(),
+        b_OtherInfo: otherInfo.trim(),
+        b_Logo: logo,
+        b_LogoName: logoImageName.trim(),
+        b_Cover: cover,
+        b_CoverName: coverImageName.trim(),
+      };
 
-    console.log('object', object);
+      console.log('object', object);
 
-    dispatch(BCData(object));
+      dispatch(BCData(object));
+    }
   };
 
   return (

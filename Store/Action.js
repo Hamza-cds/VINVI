@@ -1,5 +1,6 @@
 import {
   PERSONALCARDDATA,
+  PERSONALCARDSCREEN2DATA,
   PERSONALCARDDATACOMPLETE,
   USERDATA,
   BUSINESSCARDDATA,
@@ -10,6 +11,13 @@ import {
 export const PCData = data => {
   return {
     type: PERSONALCARDDATA,
+    payload: data,
+  };
+};
+
+export const PCScreen2Data = data => {
+  return {
+    type: PERSONALCARDSCREEN2DATA,
     payload: data,
   };
 };
