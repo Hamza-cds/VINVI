@@ -16,6 +16,7 @@ import Select from '../Components/Select';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 import Loader from '../Components/Loader';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export function EducationModal({
   modalVisible,
@@ -27,7 +28,7 @@ export function EducationModal({
   index,
   educationarray,
 }) {
-  // console.log('degreeData', degreeData);
+  console.log('isEdit', isEdit);
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
   const [fieldOfStudy, setFieldOfStudy] = useState('');
@@ -44,6 +45,12 @@ export function EducationModal({
   const [startYearError, setStartYearError] = useState(false);
   const [startYearErrorMsg, setStartYearErrorMsg] = useState('');
 
+  // console.log('degree', degree);
+  // console.log('startDateMonth', startDateMonth);
+  // console.log('startDateYear', startDateYear);
+  // console.log('endDateMonth', endDateMonth);
+  // console.log('endDateYear', endDateYear);
+
   const getYears = () => {
     let id = 1;
     let formattedYearsData = [];
@@ -51,7 +58,7 @@ export function EducationModal({
     for (let index = 1960; index <= currentYear; index++) {
       formattedYearsData.push({name: index, id: id++});
     }
-    console.log('formattedYearsData', formattedYearsData);
+    // console.log('formattedYearsData', formattedYearsData);
     return formattedYearsData.reverse();
   };
 
@@ -136,68 +143,97 @@ export function EducationModal({
   }
 
   const onEdit = () => {
-    let newEditModalEduObj = educationarray[index];
-    newEditModalEduObj.degree = degree
-      ? degree.trim()
-      : newEditModalEduObj.degree;
-    newEditModalEduObj.institute = institute
-      ? institute.trim()
-      : newEditModalEduObj.institute;
-    newEditModalEduObj.startDateMonth = startDateMonth
-      ? startDateMonth
-      : newEditModalEduObj.startDateMonth;
-    newEditModalEduObj.startDateYear = startDateYear
-      ? startDateYear
-      : newEditModalEduObj.startDateYear;
-    newEditModalEduObj.endDateMonth = endDateMonth
-      ? endDateMonth
-      : newEditModalEduObj.endDateMonth;
-    newEditModalEduObj.endDateYear = endDateYear
-      ? endDateYear
-      : newEditModalEduObj.endDateYear;
-    // console.log('newEditModalEduObj', newEditModalEduObj);
-    // console.log('educationarray onEdit', educationarray);
-    // console.log('EditArrayEducation', EditArrayEducation);
+    if (isNullOrEmpty(institute)) {
+      alert('Enter institute');
+    } else if (isNullOrEmpty(startDateMonth)) {
+      alert('select start month');
+    } else if (isNullOrEmpty(startDateYear)) {
+      alert('select start year');
+    } else if (isNullOrEmpty(endDateMonth)) {
+      alert('select end month');
+    } else if (isNullOrEmpty(endDateYear)) {
+      alert('select end year');
+    } else if (isNullOrEmpty(degree)) {
+      alert('select degree');
+    } else {
+      let newEditModalEduObj = educationarray[index];
+      newEditModalEduObj.degree = degree
+        ? degree.trim()
+        : newEditModalEduObj.degree;
+      newEditModalEduObj.institute = institute
+        ? institute.trim()
+        : newEditModalEduObj.institute;
+      newEditModalEduObj.startDateMonth = startDateMonth
+        ? startDateMonth
+        : newEditModalEduObj.startDateMonth;
+      newEditModalEduObj.startDateYear = startDateYear
+        ? startDateYear
+        : newEditModalEduObj.startDateYear;
+      newEditModalEduObj.endDateMonth = endDateMonth
+        ? endDateMonth
+        : newEditModalEduObj.endDateMonth;
+      newEditModalEduObj.endDateYear = endDateYear
+        ? endDateYear
+        : newEditModalEduObj.endDateYear;
+      // console.log('newEditModalEduObj', newEditModalEduObj);
+      // console.log('educationarray onEdit', educationarray);
+      // console.log('EditArrayEducation', EditArrayEducation);
 
-    let obj = {
-      id: EditArrayEducation.id,
-      ishidden: true,
-      personalCardId: CardData.id,
-      personalKey: 'Education',
-      personalValue: JSON.stringify(educationarray),
-    };
+      let obj = {
+        id: EditArrayEducation.id,
+        ishidden: true,
+        personalCardId: CardData.id,
+        personalKey: 'Education',
+        personalValue: JSON.stringify(educationarray),
+      };
 
-    setIsLoading(true);
-    PersonalCardEditApiCall(obj)
-      // .then(res => res.json())
-      .then(data => {
-        // console.log('Edit Skill Data', data);
+      setIsLoading(true);
+      PersonalCardEditApiCall(obj)
+        // .then(res => res.json())
+        .then(data => {
+          debugger;
+          // console.log('Edit Skill Data', data);
 
-        if (data.data.status == 200 && data.data.success == true) {
+          if (data.data.status == 200 && data.data.success == true) {
+            setIsLoading(false);
+            setModalVisible(false);
+          } else {
+            alert(data.message);
+            setIsLoading(false);
+            // console.log('ADD');
+          }
+        })
+        .catch(err => {
           setIsLoading(false);
-          setModalVisible(false);
-        } else {
-          alert(data.message);
-          setIsLoading(false);
-          // console.log('ADD');
-        }
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log('err', err);
-      });
+          console.log('err', err);
+        });
+    }
   };
 
   const onAdd = () => {
-    let obj = {
-      institute: institute.trim(),
-      startDateMonth: startDateMonth,
-      startDateYear: startDateYear,
-      endDateMonth: endDateMonth,
-      endDateYear: endDateYear,
-      degree: degree,
-    };
-    onPress(obj);
+    if (isNullOrEmpty(institute)) {
+      alert('Enter institute');
+    } else if (isNullOrEmpty(startDateMonth)) {
+      alert('select start month');
+    } else if (isNullOrEmpty(startDateYear)) {
+      alert('select start year');
+    } else if (isNullOrEmpty(endDateMonth)) {
+      alert('select end month');
+    } else if (isNullOrEmpty(endDateYear)) {
+      alert('select end year');
+    } else if (isNullOrEmpty(degree)) {
+      alert('select degree');
+    } else {
+      let obj = {
+        institute: institute.trim(),
+        startDateMonth: startDateMonth,
+        startDateYear: startDateYear,
+        endDateMonth: endDateMonth,
+        endDateYear: endDateYear,
+        degree: degree,
+      };
+      onPress(obj);
+    }
     // setModalVisible(!modalVisible);
   };
 

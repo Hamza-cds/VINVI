@@ -21,6 +21,8 @@ import {
   personalCardApiCall,
   GetAllLookupDetailApiCall,
   saveCardAPiCall,
+  deleteSavedCardApiCall,
+  connectionRequestApiCall,
 } from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ContactDetails} from './ContactDetails';
@@ -39,7 +41,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Loader from '../Components/Loader';
 import CryptoJS from 'react-native-crypto-js';
 import {isNullOrEmpty} from '../Constants/TextUtils';
-// import {useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 export default function IndividualScreen(props) {
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
@@ -74,10 +76,12 @@ export default function IndividualScreen(props) {
   let [employeeType, setEmployeeType] = useState([]);
   let [degreeList, setDegreList] = useState([]);
   let [lookupData, setLookupData] = useState([]);
+  const [isSaved, setIsSaved] = useState('');
+  console.log('isSaved', isSaved);
   var date = new Date();
 
-  // const DATA = useSelector(state => state.UserData);
-  // console.log('Header dispatch DATA', DATA);
+  const DATA = useSelector(state => state.UserData);
+  console.log('Header dispatch DATA', DATA);
   let ciphertext = CryptoJS.AES.encrypt(
     date.getTime() +
       '_' +
@@ -192,14 +196,19 @@ export default function IndividualScreen(props) {
 
   useEffect(() => {
     getData();
-    // getCardDataByUserId();
     getAllLookupdetail();
+    if (isSaved == 1) {
+      setFavorit(true);
+    } else if (isSaved == 0) {
+      setFavorit(false);
+    }
   }, [
     isSkillModalVisible,
     isEducationEditModalAdd,
     isJobHistoryEditModalAdd,
     isContactModalVisible,
     isPersonalModalVisible,
+    isSaved,
   ]);
 
   const getData = () => {
@@ -210,13 +219,14 @@ export default function IndividualScreen(props) {
 
     if (!isNullOrEmpty(ID)) {
       setIsLoading(true);
-      getPersonalCardByIdApiCall(ID)
+      getPersonalCardByIdApiCall(ID, DATA.id)
         .then(res => {
           console.log('res', res.data.result);
           if (res.data.success) {
             setdata((data = res.data.result));
+            setIsSaved(data.isSaved);
+            console.log('pasha bhai *********', data);
             setIsLoading(false);
-            console.log('card data', data);
           } else {
             setIsLoading(false);
             alert('No record found.');
@@ -352,9 +362,6 @@ export default function IndividualScreen(props) {
   };
 
   const onSelectImage = () => {
-    // console.log('imageName', imageName);
-    // console.log('proImage', proImage);
-
     var formdata = new FormData();
     formdata.append('Name', data.name);
     formdata.append('Email', data.email);
@@ -436,6 +443,62 @@ export default function IndividualScreen(props) {
       });
   };
 
+  const onCardUnSave = () => {
+    let obj = {
+      Id: 0,
+      UserId: userData.id,
+      CardType: 0,
+      CardId: data.id,
+    };
+
+    setIsLoading(true);
+    deleteSavedCardApiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        setIsLoading(false);
+        // if (data.status === 200 && data.success === true) {
+        //   setIsLoading(false);
+        //   alert('picture updated successfully');
+        // } else {
+        //   setIsLoading(false);
+        //   alert('alert');
+        // }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
+  const onConnect = () => {
+    let obj = {
+      Id: 0,
+      User1Id: DATA.id,
+      User2Id: data.userId,
+      Status: 1,
+    };
+
+    setIsLoading(true);
+    connectionRequestApiCall(obj)
+      .then(res => {
+        console.log('res', res);
+        setIsLoading(false);
+        // if (res.data.success) {
+        //   setdata((data = res.data.result));
+        //   setIsLoading(false);
+        //   console.log('card data', data);
+        // } else {
+        //   setIsLoading(false);
+        //   alert('No record found.');
+        // }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ScrollView style={{flex: 1, backgroundColor: WHITE}}>
@@ -472,7 +535,7 @@ export default function IndividualScreen(props) {
             <View
               style={{
                 marginLeft: 10,
-                backgroundColor: '#E0E0E0',
+                // backgroundColor: '#E0E0E0',
                 width: 80,
                 height: 80,
                 borderRadius: 80,
@@ -480,16 +543,18 @@ export default function IndividualScreen(props) {
               }}>
               <Image
                 source={
-                  data.profilePicture
-                    ? {uri: URL.concat(data.profilePicture)}
-                    : require('../Assets/profilePic.png')
+                  data
+                    ? !isNullOrEmpty(data.profilePicture)
+                      ? {uri: URL.concat(data.profilePicture)}
+                      : require('../Assets/portfolioPic.png')
+                    : require('../Assets/portfolioPic.png')
                 }
                 style={{width: 80, height: 80, borderRadius: 80}}
               />
             </View>
             {Edit == true ? (
               <TouchableOpacity
-                style={{padding: 3, marginTop: 75, marginLeft: -25}}
+                style={{padding: 3, marginTop: 75, marginLeft: -28}}
                 onPress={() => {
                   ImagePicker.openPicker({
                     width: 300,
@@ -545,7 +610,7 @@ export default function IndividualScreen(props) {
                   // setFavorit(true);
                   if (favorit == true) {
                     setFavorit(false);
-                    console.log('what');
+                    onCardUnSave();
                   } else {
                     setFavorit(true);
                     console.log('what 1');
@@ -645,7 +710,8 @@ export default function IndividualScreen(props) {
             <BtnComponent
               placeholder="Connect"
               onPress={() => {
-                props.navigation.navigate('Messages');
+                onConnect();
+                // props.navigation.navigate('Messages');
               }}
               width={true}
               widthValue="40%"

@@ -59,7 +59,7 @@ export function JobHistoryModal({
     for (let index = 1960; index <= currentYear; index++) {
       formattedYearsData.push({name: index, id: id++});
     }
-    console.log('formattedYearsData', formattedYearsData);
+    // console.log('formattedYearsData', formattedYearsData);
     return formattedYearsData.reverse();
   };
 

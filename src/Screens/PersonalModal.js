@@ -167,25 +167,25 @@ export function PersonalModal({
       formdata.append(`PersonalCardMeta[${index}][Ishidden]`, element.Ishidden);
     }
 
-    // console.log('formdata', formdata);
+    console.log('formdata', formdata);
 
-    setIsLoading(true);
-    personalCardApiCall(formdata)
-      .then(res => res.json())
-      .then(data => {
-        console.log('response', data);
-        if (data.status === 200 && data.success === true) {
-          setIsLoading(false);
-          setModalVisible(false);
-        } else {
-          setIsLoading(false);
-          alert('alert');
-        }
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log('err', err);
-      });
+    // setIsLoading(true);
+    // personalCardApiCall(formdata)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log('response', data);
+    //     if (data.status === 200 && data.success === true) {
+    //       setIsLoading(false);
+    //       setModalVisible(false);
+    //     } else {
+    //       setIsLoading(false);
+    //       alert('alert');
+    //     }
+    //   })
+    //   .catch(err => {
+    //     setIsLoading(false);
+    //     console.log('err', err);
+    //   });
   };
 
   return (

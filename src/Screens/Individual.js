@@ -12,11 +12,10 @@ import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Loader from '../Components/Loader';
 import {useSelector} from 'react-redux';
 import {Switch} from 'react-native-paper';
+import {useFocusEffect} from '@react-navigation/core';
 
 export function Individual({navigation}) {
-  const [isSwitchOn, setIsSwitchOn] = useState(
-    resStatus == 0 ? setIsSwitchOn(false) : true,
-  );
+  let [isSwitchOn, setIsSwitchOn] = useState(true);
 
   const [selected, setSelected] = useState(0);
   let [userData, setUserData] = useState(null);
@@ -27,7 +26,6 @@ export function Individual({navigation}) {
   const [call, setCall] = useState(false);
   let [cardStatus, setCardStatus] = useState('');
   let [resStatus, setResStatus] = useState(cardStatus);
-  // console.log('data yaha ha *********', data);
 
   const DATA = useSelector(state => state.UserData);
   // console.log('dispatch DATA', DATA);
@@ -40,14 +38,23 @@ export function Individual({navigation}) {
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
-      // getData();
+      if (resStatus == 0) {
+        setIsSwitchOn((isSwitchOn = true));
+      } else if (resStatus == 1) {
+        setIsSwitchOn((isSwitchOn = false));
+      }
       console.log('userdata', userData);
     });
-  }, []);
+  }, [resStatus]);
 
-  useEffect(() => {
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   getData();
+  // }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getData();
+    }, [navigation]),
+  );
 
   // setIsLoading(true);
   // getPersonalCardByUserIdApiCall(DATA.id)
@@ -71,7 +78,7 @@ export function Individual({navigation}) {
           // debugger;
           const element = res.data.result[0];
           console.log('element', element);
-          setResStatus((resStatus = element.status));
+          setResStatus((resStatus = element.isClosed));
           console.log('resStatus', resStatus);
 
           setdata((data = res.data.result));

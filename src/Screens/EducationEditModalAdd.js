@@ -14,6 +14,7 @@ import Select from '../Components/Select';
 import _ from 'lodash';
 import Loader from '../Components/Loader';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export function EducationEditModalAdd({
   modalVisible,
@@ -198,33 +199,47 @@ export function EducationEditModalAdd({
   };
 
   const onAdd = () => {
-    let obj = {
-      id: arrEducation.id,
-      ishidden: true,
-      personalCardId: CardData.id,
-      personalKey: 'Education',
-      personalValue: JSON.stringify(arrayEducation),
-    };
+    if (isNullOrEmpty(degree)) {
+      alert('select degree');
+    } else if (isNullOrEmpty(degree)) {
+      alert('select degree');
+    } else if (isNullOrEmpty(startDateMonth)) {
+      alert('select start month');
+    } else if (isNullOrEmpty(startDateYear)) {
+      alert('select start year');
+    } else if (isNullOrEmpty(endDateMonth)) {
+      alert('select end month');
+    } else if (isNullOrEmpty(endDateYear)) {
+      alert('select end year');
+    } else {
+      let obj = {
+        id: arrEducation.id,
+        ishidden: true,
+        personalCardId: CardData.id,
+        personalKey: 'Education',
+        personalValue: JSON.stringify(arrayEducation),
+      };
 
-    setIsLoading(true);
-    PersonalCardEditApiCall(obj)
-      // .then(res => res.json())
-      .then(data => {
-        // console.log('Edit Skill Data', data);
+      setIsLoading(true);
+      PersonalCardEditApiCall(obj)
+        // .then(res => res.json())
+        .then(data => {
+          // console.log('Edit Skill Data', data);
 
-        if (data.data.status == 200 && data.data.success == true) {
+          if (data.data.status == 200 && data.data.success == true) {
+            setIsLoading(false);
+            setModalVisible(false);
+          } else {
+            alert(data.message);
+            setIsLoading(false);
+            // console.log('ADD');
+          }
+        })
+        .catch(err => {
           setIsLoading(false);
-          setModalVisible(false);
-        } else {
-          alert(data.message);
-          setIsLoading(false);
-          // console.log('ADD');
-        }
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log('err', err);
-      });
+          console.log('err', err);
+        });
+    }
   };
 
   return (

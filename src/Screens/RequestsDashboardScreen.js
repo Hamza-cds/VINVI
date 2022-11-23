@@ -5,31 +5,41 @@ import Svg, {G, Circle, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 import {FlatList} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getPersonalCardAllActiveApiCall} from '../Apis/Repo';
+import {getAllConnectionRequest} from '../Apis/Repo';
 import RequestsCard from '../Components/RequestsCard';
+import {useSelector} from 'react-redux';
+import Loader from '../Components/Loader';
 
 export default function RequestsDashboardScreen({navigation}) {
-  let [userData, setUserData] = useState(null);
+  // let [userData, setUserData] = useState(null);
   const [data, setdata] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const status = 1;
 
-  useEffect(() => {
-    AsyncStorage.getItem('user_data').then(response => {
-      setUserData((userData = JSON.parse(response)));
-      console.log('userdata', userData);
-    });
-  }, []);
+  const DATA = useSelector(state => state.UserData);
+  console.log('dispatch DATA', DATA);
+
+  // useEffect(() => {
+  //   AsyncStorage.getItem('user_data').then(response => {
+  //     setUserData((userData = JSON.parse(response)));
+  //     console.log('userdata', userData);
+  //   });
+  // }, []);
 
   useEffect(() => {
     getData();
   }, []);
 
   const getData = () => {
-    getPersonalCardAllActiveApiCall()
+    setIsLoading(true);
+    getAllConnectionRequest(DATA.id, status)
       .then(res => {
         console.log('res', res);
         setdata(res.data.result);
+        setIsLoading(false);
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -90,6 +100,7 @@ export default function RequestsDashboardScreen({navigation}) {
           <FlatList
             data={data}
             horizontal={false}
+            style={{marginTop: 20}}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => (
               <RequestsCard
@@ -103,6 +114,7 @@ export default function RequestsDashboardScreen({navigation}) {
             )}
           />
         ) : null}
+        {isLoading ? <Loader /> : null}
       </ImageBackground>
     </SafeAreaView>
   );

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import IndividualCard from '../Components/IndividualCard';
 import BuisnessCard from '../Components/BuisnessCard';
@@ -26,10 +27,10 @@ import {
 } from 'react-native-section-alphabet-list';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/core';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+// import AntDesign from 'react-native-vector-icons/AntDesign';
 import PagerView from 'react-native-pager-view';
-import {isNullOrEmptyArray} from '../Constants/TextUtils';
-import {Height, Width} from '../Constants/Constants';
+// import {isNullOrEmptyArray} from '../Constants/TextUtils';
+// import {Height, Width} from '../Constants/Constants';
 
 export default function HomeDashboardScreen({navigation, route}) {
   let [storyMedia, setStoryMedia] = useState('');
@@ -41,18 +42,20 @@ export default function HomeDashboardScreen({navigation, route}) {
   const [selectedPage, setSelectedPage] = useState(0);
   const [individualData, setIndividualData] = useState([]);
   const [businessData, setBusinessData] = useState([]);
+  const [indicator, setIndicator] = useState(false);
   const pagerRef = useRef(null);
-  let uploadType = 1;
+  const timeout = useRef(null);
+  // let uploadType = 1;
   let page = 1;
   let limit = 10;
-  let value = null;
+  // let value = null;
   // console.log('search', search);
   // console.log('userStories', userStories);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
-      getDashboardStories();
+      // getDashboardStories();
       console.log('userdata', userData);
     });
   }, []);
@@ -96,10 +99,9 @@ export default function HomeDashboardScreen({navigation, route}) {
       .then(res => res.json())
       .then(data => {
         console.log('response', data);
-        if (data.status === 200 && data.success === true) {
-          setIsLoading(false);
+        if (data.status == 200 && data.success == true) {
           getDashboardStories();
-          // navigation.replace('MyCardsDashboardScreen');
+          setIsLoading(false);
           alert('successfully posted');
         } else {
           setIsLoading(false);
@@ -144,7 +146,7 @@ export default function HomeDashboardScreen({navigation, route}) {
     setIsLoading(true);
     getPersonalCardAllActiveApiCall()
       .then(({data}) => {
-        console.log('data', data);
+        console.log('personal res', data);
         if (data.success == true) {
           for (let index = 0; index < data.result.length; index++) {
             const element = data.result[index];
@@ -190,8 +192,16 @@ export default function HomeDashboardScreen({navigation, route}) {
 
   console.log('selected page', selectedPage);
 
+  const onChangeHandler = value => {
+    clearTimeout(timeout.current);
+    setSearch((search = value));
+    timeout.current = setTimeout(() => {
+      onCheck();
+    }, 1000);
+  };
+
   const onCheck = () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     searchIndividualApiCall(limit, page, search)
       .then(({data}) => {
         console.log('search response', data);
@@ -201,14 +211,15 @@ export default function HomeDashboardScreen({navigation, route}) {
             element.value = element.name;
             element.key = JSON.stringify(element.id);
           }
-          setIsLoading(false);
+          // setIsLoading(false);
           if (selectedPage == 0) {
             setIndividualData(data.result);
+            setIndicator(false);
           } else if (selectedPage == 1) {
             setBusinessData(data.result);
           }
         } else {
-          setIsLoading(false);
+          // setIsLoading(false);
           if (selectedPage == 0) {
             setIndividualData([]);
           } else if (selectedPage == 1) {
@@ -217,7 +228,7 @@ export default function HomeDashboardScreen({navigation, route}) {
         }
       })
       .catch(err => {
-        setIsLoading(false);
+        // setIsLoading(false);
         console.log('err', err);
       });
   };
@@ -278,13 +289,18 @@ export default function HomeDashboardScreen({navigation, route}) {
             borderBottomLeftRadius: 10,
             padding: 10,
           }}
+          // onChangeText={value => {
+          //   setSearch((search = value));
+          //   onCheck();
+          // }}
           onChangeText={value => {
-            setSearch((search = value));
+            setIndicator(true);
+            onChangeHandler(value);
           }}
           placeholder="Search"
           value={search}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={onCheck}
           style={{
             backgroundColor: '#F0F0F0',
@@ -295,7 +311,7 @@ export default function HomeDashboardScreen({navigation, route}) {
             borderBottomRightRadius: 10,
           }}>
           <AntDesign name="search1" size={23} style={{marginTop: 8}} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {/* ++++++++Here pager view code start +++++++++++ */}
@@ -407,7 +423,19 @@ export default function HomeDashboardScreen({navigation, route}) {
               <Text style={{color: '#242424'}}>No record found</Text>
             </View>
           )}
-
+          <View
+            style={{
+              position: 'absolute',
+              top: 150,
+              left: 0,
+              right: 0,
+            }}>
+            <ActivityIndicator
+              animating={indicator}
+              size="large"
+              color={'white'}
+            />
+          </View>
           {isLoading ? <Loader /> : null}
         </View>
 

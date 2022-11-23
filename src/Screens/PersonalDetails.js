@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {SECONDARY, FIFTH, WHITE, PRIMARY} from '../Constants/Colors';
 import ContactDetailsRowReverse from '../Components/ContactDetailsRowReverseIndividual';
 import Svg, {G, Path} from 'react-native-svg';
+import Feather from 'react-native-vector-icons/Feather';
 
 export function PersonalDetails({
   setIsEdit,
@@ -42,7 +43,8 @@ export function PersonalDetails({
             onPress={() => {
               setIsEdit(true);
             }}>
-            <Svg
+            <Feather name="edit" size={25} color={'white'} />
+            {/* <Svg
               xmlns="http://www.w3.org/2000/svg"
               width={21.004}
               height={21.009}
@@ -53,7 +55,7 @@ export function PersonalDetails({
                 transform="translate(-4.5 -4.5)"
                 fill="#fff"
               />
-            </Svg>
+            </Svg> */}
           </TouchableOpacity>
         ) : null}
       </View>

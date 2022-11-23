@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Image, TouchableOpacity, Text} from 'react-native';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
+import {URL} from '../Constants/Constants';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function RequestsCard({item}) {
   return (
@@ -26,22 +28,33 @@ export default function RequestsCard({item}) {
         position: 'relative',
       }}>
       <Image
-        source={require('../Assets/profilePic.png')}
-        style={{width: 80, height: 80}}
+        source={
+          item.personalCard
+            ? !isNullOrEmpty(item.personalCard.profilePicture)
+              ? {uri: URL.concat(item.personalCard.profilePicture)}
+              : require('../Assets/portfolioPic.png')
+            : require('../Assets/portfolioPic.png')
+        }
+        style={{width: 80, height: 80, borderRadius: 80, marginTop: -20}}
       />
-      <View style={{marginLeft: 10, flex: 1}}>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{item.name}</Text>
-        <Text
+      <View style={{marginLeft: 10, flex: 1, marginTop: 10}}>
+        <Text style={{fontSize: 14, color: SECONDARY}}>
+          {item.personalCard.name}
+        </Text>
+        {/* <Text
           style={{
             fontSize: 16,
             fontWeight: 'bold',
             color: SECONDARY,
           }}>
           {item.occupation}
-          USER_DESIGNATION
+        </Text> */}
+        <Text style={{fontSize: 14, color: SECONDARY}}>
+          {item.personalCard.email}
         </Text>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{item.email} </Text>
-        <Text style={{fontSize: 14, color: SECONDARY}}>{item.address}</Text>
+        {/* <Text style={{fontSize: 14, color: SECONDARY}}>
+          {item.personalCard.address}
+        </Text> */}
         <View
           style={{
             flexDirection: 'row',
@@ -62,7 +75,7 @@ export default function RequestsCard({item}) {
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              backgroundColor: '#7EBDDB',
+              backgroundColor: PRIMARY,
               height: 35,
               paddingHorizontal: 20,
               justifyContent: 'center',

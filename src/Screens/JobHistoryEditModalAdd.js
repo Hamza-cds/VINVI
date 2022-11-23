@@ -14,6 +14,7 @@ import Select from '../Components/Select';
 import Loader from '../Components/Loader';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export function JobHistoryEditModalAdd({
   modalVisible,
@@ -183,33 +184,51 @@ export function JobHistoryEditModalAdd({
   };
 
   const onAdd = () => {
-    let obj = {
-      id: arrJobHistory.id,
-      ishidden: true,
-      personalCardId: CardData.id,
-      personalKey: 'JobHistory',
-      personalValue: JSON.stringify(jobhistoryarray),
-    };
+    if (isNullOrEmpty(title)) {
+      alert('Enter title');
+    } else if (isNullOrEmpty(companyName)) {
+      alert('Enter company name');
+    } else if (isNullOrEmpty(industry)) {
+      alert('select industry type');
+    } else if (isNullOrEmpty(employee)) {
+      alert('select employee type');
+    } else if (isNullOrEmpty(startMonth)) {
+      alert('Select start month');
+    } else if (isNullOrEmpty(startYear)) {
+      alert('Select start year');
+    } else if (isNullOrEmpty(endMonth)) {
+      alert('Select end month');
+    } else if (isNullOrEmpty(endYear)) {
+      alert('Select start year');
+    } else {
+      let obj = {
+        id: arrJobHistory.id,
+        ishidden: true,
+        personalCardId: CardData.id,
+        personalKey: 'JobHistory',
+        personalValue: JSON.stringify(jobhistoryarray),
+      };
 
-    // setIsLoading(true);
-    PersonalCardEditApiCall(obj)
-      // .then(res => res.json())
-      .then(data => {
-        // console.log('Edit Skill Data', data);
+      // setIsLoading(true);
+      PersonalCardEditApiCall(obj)
+        // .then(res => res.json())
+        .then(data => {
+          // console.log('Edit Skill Data', data);
 
-        if (data.data.status == 200 && data.data.success == true) {
+          if (data.data.status == 200 && data.data.success == true) {
+            // setIsLoading(false);
+            setModalVisible(false);
+          } else {
+            // setIsLoading(false);
+            alert(data.message);
+            // console.log('ADD');
+          }
+        })
+        .catch(err => {
           // setIsLoading(false);
-          setModalVisible(false);
-        } else {
-          // setIsLoading(false);
-          alert(data.message);
-          // console.log('ADD');
-        }
-      })
-      .catch(err => {
-        // setIsLoading(false);
-        console.log('err', err);
-      });
+          console.log('err', err);
+        });
+    }
   };
 
   const FunIndustry = value => {

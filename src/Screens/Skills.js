@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
-import {SECONDARY, FIFTH} from '../Constants/Colors';
+import {SECONDARY, FIFTH, PRIMARY} from '../Constants/Colors';
 import SkillTag from '../Components/SkillTag';
 import Svg, {G, Path} from 'react-native-svg';
+import Feather from 'react-native-vector-icons/Feather';
 
 export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
   return (
@@ -83,7 +84,8 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
             onPress={() => {
               setEdit(true);
             }}>
-            <Svg
+            <Feather name="edit" size={25} color={PRIMARY} />
+            {/* <Svg
               xmlns="http://www.w3.org/2000/svg"
               width={21.004}
               height={21.009}
@@ -94,7 +96,7 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
                 transform="translate(-4.5 -4.5)"
                 fill="#113066"
               />
-            </Svg>
+            </Svg> */}
           </TouchableOpacity>
         ) : null}
       </View>

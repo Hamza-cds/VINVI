@@ -143,8 +143,8 @@ export async function storyPostApiCall(formdata) {
   );
 }
 
-export async function getPersonalCardByIdApiCall(id) {
-  let route = URL.concat(`/api/PersonalCard/GetById?id=${id}`);
+export async function getPersonalCardByIdApiCall(id, userID) {
+  let route = URL.concat(`/api/PersonalCard/GetById?id=${id}&userId=${userID}`);
   console.log('getPersonalCardById Request : ', route);
   let apiRes = null;
   try {
@@ -529,6 +529,61 @@ export async function OpenandCloseCardApiCall(obj) {
       method: 'POST',
       url: route,
       data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function deleteSavedCardApiCall(obj) {
+  let route = URL.concat('/api/SavedCard/PostDelete');
+  console.log(`unsave card Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function connectionRequestApiCall(obj) {
+  let route = URL.concat('/api/UserConnection/AddOrEdit');
+  console.log(`connection Request : ${route} REQUEST`, obj);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'POST',
+      url: route,
+      data: obj,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function getAllConnectionRequest(userID, status) {
+  let route = URL.concat(
+    `/api/UserConnection/GetByUserIdAndStatus?userId=${userID}&status=${status}`,
+  );
+  console.log('getBusinessCardAllActive Request  : ', route);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: route,
     });
   } catch (err) {
     apiRes = err;

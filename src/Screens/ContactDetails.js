@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {FIFTH, PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import ContactDetailsRow from '../Components/ContactDetailsRow';
 import Svg, {Path} from 'react-native-svg';
+import Feather from 'react-native-vector-icons/Feather';
 
 export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
   return (
@@ -34,7 +35,8 @@ export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
             onPress={() => {
               setEdit(true);
             }}>
-            <Svg
+            <Feather name="edit" size={25} color={PRIMARY} />
+            {/* <Svg
               xmlns="http://www.w3.org/2000/svg"
               width={21.004}
               height={21.009}
@@ -45,7 +47,7 @@ export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
                 transform="translate(-4.5 -4.5)"
                 fill="#113066"
               />
-            </Svg>
+            </Svg> */}
           </TouchableOpacity>
         ) : null}
       </View>

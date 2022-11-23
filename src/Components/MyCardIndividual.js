@@ -98,8 +98,8 @@ export default function MyCardIndividual({
         }}
         activeOpacity={0.9}
         style={{flexDirection: 'row', marginTop: -15}}>
-        <ImageBackground
-          source={require('../Assets/profilePic.png')}
+        <View
+          // source={require('../Assets/profilePic.png')}
           style={{width: 80, height: 80, borderRadius: 40}}>
           <Image
             source={
@@ -109,7 +109,7 @@ export default function MyCardIndividual({
             }
             style={{width: 80, height: 80, borderRadius: 40}}
           />
-        </ImageBackground>
+        </View>
         <View style={{marginHorizontal: 10}}>
           <Text
             style={{
