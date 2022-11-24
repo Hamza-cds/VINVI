@@ -15,6 +15,7 @@ export default function RequestsDashboardScreen({navigation}) {
   const [data, setdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const status = 1;
+  const [refresh, setRefresh] = useState(0);
 
   const DATA = useSelector(state => state.UserData);
   console.log('dispatch DATA', DATA);
@@ -28,7 +29,7 @@ export default function RequestsDashboardScreen({navigation}) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [refresh]);
 
   const getData = () => {
     setIsLoading(true);
@@ -110,6 +111,7 @@ export default function RequestsDashboardScreen({navigation}) {
                 navigationPath="Individual"
                 item={item}
                 key={index}
+                setRefresh={setRefresh}
               />
             )}
           />

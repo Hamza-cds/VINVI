@@ -6,6 +6,8 @@ import {
   BUSINESSCARDDATA,
   BUSINESSCARDDATACOMPLTE,
   USERCREDENTIAL,
+  CREATECONNECTIONSIGNALR,
+  NEWMESSAGEACTION,
 } from './ActionType';
 
 export const PCData = data => {
@@ -52,6 +54,20 @@ export const UserData = data => {
 export const UserCredential = data => {
   return {
     type: USERCREDENTIAL,
+    payload: data,
+  };
+};
+
+export const createConnectionSignalR = data => {
+  return {
+    type: CREATECONNECTIONSIGNALR,
+    payload: data,
+  };
+};
+
+export const newMessageAction = data => {
+  return {
+    type: NEWMESSAGEACTION,
     payload: data,
   };
 };

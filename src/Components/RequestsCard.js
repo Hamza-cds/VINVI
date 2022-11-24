@@ -3,8 +3,53 @@ import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import {URL} from '../Constants/Constants';
 import {isNullOrEmpty} from '../Constants/TextUtils';
+import {connectionRequestApiCall} from '../Apis/Repo';
 
-export default function RequestsCard({item}) {
+export default function RequestsCard({item, setRefresh}) {
+  console.log('item', item);
+
+  const onDecline = () => {
+    let obj = {
+      Id: item.id,
+      User1Id: item.user1Id,
+      User2Id: item.user2Id,
+      Status: 2,
+    };
+
+    // setIsLoading(true);
+    connectionRequestApiCall(obj)
+      .then(res => {
+        setRefresh(1);
+        console.log('res', res);
+        // setIsLoading(false);
+      })
+      .catch(err => {
+        // setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
+  const onAccept = () => {
+    let obj = {
+      Id: item.id,
+      User1Id: item.user1Id,
+      User2Id: item.user2Id,
+      Status: 0,
+    };
+
+    // setIsLoading(true);
+    connectionRequestApiCall(obj)
+      .then(res => {
+        setRefresh(2);
+        console.log('res', res);
+        // setIsLoading(false);
+      })
+      .catch(err => {
+        // setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
   return (
     <View
       activeOpacity={0.9}
@@ -62,6 +107,9 @@ export default function RequestsCard({item}) {
             marginTop: 10,
           }}>
           <TouchableOpacity
+            onPress={() => {
+              onDecline();
+            }}
             style={{
               backgroundColor: '#A2A2A2',
               height: 35,
@@ -74,6 +122,9 @@ export default function RequestsCard({item}) {
             <Text style={{color: '#ffffff'}}>Decline</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              onAccept();
+            }}
             style={{
               backgroundColor: PRIMARY,
               height: 35,

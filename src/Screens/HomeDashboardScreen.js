@@ -31,6 +31,7 @@ import {useFocusEffect} from '@react-navigation/core';
 import PagerView from 'react-native-pager-view';
 // import {isNullOrEmptyArray} from '../Constants/TextUtils';
 // import {Height, Width} from '../Constants/Constants';
+import {hubConnectionBuilder} from '../Constants/signalR';
 
 export default function HomeDashboardScreen({navigation, route}) {
   let [storyMedia, setStoryMedia] = useState('');
@@ -55,6 +56,7 @@ export default function HomeDashboardScreen({navigation, route}) {
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
+      hubConnectionBuilder(userData.id);
       // getDashboardStories();
       console.log('userdata', userData);
     });
