@@ -45,7 +45,7 @@ export default function LoginInputBox({
           position: 'relative',
           ...style,
         }}>
-        {/* {isfocused ? (
+        {isfocused ? (
           <View
             style={{
               position: 'absolute',
@@ -56,11 +56,12 @@ export default function LoginInputBox({
               style={{
                 fontSize: 12,
                 color: SECONDARY,
+                marginLeft: 15,
               }}>
               {placeholder}
             </Text>
           </View>
-        ) : null} */}
+        ) : null}
         <View
           style={{
             flexDirection: 'row',

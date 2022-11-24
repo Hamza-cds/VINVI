@@ -47,17 +47,12 @@ export default function NewCardScreen({navigation, route}) {
       Id: userData.id,
       Phoneno: userData.phoneno,
       FirstName: firstName ? firstName : userData.firstName,
-      LastName: lastName ? lastName : userData.lastName,
+      // LastName: lastName ? lastName : userData.lastName,
       Email: email ? email : userData.email,
     };
     console.log('object', object);
     let updateinfo = new FormData();
     updateinfo.append('Model', JSON.stringify(object));
-    // updateinfo.append('image_file', {
-    //   uri: image.path,
-    //   name: imageName,
-    //   type: image.mime,
-    // });
     {
       !isNullOrEmpty(image)
         ? updateinfo.append('image_file', {

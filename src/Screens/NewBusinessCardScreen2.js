@@ -20,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function NewBusinessCardScreen2(props) {
+  // console.log('props', props);
   const dispatch = useDispatch();
   const DATA = useSelector(state => state.BCData);
   console.log('DATA', DATA);
@@ -35,6 +36,8 @@ export default function NewBusinessCardScreen2(props) {
   // console.log('BUSINESS_CARD_DATA_TEST', DATA);
   // console.log('userData', userData);
 
+  let META = props.route.params.meta.businessCardArray;
+  console.log('META', META);
   const [modalVisible, setModalVisible] = useState(false);
   let [productCategory, setProductCategory] = useState([]);
   let [product, setProduct] = useState([]);
@@ -120,8 +123,21 @@ export default function NewBusinessCardScreen2(props) {
           })
         : formdata.append('cover_image_file', null);
     }
-    // formdata.append(`BusinessCategory`, JSON.stringify([]));
-    formdata.append('BusinessCardMeta', JSON.stringify([]));
+    // formdata.append('BusinessCardMeta', JSON.stringify([]));
+
+    for (let index = 0; index < META.length; index++) {
+      const element = META[index];
+
+      formdata.append(
+        `BusinessCardMeta[${index}][PersonalKey]`,
+        element.PersonalKey,
+      );
+      formdata.append(
+        `BusinessCardMeta[${index}][PersonalValue]`,
+        element.PersonalValue,
+      );
+      formdata.append(`BusinessCardMeta[${index}][Ishidden]`, element.Ishidden);
+    }
 
     console.log('businessCategoryArray', businessCategoryArray);
     for (let index = 0; index < businessCategoryArray.length; index++) {

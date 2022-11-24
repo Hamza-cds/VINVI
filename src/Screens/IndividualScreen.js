@@ -42,6 +42,7 @@ import Loader from '../Components/Loader';
 import CryptoJS from 'react-native-crypto-js';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 import {useSelector} from 'react-redux';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 export default function IndividualScreen(props) {
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
@@ -285,50 +286,6 @@ export default function IndividualScreen(props) {
           console.log('err', err);
         });
     }
-
-    // if (!isNullOrEmpty(ID)) {
-    //   setIsLoading(true);
-    //   getPersonalCardByIdApiCall(ID)
-    //     .then(res => {
-    //       console.log('res', res.data.result);
-    //       if (res.data.success) {
-    //         setdata((data = res.data.result));
-    //         setIsLoading(false);
-    //         console.log('card data', data);
-    //       } else {
-    //         setIsLoading(false);
-    //         alert('No record found.');
-    //       }
-    //     })
-    //     .catch(err => {
-    //       setIsLoading(false);
-    //       console.log('err', err);
-    //     });
-    // } else if (!isNullOrEmpty(scanById)) {
-    //   let bytes = CryptoJS.AES.decrypt(scanById, 'secret key 123');
-    //   let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-    //   // console.log('decryptedData', decryptedData);
-    //   var id = decryptedData.split('_')[1];
-    //   // console.log('sapna sapna sapna', id);
-
-    //   setIsLoading(true);
-    //   getPersonalCardByUserIdApiCall(id)
-    //     .then(res => {
-    //       console.log('res', res.data.result);
-    //       if (res.data.success) {
-    //         setdata((data = res.data.result));
-    //         setIsLoading(false);
-    //         console.log('card data', data);
-    //       } else {
-    //         setIsLoading(false);
-    //         alert('No record found.');
-    //       }
-    //     })
-    //     .catch(err => {
-    //       setIsLoading(false);
-    //       console.log('err', err);
-    //     });
-    // }
   };
 
   const getAllLookupdetail = () => {
@@ -429,13 +386,6 @@ export default function IndividualScreen(props) {
       .then(data => {
         console.log('response', data);
         setIsLoading(false);
-        // if (data.status === 200 && data.success === true) {
-        //   setIsLoading(false);
-        //   alert('picture updated successfully');
-        // } else {
-        //   setIsLoading(false);
-        //   alert('alert');
-        // }
       })
       .catch(err => {
         setIsLoading(false);
@@ -457,13 +407,6 @@ export default function IndividualScreen(props) {
       .then(data => {
         console.log('response', data);
         setIsLoading(false);
-        // if (data.status === 200 && data.success === true) {
-        //   setIsLoading(false);
-        //   alert('picture updated successfully');
-        // } else {
-        //   setIsLoading(false);
-        //   alert('alert');
-        // }
       })
       .catch(err => {
         setIsLoading(false);
@@ -484,14 +427,6 @@ export default function IndividualScreen(props) {
       .then(res => {
         console.log('res', res);
         setIsLoading(false);
-        // if (res.data.success) {
-        //   setdata((data = res.data.result));
-        //   setIsLoading(false);
-        //   console.log('card data', data);
-        // } else {
-        //   setIsLoading(false);
-        //   alert('No record found.');
-        // }
       })
       .catch(err => {
         setIsLoading(false);
@@ -707,15 +642,50 @@ export default function IndividualScreen(props) {
                 />
               </Svg>
             </View>
-            <BtnComponent
-              placeholder="Connect"
-              onPress={() => {
-                onConnect();
-                // props.navigation.navigate('Messages');
-              }}
-              width={true}
-              widthValue="40%"
-            />
+            {data.isConnected == 0 ? (
+              <BtnComponent
+                placeholder="Connect"
+                onPress={() => {
+                  onConnect();
+                  // props.navigation.navigate('Messages');
+                }}
+                width={true}
+                widthValue="40%"
+              />
+            ) : data.isConnected == 2 ? (
+              <View
+                style={{
+                  height: 50,
+                  width: '40%',
+                  backgroundColor: SECONDARY,
+                  marginBottom: 20,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 10,
+                }}>
+                <Text style={{color: WHITE, fontSize: 14}}>Requested</Text>
+              </View>
+            ) : data.isConnected == 1 ? (
+              <BtnComponent
+                placeholder="Message"
+                onPress={() => {
+                  props.navigation.navigate('Messages');
+                }}
+                width={true}
+                widthValue="40%"
+              />
+            ) : (
+              <BtnComponent
+                placeholder="Connect"
+                onPress={() => {
+                  onConnect();
+                  // props.navigation.navigate('Messages');
+                }}
+                width={true}
+                widthValue="40%"
+              />
+            )}
           </View>
           <Text
             style={{

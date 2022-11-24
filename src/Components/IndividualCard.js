@@ -137,19 +137,21 @@ export default function IndividualCard({
               }}>
               {item.email}
             </Text>
-            <View style={{flexDirection: 'row'}}>
-              <Entypo
-                name="location-pin"
-                size={20}
-                color={WHITE}
-                style={{marginLeft: -5}}
-              />
-              <Text
-                numberOfLines={1}
-                style={{fontSize: 13, color: WHITE, maxWidth: '100%'}}>
-                {arrayCity}
-              </Text>
-            </View>
+            {!isNullOrEmpty(arrayCity) ? (
+              <View style={{flexDirection: 'row'}}>
+                <Entypo
+                  name="location-pin"
+                  size={20}
+                  color={WHITE}
+                  style={{marginLeft: -5}}
+                />
+                <Text
+                  numberOfLines={1}
+                  style={{fontSize: 13, color: WHITE, maxWidth: '100%'}}>
+                  {arrayCity}
+                </Text>
+              </View>
+            ) : null}
             {/* <Text
             numberOfLines={1}
             style={{

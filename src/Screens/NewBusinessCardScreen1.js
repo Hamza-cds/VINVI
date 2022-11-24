@@ -131,10 +131,42 @@ export default function NewBusinessCardScreen1(props) {
         b_CoverName: coverImageName.trim(),
       };
 
+      let metaObj = {
+        businessCardArray: [
+          {
+            PersonalKey: 'facebook link',
+            PersonalValue: facebookLink.trim(),
+            Ishidden: true,
+          },
+          {
+            PersonalKey: 'twitter link',
+            PersonalValue: twitterLink.trim(),
+            Ishidden: true,
+          },
+          {
+            PersonalKey: 'website link',
+            PersonalValue: websiteLink.trim(),
+            Ishidden: true,
+          },
+          {
+            PersonalKey: 'instagram link',
+            PersonalValue: instagramLink.trim(),
+            Ishidden: true,
+          },
+          {
+            PersonalKey: 'youtube link',
+            PersonalValue: youtubeLink.trim(),
+            Ishidden: true,
+          },
+        ],
+      };
+
       console.log('object', object);
 
       dispatch(BCData(object));
-      props.navigation.navigate('NewBusinessCard2');
+      props.navigation.navigate('NewBusinessCard2', {
+        meta: metaObj,
+      });
     }
   };
 
@@ -193,6 +225,7 @@ export default function NewBusinessCardScreen1(props) {
           <OutlinedInputBox
             placeholder="Contact Number"
             inputType="text"
+            maxLength={11}
             KeyboardType={'phone-pad'}
             onChange={value => {
               setNumber(value);
@@ -225,6 +258,9 @@ export default function NewBusinessCardScreen1(props) {
                 </Svg>
               }
               placeholder="Website Link"
+              onChange={value => {
+                setWebsiteLink(value);
+              }}
             />
             <LinkBtn
               svg={
@@ -241,6 +277,9 @@ export default function NewBusinessCardScreen1(props) {
                 </Svg>
               }
               placeholder="Facebook Link"
+              onChange={value => {
+                setFacebookLink(value);
+              }}
             />
             <LinkBtn
               svg={
@@ -257,6 +296,9 @@ export default function NewBusinessCardScreen1(props) {
                 </Svg>
               }
               placeholder="Twitter Link"
+              onChange={value => {
+                setTwitterLink(value);
+              }}
             />
             <LinkBtn
               svg={
@@ -273,6 +315,9 @@ export default function NewBusinessCardScreen1(props) {
                 </Svg>
               }
               placeholder="Instagram Link"
+              onChange={value => {
+                setInstagramLink(value);
+              }}
             />
             <LinkBtn
               svg={
@@ -289,6 +334,9 @@ export default function NewBusinessCardScreen1(props) {
                 </Svg>
               }
               placeholder="YouTube Link"
+              onChange={value => {
+                setYoutubeLink(value);
+              }}
             />
 
             <UploadBtn
