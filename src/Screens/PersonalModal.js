@@ -145,10 +145,12 @@ export function PersonalModal({
     formdata.append('Email', CardData.email);
     formdata.append('UserId', JSON.stringify(CardData.userId));
     formdata.append('id', JSON.stringify(CardData.id));
-    formdata.append('PhoneNo', CardData.phoneNo);
+    formdata.append('PhoneNo', '');
     formdata.append('Address', CardData.address);
-    formdata.append('ProfilePicture', CardData.profilePicture);
-    formdata.append('CoverPicture', CardData.coverPicture);
+    // formdata.append('ProfilePicture', CardData.profilePicture);
+    // formdata.append('CoverPicture', CardData.coverPicture);
+    // CardData.profilePicture
+    // CardData.coverPicture
     for (let index = 0; index < PersonalCardMeta.length; index++) {
       const element = PersonalCardMeta[index];
       formdata.append(`PersonalCardMeta[${index}][id]`, element.id);
@@ -169,23 +171,23 @@ export function PersonalModal({
 
     console.log('formdata', formdata);
 
-    // setIsLoading(true);
-    // personalCardApiCall(formdata)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log('response', data);
-    //     if (data.status === 200 && data.success === true) {
-    //       setIsLoading(false);
-    //       setModalVisible(false);
-    //     } else {
-    //       setIsLoading(false);
-    //       alert('alert');
-    //     }
-    //   })
-    //   .catch(err => {
-    //     setIsLoading(false);
-    //     console.log('err', err);
-    //   });
+    setIsLoading(true);
+    personalCardApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
+          setIsLoading(false);
+          setModalVisible(false);
+        } else {
+          setIsLoading(false);
+          alert('alert');
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
   };
 
   return (

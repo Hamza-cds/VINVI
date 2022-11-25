@@ -123,61 +123,71 @@ export default function NewBusinessCardScreen2(props) {
           })
         : formdata.append('cover_image_file', null);
     }
-    // formdata.append('BusinessCardMeta', JSON.stringify([]));
 
-    for (let index = 0; index < META.length; index++) {
-      const element = META[index];
+    if (META.length == 0) {
+      formdata.append('BusinessCardMeta', JSON.stringify([]));
+    } else {
+      for (let index = 0; index < META.length; index++) {
+        const element = META[index];
 
-      formdata.append(
-        `BusinessCardMeta[${index}][PersonalKey]`,
-        element.PersonalKey,
-      );
-      formdata.append(
-        `BusinessCardMeta[${index}][PersonalValue]`,
-        element.PersonalValue,
-      );
-      formdata.append(`BusinessCardMeta[${index}][Ishidden]`, element.Ishidden);
+        formdata.append(
+          `BusinessCardMeta[${index}][PersonalKey]`,
+          element.PersonalKey,
+        );
+        formdata.append(
+          `BusinessCardMeta[${index}][PersonalValue]`,
+          element.PersonalValue,
+        );
+        formdata.append(
+          `BusinessCardMeta[${index}][Ishidden]`,
+          element.Ishidden,
+        );
+      }
     }
 
     console.log('businessCategoryArray', businessCategoryArray);
-    for (let index = 0; index < businessCategoryArray.length; index++) {
-      const element = businessCategoryArray[index];
+    if (businessCategoryArray.length == 0) {
+      formdata.append('BusinessCategory', JSON.stringify([]));
+    } else {
+      for (let index = 0; index < businessCategoryArray.length; index++) {
+        const element = businessCategoryArray[index];
 
-      formdata.append(`BusinessCategory[${index}].Id`, '0');
-      formdata.append(
-        `BusinessCategory[${index}].Name`,
-        businessCategoryArray[index].Name,
-      );
+        formdata.append(`BusinessCategory[${index}].Id`, '0');
+        formdata.append(
+          `BusinessCategory[${index}].Name`,
+          businessCategoryArray[index].Name,
+        );
 
-      if (element.BusinessCategoryProduct.length > 0) {
-        for (
-          let productIndex = 0;
-          productIndex < element.BusinessCategoryProduct.length;
-          productIndex++
-        ) {
-          const data = element.BusinessCategoryProduct[productIndex];
+        if (element.BusinessCategoryProduct.length > 0) {
+          for (
+            let productIndex = 0;
+            productIndex < element.BusinessCategoryProduct.length;
+            productIndex++
+          ) {
+            const data = element.BusinessCategoryProduct[productIndex];
+            formdata.append(
+              `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Id`,
+              JSON.stringify(data.Id),
+            );
+            formdata.append(
+              `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Name`,
+              data.Name,
+            );
+            formdata.append(
+              `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Price`,
+              data.Price,
+            );
+            formdata.append(
+              `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].product_image_file`,
+              data.Picture,
+            );
+          }
+        } else {
           formdata.append(
-            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Id`,
-            JSON.stringify(data.Id),
-          );
-          formdata.append(
-            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Name`,
-            data.Name,
-          );
-          formdata.append(
-            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].Price`,
-            data.Price,
-          );
-          formdata.append(
-            `BusinessCategory[${index}].BusinessCategoryProduct[${productIndex}].product_image_file`,
-            data.Picture,
+            `BusinessCategory[${index}].BusinessCategoryProduct`,
+            '[]',
           );
         }
-      } else {
-        formdata.append(
-          `BusinessCategory[${index}].BusinessCategoryProduct`,
-          '[]',
-        );
       }
     }
 

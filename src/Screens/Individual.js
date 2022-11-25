@@ -77,9 +77,9 @@ export function Individual({navigation}) {
         if (res.data.success == true) {
           // debugger;
           const element = res.data.result[0];
-          console.log('element', element);
+          // console.log('element', element);
           setResStatus((resStatus = element.isClosed));
-          console.log('resStatus', resStatus);
+          // console.log('resStatus', resStatus);
 
           setdata((data = res.data.result));
           setIsLoading(false);

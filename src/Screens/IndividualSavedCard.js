@@ -7,18 +7,19 @@ import Loader from '../Components/Loader';
 import IndividualCard from '../Components/IndividualCard';
 import {useFocusEffect} from '@react-navigation/core';
 import {UserData} from '../../Store/Action';
+import {isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function IndividualSavedCard(props) {
   const dispatch = useDispatch();
   let [userData, setUserData] = useState(null);
   let status = 0;
   const [data, setdata] = useState([]);
-  console.log('data', data);
+  // console.log('data', data);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const DATA = useSelector(state => state.UserData);
-  console.log('DATA', DATA);
+  // console.log('DATA', DATA);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -41,7 +42,7 @@ export default function IndividualSavedCard(props) {
     setIsLoading(true);
     getAllConnectionRequest(DATA.id, status)
       .then(res => {
-        console.log('res', res);
+        console.log('connected res', res);
         setdata(res.data.result);
         setIsLoading(false);
       })
@@ -53,7 +54,7 @@ export default function IndividualSavedCard(props) {
 
   return (
     <View style={{flex: 1, height: '100%', width: '100%'}}>
-      {data != null ? (
+      {!isNullOrEmptyArray(data) ? (
         <FlatList
           data={data}
           horizontal={false}
@@ -66,6 +67,7 @@ export default function IndividualSavedCard(props) {
               navigation={props.navigation}
               navigationPath="IndividualScreen"
               item={item.personalCard}
+              connectID={item}
               key={index}
             />
           )}

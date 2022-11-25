@@ -34,24 +34,6 @@ export default function SavedDashboardScreen(props, navigation) {
     });
   }, []);
 
-  // useEffect(() => {
-  //   getSavedCard();
-  // }, [DATA.id]);
-
-  // const getSavedCard = () => {
-  //   setIsLoading(true);
-  //   GetSavedCardByIdApiCall(DATA.id)
-  //     .then(res => {
-  //       console.log('saved res', res);
-  //       setdata(res.data.result);
-  //       setIsLoading(false);
-  //     })
-  //     .catch(err => {
-  //       setIsLoading(false);
-  //       console.log('err', err);
-  //     });
-  // };
-
   return (
     <SafeAreaView
       style={{height: Height, width: Width, flex: 1, backgroundColor: WHITE}}>

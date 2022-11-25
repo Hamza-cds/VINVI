@@ -313,9 +313,9 @@ export default function NewCardScreen(props) {
       <NewCardStepPanel step1={true} step2={true} step3={true} step4={true} />
       <ScrollView style={{flex: 1, padding: 20, marginBottom: 20}}>
         <OutlinedInputBox
-          placeholder="Introduce your self"
+          placeholder="Introduction"
           inputType="text"
-          label={'Intoduction'}
+          // label={'Intoduction'}
           maxLength={100}
           onChange={value => {
             setMessage(value);
@@ -325,7 +325,7 @@ export default function NewCardScreen(props) {
           placeholder="Enter code"
           inputType="text"
           maxLength={5}
-          label={'QR Code'}
+          // label={'QR Code'}
           onChange={value => {
             setQRcode(value);
           }}
@@ -334,7 +334,7 @@ export default function NewCardScreen(props) {
           placeholder="Enter hobbies"
           inputType="text"
           maxLength={100}
-          label={'Hobbies'}
+          // label={'Hobbies'}
           onChange={value => {
             setHobbies(value);
           }}
@@ -343,7 +343,7 @@ export default function NewCardScreen(props) {
           placeholder="Enter interests"
           inputType="text"
           maxLength={100}
-          label={'Interests'}
+          // label={'Interests'}
           onChange={value => {
             setInterests(value);
           }}
@@ -352,7 +352,7 @@ export default function NewCardScreen(props) {
           placeholder="Enter achievements"
           inputType="text"
           maxLength={100}
-          label={'Achievements'}
+          // label={'Achievements'}
           onChange={value => {
             setAchivements(value);
           }}

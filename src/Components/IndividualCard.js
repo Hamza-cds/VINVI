@@ -18,8 +18,9 @@ export default function IndividualCard({
   navigationPath,
   item,
   type,
+  connectID,
 }) {
-  console.log('IndividualCard item..................', item);
+  // console.log('IndividualCard item..................', item);
   let arrayOccupation;
   arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
   if (arrayOccupation) {
@@ -65,7 +66,10 @@ export default function IndividualCard({
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate(navigationPath, {id: item.id});
+        navigation.navigate(navigationPath, {
+          id: item.id,
+          connect: connectID.id,
+        });
       }}
       activeOpacity={0.9}
       style={{

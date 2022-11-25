@@ -148,14 +148,14 @@ export default function HomeDashboardScreen({navigation, route}) {
     setIsLoading(true);
     getPersonalCardAllActiveApiCall()
       .then(({data}) => {
-        console.log('personal res', data);
+        // console.log('personal res', data);
         if (data.success == true) {
           for (let index = 0; index < data.result.length; index++) {
             const element = data.result[index];
             element.value = element.name;
             element.key = JSON.stringify(element.id);
           }
-          console.log('hamza..................................', data.result);
+          console.log('Individual response', data.result);
           setIsLoading(false);
           setIndividualData(data.result);
         } else {

@@ -16,7 +16,7 @@ const initialState = {
   UserData: null,
   USERCREDENTIAL: null,
   PCScreen2Data: null,
-  createConnectionSignalR: null,
+  connection: null,
   newMessageAction: null,
 };
 
@@ -37,7 +37,7 @@ export const mainreducer = (state = initialState, action) => {
     case PERSONALCARDSCREEN2DATA:
       return {...state, PCScreen2Data: action.payload};
     case CREATECONNECTIONSIGNALR:
-      return {...state, createConnectionSignalR: action.payload};
+      return {...state, connection: action.payload};
     case NEWMESSAGEACTION:
       return {...state, newMessageAction: action.payload};
     default:

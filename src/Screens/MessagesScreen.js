@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TouchableOpacity, TextInput, SafeAreaView} from 'react-native';
 import {WHITE} from '../Constants/Colors';
 import Header from '../Components/Header';
@@ -6,10 +6,25 @@ import UserMessage from '../Components/UserMessage';
 import TimeStamp from '../Components/TimeStamp';
 import OtherMessage from '../Components/OtherMessage';
 import Svg, {Defs, ClipPath, Path, G, Rect} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import {Height, URL, Width} from '../Constants/Constants';
 import {FlatList} from 'react-native-gesture-handler';
+import {isNullOrEmpty} from '../Constants/TextUtils';
+import {useSelector} from 'react-redux';
+import {newMessageReceiver} from '../Constants/signalR';
 
 const ChatsDashboardScreen = props => {
+  // console.log('props', props);
+  const connection = useSelector(state => state.connection);
+
+  const [messageToSend, setMessageToSend] = useState('');
+  console.log('connection', connection);
+  let otherUserDATA = props.route.params.data;
+  let connectionID = props.route.params.connect;
+  const myDATA = useSelector(state => state.UserData);
+  // console.log('dispatch DATA', myDATA);
+  // console.log('otherUserDATA', otherUserDATA);
+  // console.log('connectionID', connectionID);
+
   const data = [
     {
       id: 1,
@@ -34,6 +49,32 @@ const ChatsDashboardScreen = props => {
     },
   ];
   const navigation = props.navigation;
+
+  useEffect(() => {
+    if (isNullOrEmpty(connection)) {
+      //receive message functino
+      newMessageReceiver(connection);
+    }
+  }, [connection]);
+
+  const onSendMessage = () => {
+    let object = {
+      UserConnectionId: connectionID,
+      FromUserId: myDATA.id,
+      ToUserId: otherUserDATA.id,
+      Message: messageToSend,
+    };
+    console.log('object', object);
+    connection
+      .invoke('SendMessage', object)
+      .then(() => {
+        console.log('message send hogya');
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -45,12 +86,18 @@ const ChatsDashboardScreen = props => {
       <Header
         navigation={navigation}
         variant="account"
-        userName="John Doe"
+        userName={otherUserDATA.name}
         userStatus="online"
         onPress={() => {
           navigation.navigate('Chats');
         }}
-        userProfilePicture={require('../Assets/profilePic.png')}
+        userProfilePicture={
+          otherUserDATA
+            ? !isNullOrEmpty(otherUserDATA.profilePicture)
+              ? {uri: URL.concat(otherUserDATA.profileImage)}
+              : require('../Assets/profilePic.png')
+            : require('../Assets/profilePic.png')
+        }
       />
       <FlatList
         style={{
@@ -86,6 +133,8 @@ const ChatsDashboardScreen = props => {
           <TextInput
             placeholder="Type your message"
             multiline={true}
+            onChangeText={setMessageToSend}
+            value={messageToSend}
             style={{
               flex: 1,
               paddingHorizontal: 20,
@@ -133,6 +182,7 @@ const ChatsDashboardScreen = props => {
             marginLeft: 10,
           }}>
           <TouchableOpacity
+            onPress={() => onSendMessage()}
             style={{
               width: 50,
               alignItems: 'center',

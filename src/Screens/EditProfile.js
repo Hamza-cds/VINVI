@@ -7,7 +7,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Height, URL, Width} from '../Constants/Constants';
 import BtnComponent from '../Components/BtnComponent';
 import ImagePicker from 'react-native-image-crop-picker';
-import RNFS from 'react-native-fs';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {signUpApiCall} from '../Apis/Repo';
@@ -15,6 +14,10 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {useDispatch} from 'react-redux';
 import {UserData} from '../../Store/Action';
 import Loader from '../Components/Loader';
+import {PRIMARY} from '../Constants/Colors';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function NewCardScreen({navigation, route}) {
   let [firstName, setFirstName] = useState('');
@@ -125,7 +128,14 @@ export default function NewCardScreen({navigation, route}) {
             style={{height: 120, width: 120, borderRadius: 60}}
           />
           <TouchableOpacity
-            style={{marginTop: 80, marginLeft: -30}}
+            style={{
+              marginTop: 80,
+              marginLeft: -30,
+              height: 30,
+              width: 35,
+              borderRadius: 12,
+              backgroundColor: 'white',
+            }}
             onPress={() => {
               ImagePicker.openPicker({
                 width: 300,
@@ -139,9 +149,11 @@ export default function NewCardScreen({navigation, route}) {
                 setImage(image);
               });
             }}>
-            <Image
-              source={require('../Assets/editProf.png')}
-              // style={{marginTop: 80, marginLeft: -30}}
+            <Entypo
+              name="camera"
+              color={PRIMARY}
+              size={23}
+              style={{alignSelf: 'center', marginVertical: 2}}
             />
           </TouchableOpacity>
         </View>
@@ -156,7 +168,7 @@ export default function NewCardScreen({navigation, route}) {
           }}>
           <View>
             <ChangePasswordInputBox
-              placeholder="First Name"
+              placeholder="Name"
               text={
                 userData
                   ? userData.firstName
@@ -167,14 +179,9 @@ export default function NewCardScreen({navigation, route}) {
               onChange={value => {
                 setFirstName(value);
               }}
-              icon={
-                <Image
-                  source={require('../Assets/id-card.png')}
-                  style={{height: 30, width: 30, marginLeft: -5}}
-                />
-              }
+              icon={<Ionicons name="person-outline" size={22} />}
             />
-            <ChangePasswordInputBox
+            {/* <ChangePasswordInputBox
               placeholder="Last Name"
               text={
                 userData ? (userData.lastName ? userData.lastName : null) : null
@@ -188,7 +195,7 @@ export default function NewCardScreen({navigation, route}) {
                   style={{height: 30, width: 30, marginLeft: -5}}
                 />
               }
-            />
+            /> */}
             <ChangePasswordInputBox
               placeholder="Email"
               text={userData ? (userData.email ? userData.email : null) : null}
@@ -197,9 +204,16 @@ export default function NewCardScreen({navigation, route}) {
               }}
               icon={<Fontisto name="email" size={20} />}
             />
+            <ChangePasswordInputBox
+              editable={false}
+              placeholder={
+                userData ? (userData.phoneno ? userData.phoneno : null) : null
+              }
+              icon={<Feather name="phone" size={20} />}
+            />
           </View>
           <BtnComponent
-            placeholder="Save"
+            placeholder="Sa>ve"
             onPress={() => {
               onSave();
             }}

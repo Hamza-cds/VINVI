@@ -43,8 +43,10 @@ import CryptoJS from 'react-native-crypto-js';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 import {useSelector} from 'react-redux';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Feather from 'react-native-vector-icons/Feather';
 
 export default function IndividualScreen(props) {
+  console.log('***************************************', props);
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
   const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
     useState(false);
@@ -71,6 +73,7 @@ export default function IndividualScreen(props) {
   let [jobIndex, setJobIndex] = useState('');
   let [eduIndex, setEduIndex] = useState('');
   let [proImage, setProImage] = useState('');
+  let [bgImage, setBgImage] = useState('');
   let [imageName, setImageName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   let [industryType, setIndustryType] = useState([]);
@@ -78,11 +81,13 @@ export default function IndividualScreen(props) {
   let [degreeList, setDegreList] = useState([]);
   let [lookupData, setLookupData] = useState([]);
   const [isSaved, setIsSaved] = useState('');
-  console.log('isSaved', isSaved);
+  const [connect, setConnect] = useState(false);
+  let connectionID = props.route.params.connect;
+  // console.log('isSaved', isSaved);
   var date = new Date();
 
-  const DATA = useSelector(state => state.UserData);
-  console.log('Header dispatch DATA', DATA);
+  let DATA = useSelector(state => state.UserData);
+  // console.log('Header dispatch DATA', DATA);
   let ciphertext = CryptoJS.AES.encrypt(
     date.getTime() +
       '_' +
@@ -94,7 +99,7 @@ export default function IndividualScreen(props) {
     'secret key 123',
   ).toString();
 
-  console.log('favorit', favorit);
+  // console.log('favorit', favorit);
 
   let arrayOccupation;
   arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
@@ -210,6 +215,7 @@ export default function IndividualScreen(props) {
     isContactModalVisible,
     isPersonalModalVisible,
     isSaved,
+    connect,
   ]);
 
   const getData = () => {
@@ -220,9 +226,10 @@ export default function IndividualScreen(props) {
 
     if (!isNullOrEmpty(ID)) {
       setIsLoading(true);
+      console.log('ID', ID);
+      console.log('DATA.id', DATA.id);
       getPersonalCardByIdApiCall(ID, DATA.id)
         .then(res => {
-          console.log('res', res.data.result);
           if (res.data.success) {
             setdata((data = res.data.result));
             setIsSaved(data.isSaved);
@@ -245,9 +252,9 @@ export default function IndividualScreen(props) {
       console.log('here is id ', id);
 
       setIsLoading(true);
-      getPersonalCardByIdApiCall(id)
+      getPersonalCardByIdApiCall(id, 0)
         .then(res => {
-          console.log('res', res.data.result);
+          console.log('res', res);
           if (res.data.success) {
             setdata((data = res.data.result));
             setIsLoading(false);
@@ -355,9 +362,9 @@ export default function IndividualScreen(props) {
 
     setIsLoading(true);
     personalCardApiCall(formdata)
-      .then(res => res.json())
+      .then(res => res.JSON())
       .then(data => {
-        // console.log('response', data);
+        console.log('response', data);
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           alert('picture updated successfully');
@@ -426,6 +433,7 @@ export default function IndividualScreen(props) {
     connectionRequestApiCall(obj)
       .then(res => {
         console.log('res', res);
+        setConnect(true);
         setIsLoading(false);
       })
       .catch(err => {
@@ -439,14 +447,14 @@ export default function IndividualScreen(props) {
       <ScrollView style={{flex: 1, backgroundColor: WHITE}}>
         <ImageBackground
           source={
-            data.coverPicture
+            !isNullOrEmpty(data.coverPicture)
               ? {uri: URL.concat(data.coverPicture)}
-              : require('../Assets/individualbanner.png')
+              : require('../Assets/registerbg.png')
           }
           style={{
             width: '100%',
             height: 300,
-            backgroundColor: '#F0F0F0',
+            // backgroundColor: '#F0F0F0',
           }}>
           <Header
             navigation={props.navigation}
@@ -455,6 +463,38 @@ export default function IndividualScreen(props) {
               props.navigation.navigate('Dashboard');
             }}
           />
+
+          {Edit == true ? (
+            <TouchableOpacity
+              style={{
+                padding: 3,
+                borderRadius: 5,
+                marginTop: 190,
+                marginRight: 15,
+                backgroundColor: PRIMARY,
+                alignSelf: 'flex-end',
+              }}
+              onPress={() => {
+                ImagePicker.openPicker({
+                  width: 300,
+                  height: 400,
+                  cropping: true,
+                }).then(image => {
+                  console.log('image', image);
+                  var imageMime = image.mime;
+                  var name = imageMime.split('/')[1];
+                  setImageName((imageName = 'Vinvi.' + name));
+                  setBgImage((bgImage = image));
+                  onSelectImage();
+                });
+              }}>
+              <Feather name="edit" color={'white'} size={22} />
+              {/* <Image
+                source={require('../Assets/editProf.png')}
+                style={{height: 22, width: 22}}
+              /> */}
+            </TouchableOpacity>
+          ) : null}
         </ImageBackground>
         <View
           style={{
@@ -481,15 +521,23 @@ export default function IndividualScreen(props) {
                   data
                     ? !isNullOrEmpty(data.profilePicture)
                       ? {uri: URL.concat(data.profilePicture)}
-                      : require('../Assets/portfolioPic.png')
-                    : require('../Assets/portfolioPic.png')
+                      : require('../Assets/profilePic.png')
+                    : require('../Assets/profilePic.png')
                 }
                 style={{width: 80, height: 80, borderRadius: 80}}
               />
             </View>
             {Edit == true ? (
               <TouchableOpacity
-                style={{padding: 3, marginTop: 75, marginLeft: -28}}
+                style={{
+                  padding: 3,
+                  marginTop: 75,
+                  marginLeft: -28,
+                  height: 25,
+                  width: 22,
+                  borderRadius: 4,
+                  backgroundColor: PRIMARY,
+                }}
                 onPress={() => {
                   ImagePicker.openPicker({
                     width: 300,
@@ -504,10 +552,16 @@ export default function IndividualScreen(props) {
                     onSelectImage();
                   });
                 }}>
-                <Image
+                <Feather
+                  name="edit"
+                  color={'white'}
+                  size={15}
+                  style={{alignSelf: 'center'}}
+                />
+                {/* <Image
                   source={require('../Assets/editProf.png')}
                   style={{height: 22, width: 22}}
-                />
+                /> */}
               </TouchableOpacity>
             ) : null}
           </View>
@@ -642,7 +696,7 @@ export default function IndividualScreen(props) {
                 />
               </Svg>
             </View>
-            {data.isConnected == 0 ? (
+            {data.userId == DATA.id ? null : data.isConnected == 0 ? (
               <BtnComponent
                 placeholder="Connect"
                 onPress={() => {
@@ -670,7 +724,10 @@ export default function IndividualScreen(props) {
               <BtnComponent
                 placeholder="Message"
                 onPress={() => {
-                  props.navigation.navigate('Messages');
+                  props.navigation.navigate('Messages', {
+                    data: data,
+                    connect: connectionID,
+                  });
                 }}
                 width={true}
                 widthValue="40%"

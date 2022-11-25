@@ -7,12 +7,13 @@ import Loader from '../Components/Loader';
 import BuisnessCard from '../Components/BuisnessCard';
 import {useFocusEffect} from '@react-navigation/core';
 import IndividualCard from '../Components/IndividualCard';
+import {isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function BusinessSavedCard(props) {
   let [userData, setUserData] = useState(null);
   const [data, setdata] = useState([]);
   const type = 2;
-  console.log('business saved data', data);
+  console.log('saved data', data);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +41,7 @@ export default function BusinessSavedCard(props) {
     setIsLoading(true);
     GetSavedCardByIdApiCall(DATA.id, type)
       .then(res => {
-        console.log('saved res', res);
+        console.log('saved response', res);
         setdata(res.data.result);
         setIsLoading(false);
       })
@@ -52,7 +53,7 @@ export default function BusinessSavedCard(props) {
 
   return (
     <View style={{flex: 1, height: '100%', width: '100%'}}>
-      {data != null ? (
+      {data.length > 0 ? (
         <FlatList
           data={data}
           horizontal={false}

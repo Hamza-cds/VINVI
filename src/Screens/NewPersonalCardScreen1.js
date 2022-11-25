@@ -117,7 +117,7 @@ export default function NewCardScreen(props) {
             <OutlinedInputBox
               placeholder="Enter name"
               backgroundColor={WHITE}
-              label="Name"
+              // label="Name"
               inputType="text"
               maxLength={30}
               onChange={value => {
@@ -126,7 +126,7 @@ export default function NewCardScreen(props) {
             />
             <OutlinedInputBox
               placeholder="Enter occupation"
-              label="Occupation"
+              // label="Occupation"
               inputType="text"
               backgroundColor={GREY}
               maxLength={30}
@@ -138,7 +138,7 @@ export default function NewCardScreen(props) {
               placeholder="Enter phone no"
               maxLength={11}
               backgroundColor={GREY}
-              label="Phone"
+              // label="Phone"
               inputType="text"
               KeyboardType={'numeric'}
               onChange={value => {
@@ -147,7 +147,7 @@ export default function NewCardScreen(props) {
             />
             <OutlinedInputBox
               placeholder="Enter email"
-              label="Email"
+              // label="Email"
               inputType="text"
               backgroundColor={GREY}
               maxLength={30}
@@ -160,7 +160,7 @@ export default function NewCardScreen(props) {
             />
             <OutlinedInputBox
               placeholder="Enter birthday"
-              label="Birthday"
+              // label="Birthday"
               maxLength={20}
               backgroundColor={GREY}
               inputType="text"
@@ -170,7 +170,7 @@ export default function NewCardScreen(props) {
             />
             <OutlinedInputBox
               placeholder="Enter address"
-              label="Address"
+              // label="Address"
               maxLength={50}
               backgroundColor={GREY}
               inputType="text"
@@ -180,7 +180,7 @@ export default function NewCardScreen(props) {
             />
             <OutlinedInputBox
               placeholder="Enter city"
-              label="City"
+              // label="City"
               maxLength={30}
               inputType="text"
               backgroundColor={GREY}
@@ -190,7 +190,7 @@ export default function NewCardScreen(props) {
             />
             <OutlinedInputBox
               placeholder="Enter country"
-              label="Country"
+              // label="Country"
               maxLength={30}
               backgroundColor={GREY}
               inputType="text"

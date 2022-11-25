@@ -8,6 +8,7 @@ export default function ChangePasswordInputBox({
   onChange,
   text,
   icon,
+  editable,
 }) {
   const [focus, setFocus] = useState(false);
   return (
@@ -31,6 +32,7 @@ export default function ChangePasswordInputBox({
         placeholderTextColor={TEXT_COLOR}
         style={{paddingHorizontal: 20, flex: 1}}
         onChangeText={onChange}
+        editable={editable}
         onFocus={() => {
           setFocus(true);
         }}

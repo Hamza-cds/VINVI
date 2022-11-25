@@ -10,9 +10,9 @@ const {
 export const hubConnectionBuilder = Id => {
   console.log('user id', Id);
   let connection = new HubConnectionBuilder()
-    .withUrl(`https://test.aidapro.com/chatHub`, {
+    .withUrl(`https://vinvi.dsmeglobal.com/chatHub`, {
       accessTokenFactory: () => {
-        return Id;
+        return Id.toString();
       },
       skipNegotiation: true,
       transport: HttpTransportType.WebSockets,
@@ -22,6 +22,7 @@ export const hubConnectionBuilder = Id => {
   connection.serverTimeoutInMilliseconds = 6000000;
   connection.keepAliveIntervalInMilliseconds = 3000000;
   console.log('connection', connection);
+  debugger;
 
   startConnection(connection);
   connection.onclose(async () => {
@@ -36,7 +37,7 @@ export const startConnection = connection => {
     .start()
     .then(() => {
       store.dispatch(createConnectionSignalR(connection));
-      // newMessageReceiver(connection);
+      newMessageReceiver(connection);
     })
     .catch(err => {
       console.log('connection.start error', err);
@@ -47,6 +48,7 @@ export const startConnection = connection => {
 };
 
 export const newMessageReceiver = connection => {
+  debugger;
   connection.on('ReceiveMessage', messageData => {
     console.log('messageData', messageData);
     store.dispatch(newMessageAction(messageData));

@@ -98,6 +98,7 @@ export function AddProductModal({
             />
             <OutlinedInputBox
               placeholder="Price"
+              KeyboardType={'numeric'}
               inputType="text"
               onChange={value => {
                 setHobbies(value);
