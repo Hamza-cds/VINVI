@@ -182,156 +182,155 @@ export default function RegisterScreen(props) {
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
-      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
-        <ScrollView style={{flex: 1}}>
-          <ImageBackground
-            source={require('../Assets/registerbg.png')}
-            style={{flex: 1, minHeight: Height}}>
+      {/* <KeyboardAvoidingView style={{flex: 1}} behavior="padding"> */}
+      <ScrollView style={{flex: 1}}>
+        <ImageBackground
+          source={require('../Assets/registerbg.png')}
+          style={{flex: 1, minHeight: Height}}>
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+              paddingBottom: 50,
+              display: 'flex',
+              justifyContent: 'space-evenly',
+            }}>
+            <Image
+              source={require('../Assets/vinvilightlogo.png')}
+              style={{
+                marginBottom: 20,
+                marginTop: 30,
+                alignSelf: 'center',
+                width: 100,
+                height: 55,
+              }}></Image>
+            <Text
+              style={{
+                fontSize: 30,
+                color: WHITE,
+                fontWeight: 'bold',
+                marginBottom: 5,
+              }}>
+              Join Us
+            </Text>
+            <RegisterInputBox
+              placeholder="Name"
+              keyboardType={'default'}
+              maxLength={30}
+              ERROR={nameErr}
+              ERROR_MESSAGE={nameErrMsg}
+              onChange={value => {
+                NameCheck(value);
+                setName(value);
+              }}
+            />
+
+            <RegisterInputBox
+              placeholder="Phone"
+              keyboardType={'number-pad'}
+              maxLength={11}
+              ERROR={Error}
+              ERROR_MESSAGE={ErrorMsg}
+              onChange={value => {
+                NumberCheck(value);
+                setPhoneNumber(value);
+              }}
+            />
+
+            <RegisterInputBox
+              placeholder="Email"
+              keyboardType={'email-address'}
+              maxLength={30}
+              ERROR={emailErr}
+              ERROR_MESSAGE={emailErrMsg}
+              onChange={value => {
+                EmailCheck(value);
+                setEmail(value);
+              }}
+            />
+
+            <RegisterInputBox
+              placeholder="City"
+              keyboardType={'default'}
+              maxLength={30}
+              ERROR={cityErr}
+              ERROR_MESSAGE={cityErrMsg}
+              onChange={value => {
+                CityCheck(value);
+                setCity(value);
+              }}
+            />
+            <RegisterInputBox
+              placeholder="Password"
+              inputType="password"
+              keyboardType={'default'}
+              maxLength={100}
+              ERROR={passError}
+              secure={true}
+              ERROR_MESSAGE={passErrorMsg}
+              onChange={value => {
+                PasswordCheck(value);
+                setPassword(value);
+              }}
+            />
+
+            <RegisterInputBox
+              placeholder="Confirm Password"
+              inputType="password"
+              secure={true}
+              maxLength={100}
+              keyboardType={'default'}
+              ERROR={confirmpassError}
+              ERROR_MESSAGE={confirmpassErrorMsg}
+              onChange={value => {
+                ConfirmPassCheck(value);
+                setConfirmPassword(value);
+              }}
+            />
+            <View style={{marginTop: 20}}>
+              <BtnComponent
+                placeholder="Sign Up"
+                onPress={() => {
+                  onSignUp();
+                }}
+              />
+            </View>
+            <Text style={{alignSelf: 'center', color: WHITE, marginBottom: 10}}>
+              OR
+            </Text>
             <View
               style={{
-                width: '100%',
-                height: '100%',
-                paddingVertical: 20,
-                paddingHorizontal: 20,
-                paddingBottom: 50,
+                marginTop: 10,
                 display: 'flex',
-                justifyContent: 'space-evenly',
+                flexDirection: 'row',
+                justifyContent: 'center',
               }}>
-              <Image
-                source={require('../Assets/vinvilightlogo.png')}
-                style={{
-                  marginBottom: 20,
-                  marginTop: 30,
-                  alignSelf: 'center',
-                  width: 100,
-                  height: 55,
-                }}></Image>
-              <Text
-                style={{
-                  fontSize: 30,
-                  color: WHITE,
-                  fontWeight: 'bold',
-                  marginBottom: 5,
-                }}>
-                Join Us
+              <Text style={{color: WHITE, fontSize: 14}}>
+                Already have an account?
               </Text>
-              <RegisterInputBox
-                placeholder="Name"
-                keyboardType={'default'}
-                maxLength={30}
-                ERROR={nameErr}
-                ERROR_MESSAGE={nameErrMsg}
-                onChange={value => {
-                  NameCheck(value);
-                  setName(value);
-                }}
-              />
-
-              <RegisterInputBox
-                placeholder="Phone"
-                keyboardType={'number-pad'}
-                maxLength={11}
-                ERROR={Error}
-                ERROR_MESSAGE={ErrorMsg}
-                onChange={value => {
-                  NumberCheck(value);
-                  setPhoneNumber(value);
-                }}
-              />
-
-              <RegisterInputBox
-                placeholder="Email"
-                keyboardType={'email-address'}
-                maxLength={30}
-                ERROR={emailErr}
-                ERROR_MESSAGE={emailErrMsg}
-                onChange={value => {
-                  EmailCheck(value);
-                  setEmail(value);
-                }}
-              />
-
-              <RegisterInputBox
-                placeholder="City"
-                keyboardType={'default'}
-                maxLength={30}
-                ERROR={cityErr}
-                ERROR_MESSAGE={cityErrMsg}
-                onChange={value => {
-                  CityCheck(value);
-                  setCity(value);
-                }}
-              />
-              <RegisterInputBox
-                placeholder="Password"
-                inputType="password"
-                keyboardType={'default'}
-                maxLength={100}
-                ERROR={passError}
-                secure={true}
-                ERROR_MESSAGE={passErrorMsg}
-                onChange={value => {
-                  PasswordCheck(value);
-                  setPassword(value);
-                }}
-              />
-
-              <RegisterInputBox
-                placeholder="Confirm Password"
-                inputType="password"
-                secure={true}
-                maxLength={100}
-                keyboardType={'default'}
-                ERROR={confirmpassError}
-                ERROR_MESSAGE={confirmpassErrorMsg}
-                onChange={value => {
-                  ConfirmPassCheck(value);
-                  setConfirmPassword(value);
-                }}
-              />
-              <View style={{marginTop: 20}}>
-                <BtnComponent
-                  placeholder="Sign Up"
-                  onPress={() => {
-                    onSignUp();
-                  }}
-                />
-              </View>
-              <Text
-                style={{alignSelf: 'center', color: WHITE, marginBottom: 10}}>
-                OR
-              </Text>
-              <View
-                style={{
-                  marginTop: 10,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
+              <TouchableOpacity
+                style={{marginLeft: 10}}
+                onPress={() => {
+                  props.navigation.push('Login');
                 }}>
-                <Text style={{color: WHITE, fontSize: 14}}>
-                  Already have an account?
-                </Text>
-                <TouchableOpacity
-                  style={{marginLeft: 10}}
-                  onPress={() => {
-                    props.navigation.push('Login');
+                <Text
+                  style={{
+                    color: SECONDARY,
+                    textDecorationStyle: 'solid',
+                    textDecorationLine: 'underline',
+                    fontSize: 14,
                   }}>
-                  <Text
-                    style={{
-                      color: SECONDARY,
-                      textDecorationStyle: 'solid',
-                      textDecorationLine: 'underline',
-                      fontSize: 14,
-                    }}>
-                    Login
-                  </Text>
-                </TouchableOpacity>
-              </View>
+                  Login
+                </Text>
+              </TouchableOpacity>
             </View>
-            {isLoading ? <Loader /> : null}
-          </ImageBackground>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          </View>
+          {isLoading ? <Loader /> : null}
+        </ImageBackground>
+      </ScrollView>
+      {/* </KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 }

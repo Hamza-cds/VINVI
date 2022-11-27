@@ -8,7 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import {SECONDARY, FORTH, WHITE, PRIMARY} from '../Constants/Colors';
+import {SECONDARY, FORTH, WHITE, PRIMARY, GREY} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import Svg, {Path} from 'react-native-svg';
@@ -350,15 +350,16 @@ export default function IndividualScreen(props) {
 
     // console.log('formdata', formdata);
 
-    // {
-    //   coverPic
-    //     ? formdata.append('cover_image_image', {
-    //         uri: coverPic.path,
-    //         name: coverName,
-    //         type: coverPic.mime,
-    //       })
-    //     : formdata.append('cover_image_image', null);
-    // }
+    {
+      bgImage
+        ? formdata.append('cover_image_image', {
+            uri: bgImage.path,
+            name: imageName,
+            type: bgImage.mime,
+          })
+        : null;
+      formdata.append('cover_image_image', data.coverPicture);
+    }
 
     setIsLoading(true);
     personalCardApiCall(formdata)
@@ -366,6 +367,7 @@ export default function IndividualScreen(props) {
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {
+          getPersonalCardByIdApiCall();
           setIsLoading(false);
           alert('picture updated successfully');
         } else {
@@ -524,7 +526,12 @@ export default function IndividualScreen(props) {
                       : require('../Assets/profilePic.png')
                     : require('../Assets/profilePic.png')
                 }
-                style={{width: 80, height: 80, borderRadius: 80}}
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 80,
+                  logoBackgroundColor: GREY,
+                }}
               />
             </View>
             {Edit == true ? (

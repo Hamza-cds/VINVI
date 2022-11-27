@@ -112,35 +112,44 @@ export default function MyCardIndividual({
         </View>
         <View style={{marginHorizontal: 10}}>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 14,
               color: selected === index ? WHITE : SECONDARY,
+              // backgroundColor: 'red',
+              width: 160,
             }}>
             {item.name ? item.name : 'dum'}
           </Text>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 16,
               fontWeight: 'bold',
               color: selected === index ? WHITE : SECONDARY,
               marginBottom: 10,
-              width: 200,
+              // backgroundColor: 'red',
+              width: 160,
             }}>
             {/* {item.occupation} */}
             {arrayOccupation}
           </Text>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 12,
               color: selected === index ? WHITE : SECONDARY,
+              width: 160,
             }}>
             {item.email ? item.email : 'email'}
           </Text>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 12,
               color: selected === index ? WHITE : SECONDARY,
-              width: 200,
+              width: 160,
+              // backgroundColor: 'red',
             }}>
             {item.address ? item.address : 'address'}
           </Text>

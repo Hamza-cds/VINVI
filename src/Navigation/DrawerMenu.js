@@ -58,7 +58,14 @@ const CustomSidebarMenu = props => {
           />
         )}
         <View style={{marginLeft: 15}}>
-          <Text style={{color: WHITE, fontSize: 18, fontWeight: 'bold'}}>
+          <Text
+            numberOfLines={1}
+            style={{
+              color: WHITE,
+              fontSize: 18,
+              fontWeight: 'bold',
+              width: 180,
+            }}>
             {/* {userData.firstName + '' + userData.lastName} */}
             {DATA.firstName ? DATA.firstName : 'name'}
           </Text>

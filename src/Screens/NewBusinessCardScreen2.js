@@ -9,7 +9,7 @@ import Svg, {G, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 import {businessCardApiCall} from '../Apis/Repo';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
+import {GREY, PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Picker} from '@react-native-picker/picker';
 import Loader from '../Components/Loader';
@@ -201,7 +201,11 @@ export default function NewBusinessCardScreen2(props) {
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           dispatch(BCDComplete(''));
-          props.navigation.replace('MyCardsDashboardScreen');
+          props.navigation.reset({
+            index: 0,
+            routes: [{name: 'MyCardsDashboardScreen'}],
+          });
+          // props.navigation.replace('MyCardsDashboardScreen');
         } else {
           setIsLoading(false);
           alert('Invalid Request');
@@ -211,6 +215,11 @@ export default function NewBusinessCardScreen2(props) {
         setIsLoading(false);
         console.log('err', err);
       });
+  };
+
+  const FunDelProduct = index => {
+    let newArr = [...product];
+    setProduct((product = newArr.filter((item, Index) => Index !== index)));
   };
 
   return (
@@ -348,14 +357,36 @@ export default function NewBusinessCardScreen2(props) {
               <View>
                 <View
                   style={{
-                    height: 140,
+                    // height: 140,
                     width: 140,
                     backgroundColor: 'black',
                     borderRadius: 5,
                     marginHorizontal: 5,
                     marginTop: 15,
-                    marginRight: 30,
+                    marginRight: 10,
                   }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      FunDelProduct(index);
+                    }}
+                    activeOpacity={0.7}
+                    style={{
+                      backgroundColor: GREY,
+                      alignSelf: 'flex-end',
+                      height: 25,
+                      width: 25,
+                      borderRadius: 25,
+                      marginTop: -10,
+                      marginRight: -10,
+                      padding: 2,
+                    }}>
+                    <Entypo
+                      name="cross"
+                      size={22}
+                      color={PRIMARY}
+                      style={{alignSelf: 'center'}}
+                    />
+                  </TouchableOpacity>
                   <Image
                     source={{uri: item.productImg.path}}
                     style={{height: 140, width: 140, borderRadius: 5}}

@@ -41,6 +41,8 @@ export default function NewBusinessCardScreen1(props) {
   let [industryType, setIndustryType] = useState([]);
   let [lookupData, setLookupData] = useState([]);
 
+  console.log('industry', industry);
+
   const data = [
     {
       id: 1,
@@ -194,11 +196,12 @@ export default function NewBusinessCardScreen1(props) {
               setBusinessName(value);
             }}
           />
-          <MultiSelect placeholder="Area" data={data} onCallBack={setArea} />
+          {/* <MultiSelect placeholder="Area" data={data} onCallBack={setArea} /> */}
           <Select
             placeholder={'Industry type'}
             data={industryType}
             onCallBack={setIndustry}
+            editText={industry ? (industry.name ? industry.name : null) : null}
           />
           <OutlinedInputBox
             placeholder="Any Other Information"

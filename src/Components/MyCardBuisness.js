@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Image, TouchableOpacity, Text, Modal} from 'react-native';
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  Text,
+  Modal,
+  ScrollView,
+} from 'react-native';
 import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
 import {URL} from '../Constants/Constants';
@@ -137,9 +144,12 @@ export default function MyCardBuisness({
         />
         <View style={{marginLeft: 10}}>
           <Text
+            numberOfLines={1}
             style={{
               fontSize: 14,
               color: selected === index ? WHITE : SECONDARY,
+              // backgroundColor: 'red',
+              width: 140,
             }}>
             {item.name}
           </Text>
@@ -161,12 +171,14 @@ export default function MyCardBuisness({
             {item.email}
           </Text> */}
           <Text
-            numberOfLines={5}
+            numberOfLines={3}
             style={{
               fontSize: 16,
               // fontWeight: 'bold',
               color: selected === index ? WHITE : SECONDARY,
               // color: SECONDARY,
+              // backgroundColor: 'red',
+              // width: 165,
               maxWidth: 165,
               // marginBottom: 30,
             }}>
@@ -178,6 +190,8 @@ export default function MyCardBuisness({
               fontSize: 14,
               color: selected === index ? WHITE : SECONDARY,
               maxWidth: 180,
+              // backgroundColor: 'red',
+              // width: 180,
             }}>
             {item.address}
           </Text>
@@ -195,62 +209,70 @@ export default function MyCardBuisness({
           style={{
             backgroundColor: '#F0F0F0',
             width: Width - 20,
-            height: '90%',
+            // height: '90%',
             alignSelf: 'center',
-            marginVertical: 20,
+            marginTop: 50,
             borderRadius: 30,
             paddingHorizontal: 20,
           }}>
-          <Text style={{color: 'black', fontSize: 20, marginVertical: 20}}>
-            Announcment
-          </Text>
-          <RegisterInputBox
-            placeholder="Title"
-            // inputType="password"
-            keyboardType={'default'}
-            onChange={value => {
-              console.log('Title', value);
-            }}
-          />
-          <RegisterInputBox
-            placeholder="Description"
-            // inputType="password"
-            keyboardType={'default'}
-            onChange={value => {
-              console.log('Description', value);
-            }}
-          />
-          <RegisterInputBox
-            placeholder="City/Area"
-            // inputType="password"
-            keyboardType={'default'}
-            onChange={value => {
-              console.log('city', value);
-            }}
-          />
-          <UploadBtn
-            placeholder="Select Image"
-            label={'Upload announcment post/banner'}
-          />
-
-          <TouchableOpacity
-            onPress={() => {
-              setisModalVisible(!isModalVisible);
-            }}
-            style={{
-              backgroundColor: SECONDARY,
-              height: 50,
-              width: '100%',
-              borderRadius: 10,
-              position: 'absolute',
-              alignSelf: 'center',
-              bottom: 20,
-            }}>
-            <Text
-              style={{color: 'white', alignSelf: 'center', marginVertical: 14}}>
-              Submit
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={{color: 'black', fontSize: 20, marginVertical: 20}}>
+              Announcment
             </Text>
-          </TouchableOpacity>
+            <RegisterInputBox
+              placeholder="Title"
+              // inputType="password"
+              keyboardType={'default'}
+              onChange={value => {
+                console.log('Title', value);
+              }}
+            />
+            <RegisterInputBox
+              placeholder="Description"
+              // inputType="password"
+              keyboardType={'default'}
+              onChange={value => {
+                console.log('Description', value);
+              }}
+            />
+            <RegisterInputBox
+              placeholder="City/Area"
+              // inputType="password"
+              keyboardType={'default'}
+              onChange={value => {
+                console.log('city', value);
+              }}
+            />
+            <UploadBtn
+              placeholder="Select Image"
+              label={'Upload announcment post/banner'}
+            />
+
+            <TouchableOpacity
+              onPress={() => {
+                setisModalVisible(!isModalVisible);
+              }}
+              style={{
+                backgroundColor: SECONDARY,
+                height: 50,
+                width: '100%',
+                borderRadius: 10,
+                marginVertical: 30,
+                // alignSelf: 'flex-start',
+                // marginTop:
+                // position: 'absolute',
+                // bottom: 20,
+              }}>
+              <Text
+                style={{
+                  color: 'white',
+                  alignSelf: 'center',
+                  marginVertical: 14,
+                }}>
+                Submit
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </Modal>
     </View>

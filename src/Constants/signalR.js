@@ -22,7 +22,6 @@ export const hubConnectionBuilder = Id => {
   connection.serverTimeoutInMilliseconds = 6000000;
   connection.keepAliveIntervalInMilliseconds = 3000000;
   console.log('connection', connection);
-  debugger;
 
   startConnection(connection);
   connection.onclose(async () => {
@@ -48,7 +47,6 @@ export const startConnection = connection => {
 };
 
 export const newMessageReceiver = connection => {
-  debugger;
   connection.on('ReceiveMessage', messageData => {
     console.log('messageData', messageData);
     store.dispatch(newMessageAction(messageData));

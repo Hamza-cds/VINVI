@@ -177,6 +177,7 @@ export default function ProductModal({
               />
               <OutlinedInputBox
                 placeholder="Price"
+                KeyboardType={'numeric'}
                 inputType="text"
                 onChange={value => {
                   // console.log('price', value);

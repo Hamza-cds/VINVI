@@ -57,6 +57,7 @@ const BusinessScreen = props => {
   const [refresh, setRefresh] = useState(false);
   const [favorit, setFavorit] = useState(false);
   let [userData, setUserData] = useState(null);
+  const [isSaved, setIsSaved] = useState('');
 
   console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
 
@@ -71,7 +72,12 @@ const BusinessScreen = props => {
     getBusinessData();
     getAllLookupdetail();
     setRefresh(false);
-  }, [refresh]);
+    if (isSaved == 1) {
+      setFavorit(true);
+    } else if (isSaved == 0) {
+      setFavorit(false);
+    }
+  }, [refresh, isSaved]);
 
   const getAllLookupdetail = () => {
     // setIsLoading(true);
@@ -107,6 +113,7 @@ const BusinessScreen = props => {
           setCategoryWiseData(
             businessData.businessCategory[0].businessCategoryProduct,
           );
+          setIsSaved(data.isSaved);
         } else {
           setIsLoading(false);
           alert('No record found.');
