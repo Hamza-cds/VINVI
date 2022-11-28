@@ -39,7 +39,7 @@ export default function RegisterInputBox({
       ) : null} */}
 
       <KeyboardAvoidingView behavior="padding">
-        <TouchableOpacity
+        <View
           activeOpacity={1}
           style={{
             width: '100%',
@@ -79,7 +79,7 @@ export default function RegisterInputBox({
             placeholder={placeholder}
             placeholderTextColor={TEXT_COLOR}
             style={{
-              width: '100%',
+              flex: 1,
               paddingHorizontal: 20,
               height: 50,
               color: SECONDARY,
@@ -133,7 +133,7 @@ export default function RegisterInputBox({
               )}
             </TouchableOpacity>
           ) : null}
-        </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </>
   );

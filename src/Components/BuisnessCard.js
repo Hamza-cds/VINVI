@@ -17,7 +17,7 @@ export default function BuisnessCard({
   cta,
   type,
 }) {
-  console.log('item', item);
+  // console.log('item', item);
   return (
     <TouchableOpacity
       activeOpacity={0.9}

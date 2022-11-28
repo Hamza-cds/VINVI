@@ -19,6 +19,7 @@ export default function ScanQrCodeSc({navigation, route}) {
         ratioOverlay={['16:9', '1:1', '3:4']}
         onReadCode={event => {
           setTestData((testData = event.nativeEvent.codeStringValue));
+          setTestData(null);
           navigation.navigate('IndividualScreen', {
             param: testData,
           });

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Text, View, FlatList} from 'react-native';
 import InstaStory from 'react-native-insta-story';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import {GREY, SECONDARY, WHITE} from '../Constants/Colors';
 import {URL} from '../Constants/Constants';
 import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
@@ -11,7 +11,7 @@ export default function DashboardStories({userStories}) {
 
   useEffect(() => {
     mapData(userStories);
-  }, [userStories]);
+  }, [userStories.length]);
 
   const mapData = list => {
     console.log('list*************', list);
@@ -58,7 +58,7 @@ export default function DashboardStories({userStories}) {
           data={data}
           duration={10}
           unPressedBorderColor={SECONDARY}
-          pressedBorderColor={WHITE}
+          pressedBorderColor={GREY}
           onStart={item => console.log('item', item)}
           onClose={item => console.log('close: ', item)}
           customSwipeUpComponent={

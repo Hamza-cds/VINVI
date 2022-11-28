@@ -21,6 +21,7 @@ export default function IndividualCard({
   connectID,
 }) {
   // console.log('IndividualCard item..................', item);
+  // console.log('connectID', connectID);
   let arrayOccupation;
   arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
   if (arrayOccupation) {
@@ -68,7 +69,9 @@ export default function IndividualCard({
       onPress={() => {
         navigation.navigate(navigationPath, {
           id: item.id,
-          connect: connectID.id,
+          connect: connectID.userConnectionId
+            ? connectID.userConnectionId
+            : connectID.id,
         });
       }}
       activeOpacity={0.9}
@@ -129,7 +132,12 @@ export default function IndividualCard({
           <View style={{flex: 1, marginLeft: 15}}>
             <Text
               numberOfLines={1}
-              style={{fontSize: 14, color: WHITE, fontWeight: 'bold'}}>
+              style={{
+                fontSize: 14,
+                color: WHITE,
+                fontWeight: 'bold',
+                maxWidth: 160,
+              }}>
               {item.name}
             </Text>
             <Text

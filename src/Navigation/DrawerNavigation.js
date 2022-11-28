@@ -67,15 +67,17 @@ export default function DrawerNavigator() {
         }}
       />
       <Drawer.Screen
-        name="Notification"
+        name="Notifications"
         component={NotificationScreen}
         options={{
           drawerIcon: ({focused}) => {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={19.628}
-                height={24.002}
+                // width={19.628}
+                // height={24.002}
+                width={18.462}
+                height={21.832}
                 viewBox="0 0 19.628 24.002">
                 <G
                   data-name="Icon ionic-ios-notifications-outline"
@@ -102,8 +104,10 @@ export default function DrawerNavigator() {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={21.263}
-                height={17.011}
+                // width={21.263}
+                // height={17.011}
+                width={18.462}
+                height={21.832}
                 viewBox="0 0 21.263 17.011">
                 <Path
                   data-name="Icon awesome-broadcast-tower"
@@ -145,8 +149,10 @@ export default function DrawerNavigator() {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={23.875}
-                height={15.417}
+                // width={23.875}
+                // height={15.417}
+                width={18.462}
+                height={21.832}
                 viewBox="0 0 23.875 15.417">
                 <G data-name="Group 634" fill="#fff">
                   <Path
@@ -198,8 +204,10 @@ export default function DrawerNavigator() {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={19}
-                height={19}
+                // width={19}
+                // height={19}
+                width={18.462}
+                height={21.832}
                 viewBox="0 0 19 19">
                 <G
                   transform="translate(-2 -2)"
@@ -246,8 +254,10 @@ export default function DrawerNavigator() {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={23.067}
-                height={18.873}
+                // width={23.067}
+                // height={18.873}
+                width={18.462}
+                height={21.832}
                 viewBox="0 0 23.067 18.873">
                 <Path
                   data-name="Icon material-ondemand-video"
@@ -269,8 +279,10 @@ export default function DrawerNavigator() {
             return (
               <Svg
                 xmlns="http://www.w3.org/2000/svg"
-                width={16.814}
-                height={20.551}
+                // width={16.814}
+                // height={20.551}
+                width={18.462}
+                height={21.832}
                 viewBox="0 0 16.814 20.551">
                 <Path
                   data-name="Icon material-content-paste"

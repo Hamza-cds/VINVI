@@ -31,6 +31,7 @@ import AddorEditProductModal from './AddorEditProductModal';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EditBusinessAddCategoryModal from './EditBusinessAddCategoryModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
 
 const BusinessScreen = props => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -68,6 +69,8 @@ const BusinessScreen = props => {
     });
   }, []);
 
+  const DATA = useSelector(state => state.UserData);
+
   useEffect(() => {
     getBusinessData();
     getAllLookupdetail();
@@ -103,7 +106,7 @@ const BusinessScreen = props => {
 
   const getBusinessData = () => {
     setIsLoading(true);
-    getBusinessCardByIdApiCall(ID)
+    getBusinessCardByIdApiCall(ID, DATA.id)
       .then(res => {
         console.log('res', res.data.result);
         if (res.data.success) {

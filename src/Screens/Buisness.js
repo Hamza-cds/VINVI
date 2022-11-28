@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {TouchableOpacity, Text, View, FlatList} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getBusinessCardAllActiveApiCall} from '../Apis/Repo';
+import {getBusinessCardByUserIDApiCall} from '../Apis/Repo';
 import MyCardBuisness from '../Components/MyCardBuisness';
 import {SECONDARY, WHITE} from '../Constants/Colors';
+import {useSelector} from 'react-redux';
 
 export function Buisness({navigation}) {
   const [selected, setSelected] = useState(null);
   let [userData, setUserData] = useState(null);
   let [businessData, setBusinessData] = useState([]);
+
+  const DATA = useSelector(state => state.UserData);
+  console.log('dispatch DATA', DATA);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -22,7 +26,7 @@ export function Buisness({navigation}) {
   }, []);
 
   const getData = () => {
-    getBusinessCardAllActiveApiCall()
+    getBusinessCardByUserIDApiCall(DATA.id)
       .then(res => {
         console.log('business response', res);
         setBusinessData((businessData = res.data.result));

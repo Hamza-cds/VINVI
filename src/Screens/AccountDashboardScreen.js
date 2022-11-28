@@ -234,8 +234,15 @@ const AccountDashboardScreen = props => {
               placeholder="Logout"
               onPress={() => {
                 AsyncStorage.removeItem('user_data');
+                AsyncStorage.removeItem('phone');
+                AsyncStorage.removeItem('password');
+                AsyncStorage.removeItem('fcmToken');
                 dispatch(UserData(''));
-                props.navigation.replace('Login');
+                // props.navigation.replace('Login');
+                props.navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Login'}],
+                });
               }}
               // onPress={() => {
               //   navigation.navigate('Login');

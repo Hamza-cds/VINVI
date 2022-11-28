@@ -177,8 +177,8 @@ export async function getActivePersonalCardByUserIdApiCall(id) {
   }
 }
 
-export async function getBusinessCardByIdApiCall(id) {
-  let route = URL.concat(`/api/BusinessCard/GetById?id=${id}`);
+export async function getBusinessCardByIdApiCall(id, userID) {
+  let route = URL.concat(`/api/BusinessCard/GetById?id=${id}&userId=${userID}`);
   console.log('getBusinessCardById Request : ', route);
   let apiRes = null;
   try {
@@ -228,8 +228,10 @@ export async function getPersonalCardByUserIdApiCall(id) {
   }
 }
 
-export async function getPersonalCardAllActiveApiCall() {
-  let route = URL.concat('/api/PersonalCard/GetAllActive');
+export async function getPersonalCardAllActiveApiCall(limit, page, userID) {
+  let route = URL.concat(
+    `/api/PersonalCard/GetAllActive?limit=${limit}&page=${page}&userId=${userID}`,
+  );
   console.log('getPersonalCardById Request : ', route);
   let apiRes = null;
   try {
@@ -244,8 +246,28 @@ export async function getPersonalCardAllActiveApiCall() {
     return apiRes;
   }
 }
-export async function getBusinessCardAllActiveApiCall() {
-  let route = URL.concat('/api/BusinessCard/GetAllActive');
+
+export async function getBusinessCardAllActiveApiCall(limit, page) {
+  let route = URL.concat(
+    `/api/BusinessCard/GetAllActive?limit=${limit}&page=${page}`,
+  );
+  console.log('getBusinessCardAllActive Request : ', route);
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: route,
+    });
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
+
+export async function getBusinessCardByUserIDApiCall(id) {
+  let route = URL.concat(`/api/BusinessCard/GetByUserId?id=${id}`);
   console.log('getBusinessCardAllActive Request : ', route);
   let apiRes = null;
   try {

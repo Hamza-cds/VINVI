@@ -17,41 +17,31 @@ const ChatsDashboardScreen = props => {
   const connection = useSelector(state => state.connection);
 
   const [messageToSend, setMessageToSend] = useState('');
-  console.log('connection', connection);
+  // console.log('connection', connection);
   let otherUserDATA = props.route.params.data;
   let connectionID = props.route.params.connect;
   const myDATA = useSelector(state => state.UserData);
-  // console.log('dispatch DATA', myDATA);
+  console.log('dispatch DATA', myDATA.id);
   // console.log('otherUserDATA', otherUserDATA);
   // console.log('connectionID', connectionID);
 
-  const data = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-    {
-      id: 7,
-    },
-  ];
   const navigation = props.navigation;
+  let [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    if (isNullOrEmpty(connection)) {
+    if (!isNullOrEmpty(connection)) {
+      connection
+        .invoke('GetMessagesByConnectionId', connectionID)
+        .catch(err => {
+          console.warn(err);
+        });
+
+      //message list receiver.
+      connection.on('ReceiveMessageList', messageList => {
+        setMessages((messages = messageList));
+        console.log('messages++++', messages);
+      });
+
       //receive message functino
       newMessageReceiver(connection);
     }
@@ -103,22 +93,18 @@ const ChatsDashboardScreen = props => {
         style={{
           paddingHorizontal: 20,
         }}
-        data={data}
-        renderItem={() => (
+        data={messages}
+        renderItem={(item, index) => (
           <>
-            <UserMessage
-              placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem,
-    dolores odit?"
-            />
-            <TimeStamp placeholder="Monday, 10:40 am" />
-            <OtherMessage
-              placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem,
-    dolores odit? Eius tenetur exercitationem natus doloribus impedit,
-    nemo beatae corrupti."
-            />
+            {item.fromUserId == myDATA.id ? (
+              <UserMessage message={item.item.message} />
+            ) : (
+              <OtherMessage message={item.item.message} />
+            )}
           </>
         )}
       />
+      {/* <TimeStamp placeholder="Monday, 10:40 am" /> */}
       <View style={{flexDirection: 'row', width: '100%'}}>
         <View
           style={{
@@ -142,7 +128,7 @@ const ChatsDashboardScreen = props => {
             }}
             placeholderTextColor="#242424"
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               width: 50,
               alignItems: 'center',
@@ -169,7 +155,7 @@ const ChatsDashboardScreen = props => {
                 />
               </G>
             </Svg>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View
           style={{

@@ -4,7 +4,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import {SECONDARY, WHITE} from '../Constants/Colors';
+import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import {URL} from '../Constants/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -33,31 +33,42 @@ const CustomSidebarMenu = props => {
           paddingHorizontal: 10,
           paddingVertical: 40,
           position: 'absolute',
-          top: 0,
-          left: -5,
+          top: 5,
+          left: 0,
           backgroundColor: SECONDARY,
           zIndex: 1,
         }}>
-        {DATA.profileImage ? (
-          <Image
-            style={{height: 50, width: 50, borderRadius: 25}}
-            source={{uri: URL.concat(DATA.profileImage)}}
-          />
-        ) : (
-          <Ionicons
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 25,
-              marginLeft: -30,
-              marginTop: 7,
-            }}
-            name="md-person"
-            size={40}
-            color={WHITE}
-          />
-        )}
-        <View style={{marginLeft: 15}}>
+        <View
+          style={{
+            // backgroundColor: 'red',
+            height: 50,
+            width: 40,
+            position: 'absolute',
+            left: 15,
+            top: 40,
+          }}>
+          {DATA.profileImage ? (
+            <Image
+              style={{height: 50, width: 50, borderRadius: 25}}
+              source={{uri: URL.concat(DATA.profileImage)}}
+            />
+          ) : (
+            <Ionicons
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+                // Left: -20,
+                Top: 7,
+                position: 'absolute',
+              }}
+              name="md-person"
+              size={40}
+              color={WHITE}
+            />
+          )}
+        </View>
+        <View style={{marginLeft: 50}}>
           <Text
             numberOfLines={1}
             style={{
@@ -78,7 +89,7 @@ const CustomSidebarMenu = props => {
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      <Text>hamza</Text>
+      {/* <Text>hamza</Text> */}
     </SafeAreaView>
   );
 };

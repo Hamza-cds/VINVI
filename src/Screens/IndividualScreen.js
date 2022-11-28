@@ -46,7 +46,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 
 export default function IndividualScreen(props) {
-  console.log('***************************************', props);
+  // console.log('***************************************', props);
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
   const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
     useState(false);
@@ -226,8 +226,8 @@ export default function IndividualScreen(props) {
 
     if (!isNullOrEmpty(ID)) {
       setIsLoading(true);
-      console.log('ID', ID);
-      console.log('DATA.id', DATA.id);
+      // console.log('ID', ID);
+      // console.log('DATA.id', DATA.id);
       getPersonalCardByIdApiCall(ID, DATA.id)
         .then(res => {
           if (res.data.success) {
@@ -254,7 +254,7 @@ export default function IndividualScreen(props) {
       setIsLoading(true);
       getPersonalCardByIdApiCall(id, 0)
         .then(res => {
-          console.log('res', res);
+          // console.log('res', res);
           if (res.data.success) {
             setdata((data = res.data.result));
             setIsLoading(false);
@@ -278,7 +278,7 @@ export default function IndividualScreen(props) {
       setIsLoading(true);
       getPersonalCardByUserIdApiCall(id)
         .then(res => {
-          console.log('res', res.data.result);
+          // console.log('res', res.data.result);
           if (res.data.success) {
             setdata((data = res.data.result));
             setIsLoading(false);
@@ -300,7 +300,7 @@ export default function IndividualScreen(props) {
     GetAllLookupDetailApiCall()
       .then(res => {
         setLookupData((lookupData = res.data.result));
-        console.log('lookupData', lookupData);
+        // console.log('lookupData', lookupData);
         setIsLoading(false);
 
         for (let index = 0; index < lookupData.length; index++) {

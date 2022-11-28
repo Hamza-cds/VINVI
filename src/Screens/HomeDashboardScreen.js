@@ -32,6 +32,7 @@ import PagerView from 'react-native-pager-view';
 // import {isNullOrEmptyArray} from '../Constants/TextUtils';
 // import {Height, Width} from '../Constants/Constants';
 import {hubConnectionBuilder} from '../Constants/signalR';
+import {useSelector} from 'react-redux';
 
 export default function HomeDashboardScreen({navigation, route}) {
   let [storyMedia, setStoryMedia] = useState('');
@@ -52,6 +53,8 @@ export default function HomeDashboardScreen({navigation, route}) {
   // let value = null;
   // console.log('search', search);
   // console.log('userStories', userStories);
+
+  const DATA = useSelector(state => state.UserData);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -100,9 +103,15 @@ export default function HomeDashboardScreen({navigation, route}) {
     storyPostApiCall(formdata)
       .then(res => res.json())
       .then(data => {
-        console.log('response', data);
+        console.log('stories post response', data);
         if (data.status == 200 && data.success == true) {
           getDashboardStories();
+          // let newArr = userStories;
+          // console.log('before push arr', newArr);
+          // newArr.push(data.result);
+          // console.log('after push arr', newArr);
+          // setUserStories((userStories = newArr));
+          // console.log('final arr', userStories);
           setIsLoading(false);
           alert('successfully posted');
         } else {
@@ -146,7 +155,7 @@ export default function HomeDashboardScreen({navigation, route}) {
 
   const getAllIndividual = () => {
     setIsLoading(true);
-    getPersonalCardAllActiveApiCall()
+    getPersonalCardAllActiveApiCall((limit = 10), (page = 1), DATA.id)
       .then(({data}) => {
         // console.log('personal res', data);
         if (data.success == true) {
@@ -171,7 +180,7 @@ export default function HomeDashboardScreen({navigation, route}) {
   };
 
   const getBusinessList = () => {
-    getBusinessCardAllActiveApiCall()
+    getBusinessCardAllActiveApiCall((limit = 10), (page = 1))
       .then(({data}) => {
         if (data.success == true) {
           for (let index = 0; index < data.result.length; index++) {
@@ -287,8 +296,7 @@ export default function HomeDashboardScreen({navigation, route}) {
             marginTop: -10,
             marginBottom: -5,
             backgroundColor: '#F0F0F0',
-            borderTopLeftRadius: 10,
-            borderBottomLeftRadius: 10,
+            borderRadius: 10,
             padding: 10,
           }}
           // onChangeText={value => {
@@ -394,7 +402,7 @@ export default function HomeDashboardScreen({navigation, route}) {
                 fontSize: 12,
               }}
               indexContainerStyle={{marginHorizontal: 6, marginVertical: 3}}
-              indexLetterContainerStyle={{height: 15, width: 10}}
+              indexLetterContainerStyle={{height: 14, width: 10}}
               contentContainerStyle={{paddingBottom: 70}}
               renderCustomItem={(item, index) => (
                 <IndividualCard
@@ -403,6 +411,7 @@ export default function HomeDashboardScreen({navigation, route}) {
                   navigation={navigation}
                   navigationPath="IndividualScreen"
                   item={item}
+                  connectID={item}
                   key={index}
                 />
               )}
