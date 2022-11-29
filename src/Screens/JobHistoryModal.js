@@ -263,6 +263,8 @@ export function JobHistoryModal({
       } else {
         setEndMonth((endMonth = value.name));
       }
+    } else {
+      setEndMonth((endMonth = value.name));
     }
     // setEndMonth((endMonth = value.name));
     // if (startYear == endYear) {
@@ -354,7 +356,7 @@ export function JobHistoryModal({
               <OutlinedInputBox
                 placeholder="Enter Title"
                 inputType="text"
-                label={'Title'}
+                // label={'Title'}
                 text={editJob ? (editJob.title ? editJob.title : null) : null}
                 onChange={value => {
                   setTitle(value);
@@ -371,7 +373,7 @@ export function JobHistoryModal({
                       : null
                     : null
                 }
-                label={'Company Name'}
+                // label={'Company Name'}
                 onChange={value => {
                   setCompanyName(value);
                 }}
@@ -455,7 +457,7 @@ export function JobHistoryModal({
               </Text>
               <Select
                 data={Months}
-                placeholder={'Start month'}
+                placeholder={'End month'}
                 isEdit={isEdit}
                 editText={
                   endMonth
@@ -473,7 +475,7 @@ export function JobHistoryModal({
 
               <Select
                 data={getYears()}
-                placeholder={'Start year'}
+                placeholder={'End year'}
                 isEdit={isEdit}
                 editText={
                   endYear

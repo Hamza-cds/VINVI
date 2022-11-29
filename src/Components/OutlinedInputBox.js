@@ -9,7 +9,7 @@ export default function LoginInputBox({
   style,
   multiline,
   maxLength,
-  inputValue,
+  Value,
   KeyboardType,
   text,
   editable,
@@ -112,7 +112,7 @@ export default function LoginInputBox({
           onBlur={() => {
             setIsfocused(false);
           }}
-          // value={inputValue}
+          // value={Value}
           // onPressIn={() => {
           //   setIsfocused(true);
           // }}

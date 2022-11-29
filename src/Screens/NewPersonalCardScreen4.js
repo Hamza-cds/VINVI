@@ -300,8 +300,7 @@ export default function NewCardScreen(props) {
   };
 
   return (
-    <SafeAreaView
-      style={{height: Height, width: Width, backgroundColor: 'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <Header
         navigation={props.navigation}
         variant="dark"

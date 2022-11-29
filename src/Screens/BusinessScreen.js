@@ -21,6 +21,7 @@ import {
   GetAllLookupDetailApiCall,
   BusinessDeleteProductApiCall,
   saveCardAPiCall,
+  deleteSavedCardApiCall,
 } from '../Apis/Repo';
 import _ from 'lodash';
 import Feather from 'react-native-vector-icons/Feather';
@@ -59,8 +60,9 @@ const BusinessScreen = props => {
   const [favorit, setFavorit] = useState(false);
   let [userData, setUserData] = useState(null);
   const [isSaved, setIsSaved] = useState('');
+  console.log('isSaved', isSaved);
 
-  console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
+  // console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -80,7 +82,7 @@ const BusinessScreen = props => {
     } else if (isSaved == 0) {
       setFavorit(false);
     }
-  }, [refresh, isSaved]);
+  }, [isSaved, refresh]);
 
   const getAllLookupdetail = () => {
     // setIsLoading(true);
@@ -108,7 +110,7 @@ const BusinessScreen = props => {
     setIsLoading(true);
     getBusinessCardByIdApiCall(ID, DATA.id)
       .then(res => {
-        console.log('res', res.data.result);
+        console.log('RESPONSE', res.data.result);
         if (res.data.success) {
           setIsLoading(false);
           setBusinessData((businessData = res.data.result));
@@ -116,7 +118,7 @@ const BusinessScreen = props => {
           setCategoryWiseData(
             businessData.businessCategory[0].businessCategoryProduct,
           );
-          setIsSaved(data.isSaved);
+          setIsSaved(res.data.result.isSaved);
         } else {
           setIsLoading(false);
           alert('No record found.');
@@ -137,7 +139,7 @@ const BusinessScreen = props => {
     BusinessDeleteProductApiCall(obj)
       .then(res => {
         console.log('delete product response', res);
-        if (data.data.status == 200 && data.data.success == true) {
+        if (res.data.status == 200 && res.data.success == true) {
           setIsLoading(false);
           alert('product deleted');
           getBusinessData();
@@ -172,6 +174,27 @@ const BusinessScreen = props => {
         //   setIsLoading(false);
         //   alert('alert');
         // }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+  };
+
+  const onCardUnSave = () => {
+    let obj = {
+      Id: 0,
+      UserId: userData.id,
+      CardType: true,
+      CardId: businessData.id,
+    };
+
+    setIsLoading(true);
+    deleteSavedCardApiCall(obj)
+      // .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        setIsLoading(false);
       })
       .catch(err => {
         setIsLoading(false);
@@ -431,6 +454,7 @@ const BusinessScreen = props => {
                 if (favorit == true) {
                   setFavorit(false);
                   console.log('what');
+                  onCardUnSave();
                 } else {
                   setFavorit(true);
                   console.log('what 1');
@@ -787,7 +811,7 @@ function CategoryFilter({
   setCategoryId,
   setBusinessCardIdFk,
 }) {
-  console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
+  // console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
   return (
     <TouchableOpacity
       onPress={() => {

@@ -17,7 +17,7 @@ const initialState = {
   USERCREDENTIAL: null,
   PCScreen2Data: null,
   connection: null,
-  newMessageAction: null,
+  newMessageAction: '',
 };
 
 export const mainreducer = (state = initialState, action) => {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, TouchableOpacity, TextInput, SafeAreaView} from 'react-native';
 import {WHITE} from '../Constants/Colors';
 import Header from '../Components/Header';
@@ -11,41 +11,62 @@ import {FlatList} from 'react-native-gesture-handler';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 import {useSelector} from 'react-redux';
 import {newMessageReceiver} from '../Constants/signalR';
+import {useIsFocused} from '@react-navigation/native';
 
 const ChatsDashboardScreen = props => {
   // console.log('props', props);
-  const connection = useSelector(state => state.connection);
+  const isFocused = useIsFocused();
+  const {connection, newMessageAction} = useSelector(state => state);
+
+  const flatListRef = useRef();
 
   const [messageToSend, setMessageToSend] = useState('');
-  // console.log('connection', connection);
   let otherUserDATA = props.route.params.data;
   let connectionID = props.route.params.connect;
   const myDATA = useSelector(state => state.UserData);
-  console.log('dispatch DATA', myDATA.id);
-  // console.log('otherUserDATA', otherUserDATA);
-  // console.log('connectionID', connectionID);
 
   const navigation = props.navigation;
   let [messages, setMessages] = useState([]);
 
   useEffect(() => {
     if (!isNullOrEmpty(connection)) {
-      connection
-        .invoke('GetMessagesByConnectionId', connectionID)
-        .catch(err => {
-          console.warn(err);
-        });
+      let getMessages = {
+        connectionId: connectionID,
+        userId: myDATA.id,
+      };
+      connection.invoke('GetMessagesByConnectionId', getMessages).catch(err => {
+        console.warn(err);
+      });
 
       //message list receiver.
       connection.on('ReceiveMessageList', messageList => {
-        setMessages((messages = messageList));
+        let messages = messageList;
+        setMessages((messages = messages.reverse()));
+        // flatListRef?.current.scrollToEnd({animated: true});
         console.log('messages++++', messages);
       });
 
-      //receive message functino
       newMessageReceiver(connection);
     }
   }, [connection]);
+
+  useEffect(() => {
+    if (!isFocused) {
+      connection.off('ReceiveMessageList');
+      connection.off('ReceiveMessage');
+    }
+  }, [isFocused]);
+
+  useEffect(() => {
+    console.log('newMessageAction', newMessageAction);
+    if (!isNullOrEmpty(newMessageAction)) {
+      if (connectionID == newMessageAction.userConnectionId) {
+        let newMessageArray = [...messages];
+        newMessageArray.unshift(newMessageAction);
+        setMessages(newMessageArray);
+      }
+    }
+  }, [newMessageAction]);
 
   const onSendMessage = () => {
     let object = {
@@ -59,6 +80,8 @@ const ChatsDashboardScreen = props => {
       .invoke('SendMessage', object)
       .then(() => {
         console.log('message send hogya');
+
+        setMessageToSend(null);
       })
       .catch(error => {
         console.log('error', error);
@@ -68,8 +91,8 @@ const ChatsDashboardScreen = props => {
   return (
     <SafeAreaView
       style={{
-        height: Height,
-        width: Width,
+        flex: 1,
+        width: '100%',
         backgroundColor: WHITE,
         paddingBottom: 15,
       }}>
@@ -84,19 +107,27 @@ const ChatsDashboardScreen = props => {
         userProfilePicture={
           otherUserDATA
             ? !isNullOrEmpty(otherUserDATA.profilePicture)
-              ? {uri: URL.concat(otherUserDATA.profileImage)}
+              ? {uri: URL.concat(otherUserDATA.profilePicture)}
               : require('../Assets/profilePic.png')
             : require('../Assets/profilePic.png')
         }
       />
       <FlatList
+        ref={flatListRef}
         style={{
           paddingHorizontal: 20,
+          marginTop: 10,
         }}
+        inverted={true}
+        // onContentSizeChange={() =>
+        //   flatListRef.current.scrollToEnd({animated: true})
+        // }
+        // onLayout={() => flatListRef.current.scrollToEnd({animated: true})}
+        // contentContainerStyle={{flexDirection: 'column-reverse'}}
         data={messages}
         renderItem={(item, index) => (
           <>
-            {item.fromUserId == myDATA.id ? (
+            {item.item.fromUserId == myDATA.id ? (
               <UserMessage message={item.item.message} />
             ) : (
               <OtherMessage message={item.item.message} />
@@ -105,13 +136,17 @@ const ChatsDashboardScreen = props => {
         )}
       />
       {/* <TimeStamp placeholder="Monday, 10:40 am" /> */}
-      <View style={{flexDirection: 'row', width: '100%'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '100%',
+        }}>
         <View
           style={{
             backgroundColor: '#eeeeee',
             borderRadius: 8,
             minHeight: 50,
-            display: 'flex',
+            // display: 'flex',
             flexDirection: 'row',
             marginLeft: 20,
             flex: 1,
@@ -168,11 +203,14 @@ const ChatsDashboardScreen = props => {
             marginLeft: 10,
           }}>
           <TouchableOpacity
-            onPress={() => onSendMessage()}
+            onPress={() => {
+              onSendMessage();
+            }}
             style={{
               width: 50,
               alignItems: 'center',
               justifyContent: 'center',
+              padding: 5,
             }}>
             <Svg
               xmlns="http://www.w3.org/2000/svg"

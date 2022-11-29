@@ -39,7 +39,7 @@ const ChatsDashboardScreen = props => {
     getConnectedCard();
   }, [navigation]);
 
-  console.log('data', data);
+  // console.log('data', data);
 
   const getConnectedCard = () => {
     // setIsLoading(true);
@@ -102,7 +102,12 @@ const ChatsDashboardScreen = props => {
                 name="John Smith"
                 timeStamp="16:43"
                 badgeValue="3"
-                navigation={navigation}
+                onPress={() => {
+                  navigation.navigate('Messages', {
+                    data: item.personalCard,
+                    connect: item.id,
+                  });
+                }}
               />
             )}
           />

@@ -35,9 +35,14 @@ export function SkillModal({
   const [newSkill, setNewSkill] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  let [edit, setEdit] = useState(skillarr ? skillarr : []);
+
+  console.log('skillarr', skillarr);
+  console.log('editModalSkillArray', editModalSkillArray);
 
   useEffect(() => {
     if (isEdit) {
+      setEditModalSKillArray([]);
       editModalSkillArray.length == 0
         ? setEditModalSKillArray((editModalSkillArray = skillarr))
         : '';
@@ -53,7 +58,7 @@ export function SkillModal({
       newModalSkillArray.push(newSkill.trim());
       setModalSKillArray((modalSkillArray = newModalSkillArray));
       setModalSkill(modalSkillArray);
-      setInputValue('');
+      setNewSkill('');
     }
   };
 
@@ -99,12 +104,15 @@ export function SkillModal({
       neweditModalSkillArray.push(newSkill);
       setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
       // setEditModalSkill(modalSkillArray);
-      setInputValue('');
+      // setInputValue('');
+      setNewSkill('');
     }
   };
 
   const funEditDelSkill = index => {
-    var afterDelete = skillarr.filter((x, Index) => Index !== index);
+    console.log('index', index);
+    // debugger;
+    var afterDelete = editModalSkillArray.filter((x, Index) => Index !== index);
     // console.log('afterDelete', afterDelete);
     setEditModalSKillArray((editModalSkillArray = afterDelete));
     // setEditModalSkill(editModalSkillArray);
@@ -124,6 +132,8 @@ export function SkillModal({
       personalValue: JSON.stringify(editModalSkillArray),
     };
 
+    console.log('abject', obj);
+
     setIsLoading(true);
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
@@ -133,6 +143,7 @@ export function SkillModal({
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
           setModalVisible(false);
+          setEditModalSKillArray('');
         } else {
           setIsLoading(false);
           alert(data.message);
@@ -210,16 +221,16 @@ export function SkillModal({
             <OutlinedInputBox
               placeholder="Enter Skill Name"
               inputType="text"
-              label={'Skill'}
-              // inputValue={inputValue}
               onChange={value => {
                 setNewSkill(value);
-                setInputValue(value);
+                // setInputValue(value);
               }}
+              text={newSkill}
             />
             <TouchableOpacity
               onPress={() => {
                 Add();
+                setNewSkill('');
               }}
               style={{
                 backgroundColor: PRIMARY,

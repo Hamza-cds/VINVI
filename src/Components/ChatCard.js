@@ -8,13 +8,11 @@ export default function ChatCard({
   lastMessage,
   timeStamp,
   badgeValue,
-  navigation,
+  onPress,
 }) {
   return (
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('Messages');
-      }}
+      onPress={onPress}
       style={{
         paddingVertical: 10,
         paddingHorizontal: 15,

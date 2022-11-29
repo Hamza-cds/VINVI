@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
 import {TouchableOpacity, View, Text, Image, Modal} from 'react-native';
 import Svg, {Path, G, Rect} from 'react-native-svg';
-import {LIGHT_TEXT_COLOR, PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
+import {
+  GREY,
+  LIGHT_TEXT_COLOR,
+  PRIMARY,
+  SECONDARY,
+  WHITE,
+} from '../Constants/Colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function Header({
@@ -253,7 +259,8 @@ export default function Header({
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingHorizontal: 20,
-          paddingVertical: 20,
+          paddingVertical: 5,
+          backgroundColor: '#F8F8F8',
           zIndex: 999,
         }}>
         <TouchableOpacity onPress={onPress}>
@@ -276,9 +283,17 @@ export default function Header({
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Image source={userProfilePicture} style={{width: 50, height: 50}} />
+          <Image
+            source={userProfilePicture}
+            style={{
+              width: 50,
+              height: 50,
+              backgroundColor: GREY,
+              borderRadius: 50,
+            }}
+          />
           <View style={{marginLeft: 10}}>
-            <Text style={{fontSize: 20, color: SECONDARY, marginBottom: 3}}>
+            <Text style={{fontSize: 18, color: SECONDARY, marginBottom: 3}}>
               {userName}
             </Text>
             <View
@@ -290,13 +305,14 @@ export default function Header({
               <View
                 style={{
                   backgroundColor: '#02C255',
-                  width: 15,
-                  height: 15,
-                  borderRadius: 15,
+                  width: 10,
+                  height: 10,
+                  borderRadius: 10,
+                  marginTop: 5,
                 }}
               />
               <Text
-                style={{marginLeft: 10, fontSize: 16, color: LIGHT_TEXT_COLOR}}>
+                style={{marginLeft: 5, fontSize: 14, color: LIGHT_TEXT_COLOR}}>
                 {userStatus}
               </Text>
             </View>

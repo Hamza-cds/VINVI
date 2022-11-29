@@ -35,7 +35,7 @@ export default function VideoWallScreen({navigation, route}) {
   let [mediaType, setMediaType] = useState('');
   let [fileType, setFileType] = useState('');
   let page = 1;
-  let limit = 10;
+  let limit = 36;
 
   const DATA = useSelector(state => state.UserData);
   console.log('dispatch DATA', DATA);
@@ -255,7 +255,13 @@ export default function VideoWallScreen({navigation, route}) {
               marginHorizontal: 20,
             }}>
             <Image
-              source={{uri: URL.concat(image.profileImage)}}
+              source={
+                image
+                  ? image.profileImage
+                    ? {uri: URL.concat(image.profileImage)}
+                    : require('../Assets/profilePic.png')
+                  : require('../Assets/profilePic.png')
+              }
               style={{height: 50, width: 50, borderRadius: 50}}
             />
 

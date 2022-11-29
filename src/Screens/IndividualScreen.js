@@ -40,7 +40,7 @@ import {EducationEditModalAdd} from './EducationEditModalAdd';
 import ImagePicker from 'react-native-image-crop-picker';
 import Loader from '../Components/Loader';
 import CryptoJS from 'react-native-crypto-js';
-import {isNullOrEmpty} from '../Constants/TextUtils';
+import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 import {useSelector} from 'react-redux';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
@@ -83,7 +83,7 @@ export default function IndividualScreen(props) {
   const [isSaved, setIsSaved] = useState('');
   const [connect, setConnect] = useState(false);
   let connectionID = props.route.params.connect;
-  // console.log('isSaved', isSaved);
+  console.log('degreeList', degreeList);
   var date = new Date();
 
   let DATA = useSelector(state => state.UserData);
@@ -197,12 +197,17 @@ export default function IndividualScreen(props) {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
+      getAllLookupdetail();
     });
   }, []);
 
+  // {
+  //   console.log('lookupData.length', lookupData.length);
+  //   lookupData.length <= 0 ? getAllLookupdetail() : null;
+  // }
+
   useEffect(() => {
     getData();
-    getAllLookupdetail();
     if (isSaved == 1) {
       setFavorit(true);
     } else if (isSaved == 0) {
@@ -308,15 +313,21 @@ export default function IndividualScreen(props) {
           if (element.lookupId == 3) {
             let arraydegree = degreeList;
             arraydegree.push(element);
-            setDegreList((degreeList = arraydegree));
+            if (isNullOrEmptyArray(degreeList)) {
+              setDegreList((degreeList = arraydegree));
+            }
           } else if (element.lookupId == 8) {
             let arrayEmpType = employeeType;
             arrayEmpType.push(element);
-            setEmployeeType((employeeType = arrayEmpType));
+            if (isNullOrEmptyArray(employeeType)) {
+              setEmployeeType((employeeType = arrayEmpType));
+            }
           } else if (element.lookupId == 9) {
             let arrayIndustryType = industryType;
             arrayIndustryType.push(element);
-            setIndustryType((industryType = arrayIndustryType));
+            if (isNullOrEmptyArray(industryType)) {
+              setIndustryType((industryType = arrayIndustryType));
+            }
           }
         }
       })
@@ -703,7 +714,7 @@ export default function IndividualScreen(props) {
                 />
               </Svg>
             </View>
-            {data.userId == DATA.id ? null : data.isConnected == 0 ? (
+            {data.userId == DATA.id ? null : data.isConnected == 3 ? (
               <BtnComponent
                 placeholder="Connect"
                 onPress={() => {
@@ -713,7 +724,7 @@ export default function IndividualScreen(props) {
                 width={true}
                 widthValue="40%"
               />
-            ) : data.isConnected == 2 ? (
+            ) : data.isConnected == 1 ? (
               <View
                 style={{
                   height: 50,
@@ -727,7 +738,7 @@ export default function IndividualScreen(props) {
                 }}>
                 <Text style={{color: WHITE, fontSize: 14}}>Requested</Text>
               </View>
-            ) : data.isConnected == 1 ? (
+            ) : data.isConnected == 0 ? (
               <BtnComponent
                 placeholder="Message"
                 onPress={() => {
@@ -739,6 +750,20 @@ export default function IndividualScreen(props) {
                 width={true}
                 widthValue="40%"
               />
+            ) : data.isConnected == 0 ? (
+              <View
+                style={{
+                  height: 50,
+                  width: '40%',
+                  backgroundColor: SECONDARY,
+                  marginBottom: 20,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 10,
+                }}>
+                <Text style={{color: WHITE, fontSize: 14}}>Rejected</Text>
+              </View>
             ) : (
               <BtnComponent
                 placeholder="Connect"

@@ -16,7 +16,7 @@ import Select from '../Components/Select';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 import Loader from '../Components/Loader';
-import {isNullOrEmpty} from '../Constants/TextUtils';
+import {isNullOrEmpty, stringsNotEqual} from '../Constants/TextUtils';
 
 export function EducationModal({
   modalVisible,
@@ -31,7 +31,7 @@ export function EducationModal({
   console.log('isEdit', isEdit);
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
-  const [fieldOfStudy, setFieldOfStudy] = useState('');
+  // const [fieldOfStudy, setFieldOfStudy] = useState('');
   let [startDateMonth, setStartDateMonth] = useState('');
   let [startDateYear, setStartDateYear] = useState('');
   let [endDateMonth, setEndDateMonth] = useState('');
@@ -45,6 +45,12 @@ export function EducationModal({
   const [startYearError, setStartYearError] = useState(false);
   const [startYearErrorMsg, setStartYearErrorMsg] = useState('');
 
+  const [startMonthError, setStartMonthError] = useState(false);
+  const [startMonthErrorMsg, setStartMonthErrorMsg] = useState('');
+  const [endMonthError, setEndMonthError] = useState(false);
+  const [endMonthErrorMsg, setEndMonthErrorMsg] = useState('');
+  let [startMonthID, setStartMonthID] = useState('');
+  let [endMonthID, setEndMonthID] = useState('');
   // console.log('degree', degree);
   // console.log('startDateMonth', startDateMonth);
   // console.log('startDateYear', startDateYear);
@@ -241,31 +247,73 @@ export function EducationModal({
     console.log('FunDegree', value);
     setDegree((degree = value.name));
   };
-  const FunstartDateMonth = value => {
-    setStartDateMonth((startDateMonth = value.name));
-    // console.log('startDateMonth', startDateMonth);
-  };
+
   const FunstartDateYear = value => {
     console.log('FunstartDateYear', value);
-    setStartDateYear((startDateYear = value.name));
-    if (value.name < endDateYear) {
-      setStartYearError(false);
+    if (!isNullOrEmpty(endDateYear)) {
+      setStartDateYear((startDateYear = value.name));
+      if (value.name < endDateYear) {
+        setStartYearError(false);
+      } else {
+        setStartYearError(true);
+        setStartYearErrorMsg('Start date must be before end date');
+      }
     } else {
-      setStartYearError(true);
-      setStartYearErrorMsg('Start date must be before end date');
+      setStartDateYear((startDateYear = value.name));
     }
   };
-  const FunendDateMonth = value => {
-    setEndDateMonth((endDateMonth = value.name));
-  };
+
   const FunendDateYear = value => {
     console.log('FunendDateYear', value);
     setEndDateYear((endDateYear = value.name));
-    if (value.name > startDateYear) {
+    if (value.name >= startDateYear) {
       setEndYearError(false);
     } else {
       setEndYearError(true);
       setEndYearErrorMsg('End date must be after start date');
+    }
+  };
+
+  const FunstartDateMonth = value => {
+    setStartMonthID((startMonthID = value.id));
+    if (startDateYear == endDateYear) {
+      if (!isNullOrEmpty(endDateMonth)) {
+        setStartDateMonth((startDateMonth = value.name));
+        // if (stringsNotEqual(value.name, endDateMonth))
+        if (startMonthID < endMonthID) {
+          setStartMonthError(false);
+          setEndMonthError(false);
+        } else {
+          setStartMonthError(true);
+          setStartMonthErrorMsg("start month can't greater then end month ");
+        }
+      } else {
+        setStartMonthID(value.id);
+        setStartDateMonth((startDateMonth = value.name));
+      }
+    }
+  };
+
+  const FunendDateMonth = value => {
+    console.log('value', value);
+    setEndMonthID((endMonthID = value.id));
+    if (startDateYear == endDateYear) {
+      if (!isNullOrEmpty(startDateMonth)) {
+        // if (stringsNotEqual(value.name, startDateMonth))
+        if (endMonthID > startMonthID) {
+          setEndDateMonth((endDateMonth = value.name));
+          setEndMonthError(false);
+          setStartMonthError(false);
+        } else {
+          setEndMonthError(true);
+          setEndMonthErrorMsg("End month can't less then start month ");
+        }
+      } else {
+        setEndMonthID(value.id);
+        setEndDateMonth((endDateMonth = value.name));
+      }
+    } else {
+      setEndDateMonth((endDateMonth = value.name));
     }
   };
 
@@ -354,19 +402,19 @@ export function EducationModal({
               text={
                 editEdu ? (editEdu.institute ? editEdu.institute : null) : null
               }
-              label={'University / Institute'}
+              // label={'University / Institute'}
               onChange={value => {
                 setInstitute(value);
               }}
             />
-            <OutlinedInputBox
+            {/* <OutlinedInputBox
               placeholder="Enter Field of study"
               inputType="text"
-              label={'Field of study'}
+              // label={'Field of study'}
               onChange={value => {
                 setFieldOfStudy(value);
               }}
-            />
+            /> */}
 
             <Text style={{color: 'black', fontWeight: '700', fontSize: 16}}>
               Start date
@@ -383,6 +431,8 @@ export function EducationModal({
                     : null
                   : null
               }
+              error={startMonthError}
+              errorMessage={startMonthErrorMsg}
               onCallBack={FunstartDateMonth}
               isEdit={isEdit}
             />
@@ -420,6 +470,8 @@ export function EducationModal({
                     : null
                   : null
               }
+              error={endMonthError}
+              errorMessage={endMonthErrorMsg}
               onCallBack={FunendDateMonth}
               isEdit={isEdit}
             />
