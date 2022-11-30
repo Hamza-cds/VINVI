@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -27,8 +27,9 @@ export default function MyCardIndividual({
     setUserID(item.userId);
     setCardID(item.id);
   }, []);
-  // console.log('item', item);
+  console.log('item', item);
   const EDIT = true;
+  // const [status, setstatus] = useState(item.status);
 
   let arrayOccupation;
   arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
@@ -43,6 +44,12 @@ export default function MyCardIndividual({
       style={{
         display: 'flex',
         padding: 20,
+        // backgroundColor:
+        //   status == 1 && setSelected(index)
+        //     ? '#3F4D87'
+        //     : // : selected === index
+        //       // ? '#3F4D87'
+        //       WHITE,
         backgroundColor: selected === index ? '#3F4D87' : WHITE,
         shadowColor: '#000',
         shadowOffset: {
@@ -92,6 +99,7 @@ export default function MyCardIndividual({
       <TouchableOpacity
         onPress={() => {
           setSelected(index);
+          // setstatus(1);
           setUserID(item.userId);
           setCardID(item.id);
           setCall(true);

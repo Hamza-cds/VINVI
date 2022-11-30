@@ -17,7 +17,7 @@ import {useFocusEffect} from '@react-navigation/core';
 export function Individual({navigation}) {
   let [isSwitchOn, setIsSwitchOn] = useState(true);
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState('');
   let [userData, setUserData] = useState(null);
   let [data, setdata] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +26,7 @@ export function Individual({navigation}) {
   const [call, setCall] = useState(false);
   let [cardStatus, setCardStatus] = useState('');
   let [resStatus, setResStatus] = useState(cardStatus);
+  const [selectedStatus, setSelectedStatus] = useState('');
 
   const DATA = useSelector(state => state.UserData);
   // console.log('dispatch DATA', DATA);
@@ -56,19 +57,6 @@ export function Individual({navigation}) {
     }, [navigation]),
   );
 
-  // setIsLoading(true);
-  // getPersonalCardByUserIdApiCall(DATA.id)
-  //   .then(res => {
-  //     console.log('personal res', res);
-  //     setdata((data = res.data.result));
-  //     console.log('personal data', data);
-  //     setIsLoading(false);
-  //   })
-  //   .catch(err => {
-  //     setIsLoading(false);
-  //     console.log('err', err);
-  //   });
-
   const getData = () => {
     setIsLoading(true);
     getMyPersonalCardByUserIdApiCall(DATA.id)
@@ -76,10 +64,16 @@ export function Individual({navigation}) {
         console.log('res ++++++++++++', res);
         if (res.data.success == true) {
           // debugger;
-          const element = res.data.result[0];
-          // console.log('element', element);
-          setResStatus((resStatus = element.isClosed));
-          // console.log('resStatus', resStatus);
+          // const element = res.data.result[0];
+          // setResStatus((resStatus = element.isClosed));
+          for (let index = 0; index < res.data.result.length; index++) {
+            const element = res.data.result[index];
+            if (element.status == 1) {
+              setResStatus(element.isClosed);
+              // setSelectedStatus(element.status);
+              setSelected(index);
+            }
+          }
 
           setdata((data = res.data.result));
           setIsLoading(false);

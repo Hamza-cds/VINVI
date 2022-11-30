@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {SECONDARY, FIFTH, PRIMARY} from '../Constants/Colors';
 import Svg, {G, Path} from 'react-native-svg';
 import {JobCard} from './JobCard';
+import {useState} from 'react';
 
 export function JobHistory({
   setEdit,
@@ -12,6 +13,7 @@ export function JobHistory({
   setAdd,
   UserData,
 }) {
+  const [jobHistoryData, setJobHistoryData] = useState(arrayjobhistory);
   return (
     <View
       style={{
@@ -120,7 +122,7 @@ export function JobHistory({
         ) : null}
       </View>
       <FlatList
-        data={arrayjobhistory}
+        data={jobHistoryData}
         horizontal={false}
         // keyExtractor={item => item.id}
         renderItem={({item, index}) => (
@@ -130,6 +132,7 @@ export function JobHistory({
             data={UserData}
             arrayjobhistory={arrayjobhistory}
             index={index}
+            setJobHistoryData={setJobHistoryData}
             onPress={() => {
               setEdit(true);
               setJobIndex(index);

@@ -55,14 +55,15 @@ export default function PhoneVerificationScreen(props, navigation) {
       <ImageBackground
         source={require('../Assets/loginbg.png')}
         style={{flex: 1, height: Height}}>
-        <Header
+        {/* <Header
           navigation={navigation}
           variant="light"
-          headerName=""
+          headerName="Verification"
+          back={true}
           onPress={() => {
             props.navigation.push('ForgotPassword');
           }}
-        />
+        /> */}
         <View
           style={{
             paddingVertical: 50,

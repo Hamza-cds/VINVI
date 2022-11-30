@@ -8,7 +8,15 @@ import Loader from '../Components/Loader';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 
-export function JobCard({item, edit, onPress, arrayjobhistory, index, data}) {
+export function JobCard({
+  item,
+  edit,
+  onPress,
+  arrayjobhistory,
+  index,
+  data,
+  setJobHistoryData,
+}) {
   // console.log('ali ali', arrayjobhistory);
   // console.log('ali ali ali', data);
   // console.log('ali item', item);
@@ -30,6 +38,7 @@ export function JobCard({item, edit, onPress, arrayjobhistory, index, data}) {
     setJobArr(
       (jobArr = arrayjobhistory.filter((Sitem, Index) => Index !== index)),
     );
+    setJobHistoryData(jobArr);
 
     let obj = {
       id: JobHistoryArray.id,

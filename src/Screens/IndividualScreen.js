@@ -83,6 +83,8 @@ export default function IndividualScreen(props) {
   const [isSaved, setIsSaved] = useState('');
   const [connect, setConnect] = useState(false);
   let connectionID = props.route.params.connect;
+  let [individualSkillArray, setIndividualSkillArray] = useState(arrayskills);
+  const [stop, setStop] = useState(false);
   console.log('degreeList', degreeList);
   var date = new Date();
 
@@ -130,7 +132,16 @@ export default function IndividualScreen(props) {
   if (arrayskills) {
     arrayskills = arrayskills.personalValue;
   } else {
-    arrayskills = '';
+    arrayskills = [];
+  }
+
+  {
+    if (stop == false) {
+      if (!isNullOrEmpty(arrayskills)) {
+        setIndividualSkillArray(arrayskills);
+        setStop(true);
+      }
+    }
   }
 
   let arrayeducation = [];
@@ -138,7 +149,7 @@ export default function IndividualScreen(props) {
   if (arrayeducation) {
     arrayeducation = arrayeducation.personalValue;
   } else {
-    arrayeducation = 'Dummy education';
+    arrayeducation = [];
   }
 
   let arrayjobhistory = [];
@@ -146,7 +157,7 @@ export default function IndividualScreen(props) {
   if (arrayjobhistory) {
     arrayjobhistory = arrayjobhistory.personalValue;
   } else {
-    arrayjobhistory = 'Dummy job History';
+    arrayjobhistory = [];
   }
 
   let arrayhobbies = [];
@@ -197,17 +208,15 @@ export default function IndividualScreen(props) {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
-      getAllLookupdetail();
+      if (isNullOrEmptyArray(lookupData)) {
+        getAllLookupdetail();
+      }
     });
   }, []);
 
-  // {
-  //   console.log('lookupData.length', lookupData.length);
-  //   lookupData.length <= 0 ? getAllLookupdetail() : null;
-  // }
-
   useEffect(() => {
     getData();
+    setStop(false);
     if (isSaved == 1) {
       setFavorit(true);
     } else if (isSaved == 0) {
@@ -234,7 +243,7 @@ export default function IndividualScreen(props) {
       // console.log('ID', ID);
       // console.log('DATA.id', DATA.id);
       getPersonalCardByIdApiCall(ID, DATA.id)
-        .then(res => {
+        .then(async res => {
           if (res.data.success) {
             setdata((data = res.data.result));
             setIsSaved(data.isSaved);
@@ -352,9 +361,7 @@ export default function IndividualScreen(props) {
             name: imageName,
             type: proImage.mime,
           })
-        : data.profilePicture
-        ? formdata.append('profile_image_file', data.profilePicture)
-        : null;
+        : formdata.append('profile_image_file', data.profilePicture);
     }
 
     formdata.append('PersonalCardMeta', '[]');
@@ -368,8 +375,7 @@ export default function IndividualScreen(props) {
             name: imageName,
             type: bgImage.mime,
           })
-        : null;
-      formdata.append('cover_image_image', data.coverPicture);
+        : formdata.append('cover_image_image', data.coverPicture);
     }
 
     setIsLoading(true);
@@ -868,7 +874,8 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isSkillModalVisible}
         setModalVisible={setIsSkillModalVisible}
-        skillarr={arrayskills}
+        skillarr={individualSkillArray}
+        setSkillArr={setIndividualSkillArray}
         CardData={data}
         setEditModalSkill={setEditSkillsArray}
       />

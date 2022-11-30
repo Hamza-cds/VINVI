@@ -232,6 +232,7 @@ export function JobHistoryEditModalAdd({
   };
 
   const FunIndustry = value => {
+    console.log('value', value);
     setIndustry((industry = value.name));
     // console.log('industry', industry);
   };
@@ -264,28 +265,30 @@ export function JobHistoryEditModalAdd({
       onRequestClose={() => {
         setModalVisible(!modalVisible);
       }}>
-      <ScrollView
+      <View
         style={{
+          backgroundColor: 'rgba(64,77,136,.8)',
           flex: 1,
+          height: Dimensions.get('window').height,
+          padding: 20,
+          justifyContent: 'center',
+          alignContent: 'center',
         }}>
         <View
           style={{
-            backgroundColor: 'rgba(64,77,136,.8)',
-            flex: 1,
-            height: Dimensions.get('window').height,
+            borderWidth: 1,
+            borderColor: '#113066',
+            width: '100%',
+            backgroundColor: '#ffffff',
             padding: 20,
-            justifyContent: 'center',
-            alignContent: 'center',
+            paddingBottom: 0,
+            borderRadius: 10,
+            height: '100%',
           }}>
-          <View
+          <ScrollView
+            showsVerticalScrollIndicator={false}
             style={{
-              borderWidth: 1,
-              borderColor: '#113066',
-              width: '100%',
-              backgroundColor: '#ffffff',
-              padding: 20,
-              paddingBottom: 0,
-              borderRadius: 10,
+              flex: 1,
             }}>
             <View
               style={{
@@ -347,6 +350,7 @@ export function JobHistoryEditModalAdd({
               <Select
                 data={industryType}
                 placeholder={'Industry type'}
+                editText={industry}
                 // editText={
                 //   industry
                 //     ? industry
@@ -363,6 +367,7 @@ export function JobHistoryEditModalAdd({
                 data={employeeType}
                 placeholder={'Employee type'}
                 isEdit={isEdit}
+                editText={employee}
                 // editText={
                 //   employee
                 //     ? employee
@@ -385,6 +390,7 @@ export function JobHistoryEditModalAdd({
                 data={Months}
                 placeholder={'Start month'}
                 isEdit={isEdit}
+                editText={startMonth}
                 // editText={
                 //   startMonth
                 //     ? startMonth
@@ -401,6 +407,7 @@ export function JobHistoryEditModalAdd({
                 data={Year}
                 placeholder={'Start year'}
                 isEdit={isEdit}
+                editText={startYear}
                 // editText={
                 //   startYear
                 //     ? startYear
@@ -420,6 +427,7 @@ export function JobHistoryEditModalAdd({
                 data={Months}
                 placeholder={'Start month'}
                 isEdit={isEdit}
+                editText={endMonth}
                 // editText={
                 //   endMonth
                 //     ? endMonth
@@ -436,6 +444,7 @@ export function JobHistoryEditModalAdd({
                 data={Year}
                 placeholder={'Start year'}
                 isEdit={isEdit}
+                editText={endYear}
                 // editText={
                 //   endYear
                 //     ? endYear
@@ -456,9 +465,9 @@ export function JobHistoryEditModalAdd({
                 // setModalVisible(!modalVisible);
               }}
             />
-          </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </Modal>
   );
 }

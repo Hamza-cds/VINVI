@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, ImageBackground, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import {SECONDARY, LIGHT_TEXT_COLOR} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
@@ -118,25 +124,24 @@ const ForgetPasswordScreen = props => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        height: Height,
-        widht: Width,
-      }}>
+    <>
       <ImageBackground
         source={require('../Assets/loginbg.png')}
         style={{
           flex: 1,
           height: Height,
+          width: Width,
         }}>
-        <Header
+        {/* <Header
           navigation={navigation}
           variant="light"
-          headerName=""
+          headerName="Forgot Password"
+          back={true}
           onPress={() => {
             navigation.navigate('Login');
           }}
-        />
+        /> */}
+
         <View
           style={{
             paddingVertical: 50,
@@ -145,7 +150,7 @@ const ForgetPasswordScreen = props => {
             justifyContent: 'space-between',
             height: Height - 100,
           }}>
-          <View>
+          <View style={{marginTop: 50}}>
             <Text
               style={{
                 fontSize: 20,
@@ -161,60 +166,64 @@ const ForgetPasswordScreen = props => {
                 color: LIGHT_TEXT_COLOR,
                 marginBottom: 20,
               }}>
-              Enter you phone number and set your password
+              Enter your phone number and set your password
             </Text>
-            <RegisterInputBox
-              placeholder="Phone"
-              inputType="text"
-              keyboardType={'numeric'}
-              maxLength={11}
-              ERROR={Error}
-              ERROR_MESSAGE={ErrorMsg}
-              KeyboardType={'numeric'}
-              backgroundColor={'#EFEFEF'}
-              onChange={value => {
-                setPhone(value);
-                NumberCheck(value);
-              }}
-            />
 
-            <RegisterInputBox
-              placeholder="New Password"
-              inputType="password"
-              keyboardType={'default'}
-              ERROR={passError}
-              ERROR_MESSAGE={passErrorMsg}
-              backgroundColor={'#EFEFEF'}
-              onChange={value => {
-                setPass(value);
-                PasswordCheck(value);
-              }}
-            />
+            <ScrollView>
+              <RegisterInputBox
+                placeholder="Phone"
+                inputType="text"
+                keyboardType={'numeric'}
+                maxLength={11}
+                ERROR={Error}
+                ERROR_MESSAGE={ErrorMsg}
+                KeyboardType={'numeric'}
+                backgroundColor={'#EFEFEF'}
+                onChange={value => {
+                  setPhone(value);
+                  NumberCheck(value);
+                }}
+              />
 
-            <RegisterInputBox
-              placeholder="Confirm New Password"
-              inputType="password"
-              ERROR={confirmpassError}
-              ERROR_MESSAGE={confirmpassErrorMsg}
-              backgroundColor={'#EFEFEF'}
-              onChange={value => {
-                setConPass(value);
-                ConfirmPassCheck(value);
-              }}
-            />
+              <RegisterInputBox
+                placeholder="New Password"
+                inputType="password"
+                keyboardType={'default'}
+                ERROR={passError}
+                ERROR_MESSAGE={passErrorMsg}
+                backgroundColor={'#EFEFEF'}
+                onChange={value => {
+                  setPass(value);
+                  PasswordCheck(value);
+                }}
+              />
+
+              <RegisterInputBox
+                placeholder="Confirm New Password"
+                inputType="password"
+                ERROR={confirmpassError}
+                ERROR_MESSAGE={confirmpassErrorMsg}
+                backgroundColor={'#EFEFEF'}
+                onChange={value => {
+                  setConPass(value);
+                  ConfirmPassCheck(value);
+                }}
+              />
+            </ScrollView>
           </View>
-          <View style={{marginBottom: 110}}>
+          <View style={{marginBottom: 70}}>
             <BtnComponent
               placeholder="Send Code"
               onPress={() => {
-                onSend();
+                // onSend();
+                navigation.navigate('PhoneVerification');
               }}
             />
           </View>
         </View>
         {isLoading ? <Loader /> : null}
       </ImageBackground>
-    </SafeAreaView>
+    </>
   );
 };
 

@@ -15,7 +15,7 @@ import {PRIMARY, WHITE} from '../Constants/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
-import {isNullOrEmpty} from '../Constants/TextUtils';
+import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 import Loader from '../Components/Loader';
 import {Skills} from './Skills';
 
@@ -27,25 +27,25 @@ export function SkillModal({
   onPress,
   skillarr,
   CardData,
+  setSkillArr,
   setEditModalSkill,
 }) {
-  const [userId, setUserId] = useState('');
   let [modalSkillArray, setModalSKillArray] = useState([]);
   let [editModalSkillArray, setEditModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
-  const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  let [edit, setEdit] = useState(skillarr ? skillarr : []);
 
   console.log('skillarr', skillarr);
   console.log('editModalSkillArray', editModalSkillArray);
 
   useEffect(() => {
     if (isEdit) {
-      setEditModalSKillArray([]);
-      editModalSkillArray.length == 0
-        ? setEditModalSKillArray((editModalSkillArray = skillarr))
-        : '';
+      setEditModalSKillArray((editModalSkillArray = skillarr));
+
+      // if (editModalSkillArray.length <= 0) {
+      //   setEditModalSKillArray((editModalSkillArray = skillarr));
+      //   console.log('editModalSkillArray', editModalSkillArray);
+      // }
     }
   }, [modalVisible]);
 
@@ -103,6 +103,7 @@ export function SkillModal({
       let neweditModalSkillArray = skillarr;
       neweditModalSkillArray.push(newSkill);
       setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
+      setSkillArr(editModalSkillArray);
       // setEditModalSkill(modalSkillArray);
       // setInputValue('');
       setNewSkill('');
@@ -112,9 +113,11 @@ export function SkillModal({
   const funEditDelSkill = index => {
     console.log('index', index);
     // debugger;
-    var afterDelete = editModalSkillArray.filter((x, Index) => Index !== index);
+    var afterDelete = skillarr.filter((x, Index) => Index !== index);
     // console.log('afterDelete', afterDelete);
     setEditModalSKillArray((editModalSkillArray = afterDelete));
+
+    setSkillArr(editModalSkillArray);
     // setEditModalSkill(editModalSkillArray);
   };
 
@@ -250,7 +253,7 @@ export function SkillModal({
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 style={{marginVertical: 20}}
-                data={editModalSkillArray}
+                data={skillarr}
                 keyExtractor={item => item.id}
                 renderItem={({item, index}) => (
                   <View
