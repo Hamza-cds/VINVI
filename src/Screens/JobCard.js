@@ -23,6 +23,8 @@ export function JobCard({
 
   let [jobArr, setJobArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  // let [hamza, setHamza] = useState([]);
+  // console.log('hamza', hamza);
 
   let JobHistoryArray = [];
   JobHistoryArray = _.find(data.personalCardMeta, {personalKey: 'JobHistory'});
@@ -38,7 +40,7 @@ export function JobCard({
     setJobArr(
       (jobArr = arrayjobhistory.filter((Sitem, Index) => Index !== index)),
     );
-    setJobHistoryData(jobArr);
+    // setJobHistoryData(jobArr);
 
     let obj = {
       id: JobHistoryArray.id,
@@ -54,9 +56,11 @@ export function JobCard({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        // console.log('Edit Skill Data', data);
+        console.log('delete job card', data);
 
         if (data.data.status == 200 && data.data.success == true) {
+          setJobHistoryData(JSON.parse(data.data.result.personalValue));
+          // setHamza((hamza = JSON.parse(data.data.result.personalValue)));
           setIsLoading(false);
         } else {
           alert(data.message);

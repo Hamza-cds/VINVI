@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {SECONDARY, FIFTH, PRIMARY} from '../Constants/Colors';
 import Svg, {G, Path} from 'react-native-svg';
 import {JobCard} from './JobCard';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 export function JobHistory({
   setEdit,
@@ -13,7 +13,17 @@ export function JobHistory({
   setAdd,
   UserData,
 }) {
-  const [jobHistoryData, setJobHistoryData] = useState(arrayjobhistory);
+  console.log('JobHistory arrayjobhistory', arrayjobhistory);
+  let [jobHistoryData, setJobHistoryData] = useState([]);
+  console.log('JobHistory jobHistoryData', jobHistoryData);
+
+  useEffect(() => {
+    debugger;
+    if (jobHistoryData.length <= 0) {
+      setJobHistoryData((jobHistoryData = arrayjobhistory));
+    }
+  }, []);
+
   return (
     <View
       style={{
