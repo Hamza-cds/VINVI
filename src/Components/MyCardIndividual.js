@@ -79,7 +79,7 @@ export default function MyCardIndividual({
           borderRadius: 4,
           marginTop: -13,
           marginRight: -10,
-          padding: 1,
+          padding: 3,
         }}>
         <Feather
           name="edit"

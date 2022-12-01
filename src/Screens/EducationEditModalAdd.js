@@ -23,6 +23,8 @@ export function EducationEditModalAdd({
   educationarray,
   isEdit,
   CardData,
+  setEducationHistoryData,
+  educationHistoryData,
 }) {
   // console.log('EducationEditModalAdd', educationarray);
 
@@ -257,6 +259,11 @@ export function EducationEditModalAdd({
           // console.log('Edit Skill Data', data);
 
           if (data.data.status == 200 && data.data.success == true) {
+            setEducationHistoryData(
+              (educationHistoryData = JSON.parse(
+                data.data.result.personalValue,
+              )),
+            );
             setIsLoading(false);
             setModalVisible(false);
           } else {

@@ -68,7 +68,7 @@ export default function IndividualScreen(props) {
   const [Edit, setEdit] = useState(
     props.route.params.edit ? props.route.params.edit : '',
   );
-  const [add, setAdd] = useState(false);
+  // const [add, setAdd] = useState(false);
   let [editSkillsArray, setEditSkillsArray] = useState([]);
   let [jobIndex, setJobIndex] = useState('');
   let [eduIndex, setEduIndex] = useState('');
@@ -83,13 +83,13 @@ export default function IndividualScreen(props) {
   const [isSaved, setIsSaved] = useState('');
   const [connect, setConnect] = useState(false);
   let connectionID = props.route.params.connect;
-  let [individualSkillArray, setIndividualSkillArray] = useState(arrayskills);
+  let [skillData, setSkillData] = useState([]);
+  let [jobHistoryData, setJobHistoryData] = useState([]);
+  let [educationHistoryData, setEducationHistoryData] = useState([]);
   const [stop, setStop] = useState(false);
   console.log('degreeList', degreeList);
   var date = new Date();
-
   let DATA = useSelector(state => state.UserData);
-  // console.log('Header dispatch DATA', DATA);
   let ciphertext = CryptoJS.AES.encrypt(
     date.getTime() +
       '_' +
@@ -101,108 +101,135 @@ export default function IndividualScreen(props) {
     'secret key 123',
   ).toString();
 
-  // console.log('favorit', favorit);
+  const [occupation, setOccupation] = useState();
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  let [skillArray, setSkillArray] = useState([]);
+  const [educationArray, setEducationArray] = useState([]);
+  const [jobArray, setJobArray] = useState([]);
+  const [hobbies, setHobbies] = useState('');
+  const [interest, setInterest] = useState('');
+  const [achivement, setAchivement] = useState('');
+  const [intro, setIntro] = useState('');
+  const [birthday, setBirthday] = useState('');
 
-  let arrayOccupation;
-  arrayOccupation = _.find(data.personalCardMeta, {personalKey: 'occupation'});
-  if (arrayOccupation) {
-    arrayOccupation = arrayOccupation.personalValue;
-  } else {
-    arrayOccupation = 'Dummy occupation';
-  }
-
-  let arraycity;
-  arraycity = _.find(data.personalCardMeta, {personalKey: 'city'});
-  if (arraycity) {
-    arraycity = arraycity.personalValue;
-  } else {
-    arraycity = 'Dummy city';
-  }
-
-  let arraycountry;
-  arraycountry = _.find(data.personalCardMeta, {personalKey: 'country'});
-  if (arraycountry) {
-    arraycountry = arraycountry.personalValue;
-  } else {
-    arraycountry = 'Dummy country';
-  }
-
-  let arrayskills = [];
-  arrayskills = _.find(data.personalCardMeta, {personalKey: 'Skills'});
-  if (arrayskills) {
-    arrayskills = arrayskills.personalValue;
-  } else {
-    arrayskills = [];
-  }
-
-  {
-    if (stop == false) {
-      if (!isNullOrEmpty(arrayskills)) {
-        setIndividualSkillArray(arrayskills);
-        setStop(true);
-      }
+  useEffect(() => {
+    let arrayOccupation;
+    arrayOccupation = _.find(data.personalCardMeta, {
+      personalKey: 'occupation',
+    });
+    if (arrayOccupation) {
+      arrayOccupation = arrayOccupation.personalValue;
+      setOccupation(arrayOccupation);
+    } else {
+      arrayOccupation = 'Dummy occupation';
     }
-  }
 
-  let arrayeducation = [];
-  arrayeducation = _.find(data.personalCardMeta, {personalKey: 'Education'});
-  if (arrayeducation) {
-    arrayeducation = arrayeducation.personalValue;
-  } else {
-    arrayeducation = [];
-  }
+    let arraycity;
+    arraycity = _.find(data.personalCardMeta, {personalKey: 'city'});
+    if (arraycity) {
+      arraycity = arraycity.personalValue;
+      setCity(arraycity);
+    } else {
+      arraycity = 'Dummy city';
+    }
 
-  let arrayjobhistory = [];
-  arrayjobhistory = _.find(data.personalCardMeta, {personalKey: 'JobHistory'});
-  if (arrayjobhistory) {
-    arrayjobhistory = arrayjobhistory.personalValue;
-  } else {
-    arrayjobhistory = [];
-  }
+    let arraycountry;
+    arraycountry = _.find(data.personalCardMeta, {personalKey: 'country'});
+    if (arraycountry) {
+      arraycountry = arraycountry.personalValue;
+      setCountry(arraycountry);
+    } else {
+      arraycountry = 'Dummy country';
+    }
 
-  let arrayhobbies = [];
-  arrayhobbies = _.find(data.personalCardMeta, {personalKey: 'Hobbies'});
-  if (arrayhobbies) {
-    arrayhobbies = arrayhobbies.personalValue;
-  } else {
-    arrayhobbies = 'Dummy hobbies';
-  }
+    let arrayskills = [];
+    arrayskills = _.find(data.personalCardMeta, {personalKey: 'Skills'});
+    if (arrayskills) {
+      arrayskills = arrayskills.personalValue;
+      setSkillArray(arrayskills);
+    } else {
+      arrayskills = [];
+    }
 
-  let arrayinterest = [];
-  arrayinterest = _.find(data.personalCardMeta, {personalKey: 'Interests'});
-  if (arrayinterest) {
-    arrayinterest = arrayinterest.personalValue;
-  } else {
-    arrayinterest = 'Dummy Interests';
-  }
+    // {
+    //   if (stop == false) {
+    //     if (!isNullOrEmpty(arrayskills)) {
+    //       setIndividualSkillArray(arrayskills);
+    //       setStop(true);
+    //     }
+    //   }
+    // }
 
-  let arrayachievment = [];
-  arrayachievment = _.find(data.personalCardMeta, {
-    personalKey: 'Achievements',
+    let arrayeducation = [];
+    arrayeducation = _.find(data.personalCardMeta, {personalKey: 'Education'});
+    if (arrayeducation) {
+      arrayeducation = arrayeducation.personalValue;
+      setEducationArray(arrayeducation);
+    } else {
+      arrayeducation = [];
+    }
+
+    let arrayjobhistory = [];
+    arrayjobhistory = _.find(data.personalCardMeta, {
+      personalKey: 'JobHistory',
+    });
+    if (arrayjobhistory) {
+      arrayjobhistory = arrayjobhistory.personalValue;
+      setJobArray(arrayjobhistory);
+    } else {
+      arrayjobhistory = [];
+    }
+
+    let arrayhobbies = [];
+    arrayhobbies = _.find(data.personalCardMeta, {personalKey: 'Hobbies'});
+    if (arrayhobbies) {
+      arrayhobbies = arrayhobbies.personalValue;
+      setHobbies(arrayhobbies);
+    } else {
+      arrayhobbies = 'Dummy hobbies';
+    }
+
+    let arrayinterest = [];
+    arrayinterest = _.find(data.personalCardMeta, {personalKey: 'Interests'});
+    if (arrayinterest) {
+      arrayinterest = arrayinterest.personalValue;
+      setInterest(arrayinterest);
+    } else {
+      arrayinterest = 'Dummy Interests';
+    }
+
+    let arrayachievment = [];
+    arrayachievment = _.find(data.personalCardMeta, {
+      personalKey: 'Achievements',
+    });
+    if (arrayachievment) {
+      arrayachievment = arrayachievment.personalValue;
+      setAchivement(arrayachievment);
+    } else {
+      arrayachievment = 'Dummy Achievements';
+    }
+
+    let arrayIntro = [];
+    arrayIntro = _.find(data.personalCardMeta, {
+      personalKey: 'Introductory Message',
+    });
+    if (arrayIntro) {
+      arrayIntro = arrayIntro.personalValue;
+      setIntro(arrayIntro);
+    } else {
+      arrayIntro = 'Dummy Introduction';
+    }
+
+    let arraybirthday = [];
+    arraybirthday = _.find(data.personalCardMeta, {personalKey: 'birthday'});
+    if (arraybirthday) {
+      arraybirthday = arraybirthday.personalValue;
+      setBirthday(arraybirthday);
+    } else {
+      arraybirthday = 'Dummy Birthday';
+    }
   });
-  if (arrayachievment) {
-    arrayachievment = arrayachievment.personalValue;
-  } else {
-    arrayachievment = 'Dummy Achievements';
-  }
-
-  let arrayIntro = [];
-  arrayIntro = _.find(data.personalCardMeta, {
-    personalKey: 'Introductory Message',
-  });
-  if (arrayIntro) {
-    arrayIntro = arrayIntro.personalValue;
-  } else {
-    arrayIntro = 'Dummy Introduction';
-  }
-
-  let arraybirthday = [];
-  arraybirthday = _.find(data.personalCardMeta, {personalKey: 'birthday'});
-  if (arraybirthday) {
-    arraybirthday = arraybirthday.personalValue;
-  } else {
-    arraybirthday = 'Dummy Birthday';
-  }
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -612,9 +639,7 @@ export default function IndividualScreen(props) {
                 {data.name}
               </Text>
 
-              <Text style={{fontSize: 14, color: FORTH}}>
-                {arrayOccupation}
-              </Text>
+              <Text style={{fontSize: 14, color: FORTH}}>{occupation}</Text>
             </View>
             <View style={{marginTop: 5}}>
               <TouchableOpacity
@@ -789,47 +814,53 @@ export default function IndividualScreen(props) {
               textAlign: 'center',
               marginBottom: 20,
             }}>
-            {arrayIntro}
+            {intro}
           </Text>
 
           {/* Screen View Handling from these components start */}
 
           <PersonalDetails
             setIsEdit={setIsPersonalModalVisible}
-            arrayhobbies={arrayhobbies}
-            arrayinterest={arrayinterest}
-            arrayachievment={arrayachievment}
-            arraybirthday={arraybirthday}
+            arrayhobbies={hobbies}
+            arrayinterest={interest}
+            arrayachievment={achivement}
+            arraybirthday={birthday}
             edit={Edit ? Edit : false}
           />
 
           <ContactDetails
             data={data}
-            arraycountry={arraycountry}
-            arraycity={arraycity}
+            arraycountry={country}
+            arraycity={city}
             setEdit={setIsContactModalVisible}
             edit={Edit ? Edit : false}
           />
           <Education
             setEdit={setIsEducationModalVisible}
             setEduIndex={setEduIndex}
-            arrayeducation={arrayeducation}
+            arrayeducation={educationArray}
             edit={Edit ? Edit : false}
             setAdd={setIsEducationEditModalAdd}
+            setEducationHistoryData={setEducationHistoryData}
+            educationHistoryData={educationHistoryData}
             UserData={data}
           />
           <JobHistory
             setEdit={setIsJobHistoryModalVisible}
             setJobIndex={setJobIndex}
-            arrayjobhistory={arrayjobhistory}
+            arrayjobhistory={jobArray}
             edit={Edit ? Edit : false}
             setAdd={setIsJobHistoryEditModalAdd}
+            setJobHistoryData={setJobHistoryData}
+            jobHistoryData={jobHistoryData}
             UserData={data}
           />
           <Skills
-            arrskills={arrayskills}
+            arrskills={skillArray}
             editSkillsArray={editSkillsArray}
             setEdit={setIsSkillModalVisible}
+            setSkillData={setSkillData}
+            skillData={skillData}
             edit={Edit ? Edit : false}
           />
 
@@ -855,7 +886,7 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isEducationModalVisible}
         setModalVisible={setIsEducationModalVisible}
-        educationarray={arrayeducation}
+        educationarray={educationArray}
         degreeData={degreeList}
         index={eduIndex}
         CardData={data}
@@ -864,7 +895,7 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isJobHistoryModalVisible}
         setModalVisible={setIsJobHistoryModalVisible}
-        jobhistoryarray={arrayjobhistory}
+        jobhistoryarray={jobArray}
         industryType={industryType}
         employeeType={employeeType}
         index={jobIndex}
@@ -874,43 +905,50 @@ export default function IndividualScreen(props) {
         isEdit
         modalVisible={isSkillModalVisible}
         setModalVisible={setIsSkillModalVisible}
-        skillarr={individualSkillArray}
-        setSkillArr={setIndividualSkillArray}
+        skillarr={skillArray}
+        setEditSkillsArray={setEditSkillsArray}
+        editSkillsArray={editSkillsArray}
+        setSkillArr={setSkillArray}
         CardData={data}
-        setEditModalSkill={setEditSkillsArray}
+        skillData={skillData}
+        setSkillData={setSkillData}
       />
       <ContactModal
         isEdit
         modalVisible={isContactModalVisible}
         setModalVisible={setIsContactModalVisible}
         CardData={data}
-        countryarray={arraycountry}
-        cityarray={arraycity}
+        countryarray={country}
+        cityarray={city}
       />
       <PersonalModal
         isEdit
         modalVisible={isPersonalModalVisible}
         setModalVisible={setIsPersonalModalVisible}
-        hobbiesarray={arrayhobbies}
-        interestarray={arrayinterest}
-        achievmentarray={arrayachievment}
-        birthdayarray={arraybirthday}
+        hobbiesarray={hobbies}
+        interestarray={interest}
+        achievmentarray={achivement}
+        birthdayarray={birthday}
         CardData={data}
       />
       <JobHistoryEditModalAdd
         modalVisible={isJobHistoryEditModalAdd}
         setModalVisible={setIsJobHistoryEditModalAdd}
-        jobhistoryarray={arrayjobhistory}
+        jobhistoryarray={jobArray}
         industryType={industryType}
         employeeType={employeeType}
+        setJobHistoryData={setJobHistoryData}
+        jobHistoryData={jobHistoryData}
         CardData={data}
       />
 
       <EducationEditModalAdd
         modalVisible={isEducationEditModalAdd}
         setModalVisible={setIsEducationEditModalAdd}
-        educationarray={arrayeducation}
+        educationarray={educationArray}
         degreeData={degreeList}
+        setEducationHistoryData={setEducationHistoryData}
+        educationHistoryData={educationHistoryData}
         CardData={data}
       />
 

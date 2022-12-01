@@ -100,7 +100,7 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
           </TouchableOpacity>
         ) : null}
       </View>
-      {/* {editSkillsArray.length > 0 ? (
+      {edit != true ? (
         <FlatList
           horizontal={true}
           data={editSkillsArray}
@@ -118,15 +118,15 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
             <SkillTag item={item} placeholder="Skill Name" />
           )}
         />
-      )} */}
-      <FlatList
+      )}
+      {/* <FlatList
         horizontal={true}
         data={arrskills}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => (
           <SkillTag item={item} placeholder="Skill Name" />
         )}
-      />
+      /> */}
     </View>
   );
 }

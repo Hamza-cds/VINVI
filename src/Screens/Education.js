@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import {SECONDARY, FIFTH, PRIMARY} from '../Constants/Colors';
 import Svg, {G, Path} from 'react-native-svg';
@@ -11,7 +11,18 @@ export function Education({
   setEduIndex,
   setAdd,
   UserData,
+  setEducationHistoryData,
+  educationHistoryData,
 }) {
+  console.log('arrayeducation', arrayeducation);
+  console.log('educationHistoryData', educationHistoryData);
+
+  useEffect(() => {
+    if (educationHistoryData.length <= 0) {
+      setEducationHistoryData((educationHistoryData = arrayeducation));
+    }
+  }, [arrayeducation]);
+
   return (
     <View
       style={{
@@ -122,7 +133,7 @@ export function Education({
       <FlatList
         horizontal={false}
         showsHorizontalScrollIndicator={false}
-        data={arrayeducation}
+        data={educationHistoryData}
         renderItem={({item, index}) => (
           <EducationCard
             item={item}
@@ -130,6 +141,8 @@ export function Education({
             data={UserData}
             index={index}
             arrayeducation={arrayeducation}
+            setEducationHistoryData={setEducationHistoryData}
+            educationHistoryData={educationHistoryData}
             onPress={() => {
               setEdit(true);
               setEduIndex(index);

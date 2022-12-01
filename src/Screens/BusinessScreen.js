@@ -185,7 +185,7 @@ const BusinessScreen = props => {
     let obj = {
       Id: 0,
       UserId: userData.id,
-      CardType: true,
+      CardType: 1,
       CardId: businessData.id,
     };
 

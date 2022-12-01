@@ -16,15 +16,10 @@ export function JobCard({
   index,
   data,
   setJobHistoryData,
+  jobHistoryData,
 }) {
-  // console.log('ali ali', arrayjobhistory);
-  // console.log('ali ali ali', data);
-  // console.log('ali item', item);
-
   let [jobArr, setJobArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // let [hamza, setHamza] = useState([]);
-  // console.log('hamza', hamza);
 
   let JobHistoryArray = [];
   JobHistoryArray = _.find(data.personalCardMeta, {personalKey: 'JobHistory'});
@@ -34,11 +29,9 @@ export function JobCard({
     JobHistoryArray = 'Dummy job History';
   }
 
-  // console.log('JobHistoryArray', JobHistoryArray);
-
   const FunDelJobHistory = () => {
     setJobArr(
-      (jobArr = arrayjobhistory.filter((Sitem, Index) => Index !== index)),
+      (jobArr = jobHistoryData.filter((Sitem, Index) => Index !== index)),
     );
     // setJobHistoryData(jobArr);
 
@@ -59,13 +52,17 @@ export function JobCard({
         console.log('delete job card', data);
 
         if (data.data.status == 200 && data.data.success == true) {
-          setJobHistoryData(JSON.parse(data.data.result.personalValue));
-          // setHamza((hamza = JSON.parse(data.data.result.personalValue)));
+          console.log(
+            'delete job card+++++++++++++',
+            JSON.parse(data.data.result.personalValue),
+          );
+          setJobHistoryData(
+            (jobHistoryData = JSON.parse(data.data.result.personalValue)),
+          );
           setIsLoading(false);
         } else {
           alert(data.message);
           setIsLoading(false);
-          // console.log('ADD');
         }
       })
       .catch(err => {

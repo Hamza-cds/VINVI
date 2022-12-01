@@ -12,17 +12,18 @@ export function JobHistory({
   setJobIndex,
   setAdd,
   UserData,
+  jobHistoryData,
+  setJobHistoryData,
 }) {
-  console.log('JobHistory arrayjobhistory', arrayjobhistory);
-  let [jobHistoryData, setJobHistoryData] = useState([]);
-  console.log('JobHistory jobHistoryData', jobHistoryData);
+  // let [jobHistoryData, setJobHistoryData] = useState([]);
+  console.log('arrayjobhistory', arrayjobhistory);
+  console.log('jobHistoryData', jobHistoryData);
 
   useEffect(() => {
-    debugger;
     if (jobHistoryData.length <= 0) {
       setJobHistoryData((jobHistoryData = arrayjobhistory));
     }
-  }, []);
+  }, [arrayjobhistory]);
 
   return (
     <View
@@ -142,6 +143,7 @@ export function JobHistory({
             data={UserData}
             arrayjobhistory={arrayjobhistory}
             index={index}
+            jobHistoryData={jobHistoryData}
             setJobHistoryData={setJobHistoryData}
             onPress={() => {
               setEdit(true);

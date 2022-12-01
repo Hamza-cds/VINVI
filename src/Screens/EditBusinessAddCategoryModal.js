@@ -45,7 +45,7 @@ export default function EditBusinessAddCategoryModal({
             // alert('product deleted');
           } else {
             setIsLoading(false);
-            alert(data.data.message);
+            alert(data.data.message + '(back end)');
           }
         })
         .catch(err => {

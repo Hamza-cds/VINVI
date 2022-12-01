@@ -15,6 +15,8 @@ export function EducationCard({
   arrayeducation,
   data,
   index,
+  setEducationHistoryData,
+  educationHistoryData,
 }) {
   let [eduArr, setEduArr] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +33,7 @@ export function EducationCard({
 
   const FunDelEducation = () => {
     setEduArr(
-      (eduArr = arrayeducation.filter((Sitem, Index) => Index !== index)),
+      (eduArr = educationHistoryData.filter((Sitem, Index) => Index !== index)),
     );
 
     let obj = {
@@ -46,9 +48,16 @@ export function EducationCard({
     PersonalCardEditApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        // console.log('Edit Skill Data', data);
+        console.log('delete education api response', data);
 
         if (data.data.status == 200 && data.data.success == true) {
+          console.log(
+            'delete education api response',
+            JSON.parse(data.data.result.personalValue),
+          );
+          setEducationHistoryData(
+            (educationHistoryData = JSON.parse(data.data.result.personalValue)),
+          );
           setIsLoading(false);
         } else {
           alert(data.message);

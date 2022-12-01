@@ -26,6 +26,7 @@ export default function BusinessSavedCard(props) {
       console.log('userdata', userData);
     });
   }, []);
+  let hamza = [];
 
   useFocusEffect(
     React.useCallback(() => {
@@ -42,8 +43,12 @@ export default function BusinessSavedCard(props) {
     GetSavedCardByIdApiCall(DATA.id, type)
       .then(res => {
         console.log('saved response', res);
-        setdata(res.data.result);
-        setIsLoading(false);
+        if (res.data.success == true) {
+          setdata(res.data.result);
+          setIsLoading(false);
+        } else {
+          setdata(data);
+        }
       })
       .catch(err => {
         setIsLoading(false);

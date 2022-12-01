@@ -43,8 +43,12 @@ export default function IndividualSavedCard(props) {
     getAllConnectionRequest(DATA.id, status)
       .then(res => {
         console.log('connected res', res);
-        setdata(res.data.result);
-        setIsLoading(false);
+        if (res.data.success == true) {
+          setdata(res.data.result);
+          setIsLoading(false);
+        } else {
+          setdata(data);
+        }
       })
       .catch(err => {
         setIsLoading(false);
@@ -74,7 +78,7 @@ export default function IndividualSavedCard(props) {
         />
       ) : (
         <Text style={{alignSelf: 'center', marginTop: 250}}>
-          No saved cards
+          No Connected cards
         </Text>
       )}
 

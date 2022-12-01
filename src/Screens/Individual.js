@@ -256,6 +256,7 @@ export function Individual({navigation}) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 5,
+                marginBottom: 10,
               }}>
               <Text style={{color: WHITE, fontSize: 14}}>Make New Card</Text>
             </TouchableOpacity>

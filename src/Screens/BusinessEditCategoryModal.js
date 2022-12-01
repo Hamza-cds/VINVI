@@ -38,7 +38,7 @@ export default function BusinessEditCategoryModal({
 
   const onDeleteCategory = () => {
     if (isNullOrEmpty(categoryId)) {
-      alert('plz select a category');
+      alert('please select a category');
     } else {
       let obj = {
         Id: categoryId,
@@ -56,7 +56,7 @@ export default function BusinessEditCategoryModal({
             // alert('product deleted');
           } else {
             setIsLoading(false);
-            alert(data.data.message);
+            alert(data.data.message + '(backend)');
           }
         })
         .catch(err => {
@@ -226,7 +226,7 @@ export default function BusinessEditCategoryModal({
               backgroundColor: SECONDARY,
               borderRadius: 10,
               marginTop: 20,
-              marginBottom: -10,
+              marginBottom: 10,
             }}
             onPress={() => {
               onDeleteCategory();

@@ -16,6 +16,7 @@ import _ from 'lodash';
 import {PersonalCardEditApiCall} from '../Apis/Repo';
 import {isNullOrEmpty} from '../Constants/TextUtils';
 import {stringsNotEqual} from '../Constants/TextUtils';
+import {PRIMARY} from '../Constants/Colors';
 
 export function JobHistoryEditModalAdd({
   modalVisible,
@@ -25,6 +26,8 @@ export function JobHistoryEditModalAdd({
   jobhistoryarray,
   isEdit,
   CardData,
+  setJobHistoryData,
+  jobHistoryData,
 }) {
   // console.log('jobhistoryarray of EDIT/ADD Modal', jobhistoryarray);
 
@@ -168,10 +171,13 @@ export function JobHistoryEditModalAdd({
       PersonalCardEditApiCall(obj)
         // .then(res => res.json())
         .then(data => {
-          // console.log('Edit Skill Data', data);
+          console.log('edit case add job history', data);
 
           if (data.data.status == 200 && data.data.success == true) {
             // setIsLoading(false);
+            setJobHistoryData(
+              (jobHistoryData = JSON.parse(data.data.result.personalValue)),
+            );
             setModalVisible(false);
           } else {
             // setIsLoading(false);
@@ -281,30 +287,32 @@ export function JobHistoryEditModalAdd({
       onRequestClose={() => {
         setModalVisible(!modalVisible);
       }}>
-      <View
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: 'rgba(64,77,136,.8)',
           flex: 1,
-          height: Dimensions.get('window').height,
-          padding: 20,
-          justifyContent: 'center',
-          alignContent: 'center',
         }}>
         <View
           style={{
-            borderWidth: 1,
-            borderColor: '#113066',
-            width: '100%',
-            backgroundColor: '#ffffff',
+            backgroundColor: 'rgba(64,77,136,.8)',
+            flex: 1,
+            height: Dimensions.get('window').height,
             padding: 20,
-            paddingBottom: 0,
-            borderRadius: 10,
-            height: '100%',
+            justifyContent: 'center',
+            alignContent: 'center',
           }}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
+          <View
             style={{
-              flex: 1,
+              borderWidth: 1,
+              borderColor: '#113066',
+              width: '100%',
+              backgroundColor: '#ffffff',
+              padding: 20,
+              paddingBottom: 0,
+              borderRadius: 10,
+              marginVertical: 20,
+
+              // height: '100%',
             }}>
             <View
               style={{
@@ -489,9 +497,9 @@ export function JobHistoryEditModalAdd({
                 // setModalVisible(!modalVisible);
               }}
             />
-          </ScrollView>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 }

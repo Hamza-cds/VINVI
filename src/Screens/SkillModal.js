@@ -23,41 +23,45 @@ export function SkillModal({
   modalVisible,
   setModalVisible,
   setModalSkill,
+  setEditSkillsArray,
   isEdit,
   onPress,
   skillarr,
   CardData,
   setSkillArr,
-  setEditModalSkill,
+  skillData,
+  setSkillData,
+  editSkillsArray,
 }) {
   let [modalSkillArray, setModalSKillArray] = useState([]);
-  let [editModalSkillArray, setEditModalSKillArray] = useState([]);
+  // let [editModalSkillArray, setEditModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   console.log('skillarr', skillarr);
-  console.log('editModalSkillArray', editModalSkillArray);
+  console.log('skillData', skillData);
 
   useEffect(() => {
     if (isEdit) {
-      setEditModalSKillArray((editModalSkillArray = skillarr));
-
-      // if (editModalSkillArray.length <= 0) {
-      //   setEditModalSKillArray((editModalSkillArray = skillarr));
-      //   console.log('editModalSkillArray', editModalSkillArray);
-      // }
+      // setSkillData((skillData = skillarr));
+      // debugger;
+      if (skillData.length <= 0) {
+        setSkillData((skillData = skillarr));
+        // setEditModalSKillArray((editModalSkillArray = skillarr));
+        // console.log('editModalSkillArray', editModalSkillArray);
+      }
     }
-  }, [modalVisible]);
+  }, [skillarr]);
 
   /* these funtions used when creating personal cards skills  */
   const FunModalSkillsArray = () => {
     if (isNullOrEmpty(newSkill)) {
       alert('Enter atleast one skill');
     } else {
-      let newModalSkillArray = [...modalSkillArray];
+      let newModalSkillArray = modalSkillArray;
       newModalSkillArray.push(newSkill.trim());
       setModalSKillArray((modalSkillArray = newModalSkillArray));
-      setModalSkill(modalSkillArray);
+      // setEditSkillsArray((editSkillsArray = modalSkillArray));
       setNewSkill('');
     }
   };
@@ -67,14 +71,6 @@ export function SkillModal({
     setModalSKillArray(
       (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
     );
-    // setModalSKillArray((modalSkillArray = newArr));
-    // console.log('index', index);
-    // let newArr = [...modalSkillArray];
-    // setModalSKillArray(
-    //   (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
-    // );
-    // setModalSKillArray(newArr);
-    // setModalSkill((modalSkillArray = newArr));
   };
 
   /*These functions used when editing personal cards skill*/
@@ -102,8 +98,9 @@ export function SkillModal({
     } else {
       let neweditModalSkillArray = skillarr;
       neweditModalSkillArray.push(newSkill);
-      setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
-      setSkillArr(editModalSkillArray);
+      setSkillData((skillData = neweditModalSkillArray));
+      // setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
+      // setSkillArr(editModalSkillArray);
       // setEditModalSkill(modalSkillArray);
       // setInputValue('');
       setNewSkill('');
@@ -113,11 +110,12 @@ export function SkillModal({
   const funEditDelSkill = index => {
     console.log('index', index);
     // debugger;
-    var afterDelete = skillarr.filter((x, Index) => Index !== index);
+    var afterDelete = skillData.filter((x, Index) => Index !== index);
     // console.log('afterDelete', afterDelete);
-    setEditModalSKillArray((editModalSkillArray = afterDelete));
+    // setEditModalSKillArray((editModalSkillArray = afterDelete));
+    setSkillData((skillData = afterDelete));
 
-    setSkillArr(editModalSkillArray);
+    // setSkillArr(editModalSkillArray);
     // setEditModalSkill(editModalSkillArray);
   };
 
@@ -132,7 +130,7 @@ export function SkillModal({
       ishidden: true,
       personalCardId: CardData.id,
       personalKey: 'Skills',
-      personalValue: JSON.stringify(editModalSkillArray),
+      personalValue: JSON.stringify(skillData),
     };
 
     console.log('abject', obj);
@@ -146,7 +144,10 @@ export function SkillModal({
         if (data.data.status == 200 && data.data.success == true) {
           setIsLoading(false);
           setModalVisible(false);
-          setEditModalSKillArray('');
+          setSkillData(
+            (skillData = JSON.parse(data.data.result.personalValue)),
+          );
+          // setEditModalSKillArray('');
         } else {
           setIsLoading(false);
           alert(data.message);
@@ -206,6 +207,11 @@ export function SkillModal({
               <TouchableOpacity
                 onPress={() => {
                   setModalVisible(!modalVisible);
+                  if (isEdit == true) {
+                    setSkillData([]);
+                  } else {
+                    setModalSKillArray([]);
+                  }
                 }}>
                 <Svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -253,7 +259,7 @@ export function SkillModal({
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 style={{marginVertical: 20}}
-                data={skillarr}
+                data={skillData}
                 keyExtractor={item => item.id}
                 renderItem={({item, index}) => (
                   <View
