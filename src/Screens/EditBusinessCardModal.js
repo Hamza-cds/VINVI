@@ -94,11 +94,12 @@ export default function EditBusinessCardModal({
     businessCardApiCall(formdata)
       .then(res => res.json())
       .then(data => {
-        console.log('response', data);
+        console.log('edit business response', data);
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
+          setModalVisible(!modalVisible);
           // dispatch(BCDComplete(''));
-          props.navigation.replace('MyCardsDashboardScreen');
+          // props.navigation.replace('MyCardsDashboardScreen');
         } else {
           setIsLoading(false);
           alert('Invalid Request');
@@ -204,6 +205,7 @@ export default function EditBusinessCardModal({
                 placeholder={'Industry type'}
                 data={industryType}
                 onCallBack={setIndustryType}
+                editText={industry.name}
               />
               <OutlinedInputBox
                 placeholder="Any Other Information"

@@ -118,13 +118,15 @@ export default function NewCardScreen(props) {
     console.log('educationArray', educationArray);
   };
 
-  const FunDelEducation = index => {
-    console.log('FunDelEducation Index', index);
-    setEducationArray(educationArray.filter(item => index !== index));
+  const FunDelEducation = indx => {
+    // debugger;
+    console.log('FunDelEducation Index', indx);
+    let afterDelete = educationArray.filter((Sitem, index) => index != indx);
+    setEducationArray((educationArray = afterDelete));
   };
 
-  const FunDelJobHistory = item => {
-    setJobHistoryArray(jobHistoryArray.filter(Sitem => Sitem.id !== item.id));
+  const FunDelJobHistory = indx => {
+    setJobHistoryArray(jobHistoryArray.filter((x, index) => index !== indx));
   };
 
   const FunJobHistoryArray = () => {
@@ -489,7 +491,7 @@ export default function NewCardScreen(props) {
               <JobHistoryCard
                 item={item}
                 onPress={() => {
-                  FunDelJobHistory(item);
+                  FunDelJobHistory(index);
                 }}
               />
             )}
