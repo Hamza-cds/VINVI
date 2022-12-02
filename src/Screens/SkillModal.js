@@ -22,8 +22,6 @@ import {Skills} from './Skills';
 export function SkillModal({
   modalVisible,
   setModalVisible,
-  setModalSkill,
-  setEditSkillsArray,
   isEdit,
   onPress,
   skillarr,
@@ -31,15 +29,16 @@ export function SkillModal({
   setSkillArr,
   skillData,
   setSkillData,
-  editSkillsArray,
+  setModalSkill,
+  modalSkill,
 }) {
   let [modalSkillArray, setModalSKillArray] = useState([]);
   // let [editModalSkillArray, setEditModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log('skillarr', skillarr);
-  console.log('skillData', skillData);
+  // console.log('modalSkillArray', modalSkillArray);
+  // console.log('modalSkill', modalSkill);
 
   useEffect(() => {
     if (isEdit) {
@@ -50,10 +49,13 @@ export function SkillModal({
         // setEditModalSKillArray((editModalSkillArray = skillarr));
         // console.log('editModalSkillArray', editModalSkillArray);
       }
+    } else {
+      setModalSkill((modalSkill = modalSkillArray));
     }
   }, [skillarr]);
 
   /* these funtions used when creating personal cards skills  */
+
   const FunModalSkillsArray = () => {
     if (isNullOrEmpty(newSkill)) {
       alert('Enter atleast one skill');
@@ -61,7 +63,7 @@ export function SkillModal({
       let newModalSkillArray = modalSkillArray;
       newModalSkillArray.push(newSkill.trim());
       setModalSKillArray((modalSkillArray = newModalSkillArray));
-      // setEditSkillsArray((editSkillsArray = modalSkillArray));
+      setModalSkill((modalSkill = modalSkillArray));
       setNewSkill('');
     }
   };
@@ -71,6 +73,7 @@ export function SkillModal({
     setModalSKillArray(
       (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
     );
+    setModalSkill((modalSkill = modalSkillArray));
   };
 
   /*These functions used when editing personal cards skill*/
@@ -108,7 +111,7 @@ export function SkillModal({
   };
 
   const funEditDelSkill = index => {
-    console.log('index', index);
+    // console.log('index', index);
     // debugger;
     var afterDelete = skillData.filter((x, Index) => Index !== index);
     // console.log('afterDelete', afterDelete);

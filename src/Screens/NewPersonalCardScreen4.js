@@ -6,7 +6,7 @@ import OutlinedInputBox from '../Components/OutlinedInputBox';
 import NewCardStepPanel from '../Components/NewCardStepPanel';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Height, Width} from '../Constants/Constants';
-import {isNullOrEmpty} from '../Constants/TextUtils';
+import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 import {personalCardApiCall, GetAllLookupDetailApiCall} from '../Apis/Repo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -39,8 +39,8 @@ export default function NewCardScreen(props) {
   const dispatch = useDispatch();
   const PCScreen1 = useSelector(state => state.PCData);
   const PCScreen2 = useSelector(state => state.PCScreen2Data);
-  console.log('PERSONAL_CARD_3_DATA_TEST', PCScreen1);
-  console.log('PERSONAL_CARD_2_DATA_TEST', PCScreen2);
+  // console.log('PERSONAL_CARD_3_DATA_TEST', PCScreen1);
+  // console.log('PERSONAL_CARD_2_DATA_TEST', PCScreen2);
 
   const [isEducationModalVisible, setIsEducationModalVisible] = useState(false);
   const [isJobHistoryModalVisible, setIsJobHistoryModalVisible] =
@@ -51,13 +51,13 @@ export default function NewCardScreen(props) {
   const [hobbies, setHobbies] = useState('');
   const [interests, setInterests] = useState('');
   const [achivements, setAchivements] = useState('');
-  const [skillsArray, setSkillsArray] = useState([]);
-  const [modalSkill, setModalSkill] = useState([]);
+  let [skillsArray, setSkillsArray] = useState([]);
+  let [modalSkill, setModalSkill] = useState([]);
   const [profilePic, setProfilePic] = useState(PCScreen1.ProfilePicture);
   const [profilePicName, setProfilePicName] = useState(PCScreen1.profileName);
   const [coverPic, setCoverPic] = useState(PCScreen1.CoverPicture);
   const [coverName, setCoverName] = useState(PCScreen1.coverName);
-  const [educationArray, setEducationArray] = useState([]);
+  let [educationArray, setEducationArray] = useState([]);
   let [educationObject, setEducationObject] = useState('');
   const [jobHistoryArray, setJobHistoryArray] = useState([]);
   let [jobHistoryObject, setJobHistoryObject] = useState('');
@@ -107,18 +107,20 @@ export default function NewCardScreen(props) {
   // console.log('educationObject', educationObject);
 
   const FunSkillsArray = () => {
-    setSkillsArray(modalSkill);
+    setSkillsArray((skillsArray = modalSkill));
   };
 
   const FunEducationArray = () => {
     let newEducationArray = educationArray;
     newEducationArray.push(educationObject);
     setEducationArray([]);
-    setEducationArray(newEducationArray);
+    setEducationArray((educationArray = newEducationArray));
+    console.log('educationArray', educationArray);
   };
 
-  const FunDelEducation = item => {
-    setEducationArray(educationArray.filter(Sitem => Sitem.id !== item.id));
+  const FunDelEducation = index => {
+    console.log('FunDelEducation Index', index);
+    setEducationArray(educationArray.filter(item => index !== index));
   };
 
   const FunDelJobHistory = item => {
@@ -141,7 +143,9 @@ export default function NewCardScreen(props) {
   }, []);
 
   useEffect(() => {
-    getAllLookupdetail();
+    if (isNullOrEmptyArray(lookupData)) {
+      getAllLookupdetail();
+    }
   }, []);
 
   const getAllLookupdetail = () => {
@@ -393,7 +397,7 @@ export default function NewCardScreen(props) {
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={true}
-            data={skillsArray}
+            data={modalSkill}
             renderItem={({item, index}) => <SkillCard Skillname={item} />}
           />
         </View>
@@ -437,7 +441,7 @@ export default function NewCardScreen(props) {
               <EducationCard
                 item={item}
                 onPress={() => {
-                  FunDelEducation(item);
+                  FunDelEducation(index);
                 }}
               />
             )}
@@ -525,6 +529,7 @@ export default function NewCardScreen(props) {
       />
       <SkillModal
         setModalSkill={setModalSkill}
+        modalSkill={modalSkill}
         modalVisible={isSkillModalVisible}
         setModalVisible={setIsSkillModalVisible}
         onPress={() => {
