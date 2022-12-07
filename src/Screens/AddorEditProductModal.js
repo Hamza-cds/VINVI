@@ -17,6 +17,8 @@ import {PRIMARY, WHITE} from '../Constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {editBusinessCardApiCall} from '../Apis/Repo';
 import Loader from '../Components/Loader';
+import {URL} from '../Constants/Constants';
+// import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function AddorEditProductModal({
   visibleModal,
@@ -27,14 +29,21 @@ export default function AddorEditProductModal({
   editCategory,
   userData,
   setRefresh,
+  selectedCategoryID,
+  selectedCategory,
 }) {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImg, setProductImg] = useState('');
   const [productImageName, setProductImageName] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  // let [selectedCategory, setSelectedCategory] = useState('');
   let [categoryList, setCategoryList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log('*****categoryList', categoryList);
+  console.log('*****editProduct', editProduct);
+  console.log('*****editCategory', editCategory);
+  console.log('*****selectedCategory', selectedCategory);
 
   useEffect(() => {
     categoryList.length <= 0
@@ -55,60 +64,209 @@ export default function AddorEditProductModal({
     setProductImg(image);
   };
 
-  const onSelectEdit = (index, value) => {
-    setSelectedCategory(value);
-  };
+  // const onSelectEdit = (index, value) => {
+  //   setSelectedCategory((selectedCategory = value));
+  // };
 
   const onUpdate = () => {
-    var formdata = new FormData();
-
-    formdata.append(`[0].Id`, '0');
-    formdata.append(`[0].Name`, selectedCategory);
-    formdata.append(`[0].BusinessCardIdFk`, userData.id);
-    {
-      isEdit == false
-        ? formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0')
-        : formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0');
-      // JSON.stringify(editProduct.id)
-    }
-    formdata.append(
-      `[0].BusinessCategoryProduct[0].Name`,
-      productName ? productName : editProduct.name,
-    );
-    formdata.append(
-      `[0].BusinessCategoryProduct[0].Price`,
-      productPrice ? productPrice : editProduct.price,
-    );
-    formdata.append(
-      `[0].BusinessCategoryProduct[0].product_image_file`,
-      productImg
-        ? {uri: productImg.path, name: productImageName, type: productImg.mime}
-        : editProduct.picture,
-    );
-
-    console.log('formdata', formdata);
-
-    setIsLoading(true);
-    editBusinessCardApiCall(formdata)
-      // .then(res => res.json())
-      .then(data => {
-        console.log('response', data);
-        if (data.status === 200 && data.success === true) {
-          setIsLoading(false);
-          setModalVisible(false);
-          setRefresh(true);
-        } else {
-          setIsLoading(false);
-          alert('Invalid Request');
-        }
-      })
-      .catch(err => {
-        setIsLoading(false);
-        console.log('err', err);
+    if (isEdit == false) {
+      var formdata = new FormData();
+      formdata.append(`[0].Id`, '0');
+      formdata.append(`[0].Name`, selectedCategory);
+      formdata.append(`[0].BusinessCardIdFk`, JSON.stringify(userData.id));
+      formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0');
+      formdata.append(
+        `[0].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
+        JSON.stringify(selectedCategoryID),
+      );
+      formdata.append(`[0].BusinessCategoryProduct[0].Name`, productName);
+      formdata.append(`[0].BusinessCategoryProduct[0].Price`, productPrice);
+      formdata.append(`[0].BusinessCategoryProduct[0].product_image_file`, {
+        uri: productImg.path,
+        name: productImageName,
+        type: productImg.mime,
       });
+
+      console.log('formdata', formdata);
+
+      setIsLoading(true);
+      editBusinessCardApiCall(formdata)
+        .then(res => res.json())
+        .then(data => {
+          console.log('response', data);
+          if (data.status === 200 && data.success === true) {
+            setIsLoading(false);
+            setModalVisible(false);
+            setRefresh(true);
+          } else {
+            setIsLoading(false);
+            alert('Invalid Request');
+          }
+        })
+        .catch(err => {
+          setIsLoading(false);
+          console.log('err', err);
+        });
+    } else {
+      var formdata = new FormData();
+      formdata.append(`[${editProduct.index}].Id`, '0');
+      formdata.append(`[${editProduct.index}].Name`, selectedCategory);
+      formdata.append(
+        `[${editProduct.index}].BusinessCardIdFk`,
+        JSON.stringify(userData.id),
+      );
+      formdata.append(
+        `[${editProduct.index}].BusinessCategoryProduct[0].Id`,
+        '0',
+      );
+      formdata.append(
+        `[${editProduct.index}].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
+        JSON.stringify(editProduct.businessCategoryIdFk),
+      );
+      formdata.append(
+        `[${editProduct.index}].BusinessCategoryProduct[0].Name`,
+        productName ? productName : editProduct.name,
+      );
+      formdata.append(
+        `[${editProduct.index}].BusinessCategoryProduct[0].Price`,
+        productPrice ? productPrice : JSON.stringify(editProduct.price),
+      );
+
+      {
+        productImg
+          ? formdata.append(
+              `[0].BusinessCategoryProduct[0].product_image_file`,
+              {
+                uri: productImg.path,
+                name: productImageName,
+                type: productImg.mime,
+              },
+            )
+          : formdata.append(
+              `[${editProduct.index}].BusinessCategoryProduct[0].Picture`,
+              editProduct.picture,
+            );
+      }
+
+      console.log('formdata', formdata);
+
+      setIsLoading(true);
+      editBusinessCardApiCall(formdata)
+        .then(res => res.json())
+        .then(data => {
+          console.log('response', data);
+          if (data.status === 200 && data.success === true) {
+            setIsLoading(false);
+            setModalVisible(false);
+            setRefresh(true);
+          } else {
+            setIsLoading(false);
+            alert('Invalid Request');
+          }
+        })
+        .catch(err => {
+          setIsLoading(false);
+          console.log('err', err);
+        });
+    }
   };
+  //   var formdata = new FormData();
+
+  //   {
+  //     console.log('isEdit', isEdit);
+  //     isEdit == false
+  //       ? formdata.append(`[0].Id`, '0') &&
+  //         formdata.append(`[0].Name`, selectedCategory) &&
+  //         formdata.append(
+  //           `[0].BusinessCardIdFk`,
+  //           JSON.stringify(userData.id),
+  //         ) &&
+  //         formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0') &&
+  //         formdata.append(
+  //           `[0].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
+  //           JSON.stringify(selectedCategoryID),
+  //         ) &&
+  //         formdata.append(`[0].BusinessCategoryProduct[0].Name`, productName) &&
+  //         formdata.append(
+  //           `[0].BusinessCategoryProduct[0].Price`,
+  //           productPrice,
+  //         ) &&
+  //         formdata.append(`[0].BusinessCategoryProduct[0].product_image_file`, {
+  //           uri: productImg.path,
+  //           name: productImageName,
+  //           type: productImg.mime,
+  //         })
+  //       : formdata.append(`[${editProduct.index}].Id`, '0') &&
+  //         formdata.append(`[${editProduct.index}].Name`, selectedCategory) &&
+  //         formdata.append(
+  //           `[${editProduct.index}].BusinessCardIdFk`,
+  //           JSON.stringify(userData.id),
+  //         ) &&
+  //         formdata.append(
+  //           `[${editProduct.index}].BusinessCategoryProduct[0].Id`,
+  //           '0',
+  //         ) &&
+  //         formdata.append(
+  //           `[${editProduct.index}].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
+  //           JSON.stringify(editProduct.businessCategoryIdFk),
+  //         ) &&
+  //         formdata.append(
+  //           `[${editProduct.index}].BusinessCategoryProduct[0].Name`,
+  //           editProduct.name,
+  //         ) &&
+  //         formdata.append(
+  //           `[${editProduct.index}].BusinessCategoryProduct[0].Price`,
+  //           JSON.stringify(editProduct.price),
+  //         ) &&
+  //         formdata.append(
+  //           `[${editProduct.index}].BusinessCategoryProduct[0].Picture`,
+  //           editProduct.picture,
+  //         );
+  //   }
+  //   // {
+  //   //   isEdit == false
+  //   //     ? formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0')
+  //   //     : formdata.append(
+  //   //         `[${editProduct.index}].BusinessCategoryProduct[0].Id`,
+  //   //         '0',
+  //   //       );
+  //   //   // JSON.stringify(editProduct.id)
+  //   // }
+
+  //   console.log('formdata', formdata);
+
+  //   setIsLoading(true);
+  //   editBusinessCardApiCall(formdata)
+  //     // .then(res => res.json())
+  //     .then(data => {
+  //       console.log('response', data);
+  //       if (data.status === 200 && data.success === true) {
+  //         setIsLoading(false);
+  //         setModalVisible(false);
+  //         setRefresh(true);
+  //       } else {
+  //         setIsLoading(false);
+  //         alert('Invalid Request');
+  //       }
+  //     })
+  //     .catch(err => {
+  //       setIsLoading(false);
+  //       console.log('err', err);
+  //     });
+  // };
 
   //   const onAdd = () => {};
+  // const [openService, setOpenService] = useState(false);
+  // const [valueService, setValueService] = useState([]);
+  // const [itemsService, setItemsService] = useState([
+  //   {label: 'Massage', value: 'Massage'},
+  //   {label: 'Classic Haircut', value: 'Classic Haircut'},
+  //   {label: 'Sauna', value: 'Sauna'},
+  //   {label: 'Shave', value: 'Shave'},
+  //   {label: 'Light Beard Trim', value: 'Light Beard Trim'},
+  //   {label: 'Line It Up', value: 'Line It Up'},
+  //   {label: 'Skin Fade', value: 'Skin Fade'},
+  // ]);
 
   return (
     <Modal animationType="slide" transparent={true} visible={visibleModal}>
@@ -151,13 +309,44 @@ export default function AddorEditProductModal({
 
           <ScrollView style={{marginTop: 20}}>
             {/* <Select
-              data={category}
+              data={editCategory.length != 0 ? editCategory : categoryList}
               placeholder={'Select Category'}
               onCallBack={setSelectedCategory}
             /> */}
 
-            <ModalDropdown
-              options={editCategory.length != 0 ? editCategory : categoryList}
+            {/* <DropDownPicker
+              placeholder="Service name"
+              placeholderStyle={{
+                color: '#828080',
+                fontSize: 14,
+              }}
+              textStyle={{
+                fontSize: 14,
+                color: '#828080',
+              }}
+              key={`id`}
+              // multiple={false}
+              itemKey="id"
+              zIndex={555}
+              // zIndexInverse={1000}
+              open={openService}
+              value={valueService}
+              items={itemsService}
+              setOpen={setOpenService}
+              setValue={setValueService}
+              setItems={setItemsService}
+              listMode="SCROLLVIEW"
+              multiple={true}
+              containerStyle={{
+                alignSelf: 'center',
+              }}
+              style={styles.dropDown}
+            /> */}
+
+            {/* <ModalDropdown
+              options={
+                editCategory.length != 0 ? editCategory : selectedCategory
+              }
               defaultValue={'Select category'}
               dropdownStyle={{
                 width: '80%',
@@ -180,16 +369,33 @@ export default function AddorEditProductModal({
               onSelect={onSelectEdit}>
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text>{selectedCategory}</Text>
+                <Text>
+                  {selectedCategory
+                    ? selectedCategory
+                    : editProduct
+                    ? editProduct.categoryName
+                      ? editProduct.categoryName
+                      : null
+                    : null}
+                </Text>
                 <MaterialIcons
                   name="arrow-drop-down"
                   size={30}
                   style={{alignSelf: 'flex-end'}}
                 />
               </View>
-            </ModalDropdown>
+            </ModalDropdown> */}
 
             <View style={{marginTop: 10}}>
+              <OutlinedInputBox
+                text={selectedCategory}
+                editable={false}
+                onChange={value => {
+                  // console.log('name', value);
+                  setProductName(value);
+                }}
+              />
+
               <OutlinedInputBox
                 placeholder="Name"
                 inputType="text"
@@ -211,31 +417,15 @@ export default function AddorEditProductModal({
             </View>
 
             <UploadBtn
+              label={'Add product image'}
               svg={
-                <Svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={42.736}
-                  height={51.223}
-                  viewBox="0 0 42.736 51.223">
-                  <G data-name="user (2)" fill="#fff">
-                    <Path
-                      data-name="Path 2128"
-                      d="M33.382 12.337a11.939 11.939 0 01-3.61 8.723 11.938 11.938 0 01-8.724 3.614h-.006a11.94 11.94 0 01-8.717-3.614 11.937 11.937 0 01-3.614-8.724 11.936 11.936 0 013.614-8.722A11.935 11.935 0 0121.039 0h.006a11.942 11.942 0 018.727 3.615 11.937 11.937 0 013.614 8.722zm0 0"
-                    />
-                    <Path
-                      data-name="Path 2129"
-                      d="M42.737 42.414a8.5 8.5 0 01-2.527 6.435 9.093 9.093 0 01-6.51 2.374H9.036a9.089 9.089 0 01-6.509-2.375A8.5 8.5 0 010 42.414c0-1.029.034-2.046.1-3.025a30.282 30.282 0 01.415-3.238 25.55 25.55 0 01.8-3.253 16.135 16.135 0 011.338-3.036 11.489 11.489 0 012.017-2.629 8.9 8.9 0 012.9-1.821 10.019 10.019 0 013.7-.669 3.749 3.749 0 012 .849c.61.4 1.314.852 2.09 1.348a11.933 11.933 0 002.7 1.191 10.769 10.769 0 002.978.528q.164.006.327.006a10.745 10.745 0 003.306-.534 11.933 11.933 0 002.7-1.191c.785-.5 1.488-.954 2.09-1.347a3.745 3.745 0 012.005-.85 10.025 10.025 0 013.7.669 8.9 8.9 0 012.9 1.821 11.449 11.449 0 012.017 2.629 16.082 16.082 0 011.338 3.035 25.528 25.528 0 01.8 3.255 30.567 30.567 0 01.414 3.236c.069.975.1 1.993.1 3.026zm0 0"
-                    />
-                    <Path
-                      data-name="Path 2130"
-                      d="M21.046 24.674h-.006V0h.006a11.942 11.942 0 018.724 3.614 11.937 11.937 0 013.614 8.722 11.939 11.939 0 01-3.614 8.724 11.938 11.938 0 01-8.724 3.614zm0 0"
-                    />
-                    <Path
-                      data-name="Path 2131"
-                      d="M42.736 42.414a8.5 8.5 0 01-2.527 6.435 9.093 9.093 0 01-6.51 2.375h-12.66V28.659q.164.006.327.006a10.745 10.745 0 003.306-.534 11.933 11.933 0 002.7-1.191c.785-.5 1.488-.954 2.09-1.347a3.745 3.745 0 012.005-.85 10.026 10.026 0 013.7.669 8.9 8.9 0 012.9 1.821 11.448 11.448 0 012.017 2.629 16.083 16.083 0 011.338 3.035 25.536 25.536 0 01.8 3.255 30.57 30.57 0 01.414 3.236c.069.975.1 1.993.1 3.026zm0 0"
-                    />
-                  </G>
-                </Svg>
+                productImg
+                  ? productImg
+                  : editProduct
+                  ? editProduct.picture
+                    ? {uri: URL.concat(editProduct.picture)}
+                    : null
+                  : null
               }
               placeholder="Upload Photo"
               onCallBack={ProductImage}

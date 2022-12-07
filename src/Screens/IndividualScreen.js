@@ -890,6 +890,8 @@ export default function IndividualScreen(props) {
         degreeData={degreeList}
         index={eduIndex}
         CardData={data}
+        setEducationHistoryData={setEducationHistoryData}
+        educationHistoryData={educationHistoryData}
       />
       <JobHistoryModal
         isEdit
@@ -900,6 +902,8 @@ export default function IndividualScreen(props) {
         employeeType={employeeType}
         index={jobIndex}
         CardData={data}
+        setJobHistoryData={setJobHistoryData}
+        jobHistoryData={jobHistoryData}
       />
       <SkillModal
         isEdit

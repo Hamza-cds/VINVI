@@ -9,7 +9,7 @@ import {
 import Header from '../Components/Header';
 import ChatCard from '../Components/ChatCard';
 import Svg, {Path} from 'react-native-svg';
-import {Height, Width} from '../Constants/Constants';
+import {Height, URL, Width} from '../Constants/Constants';
 import {getAllConnectionRequest} from '../Apis/Repo';
 import {useSelector} from 'react-redux';
 import {isNullOrEmptyArray} from '../Constants/TextUtils';
@@ -97,11 +97,19 @@ const ChatsDashboardScreen = props => {
             contentContainerStyle={{paddingBottom: 70}}
             renderItem={({item, index}) => (
               <ChatCard
-                picture={require('../Assets/profilePic.png')}
-                lastMessage="Hi, I am there"
-                name="John Smith"
+                picture={
+                  item.user.profileImage
+                    ? {
+                        uri:
+                          'https://vinvi.dsmeglobal.com/' +
+                          item.user.profileImage,
+                      }
+                    : require('../Assets/profilePic.png')
+                }
+                // lastMessage="Hi, I am there"
+                name={item.user.firstName}
                 timeStamp="16:43"
-                badgeValue="3"
+                // badgeValue="3"
                 onPress={() => {
                   navigation.navigate('Messages', {
                     data: item.personalCard,

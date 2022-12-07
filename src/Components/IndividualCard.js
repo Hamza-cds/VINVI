@@ -71,7 +71,7 @@ export default function IndividualCard({
           id: item.id,
           connect: connectID.userConnectionId
             ? connectID.userConnectionId
-            : connectID.id,
+            : null,
         });
       }}
       activeOpacity={0.9}

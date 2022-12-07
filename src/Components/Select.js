@@ -36,7 +36,7 @@ export default function Select({
   isEdit,
   editText,
 }) {
-  // console.log('data', data);
+  console.log('editText', editText);
   const [openModal, setOpenModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
 

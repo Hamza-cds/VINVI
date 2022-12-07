@@ -25,6 +25,8 @@ const ChatsDashboardScreen = props => {
   let connectionID = props.route.params.connect;
   const myDATA = useSelector(state => state.UserData);
 
+  console.log('otherUserDATA', otherUserDATA);
+
   const navigation = props.navigation;
   let [messages, setMessages] = useState([]);
 
@@ -45,8 +47,6 @@ const ChatsDashboardScreen = props => {
         // flatListRef?.current.scrollToEnd({animated: true});
         console.log('messages++++', messages);
       });
-
-      newMessageReceiver(connection);
     }
   }, [connection]);
 
@@ -54,11 +54,12 @@ const ChatsDashboardScreen = props => {
     if (!isFocused) {
       connection.off('ReceiveMessageList');
       connection.off('ReceiveMessage');
+    } else {
+      newMessageReceiver(connection);
     }
   }, [isFocused]);
 
   useEffect(() => {
-    console.log('newMessageAction', newMessageAction);
     if (!isNullOrEmpty(newMessageAction)) {
       if (connectionID == newMessageAction.userConnectionId) {
         let newMessageArray = [...messages];
@@ -72,7 +73,7 @@ const ChatsDashboardScreen = props => {
     let object = {
       UserConnectionId: connectionID,
       FromUserId: myDATA.id,
-      ToUserId: otherUserDATA.id,
+      ToUserId: otherUserDATA.userId,
       Message: messageToSend,
     };
     console.log('object', object);
@@ -80,7 +81,6 @@ const ChatsDashboardScreen = props => {
       .invoke('SendMessage', object)
       .then(() => {
         console.log('message send hogya');
-
         setMessageToSend(null);
       })
       .catch(error => {

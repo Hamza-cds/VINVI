@@ -27,6 +27,8 @@ export function JobHistoryModal({
   jobhistoryarray,
   index,
   CardData,
+  setJobHistoryData,
+  jobHistoryData,
 }) {
   // console.log('isEdit', isEdit);
   // console.log('jobhistoryarray', jobhistoryarray);
@@ -162,8 +164,6 @@ export function JobHistoryModal({
     newEditModalJobObj.industryType = industry
       ? industry
       : newEditModalJobObj.industryType;
-    // console.log('newEditModalJobObj', newEditModalJobObj);
-    // console.log('jobhistoryarray onEdit', jobhistoryarray);
 
     let obj = {
       id: EditArrayJobHistory.id,
@@ -180,6 +180,9 @@ export function JobHistoryModal({
         // console.log('Edit Skill Data', data);
 
         if (data.data.status == 200 && data.data.success == true) {
+          setJobHistoryData(
+            (jobHistoryData = JSON.parse(data.data.result.personalValue)),
+          );
           setIsLoading(false);
           setModalVisible(false);
         } else {

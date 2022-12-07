@@ -27,8 +27,9 @@ export function EducationModal({
   CardData,
   index,
   educationarray,
+  setEducationHistoryData,
+  educationHistoryData,
 }) {
-  console.log('isEdit', isEdit);
   const [institute, setInstitute] = useState('');
   let [degree, setDegree] = useState('');
   // const [fieldOfStudy, setFieldOfStudy] = useState('');
@@ -51,11 +52,8 @@ export function EducationModal({
   const [endMonthErrorMsg, setEndMonthErrorMsg] = useState('');
   let [startMonthID, setStartMonthID] = useState('');
   let [endMonthID, setEndMonthID] = useState('');
-  // console.log('degree', degree);
-  // console.log('startDateMonth', startDateMonth);
-  // console.log('startDateYear', startDateYear);
-  // console.log('endDateMonth', endDateMonth);
-  // console.log('endDateYear', endDateYear);
+
+  console.log('editEdu', editEdu);
 
   const getYears = () => {
     let id = 1;
@@ -149,19 +147,80 @@ export function EducationModal({
   }
 
   const onEdit = () => {
-    if (isNullOrEmpty(institute)) {
-      alert('Enter institute');
-    } else if (isNullOrEmpty(startDateMonth)) {
-      alert('select start month');
-    } else if (isNullOrEmpty(startDateYear)) {
-      alert('select start year');
-    } else if (isNullOrEmpty(endDateMonth)) {
-      alert('select end month');
-    } else if (isNullOrEmpty(endDateYear)) {
-      alert('select end year');
-    } else if (isNullOrEmpty(degree)) {
-      alert('select degree');
-    } else {
+    if (isNullOrEmpty(index)) {
+      // if case start here
+
+      if (isNullOrEmpty(institute)) {
+        alert('Enter institute');
+      } else if (isNullOrEmpty(startDateMonth)) {
+        alert('select start month');
+      } else if (isNullOrEmpty(startDateYear)) {
+        alert('select start year');
+      } else if (isNullOrEmpty(endDateMonth)) {
+        alert('select end month');
+      } else if (isNullOrEmpty(endDateYear)) {
+        alert('select end year');
+      } else if (isNullOrEmpty(degree)) {
+        alert('select degree');
+      } else {
+        let newEditModalEduObj = educationarray[index];
+        newEditModalEduObj.degree = degree
+          ? degree.trim()
+          : newEditModalEduObj.degree;
+        newEditModalEduObj.institute = institute
+          ? institute.trim()
+          : newEditModalEduObj.institute;
+        newEditModalEduObj.startDateMonth = startDateMonth
+          ? startDateMonth
+          : newEditModalEduObj.startDateMonth;
+        newEditModalEduObj.startDateYear = startDateYear
+          ? startDateYear
+          : newEditModalEduObj.startDateYear;
+        newEditModalEduObj.endDateMonth = endDateMonth
+          ? endDateMonth
+          : newEditModalEduObj.endDateMonth;
+        newEditModalEduObj.endDateYear = endDateYear
+          ? endDateYear
+          : newEditModalEduObj.endDateYear;
+        // console.log('newEditModalEduObj', newEditModalEduObj);
+        // console.log('educationarray onEdit', educationarray);
+        // console.log('EditArrayEducation', EditArrayEducation);
+
+        let obj = {
+          id: EditArrayEducation.id,
+          ishidden: true,
+          personalCardId: CardData.id,
+          personalKey: 'Education',
+          personalValue: JSON.stringify(educationarray),
+        };
+
+        setIsLoading(true);
+        PersonalCardEditApiCall(obj)
+          // .then(res => res.json())
+          .then(data => {
+            // debugger;
+            // console.log('Edit Skill Data', data);
+
+            if (data.data.status == 200 && data.data.success == true) {
+              setIsLoading(false);
+              setModalVisible(false);
+            } else {
+              alert(data.message);
+              setIsLoading(false);
+              // console.log('ADD');
+            }
+          })
+          .catch(err => {
+            setIsLoading(false);
+            console.log('err', err);
+          });
+      }
+    }
+
+    // else case start here
+    else {
+      // existed education card editing
+
       let newEditModalEduObj = educationarray[index];
       newEditModalEduObj.degree = degree
         ? degree.trim()
@@ -181,9 +240,6 @@ export function EducationModal({
       newEditModalEduObj.endDateYear = endDateYear
         ? endDateYear
         : newEditModalEduObj.endDateYear;
-      // console.log('newEditModalEduObj', newEditModalEduObj);
-      // console.log('educationarray onEdit', educationarray);
-      // console.log('EditArrayEducation', EditArrayEducation);
 
       let obj = {
         id: EditArrayEducation.id,
@@ -197,10 +253,15 @@ export function EducationModal({
       PersonalCardEditApiCall(obj)
         // .then(res => res.json())
         .then(data => {
-          debugger;
-          // console.log('Edit Skill Data', data);
+          // debugger;
+          console.log('Edit education single card response', data);
 
           if (data.data.status == 200 && data.data.success == true) {
+            setEducationHistoryData(
+              (educationHistoryData = JSON.parse(
+                data.data.result.personalValue,
+              )),
+            );
             setIsLoading(false);
             setModalVisible(false);
           } else {
@@ -214,6 +275,7 @@ export function EducationModal({
           console.log('err', err);
         });
     }
+    // else case end here
   };
 
   const onAdd = () => {

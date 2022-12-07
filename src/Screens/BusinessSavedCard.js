@@ -7,7 +7,7 @@ import Loader from '../Components/Loader';
 import BuisnessCard from '../Components/BuisnessCard';
 import {useFocusEffect} from '@react-navigation/core';
 import IndividualCard from '../Components/IndividualCard';
-import {isNullOrEmptyArray} from '../Constants/TextUtils';
+import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function BusinessSavedCard(props) {
   let [userData, setUserData] = useState(null);
@@ -47,7 +47,8 @@ export default function BusinessSavedCard(props) {
           setdata(res.data.result);
           setIsLoading(false);
         } else {
-          setdata(data);
+          setIsLoading(false);
+          alert(data.data.message);
         }
       })
       .catch(err => {
@@ -83,6 +84,7 @@ export default function BusinessSavedCard(props) {
                 navigationPath="IndividualScreen"
                 type={'P'}
                 item={item.personalCard}
+                connectID={item.personalCard}
                 key={index}
               />
             )

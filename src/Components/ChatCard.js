@@ -35,7 +35,10 @@ export default function ChatCard({
       }}>
       <View
         style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-        <Image source={picture} style={{width: 55, height: 55}} />
+        <Image
+          source={picture}
+          style={{width: 55, height: 55, borderRadius: 30}}
+        />
         <View style={{marginLeft: 10}}>
           <Text style={{fontSize: 18, fontWeight: 'bold'}}>{name}</Text>
           <Text style={{fontSize: 14, color: '#3C50FF'}}>{lastMessage}</Text>
@@ -45,7 +48,7 @@ export default function ChatCard({
         <Text style={{fontSize: 14, color: LIGHT_TEXT_COLOR, marginBottom: 5}}>
           {timeStamp}
         </Text>
-        <View
+        {/* <View
           style={{
             backgroundColor: SECONDARY,
             width: 22,
@@ -55,7 +58,7 @@ export default function ChatCard({
             justifyContent: 'center',
           }}>
           <Text style={{color: WHITE}}>{badgeValue}</Text>
-        </View>
+        </View> */}
       </View>
     </TouchableOpacity>
   );

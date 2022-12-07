@@ -106,6 +106,7 @@ export function Education({
             }}
             onPress={() => {
               setAdd(true);
+              setEduIndex('');
             }}>
             <Text
               style={{

@@ -36,6 +36,7 @@ import {useSelector} from 'react-redux';
 
 const BusinessScreen = props => {
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategoryID, setSelectedCategoryID] = useState('');
   const [categoryWiseData, setCategoryWiseData] = useState('');
   const navigation = props.navigation;
   let [businessData, setBusinessData] = useState([]);
@@ -60,6 +61,7 @@ const BusinessScreen = props => {
   const [favorit, setFavorit] = useState(false);
   let [userData, setUserData] = useState(null);
   const [isSaved, setIsSaved] = useState('');
+  let [businessIndustry, setBusinessIndustry] = useState('');
   console.log('isSaved', isSaved);
 
   // console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
@@ -119,6 +121,9 @@ const BusinessScreen = props => {
             businessData.businessCategory[0].businessCategoryProduct,
           );
           setIsSaved(res.data.result.isSaved);
+          setBusinessIndustry(
+            (businessIndustry = businessData.industryTypeLookupDetail.name),
+          );
         } else {
           setIsLoading(false);
           alert('No record found.');
@@ -211,6 +216,8 @@ const BusinessScreen = props => {
   } else {
     arrayBusinessType = 'No Product Image';
   }
+
+  console.log('businessData', businessData);
 
   return (
     <SafeAreaView
@@ -539,7 +546,8 @@ const BusinessScreen = props => {
                 </Text>
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
-                  {arrayBusinessType}
+                  {/* {businessData.industryTypeLookupDetail.name} */}
+                  {businessIndustry ? businessIndustry : null}
                 </Text>
               </View>
             </View>
@@ -691,6 +699,8 @@ const BusinessScreen = props => {
 
             {isProductModalVisible ? (
               <AddorEditProductModal
+                selectedCategory={selectedCategory}
+                selectedCategoryID={selectedCategoryID}
                 visibleModal={isProductModalVisible}
                 setModalVisible={setIsProductModalVisible}
                 editProduct={editProduct}
@@ -712,6 +722,7 @@ const BusinessScreen = props => {
               <CategoryFilter
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
+                setSelectedCategoryID={setSelectedCategoryID}
                 setCategoryWiseData={setCategoryWiseData}
                 item={item}
                 setCategoryId={setCategoryObject}
@@ -759,8 +770,12 @@ const BusinessScreen = props => {
             horizontal={true}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => (
+              // console.log('categoryWiseData', item)
               <ProductCard
                 item={item}
+                index={index}
+                selectedCategory={selectedCategory}
+                // selectedCategoryID={selectedCategoryID}
                 isEdit={isEdit}
                 setIsProductModalVisible={setIsProductModalVisible}
                 setEditProduct={setEditProduct}
@@ -810,6 +825,7 @@ function CategoryFilter({
   setCategoryWiseData,
   setCategoryId,
   setBusinessCardIdFk,
+  setSelectedCategoryID,
 }) {
   // console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
   return (
@@ -819,6 +835,7 @@ function CategoryFilter({
         setBusinessCardIdFk(item.businessCardIdFk);
         setCategoryId(item.id);
         setSelectedCategory(item.name);
+        setSelectedCategoryID(item.id);
       }}
       style={{
         backgroundColor: selectedCategory === item.name ? PRIMARY : FIFTH,

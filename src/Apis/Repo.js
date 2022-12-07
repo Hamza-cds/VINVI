@@ -110,18 +110,18 @@ export async function businessCardApiCall(formdata) {
 }
 
 export async function editBusinessCardApiCall(formdata) {
-  let route = URL.concat('/api/BusinessCard/EditCategoryList');
+  let route = URL.concat('api/BusinessCard/EditCategoryList');
   console.log(route, formdata);
 
   var requestOptions = {
     method: 'POST',
     body: formdata,
     redirect: 'follow',
-    Accept: '*/*',
+    // Accept: '*/*',
   };
 
   return fetch(
-    'https://vinvi.dsmeglobal.com//api/BusinessCard/EditCategoryList',
+    'https://vinvi.dsmeglobal.com/api/BusinessCard/EditCategoryList',
     requestOptions,
   );
 }

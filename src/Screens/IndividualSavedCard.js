@@ -14,7 +14,7 @@ export default function IndividualSavedCard(props) {
   let [userData, setUserData] = useState(null);
   let status = 0;
   const [data, setdata] = useState([]);
-  // console.log('data', data);
+  console.log('data', data);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +47,8 @@ export default function IndividualSavedCard(props) {
           setdata(res.data.result);
           setIsLoading(false);
         } else {
-          setdata(data);
+          setIsLoading(false);
+          alert(data.data.message);
         }
       })
       .catch(err => {
@@ -71,7 +72,7 @@ export default function IndividualSavedCard(props) {
               navigation={props.navigation}
               navigationPath="IndividualScreen"
               item={item.personalCard}
-              connectID={item}
+              connectID={item.personalCard}
               key={index}
             />
           )}

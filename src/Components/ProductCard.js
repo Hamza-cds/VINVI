@@ -14,12 +14,20 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function ProductCard({
   item,
+  index,
   isEdit,
   setIsProductModalVisible,
   setEditProduct,
   setEdit,
   onPress,
+  selectedCategory,
+  // selectedCategoryID,
 }) {
+  console.log('ye raha item object', selectedCategory);
+  let newItemObj = item;
+  newItemObj.categoryName = selectedCategory;
+  newItemObj.index = index;
+
   return (
     <View
       style={{
@@ -75,7 +83,7 @@ export default function ProductCard({
           <TouchableOpacity
             onPress={() => {
               setEdit(true);
-              setEditProduct(item);
+              setEditProduct(newItemObj);
               setIsProductModalVisible(true);
             }}
             style={{

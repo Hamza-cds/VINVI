@@ -17,6 +17,7 @@ import UploadBtn from '../Components/UploadBtn';
 import BtnComponent from '../Components/BtnComponent';
 import {businessCardApiCall} from '../Apis/Repo';
 import Loader from '../Components/Loader';
+import {URL} from '../Constants/Constants';
 
 export default function EditBusinessCardModal({
   modalVisible,
@@ -48,7 +49,7 @@ export default function EditBusinessCardModal({
     formdata.append('PhoneNo', phone ? phone : bCardData.phoneNo);
     formdata.append(
       'IndustryTypeLookupDetailId',
-      industry ? industry.id : null,
+      industry ? industry.id : bCardData.industryTypeLookupDetail.id,
     );
     formdata.append('Address', address ? address : bCardData.address);
     formdata.append(
@@ -96,6 +97,7 @@ export default function EditBusinessCardModal({
       .then(data => {
         console.log('edit business response', data);
         if (data.status === 200 && data.success === true) {
+          alert(data.message);
           setIsLoading(false);
           setModalVisible(!modalVisible);
           // dispatch(BCDComplete(''));
@@ -205,7 +207,15 @@ export default function EditBusinessCardModal({
                 placeholder={'Industry type'}
                 data={industryType}
                 onCallBack={setIndustryType}
-                editText={industry.name}
+                editText={
+                  industry.name
+                    ? industry.name
+                    : bCardData
+                    ? bCardData.industryTypeLookupDetail
+                      ? bCardData.industryTypeLookupDetail.name
+                      : null
+                    : null
+                }
               />
               <OutlinedInputBox
                 placeholder="Any Other Information"
@@ -342,14 +352,36 @@ export default function EditBusinessCardModal({
               </View>
 
               <UploadBtn
-                svg={logo}
+                svg={
+                  logo
+                    ? logo
+                    : bCardData
+                    ? bCardData.logo
+                      ? {
+                          path:
+                            'https://vinvi.dsmeglobal.com/' + bCardData.logo,
+                        }
+                      : null
+                    : null
+                }
                 label={'Upload Logo Picture'}
                 placeholder="Upload Logo"
                 onCallBack={logoImage}
               />
 
               <UploadBtn
-                svg={cover}
+                svg={
+                  cover
+                    ? cover
+                    : bCardData
+                    ? bCardData.cover
+                      ? {
+                          path:
+                            'https://vinvi.dsmeglobal.com/' + bCardData.cover,
+                        }
+                      : null
+                    : null
+                }
                 label={'Upload Cover Picture'}
                 placeholder="Upload Cover"
                 onCallBack={coverImage}

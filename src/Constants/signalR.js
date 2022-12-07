@@ -47,6 +47,7 @@ export const startConnection = connection => {
 };
 
 export const newMessageReceiver = connection => {
+  // debugger;
   connection.on('ReceiveMessage', messageData => {
     console.log('messageData', messageData);
     store.dispatch(newMessageAction(messageData));
