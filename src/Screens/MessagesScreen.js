@@ -70,22 +70,24 @@ const ChatsDashboardScreen = props => {
   }, [newMessageAction]);
 
   const onSendMessage = () => {
-    let object = {
-      UserConnectionId: connectionID,
-      FromUserId: myDATA.id,
-      ToUserId: otherUserDATA.userId,
-      Message: messageToSend,
-    };
-    console.log('object', object);
-    connection
-      .invoke('SendMessage', object)
-      .then(() => {
-        console.log('message send hogya');
-        setMessageToSend(null);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
+    if (!isNullOrEmpty(messageToSend)) {
+      let object = {
+        UserConnectionId: connectionID,
+        FromUserId: myDATA.id,
+        ToUserId: otherUserDATA.userId,
+        Message: messageToSend,
+      };
+      console.log('object', object);
+      connection
+        .invoke('SendMessage', object)
+        .then(() => {
+          console.log('message send hogya');
+          setMessageToSend(null);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    }
   };
 
   return (

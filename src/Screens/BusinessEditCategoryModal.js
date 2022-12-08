@@ -33,8 +33,8 @@ export default function BusinessEditCategoryModal({
 
   const [categoryName, setCategoryName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  console.log('selectedCategory', selectedCategory);
-  console.log('categoryId', categoryId);
+  // console.log('selectedCategory', selectedCategory);
+  // console.log('categoryId', categoryId);
 
   const onDeleteCategory = () => {
     if (isNullOrEmpty(categoryId)) {
@@ -66,6 +66,9 @@ export default function BusinessEditCategoryModal({
   };
 
   const onEdit = () => {
+    console.log('categoryId', categoryId);
+    console.log('BusinessCardId', BusinessCardId);
+
     let obj = {
       Id: categoryId,
       Name: categoryName ? categoryName : selectedCategory,
@@ -90,6 +93,7 @@ export default function BusinessEditCategoryModal({
         }
       })
       .catch(err => {
+        setIsLoading(false);
         console.log('err', err);
       });
   };

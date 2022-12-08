@@ -10,7 +10,7 @@ import {
 import {GetDataVideoWallApi} from '../Apis/Repo';
 import Loader from '../Components/Loader';
 import {GREY, PRIMARY, WHITE} from '../Constants/Colors';
-import {URL} from '../Constants/Constants';
+import {Height, URL} from '../Constants/Constants';
 import Header from '../Components/Header';
 import Feather from 'react-native-vector-icons/Feather';
 import BtnComponent from '../Components/BtnComponent';
@@ -22,6 +22,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {storyPostApiCall} from '../Apis/Repo';
 import {isValidVideo} from '../Constants/Validations';
 import Video from 'react-native-video';
+import {isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function VideoWallScreen({navigation, route}) {
   const [numOfColoums, setNumOfColoums] = useState(6);
@@ -154,7 +155,7 @@ export default function VideoWallScreen({navigation, route}) {
           }}
         />
 
-        {data != null ? (
+        {!isNullOrEmptyArray(data) ? (
           <FlatList
             data={data}
             horizontal={false}
@@ -195,7 +196,8 @@ export default function VideoWallScreen({navigation, route}) {
               justifyContent: 'center',
               alignItems: 'center',
               width: '100%',
-              height: 300,
+              position: 'absolute',
+              top: Height - Height / 2,
             }}>
             <Text style={{color: '#242424'}}>No data!</Text>
           </View>
@@ -210,9 +212,12 @@ export default function VideoWallScreen({navigation, route}) {
             width: 50,
             backgroundColor: PRIMARY,
             borderRadius: 50,
-            alignSelf: 'flex-end',
-            marginRight: 20,
-            marginBottom: 20,
+            position: 'absolute',
+            bottom: 10,
+            right: 10,
+            // alignSelf: 'flex-end',
+            // marginRight: 20,
+            // marginBottom: 20,
           }}>
           <Feather
             name="upload"

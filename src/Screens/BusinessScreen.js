@@ -62,9 +62,9 @@ const BusinessScreen = props => {
   let [userData, setUserData] = useState(null);
   const [isSaved, setIsSaved] = useState('');
   let [businessIndustry, setBusinessIndustry] = useState('');
-  console.log('isSaved', isSaved);
+  console.log('isSaved', businessData);
 
-  // console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
+  console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -117,6 +117,8 @@ const BusinessScreen = props => {
           setIsLoading(false);
           setBusinessData((businessData = res.data.result));
           setSelectedCategory(businessData.businessCategory[0].name);
+          setCategoryObject(businessData.businessCategory[0].id);
+          setBusinessCardId(businessData.businessCategory[0].businessCardIdFk);
           setCategoryWiseData(
             businessData.businessCategory[0].businessCategoryProduct,
           );
@@ -793,12 +795,12 @@ const BusinessScreen = props => {
               marginVertical: 50,
               alignItems: 'center',
             }}>
-            <QRCode
+            {/* <QRCode
               value={QRCODE_URL}
               logoSize={50}
               logoBackgroundColor="transparent"
               color={SECONDARY}
-            />
+            /> */}
           </View>
           <BtnComponent placeholder="Block" onPress={() => {}} />
         </View>
@@ -827,7 +829,6 @@ function CategoryFilter({
   setBusinessCardIdFk,
   setSelectedCategoryID,
 }) {
-  // console.log('IAHINSJdIOJOSIDFHASDOIASD', item);
   return (
     <TouchableOpacity
       onPress={() => {

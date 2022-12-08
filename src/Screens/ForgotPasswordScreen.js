@@ -215,8 +215,8 @@ const ForgetPasswordScreen = props => {
             <BtnComponent
               placeholder="Send Code"
               onPress={() => {
-                // onSend();
-                navigation.navigate('PhoneVerification');
+                onSend();
+                // navigation.navigate('PhoneVerification');
               }}
             />
           </View>

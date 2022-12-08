@@ -87,7 +87,7 @@ export default function IndividualScreen(props) {
   let [jobHistoryData, setJobHistoryData] = useState([]);
   let [educationHistoryData, setEducationHistoryData] = useState([]);
   const [stop, setStop] = useState(false);
-  console.log('degreeList', degreeList);
+  // console.log('degreeList', degreeList);
   var date = new Date();
   let DATA = useSelector(state => state.UserData);
   let ciphertext = CryptoJS.AES.encrypt(
@@ -263,7 +263,7 @@ export default function IndividualScreen(props) {
     let check = CryptoJS.AES.decrypt(scanById, 'secret key 123');
     let decryptedData = check.toString(CryptoJS.enc.Utf8);
     var scName = decryptedData.split('|')[1];
-    console.log('sapna sapna sapna', scName);
+    // console.log('sapna sapna sapna', scName);
 
     if (!isNullOrEmpty(ID)) {
       setIsLoading(true);
@@ -290,7 +290,7 @@ export default function IndividualScreen(props) {
       let bytes = CryptoJS.AES.decrypt(scanById, 'secret key 123');
       let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
       var id = decryptedData.split('_')[1];
-      console.log('here is id ', id);
+      // console.log('here is id ', id);
 
       setIsLoading(true);
       getPersonalCardByIdApiCall(id, 0)
@@ -314,7 +314,7 @@ export default function IndividualScreen(props) {
       let bytes = CryptoJS.AES.decrypt(scanById, 'secret key 123');
       let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
       var id = decryptedData.split('_')[1];
-      console.log('here is id ', id);
+      // console.log('here is id ', id);
 
       setIsLoading(true);
       getPersonalCardByUserIdApiCall(id)
@@ -437,7 +437,7 @@ export default function IndividualScreen(props) {
     saveCardAPiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('response', data);
+        console.log('saved personal response', data);
         setIsLoading(false);
       })
       .catch(err => {
@@ -458,7 +458,7 @@ export default function IndividualScreen(props) {
     deleteSavedCardApiCall(obj)
       // .then(res => res.json())
       .then(data => {
-        console.log('response', data);
+        console.log('delete personal response', data);
         setIsLoading(false);
       })
       .catch(err => {
@@ -651,7 +651,6 @@ export default function IndividualScreen(props) {
                     onCardUnSave();
                   } else {
                     setFavorit(true);
-                    console.log('what 1');
                     onCardSave();
                   }
                 }}>

@@ -6,15 +6,17 @@ import {URL} from '../Constants/Constants';
 import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function DashboardStories({userStories}) {
-  const [data, setData] = useState([]);
-  console.log('stories ***************', userStories);
+  let [data, setData] = useState([]);
+  // console.log('stories ***************', userStories);
+
+  // console.log('stories data ***************', data);
 
   useEffect(() => {
     mapData(userStories);
-  }, [userStories.length]);
+  }, [userStories]);
 
   const mapData = list => {
-    console.log('list*************', list);
+    // console.log('list*************', list);
     let finalList = [];
 
     if (list.length > 0) {
@@ -45,7 +47,10 @@ export default function DashboardStories({userStories}) {
         };
         list.length > 0 ? finalList.push(object) : finalList;
       }
-      setData(finalList);
+
+      setData([]);
+      // debugger;
+      setData((data = finalList));
     } else {
       setData([]);
     }

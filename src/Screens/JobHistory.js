@@ -16,8 +16,8 @@ export function JobHistory({
   setJobHistoryData,
 }) {
   // let [jobHistoryData, setJobHistoryData] = useState([]);
-  console.log('arrayjobhistory', arrayjobhistory);
-  console.log('jobHistoryData', jobHistoryData);
+  // console.log('arrayjobhistory', arrayjobhistory);
+  // console.log('jobHistoryData', jobHistoryData);
 
   useEffect(() => {
     if (jobHistoryData.length <= 0) {

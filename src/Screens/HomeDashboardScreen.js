@@ -8,6 +8,8 @@ import {
   Text,
   TextInput,
   ActivityIndicator,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import IndividualCard from '../Components/IndividualCard';
 import BuisnessCard from '../Components/BuisnessCard';
@@ -18,6 +20,7 @@ import {
   getPersonalCardAllActiveApiCall,
   getBusinessCardAllActiveApiCall,
   searchIndividualApiCall,
+  searchBusinessApiCall,
   storyPostApiCall,
   DashboardStoriesApiCall,
 } from '../Apis/Repo';
@@ -56,11 +59,27 @@ export default function HomeDashboardScreen({navigation, route}) {
 
   const DATA = useSelector(state => state.UserData);
 
+  const askPermission = async () => {
+    if (Platform.OS == 'android') {
+      const permissionAndroid = await PermissionsAndroid.check(
+        'android.permission.CAMERA',
+      );
+      if (permissionAndroid != PermissionsAndroid.RESULTS.granted) {
+        const reqPer = await PermissionsAndroid.request(
+          'android.permission.CAMERA',
+        );
+        if (reqPer != 'granted') {
+          return false;
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       hubConnectionBuilder(userData.id);
-      // getDashboardStories();
+      askPermission();
       console.log('userdata', userData);
     });
   }, []);
@@ -80,9 +99,9 @@ export default function HomeDashboardScreen({navigation, route}) {
     }
 
     var mediaType = storyMedia.type;
-    console.log('mediaType', mediaType);
+    // console.log('mediaType', mediaType);
     var type = mediaType.split('/')[1];
-    console.log('type', type);
+    // console.log('type', type);
     setImageType((imageType = type));
 
     var formdata = new FormData();
@@ -112,7 +131,7 @@ export default function HomeDashboardScreen({navigation, route}) {
           // console.log('after push arr', newArr);
           // setUserStories((userStories = newArr));
           // console.log('final arr', userStories);
-          setIsLoading(false);
+          // setIsLoading(false);
           alert('successfully posted');
         } else {
           setIsLoading(false);
@@ -126,9 +145,10 @@ export default function HomeDashboardScreen({navigation, route}) {
   };
 
   const getDashboardStories = () => {
+    // debugger;
     setIsLoading(true);
     DashboardStoriesApiCall(page, limit)
-      .then(res => {
+      .then(async res => {
         console.log('stories res', res);
         if (res.data.success) {
           setUserStories((userStories = res.data.result));
@@ -190,6 +210,7 @@ export default function HomeDashboardScreen({navigation, route}) {
           }
           console.log('business response', data);
           setBusinessData(data.result);
+          setIndicator(false);
           console.log('buisnessData', businessData);
         } else {
           setIsLoading(false);
@@ -201,7 +222,7 @@ export default function HomeDashboardScreen({navigation, route}) {
       });
   };
 
-  console.log('selected page', selectedPage);
+  // console.log('selected page', selectedPage);
 
   const onChangeHandler = value => {
     clearTimeout(timeout.current);
@@ -212,36 +233,93 @@ export default function HomeDashboardScreen({navigation, route}) {
   };
 
   const onCheck = () => {
-    // setIsLoading(true);
-    searchIndividualApiCall(limit, page, search)
-      .then(({data}) => {
-        console.log('search response', data);
-        if (data.success == true) {
-          for (let index = 0; index < data.result.length; index++) {
-            const element = data.result[index];
-            element.value = element.name;
-            element.key = JSON.stringify(element.id);
-          }
-          // setIsLoading(false);
-          if (selectedPage == 0) {
+    if (selectedPage == 0) {
+      searchIndividualApiCall(limit, page, search)
+        .then(({data}) => {
+          console.log('search response', data);
+          if (data.success == true) {
+            for (let index = 0; index < data.result.length; index++) {
+              const element = data.result[index];
+              element.value = element.name;
+              element.key = JSON.stringify(element.id);
+            }
             setIndividualData(data.result);
             setIndicator(false);
-          } else if (selectedPage == 1) {
+            // setIsLoading(false);
+            // if (selectedPage == 0) {
+            //   setIndividualData(data.result);
+            //   setIndicator(false);
+            // } else if (selectedPage == 1) {
+            //   setBusinessData(data.result);
+            // }
+          } else {
+            setIndicator(false);
+            alert(data.message);
+          }
+        })
+        .catch(err => {
+          setIndicator(false);
+          console.log('err', err);
+        });
+    } else if (selectedPage == 1) {
+      searchBusinessApiCall(limit, page, search)
+        .then(({data}) => {
+          console.log('search response', data);
+          if (data.success == true) {
+            for (let index = 0; index < data.result.length; index++) {
+              const element = data.result[index];
+              element.value = element.name;
+              element.key = JSON.stringify(element.id);
+            }
             setBusinessData(data.result);
+            setIndicator(false);
+            // setIsLoading(false);
+            // if (selectedPage == 0) {
+            //   setIndividualData(data.result);
+            //   setIndicator(false);
+            // } else if (selectedPage == 1) {
+            //   setBusinessData(data.result);
+            // }
+          } else {
+            setIndicator(false);
+            // alert(data.message);
           }
-        } else {
-          // setIsLoading(false);
-          if (selectedPage == 0) {
-            setIndividualData([]);
-          } else if (selectedPage == 1) {
-            setBusinessData([]);
-          }
-        }
-      })
-      .catch(err => {
-        // setIsLoading(false);
-        console.log('err', err);
-      });
+        })
+        .catch(err => {
+          setIndicator(false);
+          console.log('err', err);
+        });
+    }
+    // // setIsLoading(true);
+    // searchIndividualApiCall(limit, page, search)
+    //   .then(({data}) => {
+    //     console.log('search response', data);
+    //     if (data.success == true) {
+    //       for (let index = 0; index < data.result.length; index++) {
+    //         const element = data.result[index];
+    //         element.value = element.name;
+    //         element.key = JSON.stringify(element.id);
+    //       }
+    //       // setIsLoading(false);
+    //       if (selectedPage == 0) {
+    //         setIndividualData(data.result);
+    //         setIndicator(false);
+    //       } else if (selectedPage == 1) {
+    //         setBusinessData(data.result);
+    //       }
+    //     } else {
+    //       // setIsLoading(false);
+    //       if (selectedPage == 0) {
+    //         setIndividualData([]);
+    //       } else if (selectedPage == 1) {
+    //         setBusinessData([]);
+    //       }
+    //     }
+    //   })
+    //   .catch(err => {
+    //     // setIsLoading(false);
+    //     console.log('err', err);
+    //   });
   };
 
   return (
@@ -497,6 +575,19 @@ export default function HomeDashboardScreen({navigation, route}) {
               <Text style={{color: '#242424'}}>No record found</Text>
             </View>
           )}
+          <View
+            style={{
+              position: 'absolute',
+              top: 150,
+              left: 0,
+              right: 0,
+            }}>
+            <ActivityIndicator
+              animating={indicator}
+              size="large"
+              color={'white'}
+            />
+          </View>
         </View>
       </PagerView>
 

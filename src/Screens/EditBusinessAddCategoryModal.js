@@ -49,6 +49,7 @@ export default function EditBusinessAddCategoryModal({
           }
         })
         .catch(err => {
+          setIsLoading(false);
           console.log('err', err);
         });
     }

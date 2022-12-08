@@ -53,7 +53,7 @@ export function EducationModal({
   let [startMonthID, setStartMonthID] = useState('');
   let [endMonthID, setEndMonthID] = useState('');
 
-  console.log('editEdu', editEdu);
+  // console.log('editEdu', editEdu);
 
   const getYears = () => {
     let id = 1;
@@ -306,12 +306,12 @@ export function EducationModal({
   };
 
   const FunDegree = value => {
-    console.log('FunDegree', value);
+    // console.log('FunDegree', value);
     setDegree((degree = value.name));
   };
 
   const FunstartDateYear = value => {
-    console.log('FunstartDateYear', value);
+    // console.log('FunstartDateYear', value);
     if (!isNullOrEmpty(endDateYear)) {
       setStartDateYear((startDateYear = value.name));
       if (value.name < endDateYear) {
@@ -326,7 +326,7 @@ export function EducationModal({
   };
 
   const FunendDateYear = value => {
-    console.log('FunendDateYear', value);
+    // console.log('FunendDateYear', value);
     setEndDateYear((endDateYear = value.name));
     if (value.name >= startDateYear) {
       setEndYearError(false);
@@ -357,7 +357,7 @@ export function EducationModal({
   };
 
   const FunendDateMonth = value => {
-    console.log('value', value);
+    // console.log('value', value);
     setEndMonthID((endMonthID = value.id));
     if (startDateYear == endDateYear) {
       if (!isNullOrEmpty(startDateMonth)) {

@@ -213,7 +213,7 @@ export default function NewCardScreen({navigation, route}) {
             />
           </View>
           <BtnComponent
-            placeholder="Sa>ve"
+            placeholder="Save"
             onPress={() => {
               onSave();
             }}

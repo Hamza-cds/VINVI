@@ -14,8 +14,8 @@ export function Education({
   setEducationHistoryData,
   educationHistoryData,
 }) {
-  console.log('arrayeducation', arrayeducation);
-  console.log('educationHistoryData', educationHistoryData);
+  // console.log('arrayeducation', arrayeducation);
+  // console.log('educationHistoryData', educationHistoryData);
 
   useEffect(() => {
     if (educationHistoryData.length <= 0) {

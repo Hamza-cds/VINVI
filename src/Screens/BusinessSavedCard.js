@@ -11,7 +11,7 @@ import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function BusinessSavedCard(props) {
   let [userData, setUserData] = useState(null);
-  const [data, setdata] = useState([]);
+  let [data, setdata] = useState([]);
   const type = 2;
   console.log('saved data', data);
 
@@ -43,12 +43,13 @@ export default function BusinessSavedCard(props) {
     GetSavedCardByIdApiCall(DATA.id, type)
       .then(res => {
         console.log('saved response', res);
-        if (res.data.success == true) {
-          setdata(res.data.result);
+        if (!isNullOrEmpty(res.data.result)) {
+          setdata((data = res.data.result));
           setIsLoading(false);
         } else {
           setIsLoading(false);
-          alert(data.data.message);
+          setdata([]);
+          // alert(res.data.message);
         }
       })
       .catch(err => {

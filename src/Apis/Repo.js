@@ -299,6 +299,22 @@ export async function searchIndividualApiCall(Limit, Page, search) {
     return apiRes;
   }
 }
+export async function searchBusinessApiCall(Limit, Page, search) {
+  let route = `/api/BusinessCard/Search?limit=${Limit}&page=${Page}&name=${search}`;
+  let apiRes = null;
+  try {
+    apiRes = await axios({
+      method: 'GET',
+      url: URL + route,
+    });
+    console.log('searchBusinessApiCall Request : ', apiRes);
+  } catch (err) {
+    apiRes = err;
+    return apiRes;
+  } finally {
+    return apiRes;
+  }
+}
 export async function LookupDetailApiCall(id) {
   let route = `/api/LookupDetail/GetByLookupId?id=${id}`;
   let apiRes = null;

@@ -27,13 +27,6 @@ export default function SearchScreen({navigation, route}) {
     setSelectedPage(event.nativeEvent.position);
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      console.log('test DATA', testData);
-      setRefresh(true);
-    }, [testData]),
-  );
-
   // my qr code requirements start
 
   var date = new Date();
@@ -56,7 +49,6 @@ export default function SearchScreen({navigation, route}) {
   // scan screen requirements start
 
   let [testData, setTestData] = useState('');
-  let [refresh, setRefresh] = useState(true);
   // scan screen requirements end
 
   return (
@@ -197,12 +189,11 @@ export default function SearchScreen({navigation, route}) {
                 width: '100%',
                 height: '100%',
               }}
-              scanBarcode={refresh}
               ratioOverlay={['16:9', '1:1', '3:4']}
               onReadCode={event => {
+                console.log('event', event);
                 setTestData((testData = event.nativeEvent.codeStringValue));
                 setTestData('');
-                setRefresh((refresh = false));
                 navigation.navigate('IndividualScreen', {
                   param: testData,
                 });
