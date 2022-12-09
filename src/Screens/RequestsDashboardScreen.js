@@ -115,7 +115,11 @@ export default function RequestsDashboardScreen({navigation}) {
               />
             )}
           />
-        ) : null}
+        ) : (
+          <Text style={{alignSelf: 'center', marginTop: 250}}>
+            No requests recieved yet
+          </Text>
+        )}
         {isLoading ? <Loader /> : null}
       </ImageBackground>
     </SafeAreaView>

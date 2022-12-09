@@ -179,7 +179,7 @@ export default function NewBusinessCardScreen1(props) {
         variant="white"
         headerName="Add Card"
         onPress={() => {
-          props.navigation.navigate('AddCard');
+          props.navigation.goBack();
         }}
       />
       <ScrollView style={{flex: 1}}>

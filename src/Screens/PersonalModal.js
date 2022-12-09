@@ -147,8 +147,8 @@ export function PersonalModal({
     formdata.append('id', JSON.stringify(CardData.id));
     formdata.append('PhoneNo', '');
     formdata.append('Address', CardData.address);
-    // formdata.append('ProfilePicture', CardData.profilePicture);
-    // formdata.append('CoverPicture', CardData.coverPicture);
+    formdata.append('ProfilePicture', CardData.profilePicture);
+    formdata.append('CoverPicture', CardData.coverPicture);
     // CardData.profilePicture
     // CardData.coverPicture
     for (let index = 0; index < PersonalCardMeta.length; index++) {
@@ -284,7 +284,7 @@ export function PersonalModal({
               }}
             />
             <OutlinedInputBox
-              placeholder="Achevements"
+              placeholder="Achievements"
               inputType="text"
               text={
                 arrayachievment.personalValue

@@ -121,7 +121,7 @@ const ChatsDashboardScreen = props => {
           />
         ) : (
           <Text style={{alignSelf: 'center', marginTop: 250}}>
-            No saved cards
+            No chats yet
           </Text>
         )}
 

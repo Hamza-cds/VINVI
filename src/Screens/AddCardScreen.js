@@ -19,7 +19,7 @@ export default function AddCardScreen(props, navigation) {
           onPress={() => {
             props.navigation.reset({
               index: 0,
-              routes: [{name: 'Home'}],
+              routes: [{name: 'Dashboard'}],
             });
           }}
         />

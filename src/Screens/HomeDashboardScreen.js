@@ -36,6 +36,8 @@ import PagerView from 'react-native-pager-view';
 // import {Height, Width} from '../Constants/Constants';
 import {hubConnectionBuilder} from '../Constants/signalR';
 import {useSelector} from 'react-redux';
+import {URL} from '../Constants/Constants';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 
 export default function HomeDashboardScreen({navigation, route}) {
   let [storyMedia, setStoryMedia] = useState('');
@@ -54,33 +56,31 @@ export default function HomeDashboardScreen({navigation, route}) {
   let page = 1;
   let limit = 10;
   // let value = null;
-  // console.log('search', search);
-  // console.log('userStories', userStories);
 
   const DATA = useSelector(state => state.UserData);
 
-  const askPermission = async () => {
-    if (Platform.OS == 'android') {
-      const permissionAndroid = await PermissionsAndroid.check(
-        'android.permission.CAMERA',
-      );
-      if (permissionAndroid != PermissionsAndroid.RESULTS.granted) {
-        const reqPer = await PermissionsAndroid.request(
-          'android.permission.CAMERA',
-        );
-        if (reqPer != 'granted') {
-          return false;
-        }
-      }
-    }
-  };
+  // const askPermission = async () => {
+  //   if (Platform.OS == 'android') {
+  //     const permissionAndroid = await PermissionsAndroid.check(
+  //       'android.permission.CAMERA',
+  //     );
+  //     if (permissionAndroid != PermissionsAndroid.RESULTS.granted) {
+  //       const reqPer = await PermissionsAndroid.request(
+  //         'android.permission.CAMERA',
+  //       );
+  //       if (reqPer != 'granted') {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       hubConnectionBuilder(userData.id);
       askPermission();
-      console.log('userdata', userData);
+      // console.log('userdata', userData);
     });
   }, []);
 
@@ -116,22 +116,15 @@ export default function HomeDashboardScreen({navigation, route}) {
       type: storyMedia.type,
     });
 
-    console.log('formdata', formdata);
+    // console.log('formdata', formdata);
 
     setIsLoading(true);
     storyPostApiCall(formdata)
       .then(res => res.json())
       .then(data => {
-        console.log('stories post response', data);
+        // console.log('stories post response', data);
         if (data.status == 200 && data.success == true) {
           getDashboardStories();
-          // let newArr = userStories;
-          // console.log('before push arr', newArr);
-          // newArr.push(data.result);
-          // console.log('after push arr', newArr);
-          // setUserStories((userStories = newArr));
-          // console.log('final arr', userStories);
-          // setIsLoading(false);
           alert('successfully posted');
         } else {
           setIsLoading(false);
@@ -151,8 +144,7 @@ export default function HomeDashboardScreen({navigation, route}) {
       .then(async res => {
         console.log('stories res', res);
         if (res.data.success) {
-          setUserStories((userStories = res.data.result));
-          setIsLoading(false);
+          storiesMapData(res.data.result);
         } else {
           setIsLoading(false);
           // alert('No stories found.');
@@ -162,6 +154,45 @@ export default function HomeDashboardScreen({navigation, route}) {
         setIsLoading(false);
         console.log('err', err);
       });
+  };
+
+  const storiesMapData = list => {
+    let newList = [...list];
+    let finalList = [];
+
+    for (let index = 0; index < newList.length; index++) {
+      let element = newList[index];
+      // console.log('element element', element);
+
+      let storiesArray = [];
+      for (let index = 0; index < element.stories.length; index++) {
+        const item = element.stories[index];
+        let storiesObject = {
+          story_id: item.id,
+          story_image: !isNullOrEmpty(item.media)
+            ? URL.concat(item.media)
+            : null,
+          swipeText: item.title,
+        };
+        storiesArray.push(storiesObject);
+      }
+
+      let object = {
+        user_id: element.userId,
+        user_image: !isNullOrEmpty(element.profilePicture)
+          ? URL.concat(element.profilePicture)
+          : null,
+        user_name: element.userName,
+        stories: storiesArray,
+      };
+      if (newList.length > 0) finalList.push(object);
+      else finalList;
+    }
+
+    console.log('finalList', finalList);
+    setUserStories([]);
+    setUserStories((userStories = finalList));
+    setIsLoading(false);
   };
 
   const handlePageChange = pageNumber => {
@@ -184,7 +215,7 @@ export default function HomeDashboardScreen({navigation, route}) {
             element.value = element.name;
             element.key = JSON.stringify(element.id);
           }
-          console.log('Individual response', data.result);
+          // console.log('Individual response', data.result);
           setIsLoading(false);
           setIndividualData(data.result);
         } else {
@@ -208,10 +239,10 @@ export default function HomeDashboardScreen({navigation, route}) {
             element.value = element.name;
             element.key = JSON.stringify(element.id);
           }
-          console.log('business response', data);
+          // console.log('business response', data);
           setBusinessData(data.result);
           setIndicator(false);
-          console.log('buisnessData', businessData);
+          // console.log('buisnessData', businessData);
         } else {
           setIsLoading(false);
           setBusinessData([]);
@@ -235,8 +266,8 @@ export default function HomeDashboardScreen({navigation, route}) {
   const onCheck = () => {
     if (selectedPage == 0) {
       searchIndividualApiCall(limit, page, search)
-        .then(({data}) => {
-          console.log('search response', data);
+        .then(async ({data}) => {
+          // console.log('search response', data);
           if (data.success == true) {
             for (let index = 0; index < data.result.length; index++) {
               const element = data.result[index];
@@ -264,7 +295,7 @@ export default function HomeDashboardScreen({navigation, route}) {
     } else if (selectedPage == 1) {
       searchBusinessApiCall(limit, page, search)
         .then(({data}) => {
-          console.log('search response', data);
+          // console.log('search response', data);
           if (data.success == true) {
             for (let index = 0; index < data.result.length; index++) {
               const element = data.result[index];
@@ -361,9 +392,14 @@ export default function HomeDashboardScreen({navigation, route}) {
           }}>
           <Text style={{color: 'white', fontSize: 25}}>+</Text>
         </TouchableOpacity>
-        <View style={{width: '81%'}}>
-          <DashboardStories userStories={userStories} />
-        </View>
+        {userStories.length > 0 ? (
+          <View style={{width: '81%'}}>
+            <DashboardStories
+              userStories={userStories}
+              setUserStories={setUserStories}
+            />
+          </View>
+        ) : null}
       </View>
 
       <View style={{paddingHorizontal: 30, flexDirection: 'row'}}>

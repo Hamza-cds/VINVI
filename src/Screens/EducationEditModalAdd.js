@@ -243,7 +243,16 @@ export function EducationEditModalAdd({
       alert('select end month');
     } else if (isNullOrEmpty(endDateYear)) {
       alert('select end year');
+    } else if (startMonthError == true) {
+      alert(startMonthErrorMsg);
+    } else if (startYearError == true) {
+      alert(startYearErrorMsg);
+    } else if (endMonthError == true) {
+      alert(endMonthErrorMsg);
+    } else if (endYearError == true) {
+      alert(endYearErrorMsg);
     } else {
+      FunEducationArray();
       let obj = {
         id: arrEducation.id,
         ishidden: true,
@@ -420,7 +429,7 @@ export function EducationEditModalAdd({
               <BtnComponent
                 placeholder={isEdit ? 'Edit' : 'Add'}
                 onPress={() => {
-                  FunEducationArray();
+                  // FunEducationArray();
                   onAdd();
                   // setModalVisible(!modalVisible);
                 }}

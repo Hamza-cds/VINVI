@@ -189,9 +189,10 @@ export default function SearchScreen({navigation, route}) {
                 width: '100%',
                 height: '100%',
               }}
+              scanBarcode={true}
               ratioOverlay={['16:9', '1:1', '3:4']}
               onReadCode={event => {
-                console.log('event', event);
+                // console.log('event', event);
                 setTestData((testData = event.nativeEvent.codeStringValue));
                 setTestData('');
                 navigation.navigate('IndividualScreen', {

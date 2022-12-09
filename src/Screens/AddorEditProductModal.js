@@ -21,6 +21,7 @@ import {
 } from '../Apis/Repo';
 import Loader from '../Components/Loader';
 import {URL} from '../Constants/Constants';
+import {isNullOrEmpty} from '../Constants/TextUtils';
 // import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function AddorEditProductModal({
@@ -76,43 +77,51 @@ export default function AddorEditProductModal({
 
   const onUpdate = () => {
     if (isEdit == false) {
-      var formdata = new FormData();
-      formdata.append(`[0].Id`, '0');
-      formdata.append(`[0].Name`, selectedCategory);
-      formdata.append(`[0].BusinessCardIdFk`, JSON.stringify(userData.id));
-      formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0');
-      formdata.append(
-        `[0].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
-        JSON.stringify(selectedCategoryID),
-      );
-      formdata.append(`[0].BusinessCategoryProduct[0].Name`, productName);
-      formdata.append(`[0].BusinessCategoryProduct[0].Price`, productPrice);
-      formdata.append(`[0].BusinessCategoryProduct[0].product_image_file`, {
-        uri: productImg.path,
-        name: productImageName,
-        type: productImg.mime,
-      });
-
-      console.log('formdata', formdata);
-
-      setIsLoading(true);
-      editBusinessCardAddProductApiCall(formdata)
-        .then(res => res.json())
-        .then(data => {
-          console.log('response', data);
-          if (data.status === 200 && data.success === true) {
-            setIsLoading(false);
-            setModalVisible(false);
-            setRefresh(true);
-          } else {
-            setIsLoading(false);
-            alert('Invalid Request');
-          }
-        })
-        .catch(err => {
-          setIsLoading(false);
-          console.log('err', err);
+      if (isNullOrEmpty(productName)) {
+        alert('Enter product name');
+      } else if (isNullOrEmpty(productPrice)) {
+        alert('Enter product price');
+      } else if (isNullOrEmpty(productImg)) {
+        alert('Select product Image');
+      } else {
+        var formdata = new FormData();
+        formdata.append(`[0].Id`, '0');
+        formdata.append(`[0].Name`, selectedCategory);
+        formdata.append(`[0].BusinessCardIdFk`, JSON.stringify(userData.id));
+        formdata.append(`[0].BusinessCategoryProduct[0].Id`, '0');
+        formdata.append(
+          `[0].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
+          JSON.stringify(selectedCategoryID),
+        );
+        formdata.append(`[0].BusinessCategoryProduct[0].Name`, productName);
+        formdata.append(`[0].BusinessCategoryProduct[0].Price`, productPrice);
+        formdata.append(`[0].BusinessCategoryProduct[0].product_image_file`, {
+          uri: productImg.path,
+          name: productImageName,
+          type: productImg.mime,
         });
+
+        console.log('formdata', formdata);
+
+        setIsLoading(true);
+        editBusinessCardAddProductApiCall(formdata)
+          .then(res => res.json())
+          .then(data => {
+            console.log('response', data);
+            if (data.status === 200 && data.success === true) {
+              setIsLoading(false);
+              setModalVisible(false);
+              setRefresh(true);
+            } else {
+              setIsLoading(false);
+              alert('Invalid Request');
+            }
+          })
+          .catch(err => {
+            setIsLoading(false);
+            console.log('err', err);
+          });
+      }
     } else {
       var formdata = new FormData();
       formdata.append(`[${editProduct.index}].Id`, '0');
@@ -279,7 +288,7 @@ export default function AddorEditProductModal({
       <View
         style={{
           backgroundColor: 'rgba(190,190,190,.8)',
-          flex: 1,
+          // flex: 1,
           height: Dimensions.get('window').height,
           //   padding: 20,
           justifyContent: 'center',
@@ -413,6 +422,7 @@ export default function AddorEditProductModal({
               />
               <OutlinedInputBox
                 placeholder="Price"
+                KeyboardType={'numeric'}
                 inputType="text"
                 text={isEdit == true ? editProduct.price : null}
                 onChange={value => {

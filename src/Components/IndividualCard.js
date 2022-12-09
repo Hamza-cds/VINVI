@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Image, TouchableOpacity, Text} from 'react-native';
 import {PRIMARY, SECONDARY, WHITE} from '../Constants/Colors';
 import Svg, {Path} from 'react-native-svg';
@@ -9,7 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Foundation from 'react-native-vector-icons/Foundation';
 import LinearGradient from 'react-native-linear-gradient';
-import {isNullOrEmpty} from '../Constants/TextUtils';
+import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
 export default function IndividualCard({
   cta,
@@ -20,8 +20,9 @@ export default function IndividualCard({
   type,
   connectID,
 }) {
-  // console.log('IndividualCard item..................', item);
-  // console.log('connectID', connectID);
+  let [tempExp, setTempExp] = useState('');
+  let [experience, setExperiance] = useState('');
+
   let arrayOccupation;
   arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
   if (arrayOccupation) {
@@ -51,18 +52,26 @@ export default function IndividualCard({
     arrayEducation = 'Dummy eductaion';
   }
 
-  let arrayJobHistory;
-  let experience;
-  arrayJobHistory = _.find(item.personalCardMeta, {personalKey: 'Education'});
-  if (isNullOrEmpty(arrayJobHistory) && arrayJobHistory) {
-    arrayJobHistory = JSON.parse(arrayJobHistory.personalValue);
-    let tempExperience = arrayJobHistory[0];
-    console.log('tempExperience', tempExperience);
-    experience = tempExperience.endDateYear - tempExperience.startDateYear;
-    console.log('experience', experience);
-  } else {
-    arrayJobHistory = '0';
-  }
+  useEffect(() => {
+    let arrayJobHistory = [];
+    arrayJobHistory = _.find(item.personalCardMeta, {
+      personalKey: 'JobHistory',
+    });
+    if (!isNullOrEmpty(arrayJobHistory.personalValue)) {
+      arrayJobHistory = JSON.parse(arrayJobHistory.personalValue);
+      if (!isNullOrEmptyArray(arrayJobHistory)) {
+        setTempExp((tempExp = arrayJobHistory[0]));
+        setExperiance((experience = tempExp.endYear - tempExp.startYear));
+      }
+    } else {
+      // arrayJobHistory = '0';
+      setExperiance('0');
+    }
+  }, [item]);
+
+  // let experience;
+
+  // console.log('experience', experience);
 
   return (
     <TouchableOpacity
@@ -266,7 +275,7 @@ export default function IndividualCard({
           </Text>
           <Text style={{marginHorizontal: 10, color: WHITE}}>|</Text>
           <Text style={{color: WHITE}}>
-            {experience ? experience : 0 + ' yr(s) exp'}
+            {experience ? experience + ' yr(s) exp' : 0 + ' yr(s) exp'}
           </Text>
         </View>
         <Text style={{color: WHITE, fontSize: 12}}>

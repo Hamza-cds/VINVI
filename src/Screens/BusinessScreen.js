@@ -625,7 +625,7 @@ const BusinessScreen = props => {
                 </TouchableOpacity>
               ) : null}
             </View>
-            {!isNullOrEmptyArray(categoryLength) ? (
+            {!isNullOrEmptyArray(categoryLength) && isEdit == true ? (
               // <View style={{flexDirection: 'row'}}>
 
               <TouchableOpacity

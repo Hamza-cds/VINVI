@@ -72,7 +72,7 @@ export default function RegisterScreen(props) {
       setErrorMsg('Enter Number');
     } else if (PhoneNumber(value)) {
       setError(true);
-      setErrorMsg('Inavlid Number');
+      setErrorMsg('Invalid Number');
     } else {
       setError(false);
     }

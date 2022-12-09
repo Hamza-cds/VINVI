@@ -267,8 +267,8 @@ export default function IndividualScreen(props) {
 
     if (!isNullOrEmpty(ID)) {
       setIsLoading(true);
-      // console.log('ID', ID);
-      // console.log('DATA.id', DATA.id);
+      console.log('ID', ID);
+      console.log('DATA.id', DATA.id);
       getPersonalCardByIdApiCall(ID, DATA.id)
         .then(async res => {
           if (res.data.success) {
@@ -372,7 +372,7 @@ export default function IndividualScreen(props) {
       });
   };
 
-  console.log('hello here is DATA from api', data);
+  // console.log('hello here is DATA from api', data);
 
   const onSelectImage = () => {
     var formdata = new FormData();
@@ -380,7 +380,7 @@ export default function IndividualScreen(props) {
     formdata.append('Email', data.email);
     formdata.append('UserId', JSON.stringify(data.userId));
     formdata.append('id', JSON.stringify(data.id));
-    formdata.append('PhoneNo', DATA.phoneNo);
+    formdata.append('PhoneNo', data.phoneNo);
     formdata.append('Address', data.address);
 
     if (proImage) {
@@ -389,14 +389,14 @@ export default function IndividualScreen(props) {
         name: imageName,
         type: proImage.mime,
       });
-      // formdata.append('cover_image_image', data.coverPicture);
+      formdata.append('CoverPicture', data.coverPicture);
     } else if (bgImage) {
       formdata.append('cover_image_image', {
         uri: bgImage.path,
         name: imageName,
         type: bgImage.mime,
       });
-      // formdata.append('profile_image_file', data.profilePicture);
+      formdata.append('ProfilePicture', data.profilePicture);
     }
 
     console.log('formData', formdata);
@@ -427,7 +427,7 @@ export default function IndividualScreen(props) {
 
     setIsLoading(true);
     personalCardApiCall(formdata)
-      .then(res => res.JSON())
+      .then(res => res.json())
       .then(data => {
         console.log('response', data);
         if (data.status === 200 && data.success === true) {

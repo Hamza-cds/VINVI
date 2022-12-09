@@ -40,10 +40,14 @@ export default function NewCardScreen(props) {
   const onNext = () => {
     if (isNullOrEmpty(name)) {
       alert('Enter name');
-    } else if (isNullOrEmpty(city)) {
-      alert('Enter city');
     } else if (isNullOrEmpty(occupation)) {
       alert('Enter occupation');
+    } else if (isNullOrEmpty(phoneNumber)) {
+      alert('Enter phone number');
+    } else if (isNullOrEmpty(email)) {
+      alert('Enter email');
+    } else if (isNullOrEmpty(city)) {
+      alert('Enter city');
     } else {
       dispatch(PCData(object));
       props.navigation.navigate('NewPersonalCard2');
@@ -99,7 +103,8 @@ export default function NewCardScreen(props) {
           variant="dark"
           headerName="Add Card"
           onPress={() => {
-            props.navigation.navigate('AddCard');
+            // props.navigation.navigate('AddCard');
+            props.navigation.goBack();
           }}
         />
         <NewCardStepPanel

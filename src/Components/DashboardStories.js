@@ -5,62 +5,26 @@ import {GREY, SECONDARY, WHITE} from '../Constants/Colors';
 import {URL} from '../Constants/Constants';
 import {isNullOrEmpty, isNullOrEmptyArray} from '../Constants/TextUtils';
 
-export default function DashboardStories({userStories}) {
+export default function DashboardStories({userStories, setUserStories}) {
   let [data, setData] = useState([]);
   // console.log('stories ***************', userStories);
 
   // console.log('stories data ***************', data);
 
-  useEffect(() => {
-    mapData(userStories);
-  }, [userStories]);
+  // useEffect(() => {
+  //   if (!isNullOrEmptyArray(userStories)) {
+  //     setData([]);
+  //     setData(userStories);
+  //   }
+  // }, [userStories]);
 
-  const mapData = list => {
-    // console.log('list*************', list);
-    let finalList = [];
-
-    if (list.length > 0) {
-      for (let index = 0; index < list.length; index++) {
-        let element = list[index];
-        console.log('element element', element);
-
-        let storiesArray = [];
-        for (let index = 0; index < element.stories.length; index++) {
-          const item = element.stories[index];
-          let storiesObject = {
-            story_id: item.id,
-            story_image: !isNullOrEmpty(item.media)
-              ? URL.concat(item.media)
-              : null,
-            swipeText: item.title,
-          };
-          storiesArray.push(storiesObject);
-        }
-
-        let object = {
-          user_id: element.userId,
-          user_image: !isNullOrEmpty(element.profilePicture)
-            ? URL.concat(element.profilePicture)
-            : null,
-          user_name: element.userName,
-          stories: storiesArray,
-        };
-        list.length > 0 ? finalList.push(object) : finalList;
-      }
-
-      setData([]);
-      // debugger;
-      setData((data = finalList));
-    } else {
-      setData([]);
-    }
-  };
+  console.log('DashboardStories userStories', userStories);
 
   return (
     <View style={{marginTop: 20, height: 80}}>
-      {data.length > 0 ? (
+      {userStories.length > 0 ? (
         <InstaStory
-          data={data}
+          data={userStories}
           duration={10}
           unPressedBorderColor={SECONDARY}
           pressedBorderColor={GREY}

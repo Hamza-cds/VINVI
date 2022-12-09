@@ -26,7 +26,11 @@ export default function MyCardsDashboardScreen({navigation}) {
           variant="dark2"
           headerName="My Cards"
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Home'}],
+            });
+            // navigation.navigate('Home');
           }}
           headerIcon={
             <Svg

@@ -158,7 +158,16 @@ export function JobHistoryEditModalAdd({
       alert('Select end month');
     } else if (isNullOrEmpty(endYear)) {
       alert('Select start year');
+    } else if (startMonthError == true) {
+      alert(startMonthErrorMsg);
+    } else if (startYearError == true) {
+      alert(startYearErrorMsg);
+    } else if (endMonthError == true) {
+      alert(endMonthErrorMsg);
+    } else if (endYearError == true) {
+      alert(endYearErrorMsg);
     } else {
+      FunJobHistoryArray();
       let obj = {
         id: arrJobHistory.id,
         ishidden: true,
@@ -492,7 +501,7 @@ export function JobHistoryEditModalAdd({
             <BtnComponent
               placeholder={isEdit ? 'Edit' : 'Add'}
               onPress={() => {
-                FunJobHistoryArray();
+                // FunJobHistoryArray();
                 onAdd();
                 // setModalVisible(!modalVisible);
               }}
