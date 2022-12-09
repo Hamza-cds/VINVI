@@ -265,7 +265,9 @@ export default function IndividualCard({
             {arrayOccupation}
           </Text>
           <Text style={{marginHorizontal: 10, color: WHITE}}>|</Text>
-          <Text style={{color: WHITE}}>{experience + 'yr(s) exp'}</Text>
+          <Text style={{color: WHITE}}>
+            {experience ? experience : 0 + ' yr(s) exp'}
+          </Text>
         </View>
         <Text style={{color: WHITE, fontSize: 12}}>
           {eductaion ? (eductaion.degree ? eductaion.degree : null) : null}

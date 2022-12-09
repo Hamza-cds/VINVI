@@ -15,7 +15,10 @@ import Svg, {G, Path} from 'react-native-svg';
 import ModalDropdown from 'react-native-modal-dropdown';
 import {PRIMARY, WHITE} from '../Constants/Colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {editBusinessCardApiCall} from '../Apis/Repo';
+import {
+  editBusinessCardApiCall,
+  editBusinessCardAddProductApiCall,
+} from '../Apis/Repo';
 import Loader from '../Components/Loader';
 import {URL} from '../Constants/Constants';
 // import DropDownPicker from 'react-native-dropdown-picker';
@@ -26,12 +29,14 @@ export default function AddorEditProductModal({
   category,
   editProduct,
   isEdit,
+  setIsEdit,
   editCategory,
   userData,
   setRefresh,
   selectedCategoryID,
   selectedCategory,
 }) {
+  // console.log('++++++++++++++++++++++++++++++++++++isEdit', isEdit);
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productImg, setProductImg] = useState('');
@@ -40,10 +45,11 @@ export default function AddorEditProductModal({
   let [categoryList, setCategoryList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log('*****categoryList', categoryList);
-  console.log('*****editProduct', editProduct);
-  console.log('*****editCategory', editCategory);
-  console.log('*****selectedCategory', selectedCategory);
+  // console.log('*****categoryList', categoryList);
+  // console.log('*****editProduct', editProduct);
+  // console.log('*****editCategory', editCategory);
+  // console.log('*****selectedCategory', selectedCategory);
+  // console.log('*****selectedCategoryID', selectedCategoryID);
 
   useEffect(() => {
     categoryList.length <= 0
@@ -90,7 +96,7 @@ export default function AddorEditProductModal({
       console.log('formdata', formdata);
 
       setIsLoading(true);
-      editBusinessCardApiCall(formdata)
+      editBusinessCardAddProductApiCall(formdata)
         .then(res => res.json())
         .then(data => {
           console.log('response', data);
@@ -117,7 +123,7 @@ export default function AddorEditProductModal({
       );
       formdata.append(
         `[${editProduct.index}].BusinessCategoryProduct[0].Id`,
-        '0',
+        JSON.stringify(editProduct.id),
       );
       formdata.append(
         `[${editProduct.index}].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
@@ -151,7 +157,7 @@ export default function AddorEditProductModal({
       console.log('formdata', formdata);
 
       setIsLoading(true);
-      editBusinessCardApiCall(formdata)
+      editBusinessCardAddProductApiCall(formdata)
         .then(res => res.json())
         .then(data => {
           console.log('response', data);

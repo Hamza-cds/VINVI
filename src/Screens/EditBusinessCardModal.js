@@ -25,12 +25,13 @@ export default function EditBusinessCardModal({
   isEdit,
   bCardData,
   industryType,
+  setRefresh,
   props,
 }) {
   console.log('bCardData', bCardData);
+
   const [businessName, setBusinessName] = useState('');
   const [industry, setIndustryType] = useState('');
-  console.log('industry', industry);
   const [otherInfo, setOtherInfo] = useState('');
   const [tagline, setTagline] = useState('');
   const [comoanyWebsite, setCompanyWebsite] = useState('');
@@ -41,8 +42,52 @@ export default function EditBusinessCardModal({
   const [logoImageName, setLogoImageName] = useState('');
   const [coverImageName, setCoverImageName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [facebookLink, setFacebookLink] = useState('');
+  const [websiteLink, setWebsiteLink] = useState('');
+  const [twitterLink, setTwitterLink] = useState('');
+  const [instagramLink, setInstagramLink] = useState('');
+  const [youtubeLink, setYoutubeLink] = useState('');
+  const [cardID, setCardID] = useState('');
 
   const onSave = () => {
+    // let businessCardArray = [
+    //   {
+    //     id: '0',
+    //     businessCardId: bCardData.id,
+    //     PersonalKey: 'facebook link',
+    //     PersonalValue: facebookLink.trim(),
+    //     Ishidden: true,
+    //   },
+    //   {
+    //     id: '0',
+    //     businessCardId: bCardData.id,
+    //     PersonalKey: 'twitter link',
+    //     PersonalValue: twitterLink.trim(),
+    //     Ishidden: true,
+    //   },
+    //   {
+    //     id: '0',
+    //     businessCardId: bCardData.id,
+    //     PersonalKey: 'website link',
+    //     PersonalValue: websiteLink.trim(),
+    //     Ishidden: true,
+    //   },
+    //   {
+    //     id: '0',
+    //     businessCardId: bCardData.id,
+    //     PersonalKey: 'instagram link',
+    //     PersonalValue: instagramLink.trim(),
+    //     Ishidden: true,
+    //   },
+    //   {
+    //     id: '0',
+    //     businessCardId: bCardData.id,
+    //     PersonalKey: 'youtube link',
+    //     PersonalValue: youtubeLink.trim(),
+    //     Ishidden: true,
+    //   },
+    // ];
+
     var formdata = new FormData();
     formdata.append('Id', JSON.stringify(bCardData.id));
     formdata.append('Name', businessName ? businessName : bCardData.name);
@@ -62,7 +107,34 @@ export default function EditBusinessCardModal({
       comoanyWebsite ? comoanyWebsite : bCardData.website,
     );
     formdata.append('UserId', JSON.stringify(bCardData.userId));
+    formdata.append('BusinessCardMeta', JSON.stringify([]));
     // formdata.append('BusinessCardMeta', JSON.stringify([]));
+    // if (businessCardArray.length == 0) {
+    //   formdata.append('BusinessCardMeta', JSON.stringify([]));
+    // } else {
+    //   for (let index = 0; index < businessCardArray.length; index++) {
+    //     // debugger;
+    //     const element = businessCardArray[index];
+    //     formdata.append(`BusinessCardMeta[${index}][id]`, element.PersonalKey);
+    //     formdata.append(
+    //       `BusinessCardMeta[${index}][businessCardId]`,
+    //       element.PersonalKey,
+    //     );
+
+    //     formdata.append(
+    //       `BusinessCardMeta[${index}][BusinessKey]`,
+    //       element.PersonalKey,
+    //     );
+    //     formdata.append(
+    //       `BusinessCardMeta[${index}][BusinessValue]`,
+    //       element.PersonalValue,
+    //     );
+    //     formdata.append(
+    //       `BusinessCardMeta[${index}].Ishidden`,
+    //       element.Ishidden,
+    //     );
+    //   }
+    // }
     {
       logo
         ? formdata.append('logo_image_file', {
@@ -86,7 +158,7 @@ export default function EditBusinessCardModal({
         ? formdata.append('Cover', bCardData.cover)
         : null;
     }
-    formdata.append('BusinessCardMeta', JSON.stringify([]));
+
     formdata.append('BusinessCategory', JSON.stringify([]));
 
     console.log('formdata', formdata);
@@ -100,6 +172,7 @@ export default function EditBusinessCardModal({
           alert(data.message);
           setIsLoading(false);
           setModalVisible(!modalVisible);
+          setRefresh(true);
           // dispatch(BCDComplete(''));
           // props.navigation.replace('MyCardsDashboardScreen');
         } else {
@@ -114,7 +187,7 @@ export default function EditBusinessCardModal({
   };
 
   const logoImage = image => {
-    console.log('image Logo', image);
+    // console.log('image Logo', image);
     var imageMime = image.mime;
     var name = imageMime.split('/')[1];
     setLogoImageName('vinviLogo.' + name);
@@ -122,7 +195,7 @@ export default function EditBusinessCardModal({
   };
 
   const coverImage = image => {
-    console.log('image cover', image);
+    // console.log('image cover', image);
     var imageMime = image.mime;
     var name = imageMime.split('/')[1];
     setCoverImageName('vinviCover.' + name);
@@ -284,6 +357,9 @@ export default function EditBusinessCardModal({
                     </Svg>
                   }
                   placeholder="Website Link"
+                  onChange={value => {
+                    setWebsiteLink(value);
+                  }}
                 />
                 <LinkBtn
                   svg={
@@ -300,6 +376,9 @@ export default function EditBusinessCardModal({
                     </Svg>
                   }
                   placeholder="Facebook Link"
+                  onChange={value => {
+                    setFacebookLink(value);
+                  }}
                 />
                 <LinkBtn
                   svg={
@@ -316,6 +395,9 @@ export default function EditBusinessCardModal({
                     </Svg>
                   }
                   placeholder="Twitter Link"
+                  onChange={value => {
+                    setTwitterLink(value);
+                  }}
                 />
                 <LinkBtn
                   svg={
@@ -332,6 +414,9 @@ export default function EditBusinessCardModal({
                     </Svg>
                   }
                   placeholder="Instagram Link"
+                  onChange={value => {
+                    setInstagramLink(value);
+                  }}
                 />
                 <LinkBtn
                   svg={
@@ -348,6 +433,9 @@ export default function EditBusinessCardModal({
                     </Svg>
                   }
                   placeholder="YouTube Link"
+                  onChange={value => {
+                    setYoutubeLink(value);
+                  }}
                 />
               </View>
 

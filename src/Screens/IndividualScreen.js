@@ -372,38 +372,58 @@ export default function IndividualScreen(props) {
       });
   };
 
+  console.log('hello here is DATA from api', data);
+
   const onSelectImage = () => {
     var formdata = new FormData();
     formdata.append('Name', data.name);
     formdata.append('Email', data.email);
     formdata.append('UserId', JSON.stringify(data.userId));
     formdata.append('id', JSON.stringify(data.id));
-    formdata.append('PhoneNo', data.phoneNo);
+    formdata.append('PhoneNo', DATA.phoneNo);
     formdata.append('Address', data.address);
 
-    {
-      proImage
-        ? formdata.append('profile_image_file', {
-            uri: proImage.path,
-            name: imageName,
-            type: proImage.mime,
-          })
-        : formdata.append('profile_image_file', data.profilePicture);
+    if (proImage) {
+      formdata.append('profile_image_file', {
+        uri: proImage.path,
+        name: imageName,
+        type: proImage.mime,
+      });
+      // formdata.append('cover_image_image', data.coverPicture);
+    } else if (bgImage) {
+      formdata.append('cover_image_image', {
+        uri: bgImage.path,
+        name: imageName,
+        type: bgImage.mime,
+      });
+      // formdata.append('profile_image_file', data.profilePicture);
     }
 
-    formdata.append('PersonalCardMeta', '[]');
+    console.log('formData', formdata);
 
-    // console.log('formdata', formdata);
+    // {
+    //   proImage
+    //     ? formdata.append('profile_image_file', {
+    //         uri: proImage.path,
+    //         name: imageName,
+    //         type: proImage.mime,
+    //       }) && formdata.append('cover_image_image', data.coverPicture)
+    //     : formdata.append('profile_image_file', data.profilePicture);
+    // }
 
-    {
-      bgImage
-        ? formdata.append('cover_image_image', {
-            uri: bgImage.path,
-            name: imageName,
-            type: bgImage.mime,
-          })
-        : formdata.append('cover_image_image', data.coverPicture);
-    }
+    // formdata.append('PersonalCardMeta', '[]');
+
+    // // console.log('formdata', formdata);
+
+    // {
+    //   bgImage
+    //     ? formdata.append('cover_image_image', {
+    //         uri: bgImage.path,
+    //         name: imageName,
+    //         type: bgImage.mime,
+    //       }) && formdata.append('profile_image_file', data.profilePicture)
+    //     : formdata.append('cover_image_image', data.coverPicture);
+    // }
 
     setIsLoading(true);
     personalCardApiCall(formdata)
@@ -416,7 +436,7 @@ export default function IndividualScreen(props) {
           alert('picture updated successfully');
         } else {
           setIsLoading(false);
-          alert('alert');
+          alert(data.message);
         }
       })
       .catch(err => {
@@ -493,7 +513,9 @@ export default function IndividualScreen(props) {
       <ScrollView style={{flex: 1, backgroundColor: WHITE}}>
         <ImageBackground
           source={
-            !isNullOrEmpty(data.coverPicture)
+            bgImage
+              ? {uri: bgImage.path}
+              : !isNullOrEmpty(data.coverPicture)
               ? {uri: URL.concat(data.coverPicture)}
               : require('../Assets/registerbg.png')
           }
@@ -564,7 +586,9 @@ export default function IndividualScreen(props) {
               }}>
               <Image
                 source={
-                  data
+                  proImage
+                    ? {uri: proImage.path}
+                    : data
                     ? !isNullOrEmpty(data.profilePicture)
                       ? {uri: URL.concat(data.profilePicture)}
                       : require('../Assets/profilePic.png')

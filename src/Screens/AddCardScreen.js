@@ -17,7 +17,10 @@ export default function AddCardScreen(props, navigation) {
           variant="dark2"
           headerName="Add Card"
           onPress={() => {
-            props.navigation.goBack();
+            props.navigation.reset({
+              index: 0,
+              routes: [{name: 'Home'}],
+            });
           }}
         />
         <View

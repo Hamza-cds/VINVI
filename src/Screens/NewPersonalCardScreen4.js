@@ -75,10 +75,10 @@ export default function NewCardScreen(props) {
       key: 'Introductory Message',
       value: message.trim(),
     },
-    {
-      key: 'QR Code',
-      value: qrCode.trim(),
-    },
+    // {
+    //   key: 'QR Code',
+    //   value: qrCode.trim(),
+    // },
     {
       key: 'Hobbies',
       value: hobbies.trim(),
@@ -183,9 +183,11 @@ export default function NewCardScreen(props) {
   const onFinish = () => {
     if (isNullOrEmpty(message)) {
       alert("Introduction can't be empty");
-    } else if (isNullOrEmpty(qrCode)) {
-      alert(EMPTY_QRCODE);
-    } else if (isNullOrEmpty(hobbies)) {
+    }
+    //  else if (isNullOrEmpty(qrCode)) {
+    //   alert(EMPTY_QRCODE);
+    // }
+    else if (isNullOrEmpty(hobbies)) {
       alert(EMPTY_HOBBIES);
     } else if (isNullOrEmpty(educationArray)) {
       alert(EMPTY_EDUCATION);
@@ -295,7 +297,7 @@ export default function NewCardScreen(props) {
             });
           } else {
             setIsLoading(false);
-            alert(CREDIANTIAL_ERROR);
+            alert(data.message);
           }
         })
         .catch(err => {
@@ -326,7 +328,7 @@ export default function NewCardScreen(props) {
             setMessage(value);
           }}
         />
-        <OutlinedInputBox
+        {/* <OutlinedInputBox
           placeholder="Enter code"
           inputType="text"
           maxLength={5}
@@ -334,7 +336,7 @@ export default function NewCardScreen(props) {
           onChange={value => {
             setQRcode(value);
           }}
-        />
+        /> */}
         <OutlinedInputBox
           placeholder="Enter hobbies"
           inputType="text"

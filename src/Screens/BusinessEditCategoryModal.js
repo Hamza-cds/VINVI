@@ -29,7 +29,7 @@ export default function BusinessEditCategoryModal({
   BusinessCardId,
   setRefresh,
 }) {
-  console.log('businessData.businessCategory', businessData.businessCategory);
+  // console.log('businessData.businessCategory', businessData.businessCategory);
 
   const [categoryName, setCategoryName] = useState('');
   const [isLoading, setIsLoading] = useState(false);

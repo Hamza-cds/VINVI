@@ -131,11 +131,11 @@ export default function NewBusinessCardScreen2(props) {
         const element = META[index];
 
         formdata.append(
-          `BusinessCardMeta[${index}][PersonalKey]`,
+          `BusinessCardMeta[${index}][BusinessKey]`,
           element.PersonalKey,
         );
         formdata.append(
-          `BusinessCardMeta[${index}][PersonalValue]`,
+          `BusinessCardMeta[${index}][BusinessValue]`,
           element.PersonalValue,
         );
         formdata.append(
@@ -208,7 +208,7 @@ export default function NewBusinessCardScreen2(props) {
           // props.navigation.replace('MyCardsDashboardScreen');
         } else {
           setIsLoading(false);
-          alert('Invalid Request');
+          alert(data.message);
         }
       })
       .catch(err => {

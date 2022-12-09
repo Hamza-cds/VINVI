@@ -11,22 +11,48 @@ import {SECONDARY, FIFTH, WHITE, PRIMARY} from '../Constants/Colors';
 import Feather from 'react-native-vector-icons/Feather';
 import {URL} from '../Constants/Constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {BusinessDeleteProductApiCall} from '../Apis/Repo';
 
 export default function ProductCard({
   item,
   index,
   isEdit,
-  setIsProductModalVisible,
-  setEditProduct,
-  setEdit,
+  // setIsProductModalVisible,
+  // setEditProduct,
+  // setEdit,
   onPress,
   selectedCategory,
+  setRefresh,
   // selectedCategoryID,
 }) {
-  console.log('ye raha item object', selectedCategory);
+  // console.log('ye raha item ', item);
   let newItemObj = item;
   newItemObj.categoryName = selectedCategory;
   newItemObj.index = index;
+
+  const onDeleteProduct = () => {
+    let obj = {
+      Id: item.id,
+    };
+
+    // setIsLoading(true);
+    BusinessDeleteProductApiCall(obj)
+      .then(res => {
+        console.log('delete product response', res);
+        if (res.data.status == 200 && res.data.success == true) {
+          // setIsLoading(false);
+          // alert('product deleted');
+          setRefresh(true);
+          // getBusinessData();
+        } else {
+          // setIsLoading(false);
+          alert(data.data.message);
+        }
+      })
+      .catch(err => {
+        console.log('err', err);
+      });
+  };
 
   return (
     <View
@@ -54,8 +80,8 @@ export default function ProductCard({
         }}></Image>
       {isEdit ? (
         <TouchableOpacity
-          activeOpacity={7}
-          onPress={onPress}
+          // activeOpacity={7}
+          onPress={onDeleteProduct}
           style={{
             position: 'absolute',
             top: -10,
@@ -81,11 +107,12 @@ export default function ProductCard({
 
         {isEdit ? (
           <TouchableOpacity
-            onPress={() => {
-              setEdit(true);
-              setEditProduct(newItemObj);
-              setIsProductModalVisible(true);
-            }}
+            // onPress={() => {
+            //   setEdit(true);
+            //   setEditProduct(newItemObj);
+            //   setIsProductModalVisible(true);
+            // }}
+            onPress={onPress}
             style={{
               alignSelf: 'flex-end',
               borderRadius: 5,

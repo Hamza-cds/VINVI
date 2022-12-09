@@ -41,7 +41,10 @@ export default function PhoneVerificationScreen(props, navigation) {
             JSON.stringify(response.data.result),
           );
 
-          props.navigation.replace('Login');
+          props.navigation.reset({
+            index: 0,
+            routes: [{name: 'Login'}],
+          });
         })
         .catch(err => {
           setIsLoading(false);

@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   FlatList,
+  Linking,
 } from 'react-native';
 import {SECONDARY, WHITE, PRIMARY, FIFTH} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
@@ -33,6 +34,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import EditBusinessAddCategoryModal from './EditBusinessAddCategoryModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
+import {isNullOrEmptyArray} from '../Constants/TextUtils';
 
 const BusinessScreen = props => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -62,9 +64,7 @@ const BusinessScreen = props => {
   let [userData, setUserData] = useState(null);
   const [isSaved, setIsSaved] = useState('');
   let [businessIndustry, setBusinessIndustry] = useState('');
-  console.log('isSaved', businessData);
-
-  console.log('sjdhfoahsdifishzdoighodiahsfgiodspfogosdijio', CategoryObject);
+  let [categoryLength, setCategoryLength] = useState([]);
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -91,7 +91,7 @@ const BusinessScreen = props => {
     GetAllLookupDetailApiCall()
       .then(res => {
         setLookupData((lookupData = res.data.result));
-        console.log('lookupData', lookupData);
+        // console.log('lookupData', lookupData);
         // setIsLoading(false);
 
         for (let index = 0; index < lookupData.length; index++) {
@@ -117,8 +117,14 @@ const BusinessScreen = props => {
           setIsLoading(false);
           setBusinessData((businessData = res.data.result));
           setSelectedCategory(businessData.businessCategory[0].name);
+          setSelectedCategoryID(businessData.businessCategory[0].id);
           setCategoryObject(businessData.businessCategory[0].id);
           setBusinessCardId(businessData.businessCategory[0].businessCardIdFk);
+          if (businessData.businessCategory.length >= 0) {
+            setCategoryLength((categoryLength = businessData.businessCategory));
+          } else {
+            setCategoryLength([]);
+          }
           setCategoryWiseData(
             businessData.businessCategory[0].businessCategoryProduct,
           );
@@ -137,29 +143,6 @@ const BusinessScreen = props => {
       });
   };
 
-  const onDeleteProduct = id => {
-    let obj = {
-      Id: id,
-    };
-
-    setIsLoading(true);
-    BusinessDeleteProductApiCall(obj)
-      .then(res => {
-        console.log('delete product response', res);
-        if (res.data.status == 200 && res.data.success == true) {
-          setIsLoading(false);
-          alert('product deleted');
-          getBusinessData();
-        } else {
-          setIsLoading(false);
-          alert(data.data.message);
-        }
-      })
-      .catch(err => {
-        console.log('err', err);
-      });
-  };
-
   const onCardSave = () => {
     let obj = {
       Id: 0,
@@ -174,13 +157,6 @@ const BusinessScreen = props => {
       .then(data => {
         console.log('response', data);
         setIsLoading(false);
-        // if (data.status === 200 && data.success === true) {
-        //   setIsLoading(false);
-        //   alert('picture updated successfully');
-        // } else {
-        //   setIsLoading(false);
-        //   alert('alert');
-        // }
       })
       .catch(err => {
         setIsLoading(false);
@@ -462,11 +438,9 @@ const BusinessScreen = props => {
                 // setFavorit(true);
                 if (favorit == true) {
                   setFavorit(false);
-                  console.log('what');
                   onCardUnSave();
                 } else {
                   setFavorit(true);
-                  console.log('what 1');
                   onCardSave();
                 }
               }}>
@@ -549,7 +523,7 @@ const BusinessScreen = props => {
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
                   {/* {businessData.industryTypeLookupDetail.name} */}
-                  {businessIndustry ? businessIndustry : null}
+                  {businessIndustry ? businessIndustry : 'Not specified'}
                 </Text>
               </View>
             </View>
@@ -651,7 +625,7 @@ const BusinessScreen = props => {
                 </TouchableOpacity>
               ) : null}
             </View>
-            {isEdit == true ? (
+            {!isNullOrEmptyArray(categoryLength) ? (
               // <View style={{flexDirection: 'row'}}>
 
               <TouchableOpacity
@@ -710,6 +684,7 @@ const BusinessScreen = props => {
                 category={businessData.businessCategory}
                 userData={businessData}
                 isEdit={edit}
+                setIsEdit={setEdit}
                 setRefresh={setRefresh}
               />
             ) : null}
@@ -739,15 +714,31 @@ const BusinessScreen = props => {
               justifyContent: 'space-between',
               marginBottom: 10,
             }}>
-            <Text
-              style={{
-                color: PRIMARY,
-                fontSize: 22,
-                fontWeight: 'bold',
-              }}>
-              Product
-            </Text>
-            {isEdit == true ? (
+            <View style={{flexDirection: 'row'}}>
+              <Text
+                style={{
+                  color: PRIMARY,
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                }}>
+                Product
+              </Text>
+              {isEdit ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsProductModalVisible(true);
+                    setEdit(false);
+                  }}>
+                  <Ionicons
+                    name="add-circle-sharp"
+                    size={26}
+                    color={PRIMARY}
+                    style={{marginTop: 3, marginLeft: 10}}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
+            {/* {categoryWiseData.length > 0 ? (
               <TouchableOpacity
                 onPress={() => {
                   setEdit(false);
@@ -763,7 +754,7 @@ const BusinessScreen = props => {
                 }}>
                 <Feather name="edit" size={22} color={SECONDARY} />
               </TouchableOpacity>
-            ) : null}
+            ) : null} */}
           </View>
 
           <FlatList
@@ -782,8 +773,11 @@ const BusinessScreen = props => {
                 setIsProductModalVisible={setIsProductModalVisible}
                 setEditProduct={setEditProduct}
                 setEdit={setEdit}
+                setRefresh={setRefresh}
                 onPress={() => {
-                  onDeleteProduct(item.id);
+                  setEdit(true);
+                  setEditProduct(item);
+                  setIsProductModalVisible(true);
                 }}
               />
             )}
@@ -811,6 +805,7 @@ const BusinessScreen = props => {
           bCardData={businessData}
           industryType={industryType}
           props={props}
+          setRefresh={setRefresh}
         />
       </ScrollView>
       {isLoading ? <Loader /> : null}

@@ -120,7 +120,7 @@ export function EducationEditModalAdd({
     arrEducation = 'Dummy education';
   }
 
-  console.log('EducationEditModalAdd arrEducation', arrEducation);
+  // console.log('EducationEditModalAdd arrEducation', arrEducation);
 
   const FunDegree = value => {
     setDegree((degree = value.name));
@@ -143,7 +143,7 @@ export function EducationEditModalAdd({
   // };
 
   const FunstartDateYear = value => {
-    console.log('FunstartDateYear', value);
+    // console.log('FunstartDateYear', value);
     if (!isNullOrEmpty(endDateYear)) {
       setStartDateYear((startDateYear = value.name));
       if (value.name < endDateYear) {
@@ -158,7 +158,7 @@ export function EducationEditModalAdd({
   };
 
   const FunendDateYear = value => {
-    console.log('FunendDateYear', value);
+    // console.log('FunendDateYear', value);
     setEndDateYear((endDateYear = value.name));
     if (value.name >= startDateYear) {
       setEndYearError(false);

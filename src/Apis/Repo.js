@@ -126,6 +126,23 @@ export async function editBusinessCardApiCall(formdata) {
   );
 }
 
+export async function editBusinessCardAddProductApiCall(formdata) {
+  let route = URL.concat('/api/BusinessCard/AddCategoryProduct');
+  console.log(route, formdata);
+
+  var requestOptions = {
+    method: 'POST',
+    body: formdata,
+    redirect: 'follow',
+    // Accept: '*/*',
+  };
+
+  return fetch(
+    'https://vinvi.dsmeglobal.com//api/BusinessCard/AddCategoryProduct',
+    requestOptions,
+  );
+}
+
 export async function storyPostApiCall(formdata) {
   let route = URL.concat('/api/UserStory/Post');
   console.log(route, formdata);
