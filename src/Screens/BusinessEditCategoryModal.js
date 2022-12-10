@@ -56,7 +56,7 @@ export default function BusinessEditCategoryModal({
             // alert('product deleted');
           } else {
             setIsLoading(false);
-            alert(data.data.message + '(backend)');
+            alert(res.data.message);
           }
         })
         .catch(err => {
@@ -89,7 +89,7 @@ export default function BusinessEditCategoryModal({
           // alert('product deleted');
         } else {
           setIsLoading(false);
-          alert(data.data.message);
+          alert(res.data.message);
         }
       })
       .catch(err => {

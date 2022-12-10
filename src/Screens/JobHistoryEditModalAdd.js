@@ -212,6 +212,7 @@ export function JobHistoryEditModalAdd({
   };
 
   const FunstartDateMonth = value => {
+    console.log('value', value);
     if (startYear == endYear) {
       if (!isNullOrEmpty(endMonth)) {
         setStartMonth((startMonth = value.name));
@@ -225,20 +226,8 @@ export function JobHistoryEditModalAdd({
       } else {
         setStartMonth((startMonth = value.name));
       }
-    }
-  };
-
-  const FunstartDateYear = value => {
-    if (!isNullOrEmpty(endYear)) {
-      setStartYear((startYear = value.name));
-      if (value.name < endYear || value.name == endYear) {
-        setStartYearError(false);
-      } else {
-        setStartYearError(true);
-        setStartYearErrorMsg('Start date must be before end date');
-      }
     } else {
-      setStartYear((startYear = value.name));
+      setStartMonth((startMonth = value.name));
     }
   };
 
@@ -258,6 +247,20 @@ export function JobHistoryEditModalAdd({
       }
     } else {
       setEndMonth((endMonth = value.name));
+    }
+  };
+
+  const FunstartDateYear = value => {
+    if (!isNullOrEmpty(endYear)) {
+      setStartYear((startYear = value.name));
+      if (value.name < endYear || value.name == endYear) {
+        setStartYearError(false);
+      } else {
+        setStartYearError(true);
+        setStartYearErrorMsg('Start date must be before end date');
+      }
+    } else {
+      setStartYear((startYear = value.name));
     }
   };
 

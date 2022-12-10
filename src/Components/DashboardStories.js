@@ -21,7 +21,7 @@ export default function DashboardStories({userStories, setUserStories}) {
   console.log('DashboardStories userStories', userStories);
 
   return (
-    <View style={{marginTop: 20, height: 80}}>
+    <View style={{marginTop: 10, height: 80}}>
       {userStories.length > 0 ? (
         <InstaStory
           data={userStories}

@@ -59,21 +59,21 @@ export default function HomeDashboardScreen({navigation, route}) {
 
   const DATA = useSelector(state => state.UserData);
 
-  // const askPermission = async () => {
-  //   if (Platform.OS == 'android') {
-  //     const permissionAndroid = await PermissionsAndroid.check(
-  //       'android.permission.CAMERA',
-  //     );
-  //     if (permissionAndroid != PermissionsAndroid.RESULTS.granted) {
-  //       const reqPer = await PermissionsAndroid.request(
-  //         'android.permission.CAMERA',
-  //       );
-  //       if (reqPer != 'granted') {
-  //         return false;
-  //       }
-  //     }
-  //   }
-  // };
+  const askPermission = async () => {
+    if (Platform.OS == 'android') {
+      const permissionAndroid = await PermissionsAndroid.check(
+        'android.permission.CAMERA',
+      );
+      if (permissionAndroid != PermissionsAndroid.RESULTS.granted) {
+        const reqPer = await PermissionsAndroid.request(
+          'android.permission.CAMERA',
+        );
+        if (reqPer != 'granted') {
+          return false;
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     AsyncStorage.getItem('user_data').then(response => {
@@ -367,8 +367,8 @@ export default function HomeDashboardScreen({navigation, route}) {
           paddingHorizontal: 20,
           marginTop: -10,
           flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
+          // justifyContent: 'center',
+          // alignItems: 'center',
           // zIndex: 5,
         }}>
         <TouchableOpacity
@@ -379,7 +379,7 @@ export default function HomeDashboardScreen({navigation, route}) {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 50,
-            marginTop: 10,
+            marginVertical: 20,
           }}
           onPress={() => {
             launchImageLibrary({mediaType: 'photo'}, image => {

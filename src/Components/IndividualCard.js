@@ -57,11 +57,13 @@ export default function IndividualCard({
     arrayJobHistory = _.find(item.personalCardMeta, {
       personalKey: 'JobHistory',
     });
-    if (!isNullOrEmpty(arrayJobHistory.personalValue)) {
-      arrayJobHistory = JSON.parse(arrayJobHistory.personalValue);
-      if (!isNullOrEmptyArray(arrayJobHistory)) {
-        setTempExp((tempExp = arrayJobHistory[0]));
-        setExperiance((experience = tempExp.endYear - tempExp.startYear));
+    if (!isNullOrEmpty(arrayJobHistory)) {
+      if (isNullOrEmpty(arrayJobHistory.personalValue)) {
+        arrayJobHistory = JSON.parse(arrayJobHistory.personalValue);
+        if (!isNullOrEmptyArray(arrayJobHistory)) {
+          setTempExp((tempExp = arrayJobHistory[0]));
+          setExperiance((experience = tempExp.endYear - tempExp.startYear));
+        }
       }
     } else {
       // arrayJobHistory = '0';

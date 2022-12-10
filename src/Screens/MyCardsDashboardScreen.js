@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {ImageBackground, SafeAreaView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ImageBackground, SafeAreaView, BackHandler} from 'react-native';
 import Header from '../Components/Header';
 import Svg, {G, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
@@ -15,6 +15,23 @@ export default function MyCardsDashboardScreen({navigation}) {
   // const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 
   // const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  function handleBackButtonClick() {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Dashboard'}],
+    });
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -28,7 +45,7 @@ export default function MyCardsDashboardScreen({navigation}) {
           onPress={() => {
             navigation.reset({
               index: 0,
-              routes: [{name: 'Home'}],
+              routes: [{name: 'Dashboard'}],
             });
             // navigation.navigate('Home');
           }}

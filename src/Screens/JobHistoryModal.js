@@ -200,18 +200,52 @@ export function JobHistoryModal({
   /*********************************************************************/
 
   const onAdd = () => {
-    let obj = {
-      title: title.trim(),
-      companyName: companyName.trim(),
-      industryType: industry,
-      employeeType: employee,
-      startMonth: startMonth,
-      startYear: startYear,
-      endMonth: endMonth,
-      endYear: endYear,
-      // description: description.trim(),
-    };
-    onPress(obj);
+    if (isNullOrEmpty(title)) {
+      alert('Enter title');
+    } else if (isNullOrEmpty(companyName)) {
+      alert('Enter company name');
+    } else if (isNullOrEmpty(industry)) {
+      alert('Select industry');
+    } else if (isNullOrEmpty(employee)) {
+      alert('Select employee type');
+    } else if (isNullOrEmpty(startMonth)) {
+      alert('Select start month');
+    } else if (isNullOrEmpty(startYear)) {
+      alert('Select start year');
+    } else if (isNullOrEmpty(endMonth)) {
+      alert('Sselct end month');
+    } else if (isNullOrEmpty(endYear)) {
+      alert('Slect end year');
+    } else if (startMonthError == true) {
+      alert(startMonthErrorMsg);
+    } else if (startYearError == true) {
+      alert(startYearErrorMsg);
+    } else if (endMonthError == true) {
+      alert(endMonthErrorMsg);
+    } else if (endYearError == true) {
+      alert(endYearErrorMsg);
+    } else {
+      let obj = {
+        title: title.trim(),
+        companyName: companyName.trim(),
+        industryType: industry,
+        employeeType: employee,
+        startMonth: startMonth,
+        startYear: startYear,
+        endMonth: endMonth,
+        endYear: endYear,
+        // description: description.trim(),
+      };
+      onPress(obj);
+      setTitle('');
+      setCompanyName('');
+      setIndustry('');
+      setEmployee('');
+      setStartMonth('');
+      setStartYear('');
+      setEndMonth('');
+      setEndYear('');
+    }
   };
 
   const FunIndustry = value => {
@@ -223,6 +257,7 @@ export function JobHistoryModal({
     // console.log('employee', employee);
   };
   const FunstartDateMonth = value => {
+    console.log('value', value);
     if (startYear == endYear) {
       if (!isNullOrEmpty(endMonth)) {
         setStartMonth((startMonth = value.name));

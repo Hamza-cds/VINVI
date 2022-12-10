@@ -36,6 +36,8 @@ export function SkillModal({
   // let [editModalSkillArray, setEditModalSKillArray] = useState([]);
   const [newSkill, setNewSkill] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [tempArr, setTempArr] = useState([]);
+  const [del, setDel] = useState(false);
 
   // console.log('modalSkillArray', modalSkillArray);
   // console.log('modalSkill', modalSkill);
@@ -63,17 +65,20 @@ export function SkillModal({
       let newModalSkillArray = modalSkillArray;
       newModalSkillArray.push(newSkill.trim());
       setModalSKillArray((modalSkillArray = newModalSkillArray));
-      setModalSkill((modalSkill = modalSkillArray));
+      // setModalSkill((modalSkill = modalSkillArray));
       setNewSkill('');
     }
   };
 
   const FunDelSkill = index => {
+    // debugger;
     let newArr = [...modalSkillArray];
+    setTempArr(newArr);
     setModalSKillArray(
       (modalSkillArray = newArr.filter((item, Index) => Index !== index)),
     );
     setModalSkill((modalSkill = modalSkillArray));
+    setDel(true);
   };
 
   /*These functions used when editing personal cards skill*/
@@ -213,7 +218,12 @@ export function SkillModal({
                   if (isEdit == true) {
                     setSkillData([]);
                   } else {
-                    setModalSKillArray([]);
+                    if (del == true) {
+                      setModalSKillArray(tempArr);
+                      setModalSkill((modalSkill = tempArr));
+                    } else {
+                      setModalSKillArray([]);
+                    }
                   }
                 }}>
                 <Svg
@@ -342,17 +352,11 @@ export function SkillModal({
                 placeholder={isEdit ? 'Edit' : 'Save'}
                 onPress={() => {
                   onEdit();
-                  // setModalVisible(!modalVisible);
                 }}
-                // onPress={onPress}
               />
             ) : (
               <BtnComponent
                 placeholder={isEdit ? 'Edit' : 'Save'}
-                // onPress={() => {
-                //   onEdit();
-                //   setModalVisible(!modalVisible);
-                // }}
                 onPress={onPress}
               />
             )}

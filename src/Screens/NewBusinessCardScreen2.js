@@ -201,11 +201,11 @@ export default function NewBusinessCardScreen2(props) {
         if (data.status === 200 && data.success === true) {
           setIsLoading(false);
           dispatch(BCDComplete(''));
-          props.navigation.reset({
-            index: 0,
-            routes: [{name: 'MyCardsDashboardScreen'}],
-          });
-          // props.navigation.replace('MyCardsDashboardScreen');
+          // props.navigation.reset({
+          //   index: 0,
+          //   routes: [{name: 'MyCardsDashboardScreen'}],
+          // });
+          props.navigation.navigate('MyCardsDashboardScreen');
         } else {
           setIsLoading(false);
           alert(data.message);

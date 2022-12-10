@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ImageBackground, SafeAreaView} from 'react-native';
+import {ImageBackground, SafeAreaView, Text} from 'react-native';
 import Header from '../Components/Header';
 import Svg, {G, Circle, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';

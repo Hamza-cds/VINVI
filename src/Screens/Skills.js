@@ -6,6 +6,8 @@ import Svg, {G, Path} from 'react-native-svg';
 import Feather from 'react-native-vector-icons/Feather';
 
 export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
+  console.log('edit', edit);
+  console.log('arrskills', arrskills);
   return (
     <View
       style={{
@@ -100,7 +102,7 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
           </TouchableOpacity>
         ) : null}
       </View>
-      {edit != true ? (
+      {edit == true ? (
         <FlatList
           horizontal={true}
           data={editSkillsArray}
@@ -113,7 +115,7 @@ export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
         <FlatList
           horizontal={true}
           data={arrskills}
-          keyExtractor={item => item.id}
+          // keyExtractor={item => item.id}
           renderItem={({item, index}) => (
             <SkillTag item={item} placeholder="Skill Name" />
           )}

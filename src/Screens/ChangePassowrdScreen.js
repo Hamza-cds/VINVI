@@ -85,6 +85,9 @@ const ChangePassowrdScreen = ({navigation, route}) => {
     if (isNullOrEmpty(value)) {
       setPassError(true);
       setPassErrorMsg('Enter Password');
+    } else if (credential === value) {
+      setPassError(true);
+      setPassErrorMsg("Old and new password can't be same");
     } else if (isInvalidPassword(value)) {
       setPassError(true);
       setPassErrorMsg('Min 8 characters');

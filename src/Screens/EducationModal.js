@@ -162,6 +162,14 @@ export function EducationModal({
         alert('select end year');
       } else if (isNullOrEmpty(degree)) {
         alert('select degree');
+      } else if (startMonthError == true) {
+        alert(startMonthErrorMsg);
+      } else if (startYearError == true) {
+        alert(startYearErrorMsg);
+      } else if (endMonthError == true) {
+        alert(endMonthErrorMsg);
+      } else if (endYearError == true) {
+        alert(endYearErrorMsg);
       } else {
         let newEditModalEduObj = educationarray[index];
         newEditModalEduObj.degree = degree
@@ -202,6 +210,12 @@ export function EducationModal({
             // console.log('Edit Skill Data', data);
 
             if (data.data.status == 200 && data.data.success == true) {
+              setInstitute('');
+              setStartDateMonth('');
+              setStartDateYear('');
+              setEndDateMonth('');
+              setEndDateYear('');
+              setDegree('');
               setIsLoading(false);
               setModalVisible(false);
             } else {
@@ -291,6 +305,14 @@ export function EducationModal({
       alert('select end year');
     } else if (isNullOrEmpty(degree)) {
       alert('select degree');
+    } else if (startMonthError == true) {
+      alert(startMonthErrorMsg);
+    } else if (startYearError == true) {
+      alert(startYearErrorMsg);
+    } else if (endMonthError == true) {
+      alert(endMonthErrorMsg);
+    } else if (endYearError == true) {
+      alert(endYearErrorMsg);
     } else {
       let obj = {
         institute: institute.trim(),
@@ -301,6 +323,12 @@ export function EducationModal({
         degree: degree,
       };
       onPress(obj);
+      setInstitute('');
+      setStartDateMonth('');
+      setStartDateYear('');
+      setEndDateMonth('');
+      setEndDateYear('');
+      setDegree('');
     }
     // setModalVisible(!modalVisible);
   };

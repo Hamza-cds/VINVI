@@ -291,10 +291,11 @@ export default function NewCardScreen(props) {
           if (data.status === 200 && data.success === true) {
             setIsLoading(false);
             dispatch(PCDComplete(''));
-            props.navigation.reset({
-              index: 0,
-              routes: [{name: 'MyCardsDashboardScreen'}],
-            });
+            props.navigation.navigate('MyCardsDashboardScreen');
+            // props.navigation.reset({
+            //   index: 0,
+            //   routes: [{name: 'MyCardsDashboardScreen'}],
+            // });
           } else {
             setIsLoading(false);
             alert(data.message);
@@ -401,7 +402,8 @@ export default function NewCardScreen(props) {
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={true}
-            data={modalSkill}
+            // data={modalSkill}
+            data={skillsArray}
             renderItem={({item, index}) => <SkillCard Skillname={item} />}
           />
         </View>

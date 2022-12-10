@@ -47,10 +47,11 @@ export default function AddorEditProductModal({
   const [isLoading, setIsLoading] = useState(false);
 
   // console.log('*****categoryList', categoryList);
-  // console.log('*****editProduct', editProduct);
+  console.log('*****editProduct', editProduct.picture);
   // console.log('*****editCategory', editCategory);
   // console.log('*****selectedCategory', selectedCategory);
   // console.log('*****selectedCategoryID', selectedCategoryID);
+  console.log('productImg', productImg);
 
   useEffect(() => {
     categoryList.length <= 0
@@ -439,7 +440,10 @@ export default function AddorEditProductModal({
                   ? productImg
                   : editProduct
                   ? editProduct.picture
-                    ? {uri: URL.concat(editProduct.picture)}
+                    ? {
+                        path:
+                          'https://vinvi.dsmeglobal.com/' + editProduct.picture,
+                      }
                     : null
                   : null
               }

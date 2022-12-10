@@ -100,7 +100,7 @@ export function ContactDetails({data, arraycountry, setEdit, arraycity, edit}) {
         }
       /> */}
       <ContactDetailsRow
-        placeholder={arraycity + ',' + arraycountry}
+        placeholder={arraycity != null ? arraycity : 'city'}
         svg={
           <Svg
             xmlns="http://www.w3.org/2000/svg"

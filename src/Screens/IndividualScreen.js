@@ -122,7 +122,7 @@ export default function IndividualScreen(props) {
       arrayOccupation = arrayOccupation.personalValue;
       setOccupation(arrayOccupation);
     } else {
-      arrayOccupation = 'Dummy occupation';
+      arrayOccupation = ' occupation';
     }
 
     let arraycity;
@@ -131,7 +131,7 @@ export default function IndividualScreen(props) {
       arraycity = arraycity.personalValue;
       setCity(arraycity);
     } else {
-      arraycity = 'Dummy city';
+      arraycity = ' city';
     }
 
     let arraycountry;
@@ -140,7 +140,7 @@ export default function IndividualScreen(props) {
       arraycountry = arraycountry.personalValue;
       setCountry(arraycountry);
     } else {
-      arraycountry = 'Dummy country';
+      arraycountry = ' country';
     }
 
     let arrayskills = [];
@@ -508,6 +508,8 @@ export default function IndividualScreen(props) {
       });
   };
 
+  console.log('data.coverPicture', data.coverPicture);
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ScrollView style={{flex: 1, backgroundColor: WHITE}}>
@@ -515,8 +517,10 @@ export default function IndividualScreen(props) {
           source={
             bgImage
               ? {uri: bgImage.path}
-              : !isNullOrEmpty(data.coverPicture)
-              ? {uri: URL.concat(data.coverPicture)}
+              : data
+              ? !isNullOrEmpty(data.coverPicture)
+                ? {uri: URL.concat(data.coverPicture)}
+                : require('../Assets/registerbg.png')
               : require('../Assets/registerbg.png')
           }
           style={{

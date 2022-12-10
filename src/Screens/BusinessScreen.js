@@ -63,7 +63,7 @@ const BusinessScreen = props => {
   const [favorit, setFavorit] = useState(false);
   let [userData, setUserData] = useState(null);
   const [isSaved, setIsSaved] = useState('');
-  let [businessIndustry, setBusinessIndustry] = useState('');
+  const [businessIndustry, setBusinessIndustry] = useState([]);
   let [categoryLength, setCategoryLength] = useState([]);
 
   useEffect(() => {
@@ -77,7 +77,10 @@ const BusinessScreen = props => {
 
   useEffect(() => {
     getBusinessData();
-    getAllLookupdetail();
+    if (lookupData.length <= 0) {
+      getAllLookupdetail();
+    }
+
     setRefresh(false);
     if (isSaved == 1) {
       setFavorit(true);
@@ -111,7 +114,7 @@ const BusinessScreen = props => {
   const getBusinessData = () => {
     setIsLoading(true);
     getBusinessCardByIdApiCall(ID, DATA.id)
-      .then(res => {
+      .then(async res => {
         console.log('RESPONSE', res.data.result);
         if (res.data.success) {
           setIsLoading(false);
@@ -129,9 +132,7 @@ const BusinessScreen = props => {
             businessData.businessCategory[0].businessCategoryProduct,
           );
           setIsSaved(res.data.result.isSaved);
-          setBusinessIndustry(
-            (businessIndustry = businessData.industryTypeLookupDetail.name),
-          );
+          setBusinessIndustry(businessData.industryTypeLookupDetail);
         } else {
           setIsLoading(false);
           alert('No record found.');
@@ -195,7 +196,8 @@ const BusinessScreen = props => {
     arrayBusinessType = 'No Product Image';
   }
 
-  console.log('businessData', businessData);
+  console.log('businessIndustry', businessIndustry);
+  console.log('lookupData', lookupData);
 
   return (
     <SafeAreaView
@@ -492,7 +494,9 @@ const BusinessScreen = props => {
                     fontWeight: 'bold',
                     maxWidth: 110,
                   }}>
-                  {businessData.website}
+                  {businessData.website != 'null'
+                    ? businessData.website
+                    : 'webiste'}
                 </Text>
               </View>
             </View>
@@ -523,7 +527,14 @@ const BusinessScreen = props => {
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
                   {/* {businessData.industryTypeLookupDetail.name} */}
-                  {businessIndustry ? businessIndustry : 'Not specified'}
+                  {/* {businessIndustry.name
+                    ? businessIndustry.name
+                    : 'Not specified'} */}
+                  {businessIndustry
+                    ? businessIndustry.name
+                      ? businessIndustry.name
+                      : 'Not specified'
+                    : 'Not specified'}
                 </Text>
               </View>
             </View>

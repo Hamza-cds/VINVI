@@ -85,7 +85,7 @@ export function PersonalDetails({
         }
       />
       <ContactDetailsRowReverse
-        placeholder={arrayhobbies ? arrayhobbies : 'dummy hobbies'}
+        placeholder={arrayhobbies ? arrayhobbies : 'hobbies'}
         svg={
           <Svg
             xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +106,7 @@ export function PersonalDetails({
         }
       />
       <ContactDetailsRowReverse
-        placeholder={arrayinterest ? arrayinterest : 'dummy interests'}
+        placeholder={arrayinterest ? arrayinterest : 'interests'}
         svg={
           <Svg
             xmlns="http://www.w3.org/2000/svg"
@@ -156,7 +156,7 @@ export function PersonalDetails({
         }
       />
       <ContactDetailsRowReverse
-        placeholder={arrayachievment ? arrayachievment : 'dummy achivements'}
+        placeholder={arrayachievment ? arrayachievment : 'achivements'}
         svg={
           <Svg
             xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ export function PersonalDetails({
         }
       />
       <ContactDetailsRowReverse
-        placeholder={arraybirthday ? arraybirthday : 'dummy birthday'}
+        placeholder={arraybirthday ? arraybirthday : 'birthday'}
         svg={
           <Svg
             xmlns="http://www.w3.org/2000/svg"

@@ -34,7 +34,7 @@ export default function PhoneVerificationScreen(props, navigation) {
 
           if (response.data.status == 98) {
             setIsLoading(false);
-            alert(CODE_ERROR);
+            alert('Invalid code');
           } else setIsLoading(false);
           AsyncStorage.setItem(
             'user_data',
