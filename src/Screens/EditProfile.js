@@ -11,7 +11,7 @@ import {isNullOrEmpty} from '../Constants/TextUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {signUpApiCall} from '../Apis/Repo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {UserData} from '../../Store/Action';
 import Loader from '../Components/Loader';
 import {PRIMARY} from '../Constants/Colors';
@@ -28,6 +28,8 @@ export default function NewCardScreen({navigation, route}) {
   let [userData, setUserData] = useState('');
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+
+  const DATA = useSelector(state => state.UserData);
 
   console.log('image', image);
   useEffect(() => {
@@ -52,6 +54,7 @@ export default function NewCardScreen({navigation, route}) {
       FirstName: firstName ? firstName : userData.firstName,
       // LastName: lastName ? lastName : userData.lastName,
       Email: email ? email : userData.email,
+      profileImage: DATA.profileImage,
     };
     console.log('object', object);
     let updateinfo = new FormData();
@@ -63,7 +66,7 @@ export default function NewCardScreen({navigation, route}) {
             name: imageName,
             type: image.mime,
           })
-        : updateinfo.append('image_file', userData.profileImage);
+        : null;
     }
 
     setIsLoading(true);

@@ -344,6 +344,7 @@ export function EducationModal({
       setStartDateYear((startDateYear = value.name));
       if (value.name < endDateYear) {
         setStartYearError(false);
+        setEndYearError(false);
       } else {
         setStartYearError(true);
         setStartYearErrorMsg('Start date must be before end date');
@@ -358,6 +359,7 @@ export function EducationModal({
     setEndDateYear((endDateYear = value.name));
     if (value.name >= startDateYear) {
       setEndYearError(false);
+      setStartYearError(false);
     } else {
       setEndYearError(true);
       setEndYearErrorMsg('End date must be after start date');
@@ -366,41 +368,48 @@ export function EducationModal({
 
   const FunstartDateMonth = value => {
     setStartMonthID((startMonthID = value.id));
-    if (startDateYear == endDateYear) {
-      if (!isNullOrEmpty(endDateMonth)) {
-        setStartDateMonth((startDateMonth = value.name));
-        // if (stringsNotEqual(value.name, endDateMonth))
-        if (startMonthID < endMonthID) {
-          setStartMonthError(false);
-          setEndMonthError(false);
+    if (!isNullOrEmpty(startDateYear) && !isNullOrEmpty(endDateYear)) {
+      if (!isNullOrEmpty(startDateYear) == !isNullOrEmpty(endDateYear)) {
+        if (!isNullOrEmpty(endDateMonth)) {
+          setStartDateMonth((startDateMonth = value.name));
+          // if (stringsNotEqual(value.name, endDateMonth))
+          if (startMonthID < endMonthID) {
+            setStartMonthError(false);
+            setEndMonthError(false);
+          } else {
+            setStartMonthError(true);
+            setStartMonthErrorMsg("start month can't greater then end month ");
+          }
         } else {
-          setStartMonthError(true);
-          setStartMonthErrorMsg("start month can't greater then end month ");
+          setStartMonthID(value.id);
+          setStartDateMonth((startDateMonth = value.name));
         }
-      } else {
-        setStartMonthID(value.id);
-        setStartDateMonth((startDateMonth = value.name));
       }
+    } else {
+      setStartDateMonth((startDateMonth = value.name));
     }
   };
 
   const FunendDateMonth = value => {
+    // debugger;
     // console.log('value', value);
     setEndMonthID((endMonthID = value.id));
-    if (startDateYear == endDateYear) {
-      if (!isNullOrEmpty(startDateMonth)) {
-        // if (stringsNotEqual(value.name, startDateMonth))
-        if (endMonthID > startMonthID) {
-          setEndDateMonth((endDateMonth = value.name));
-          setEndMonthError(false);
-          setStartMonthError(false);
+    if (!isNullOrEmpty(startDateYear) && !isNullOrEmpty(endDateYear)) {
+      if (!isNullOrEmpty(startDateYear) == !isNullOrEmpty(endDateYear)) {
+        if (!isNullOrEmpty(startDateMonth)) {
+          // if (stringsNotEqual(value.name, startDateMonth))
+          if (endMonthID > startMonthID) {
+            setEndDateMonth((endDateMonth = value.name));
+            setEndMonthError(false);
+            setStartMonthError(false);
+          } else {
+            setEndMonthError(true);
+            setEndMonthErrorMsg("End month can't less then start month ");
+          }
         } else {
-          setEndMonthError(true);
-          setEndMonthErrorMsg("End month can't less then start month ");
+          setEndMonthID(value.id);
+          setEndDateMonth((endDateMonth = value.name));
         }
-      } else {
-        setEndMonthID(value.id);
-        setEndDateMonth((endDateMonth = value.name));
       }
     } else {
       setEndDateMonth((endDateMonth = value.name));

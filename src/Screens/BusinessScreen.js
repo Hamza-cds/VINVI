@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   FlatList,
   Linking,
+  BackHandler,
 } from 'react-native';
 import {SECONDARY, WHITE, PRIMARY, FIFTH} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
@@ -67,6 +68,7 @@ const BusinessScreen = props => {
   let [categoryLength, setCategoryLength] = useState([]);
 
   useEffect(() => {
+    setEditProduct('');
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
@@ -198,6 +200,21 @@ const BusinessScreen = props => {
 
   console.log('businessIndustry', businessIndustry);
   console.log('lookupData', lookupData);
+
+  function handleBackButtonClick() {
+    props.navigation.goBack();
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView
@@ -738,6 +755,7 @@ const BusinessScreen = props => {
                 <TouchableOpacity
                   onPress={() => {
                     setIsProductModalVisible(true);
+                    setEditProduct('');
                     setEdit(false);
                   }}>
                   <Ionicons

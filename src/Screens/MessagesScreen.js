@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
 import {View, TouchableOpacity, TextInput, SafeAreaView} from 'react-native';
 import {WHITE} from '../Constants/Colors';
 import Header from '../Components/Header';
@@ -18,6 +18,7 @@ const ChatsDashboardScreen = props => {
   const isFocused = useIsFocused();
   const {connection, newMessageAction} = useSelector(state => state);
 
+  const ITEM_HEIGHT = 100;
   const flatListRef = useRef();
 
   const [messageToSend, setMessageToSend] = useState('');
@@ -90,6 +91,18 @@ const ChatsDashboardScreen = props => {
     }
   };
 
+  useLayoutEffect(() => {
+    const timeout = setTimeout(() => {
+      if (flatListRef.current && data && data.length > 0) {
+        flatListRef.current.scrollToEnd({animated: true});
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [messages]);
+
   return (
     <SafeAreaView
       style={{
@@ -115,18 +128,16 @@ const ChatsDashboardScreen = props => {
         }
       />
       <FlatList
-        ref={flatListRef}
         style={{
           paddingHorizontal: 20,
           marginTop: 10,
         }}
-        inverted={true}
-        // onContentSizeChange={() =>
-        //   flatListRef.current.scrollToEnd({animated: true})
-        // }
-        // onLayout={() => flatListRef.current.scrollToEnd({animated: true})}
-        // contentContainerStyle={{flexDirection: 'column-reverse'}}
+        contentContainerStyle={{flexDirection: 'column-reverse'}}
         data={messages}
+        initialScrollIndex={messages.length - 1}
+        getItemLayout={(data, index) => {
+          return {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index};
+        }}
         renderItem={(item, index) => (
           <>
             {item.item.fromUserId == myDATA.id ? (

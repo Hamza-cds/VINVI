@@ -125,26 +125,23 @@ export default function AddorEditProductModal({
       }
     } else {
       var formdata = new FormData();
-      formdata.append(`[${editProduct.index}].Id`, '0');
-      formdata.append(`[${editProduct.index}].Name`, selectedCategory);
+      formdata.append(`[0].Id`, '0');
+      formdata.append(`[0].Name`, selectedCategory);
+      formdata.append(`[0].BusinessCardIdFk`, JSON.stringify(userData.id));
       formdata.append(
-        `[${editProduct.index}].BusinessCardIdFk`,
-        JSON.stringify(userData.id),
-      );
-      formdata.append(
-        `[${editProduct.index}].BusinessCategoryProduct[0].Id`,
+        `[0].BusinessCategoryProduct[0].Id`,
         JSON.stringify(editProduct.id),
       );
       formdata.append(
-        `[${editProduct.index}].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
+        `[0].BusinessCategoryProduct[0].BusinessCategoryIdFk`,
         JSON.stringify(editProduct.businessCategoryIdFk),
       );
       formdata.append(
-        `[${editProduct.index}].BusinessCategoryProduct[0].Name`,
+        `[0].BusinessCategoryProduct[0].Name`,
         productName ? productName : editProduct.name,
       );
       formdata.append(
-        `[${editProduct.index}].BusinessCategoryProduct[0].Price`,
+        `[0].BusinessCategoryProduct[0].Price`,
         productPrice ? productPrice : JSON.stringify(editProduct.price),
       );
 
@@ -159,7 +156,7 @@ export default function AddorEditProductModal({
               },
             )
           : formdata.append(
-              `[${editProduct.index}].BusinessCategoryProduct[0].Picture`,
+              `[0].BusinessCategoryProduct[0].Picture`,
               editProduct.picture,
             );
       }

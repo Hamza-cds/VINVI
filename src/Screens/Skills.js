@@ -6,8 +6,9 @@ import Svg, {G, Path} from 'react-native-svg';
 import Feather from 'react-native-vector-icons/Feather';
 
 export function Skills({setEdit, arrskills, edit, editSkillsArray}) {
-  console.log('edit', edit);
-  console.log('arrskills', arrskills);
+  // console.log('edit', edit);
+  // console.log('arrskills', arrskills);
+  // console.log('editSkillsArray', editSkillsArray);
   return (
     <View
       style={{

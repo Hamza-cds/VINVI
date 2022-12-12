@@ -31,6 +31,8 @@ export function SkillModal({
   setSkillData,
   setModalSkill,
   modalSkill,
+  setEditSkillsArray,
+  editSkillsArray,
 }) {
   let [modalSkillArray, setModalSKillArray] = useState([]);
   // let [editModalSkillArray, setEditModalSKillArray] = useState([]);
@@ -40,7 +42,7 @@ export function SkillModal({
   const [del, setDel] = useState(false);
 
   // console.log('modalSkillArray', modalSkillArray);
-  // console.log('modalSkill', modalSkill);
+  // console.log('skillData', skillData);
 
   useEffect(() => {
     if (isEdit) {
@@ -48,6 +50,7 @@ export function SkillModal({
       // debugger;
       if (skillData.length <= 0) {
         setSkillData((skillData = skillarr));
+        setEditSkillsArray((editSkillsArray = skillData));
         // setEditModalSKillArray((editModalSkillArray = skillarr));
         // console.log('editModalSkillArray', editModalSkillArray);
       }
@@ -107,6 +110,7 @@ export function SkillModal({
       let neweditModalSkillArray = skillarr;
       neweditModalSkillArray.push(newSkill);
       setSkillData((skillData = neweditModalSkillArray));
+      setEditSkillsArray((editSkillsArray = skillData));
       // setEditModalSKillArray((editModalSkillArray = neweditModalSkillArray));
       // setSkillArr(editModalSkillArray);
       // setEditModalSkill(modalSkillArray);
@@ -122,6 +126,7 @@ export function SkillModal({
     // console.log('afterDelete', afterDelete);
     // setEditModalSKillArray((editModalSkillArray = afterDelete));
     setSkillData((skillData = afterDelete));
+    setEditSkillsArray((editSkillsArray = skillData));
 
     // setSkillArr(editModalSkillArray);
     // setEditModalSkill(editModalSkillArray);

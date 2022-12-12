@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView} from 'react-native';
+import {View, ScrollView, BackHandler} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import NewCardStepPanel from '../Components/NewCardStepPanel';
@@ -66,6 +66,21 @@ export default function NewCardScreen(props) {
   //   };
   //   console.log('object', object);
   // };
+
+  function handleBackButtonClick() {
+    props.navigation.goBack();
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>

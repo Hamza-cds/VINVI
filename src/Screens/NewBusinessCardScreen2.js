@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, ScrollView, Text, Modal, Image} from 'react-native';
+import {View, ScrollView, Text, Modal, Image, BackHandler} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -221,6 +221,20 @@ export default function NewBusinessCardScreen2(props) {
     let newArr = [...product];
     setProduct((product = newArr.filter((item, Index) => Index !== index)));
   };
+  function handleBackButtonClick() {
+    props.navigation.goBack();
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -229,7 +243,7 @@ export default function NewBusinessCardScreen2(props) {
         variant="white"
         headerName="Add Card"
         onPress={() => {
-          props.navigation.push('Dashboard');
+          props.navigation.goBack();
         }}
       />
       <View style={{backgroundColor: WHITE, flex: 1, paddingBottom: 100}}>

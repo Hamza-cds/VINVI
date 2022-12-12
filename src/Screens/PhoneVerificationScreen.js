@@ -35,16 +35,21 @@ export default function PhoneVerificationScreen(props, navigation) {
           if (response.data.status == 98) {
             setIsLoading(false);
             alert('Invalid code');
-          } else setIsLoading(false);
-          AsyncStorage.setItem(
-            'user_data',
-            JSON.stringify(response.data.result),
-          );
+          } else if (
+            response.data.status == 200 &&
+            response.data.success == true
+          ) {
+            setIsLoading(false);
+            AsyncStorage.setItem(
+              'user_data',
+              JSON.stringify(response.data.result),
+            );
 
-          props.navigation.reset({
-            index: 0,
-            routes: [{name: 'Login'}],
-          });
+            props.navigation.reset({
+              index: 0,
+              routes: [{name: 'Login'}],
+            });
+          }
         })
         .catch(err => {
           setIsLoading(false);

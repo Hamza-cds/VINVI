@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, ImageBackground, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, ImageBackground, ScrollView, BackHandler} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import LinkBtn from '../Components/LinkBtn';
@@ -63,6 +63,21 @@ export default function NewCardScreen(props) {
       },
     ],
   };
+
+  function handleBackButtonClick() {
+    props.navigation.goBack();
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <View style={{flex: 1}}>

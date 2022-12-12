@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  BackHandler,
 } from 'react-native';
 import {SECONDARY, FORTH, WHITE, PRIMARY, GREY} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
@@ -293,9 +294,9 @@ export default function IndividualScreen(props) {
       // console.log('here is id ', id);
 
       setIsLoading(true);
-      getPersonalCardByIdApiCall(id, 0)
+      getPersonalCardByIdApiCall(id, DATA.id)
         .then(res => {
-          // console.log('res', res);
+          console.log('getPersonalCardByIdApiCall response', res);
           if (res.data.success) {
             setdata((data = res.data.result));
             setIsLoading(false);
@@ -317,9 +318,9 @@ export default function IndividualScreen(props) {
       // console.log('here is id ', id);
 
       setIsLoading(true);
-      getPersonalCardByUserIdApiCall(id)
+      getPersonalCardByUserIdApiCall(id, DATA.id)
         .then(res => {
-          // console.log('res', res.data.result);
+          console.log('getPersonalCardByUserIdApiCall', res.data.result);
           if (res.data.success) {
             setdata((data = res.data.result));
             setIsLoading(false);
@@ -508,7 +509,20 @@ export default function IndividualScreen(props) {
       });
   };
 
-  console.log('data.coverPicture', data.coverPicture);
+  function handleBackButtonClick() {
+    props.navigation.goBack();
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -667,7 +681,15 @@ export default function IndividualScreen(props) {
                 {data.name}
               </Text>
 
-              <Text style={{fontSize: 14, color: FORTH}}>{occupation}</Text>
+              <Text
+                numberOfLines={1}
+                style={{
+                  fontSize: 14,
+                  color: FORTH,
+                  width: 150,
+                }}>
+                {occupation}
+              </Text>
             </View>
             <View style={{marginTop: 5}}>
               <TouchableOpacity

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {KeyboardAvoidingView, View} from 'react-native';
+import {KeyboardAvoidingView, View, BackHandler} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -93,6 +93,21 @@ export default function NewCardScreen(props) {
       setError(false);
     }
   };
+
+  function handleBackButtonClick() {
+    props.navigation.goBack();
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView

@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, ScrollView, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  BackHandler,
+} from 'react-native';
 import BtnComponent from '../Components/BtnComponent';
 import Header from '../Components/Header';
 import OutlinedInputBox from '../Components/OutlinedInputBox';
@@ -307,6 +313,21 @@ export default function NewCardScreen(props) {
         });
     }
   };
+
+  function handleBackButtonClick() {
+    props.navigation.goBack();
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>

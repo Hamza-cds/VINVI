@@ -278,6 +278,7 @@ export function JobHistoryModal({
       setStartYear((startYear = value.name));
       if (value.name < endYear || value.name == endYear) {
         setStartYearError(false);
+        setEndYearError(false);
       } else {
         setStartYearError(true);
         setStartYearErrorMsg('Start date must be before end date');
@@ -320,6 +321,7 @@ export function JobHistoryModal({
     setEndYear((endYear = value.name));
     if (value.name >= startYear) {
       setEndYearError(false);
+      setStartYearError(false);
     } else {
       setEndYearError(true);
       setEndYearErrorMsg('End date must be after start date');
