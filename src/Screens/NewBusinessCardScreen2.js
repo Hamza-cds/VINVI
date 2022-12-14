@@ -98,6 +98,7 @@ export default function NewBusinessCardScreen2(props) {
     formdata.append('Id', JSON.stringify(0));
     formdata.append('Name', DATA.b_Name);
     formdata.append('PhoneNo', DATA.b_Number);
+    formdata.append('IndustryTypeLookupDetailId', DATA.b_Industry.id);
     formdata.append('Address', DATA.b_Address);
     formdata.append('Description', DATA.b_OtherInfo);
     formdata.append('Tagline', DATA.b_Tagline);

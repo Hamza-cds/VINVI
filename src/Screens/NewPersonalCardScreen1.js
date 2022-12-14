@@ -119,7 +119,7 @@ export default function NewCardScreen(props) {
           headerName="Add Card"
           onPress={() => {
             // props.navigation.navigate('AddCard');
-            props.navigation.goBack();
+            props.navigation.navigate('AddCard');
           }}
         />
         <NewCardStepPanel

@@ -64,24 +64,37 @@ const BusinessScreen = props => {
   const [favorit, setFavorit] = useState(false);
   let [userData, setUserData] = useState(null);
   const [isSaved, setIsSaved] = useState('');
-  const [businessIndustry, setBusinessIndustry] = useState([]);
+  let [businessIndustry, setBusinessIndustry] = useState();
   let [categoryLength, setCategoryLength] = useState([]);
+  let [websiteID, setWebsiteID] = useState(0);
+  let [websiteValue, setWebSiteValue] = useState('');
+  let [instaID, setInstaID] = useState(0);
+  let [instaValue, setInstaValue] = useState('');
+  let [facebookID, setFacebookID] = useState(0);
+  let [facebookValue, setFacebookValue] = useState('');
+  let [twitterID, setTwitterID] = useState(0);
+  let [twitterValue, setTwitterValue] = useState('');
+  let [youtubeID, setYoutubeID] = useState(0);
+  let [youtubeValue, setYoutubeValue] = useState('');
 
   useEffect(() => {
     setEditProduct('');
     AsyncStorage.getItem('user_data').then(response => {
       setUserData((userData = JSON.parse(response)));
       console.log('userdata', userData);
+      getAllLookupdetail();
     });
   }, []);
 
   const DATA = useSelector(state => state.UserData);
 
+  console.log('lookupData', lookupData);
+
   useEffect(() => {
     getBusinessData();
-    if (lookupData.length <= 0) {
-      getAllLookupdetail();
-    }
+    // if (lookupData.length <= 0) {
+    //   getAllLookupdetail();
+    // }
 
     setRefresh(false);
     if (isSaved == 1) {
@@ -120,6 +133,9 @@ const BusinessScreen = props => {
         console.log('RESPONSE', res.data.result);
         if (res.data.success) {
           setIsLoading(false);
+          setBusinessIndustry(
+            (businessIndustry = res.data.result.industryTypeLookupDetail),
+          );
           setBusinessData((businessData = res.data.result));
           setSelectedCategory(businessData.businessCategory[0].name);
           setSelectedCategoryID(businessData.businessCategory[0].id);
@@ -134,7 +150,6 @@ const BusinessScreen = props => {
             businessData.businessCategory[0].businessCategoryProduct,
           );
           setIsSaved(res.data.result.isSaved);
-          setBusinessIndustry(businessData.industryTypeLookupDetail);
         } else {
           setIsLoading(false);
           alert('No record found.');
@@ -188,18 +203,89 @@ const BusinessScreen = props => {
       });
   };
 
-  let arrayBusinessType;
-  arrayBusinessType = _.find(businessData.businessCardMeta, {
-    businessKey: 'Type of Business',
-  });
-  if (arrayBusinessType) {
-    arrayBusinessType = arrayBusinessType.businessValue;
-  } else {
-    arrayBusinessType = 'No Product Image';
-  }
+  // let arrayBusinessType;
+  // arrayBusinessType = _.find(businessData.businessCardMeta, {
+  //   businessKey: 'Type of Business',
+  // });
+  // if (arrayBusinessType) {
+  //   arrayBusinessType = arrayBusinessType.businessValue;
+  // } else {
+  //   arrayBusinessType = 'No Product Image';
+  // }
 
-  console.log('businessIndustry', businessIndustry);
-  console.log('lookupData', lookupData);
+  useEffect(() => {
+    let arrayWebsiteLinkValue;
+    let arrayWebsiteLinkID;
+    arrayWebsiteLinkValue = _.find(businessData.businessCardMeta, {
+      businessKey: 'website link',
+    });
+    if (arrayWebsiteLinkValue) {
+      arrayWebsiteLinkID = arrayWebsiteLinkValue.id;
+      arrayWebsiteLinkValue = arrayWebsiteLinkValue.businessValue;
+      setWebSiteValue((websiteValue = arrayWebsiteLinkValue));
+      setWebsiteID((websiteID = arrayWebsiteLinkID));
+    } else {
+      arrayWebsiteLinkValue = 'Website';
+    }
+
+    let arrayFacebookLinkValue;
+    let arrayFacebookLinkID;
+    arrayFacebookLinkValue = _.find(businessData.businessCardMeta, {
+      businessKey: 'facebook link',
+    });
+    if (arrayFacebookLinkValue) {
+      arrayFacebookLinkID = arrayFacebookLinkValue.id;
+      arrayFacebookLinkValue = arrayFacebookLinkValue.businessValue;
+      setFacebookValue((facebookValue = arrayFacebookLinkValue));
+      setFacebookID((facebookID = arrayFacebookLinkID));
+    } else {
+      arrayFacebookLinkValue = 'facebook';
+    }
+
+    let arrayTwitterLinkValue;
+    let arrayTwitterLinkID;
+    arrayTwitterLinkValue = _.find(businessData.businessCardMeta, {
+      businessKey: 'twitter link',
+    });
+    if (arrayTwitterLinkValue) {
+      arrayTwitterLinkID = arrayTwitterLinkValue.id;
+      arrayTwitterLinkValue = arrayTwitterLinkValue.businessValue;
+      setTwitterValue((twitterValue = arrayTwitterLinkValue));
+      setTwitterID((twitterID = arrayTwitterLinkID));
+    } else {
+      arrayTwitterLinkValue = 'twitter';
+    }
+
+    let arrayInstaLinkValue;
+    let arrayInstaLinkID;
+    arrayInstaLinkValue = _.find(businessData.businessCardMeta, {
+      businessKey: 'instagram link',
+    });
+    if (arrayInstaLinkValue) {
+      arrayInstaLinkID = arrayInstaLinkValue.id;
+      arrayInstaLinkValue = arrayInstaLinkValue.businessValue;
+      setInstaValue((instaValue = arrayInstaLinkValue));
+      setInstaID((instaID = arrayInstaLinkID));
+    } else {
+      arrayInstaLinkValue = 'instagram';
+    }
+
+    let arrayYoutubeLinkValue;
+    let arrayYoutubeLinkID;
+    arrayYoutubeLinkValue = _.find(businessData.businessCardMeta, {
+      businessKey: 'youtube link',
+    });
+    if (arrayYoutubeLinkValue) {
+      arrayYoutubeLinkID = arrayYoutubeLinkValue.id;
+      arrayYoutubeLinkValue = arrayYoutubeLinkValue.businessValue;
+      setYoutubeValue((youtubeValue = arrayYoutubeLinkValue));
+      setYoutubeID((youtubeID = arrayYoutubeLinkID));
+    } else {
+      arrayYoutubeLinkValue = 'youtube';
+    }
+  }, [businessData]);
+
+  // console.log('lookupData', lookupData);
 
   function handleBackButtonClick() {
     props.navigation.goBack();
@@ -511,9 +597,10 @@ const BusinessScreen = props => {
                     fontWeight: 'bold',
                     maxWidth: 110,
                   }}>
-                  {businessData.website != 'null'
+                  {websiteValue ? websiteValue : 'website'}
+                  {/* {businessData.website != 'null'
                     ? businessData.website
-                    : 'webiste'}
+                    : 'website'} */}
                 </Text>
               </View>
             </View>
@@ -543,10 +630,7 @@ const BusinessScreen = props => {
                 </Text>
                 <Text
                   style={{color: PRIMARY, fontSize: 13, fontWeight: 'bold'}}>
-                  {/* {businessData.industryTypeLookupDetail.name} */}
-                  {/* {businessIndustry.name
-                    ? businessIndustry.name
-                    : 'Not specified'} */}
+                  {/* {businessIndustry ? businessIndustry : 'Not Specified'} */}
                   {businessIndustry
                     ? businessIndustry.name
                       ? businessIndustry.name
@@ -835,6 +919,11 @@ const BusinessScreen = props => {
           industryType={industryType}
           props={props}
           setRefresh={setRefresh}
+          websiteID={websiteID}
+          twitterID={twitterID}
+          instaID={instaID}
+          youtubeID={youtubeID}
+          facebookID={facebookID}
         />
       </ScrollView>
       {isLoading ? <Loader /> : null}

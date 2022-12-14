@@ -50,20 +50,20 @@ export default function NewBusinessCardScreen1(props) {
 
   console.log('industry', industry);
 
-  const data = [
-    {
-      id: 1,
-      name: 'Lahore',
-    },
-    {
-      id: 2,
-      name: 'Karachi',
-    },
-    {
-      id: 3,
-      name: 'Pindi',
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     name: 'Lahore',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Karachi',
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Pindi',
+  //   },
+  // ];
 
   let [userData, setUserData] = useState(null);
 
@@ -123,14 +123,17 @@ export default function NewBusinessCardScreen1(props) {
       alert('Enter business name');
     } else if (isNullOrEmpty(number)) {
       alert('Enter number');
-    } else if (isNullOrEmpty(businessAddress)) {
-      alert('Enter business address');
-    } else {
+    }
+    //  else if (isNullOrEmpty(businessAddress)) {
+    //   alert('Enter business address');
+    // }
+    else {
       let object = {
         b_Name: businessName.trim(),
         b_Area: area,
         b_Tagline: tagline.trim(),
-        b_Website: companyWebsite.trim(),
+        b_Industry: industry,
+        // b_Website: companyWebsite.trim(),
         b_Number: number.trim(),
         b_Address: businessAddress.trim(),
         b_OtherInfo: otherInfo.trim(),
@@ -242,14 +245,14 @@ export default function NewBusinessCardScreen1(props) {
                 setTagline(value);
               }}
             />
-            <OutlinedInputBox
+            {/* <OutlinedInputBox
               placeholder="Company website"
               inputType="text"
               KeyboardType={'email-address'}
               onChange={value => {
                 setCompanyWebsite(value);
               }}
-            />
+            /> */}
             <OutlinedInputBox
               placeholder="Contact Number"
               inputType="text"

@@ -15,6 +15,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {Height, Width} from '../Constants/Constants';
 import RegisterInputBox from './RegisterInputBox';
 import UploadBtn from './UploadBtn';
+import Slider from '@react-native-community/slider';
 
 export default function MyCardBuisness({
   item,
@@ -23,9 +24,10 @@ export default function MyCardBuisness({
   setSelected,
   navigation,
 }) {
-  console.log('B item', item);
+  // console.log('B item', item);
   const EDIT = true;
   const [isModalVisible, setisModalVisible] = useState(false);
+  const [range, setRange] = useState(0);
 
   return (
     <View
@@ -243,6 +245,33 @@ export default function MyCardBuisness({
                 console.log('city', value);
               }}
             />
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 10,
+                marginVertical: 10,
+              }}>
+              <Text>0km</Text>
+              <Slider
+                style={{
+                  flex: 1,
+                  height: 50,
+                }}
+                minimumValue={0}
+                maximumValue={30}
+                minimumTrackTintColor={SECONDARY}
+                maximumTrackTintColor={SECONDARY}
+                thumbTintColor={SECONDARY}
+                step={2}
+                onValueChange={value => {
+                  // console.log(value);
+                  setRange(value.toFixed(0));
+                }}
+              />
+              <Text>{range + ' km'}</Text>
+            </View>
             <UploadBtn
               placeholder="Select Image"
               label={'Upload announcment post/banner'}

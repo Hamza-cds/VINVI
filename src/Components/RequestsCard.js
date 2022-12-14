@@ -6,7 +6,7 @@ import {isNullOrEmpty} from '../Constants/TextUtils';
 import {connectionRequestApiCall} from '../Apis/Repo';
 
 export default function RequestsCard({item, setRefresh}) {
-  console.log('item', item);
+  console.log('here are requests', item);
 
   const onDecline = () => {
     let obj = {
@@ -75,10 +75,11 @@ export default function RequestsCard({item, setRefresh}) {
       <Image
         source={
           item.personalCard
-            ? !isNullOrEmpty(item.personalCard.profilePicture)
+            ? !isNullOrEmpty(item.personalCard.profilePicture) &&
+              item.personalCard.profilePicture != 'null'
               ? {uri: URL.concat(item.personalCard.profilePicture)}
-              : require('../Assets/portfolioPic.png')
-            : require('../Assets/portfolioPic.png')
+              : require('../Assets/profilePic.png')
+            : require('../Assets/profilePic.png')
         }
         style={{width: 80, height: 80, borderRadius: 80, marginTop: -20}}
       />

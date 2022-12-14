@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   BackHandler,
+  ActivityIndicator,
 } from 'react-native';
 import {SECONDARY, FORTH, WHITE, PRIMARY, GREY} from '../Constants/Colors';
 import BtnComponent from '../Components/BtnComponent';
@@ -264,7 +265,7 @@ export default function IndividualScreen(props) {
     let check = CryptoJS.AES.decrypt(scanById, 'secret key 123');
     let decryptedData = check.toString(CryptoJS.enc.Utf8);
     var scName = decryptedData.split('|')[1];
-    // console.log('sapna sapna sapna', scName);
+    console.log('screen name', scName);
 
     if (!isNullOrEmpty(ID)) {
       setIsLoading(true);
@@ -528,11 +529,12 @@ export default function IndividualScreen(props) {
     <SafeAreaView style={{height: Height, width: Width}}>
       <ScrollView style={{flex: 1, backgroundColor: WHITE}}>
         <ImageBackground
+          placeholder={<ActivityIndicator />}
           source={
             bgImage
               ? {uri: bgImage.path}
               : data
-              ? !isNullOrEmpty(data.coverPicture)
+              ? !isNullOrEmpty(data.coverPicture) && data.coverPicture != 'null'
                 ? {uri: URL.concat(data.coverPicture)}
                 : require('../Assets/registerbg.png')
               : require('../Assets/registerbg.png')
@@ -824,7 +826,11 @@ export default function IndividualScreen(props) {
                 onPress={() => {
                   props.navigation.navigate('Messages', {
                     data: data,
-                    connect: connectionID,
+                    connect: connectionID
+                      ? connectionID
+                      : data.userConnectionId
+                      ? data.userConnectionId
+                      : null,
                   });
                 }}
                 width={true}

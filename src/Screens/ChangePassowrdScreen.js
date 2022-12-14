@@ -137,6 +137,12 @@ const ChangePassowrdScreen = ({navigation, route}) => {
       alert('Re-Enter password cannot be empty');
     } else if (stringsNotEqual(newPass, conPass)) {
       alert('Passowrds do not match');
+    } else if (Error == true) {
+      alert(ErrorMsg);
+    } else if (passError == true) {
+      alert(passErrorMsg);
+    } else if (confirmpassError == true) {
+      alert(confirmpassErrorMsg);
     } else {
       let object = {
         Id: DATA.id,

@@ -23,7 +23,7 @@ export function Buisness({navigation}) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [navigation]);
 
   const getData = () => {
     getBusinessCardByUserIDApiCall(DATA.id)

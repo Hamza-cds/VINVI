@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {ImageBackground, SafeAreaView, Text} from 'react-native';
+import {
+  ImageBackground,
+  SafeAreaView,
+  Text,
+  BackHandler,
+  RefreshControl,
+  ActivityIndicator,
+} from 'react-native';
 import Header from '../Components/Header';
 import Svg, {G, Circle, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
@@ -9,6 +16,7 @@ import {getAllConnectionRequest} from '../Apis/Repo';
 import RequestsCard from '../Components/RequestsCard';
 import {useSelector} from 'react-redux';
 import Loader from '../Components/Loader';
+import {PRIMARY} from '../Constants/Colors';
 
 export default function RequestsDashboardScreen({navigation}) {
   // let [userData, setUserData] = useState(null);
@@ -16,6 +24,7 @@ export default function RequestsDashboardScreen({navigation}) {
   const [isLoading, setIsLoading] = useState(false);
   const status = 1;
   const [refresh, setRefresh] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   const DATA = useSelector(state => state.UserData);
   console.log('dispatch DATA', DATA);
@@ -27,14 +36,33 @@ export default function RequestsDashboardScreen({navigation}) {
   //   });
   // }, []);
 
+  function handleBackButtonClick() {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Dashboard'}],
+    });
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
+
   useEffect(() => {
     getData();
-  }, [refresh]);
+  }, [navigation, refresh]);
 
   const getData = () => {
     setIsLoading(true);
     getAllConnectionRequest(DATA.id, status)
       .then(res => {
+        setRefresh(0);
         console.log('res', res);
         setdata(res.data.result);
         setIsLoading(false);
@@ -45,17 +73,27 @@ export default function RequestsDashboardScreen({navigation}) {
       });
   };
 
+  const onRefresh = () => {
+    //Clear old data of the list
+    // setDataSource([]);
+    //Call the Service to get the latest data
+    getData();
+  };
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground
         source={require('../Assets/screenbg.png')}
-        style={{flex: 1, paddingBottom: 100}}>
+        style={{flex: 1}}>
         <Header
           navigation={navigation}
           variant="dark2"
           headerName="Requests"
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Dashboard'}],
+            });
           }}
           headerIcon={
             <Svg
@@ -97,11 +135,20 @@ export default function RequestsDashboardScreen({navigation}) {
             </Svg>
           }
         />
+        {refreshing ? <ActivityIndicator /> : null}
         {data != null ? (
           <FlatList
             data={data}
             horizontal={false}
-            style={{marginTop: 20}}
+            style={{felx: 1, marginTop: 20}}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={PRIMARY}
+              />
+            }
+            enableEmptySections={true}
             keyExtractor={item => item.id}
             renderItem={({item, index}) => (
               <RequestsCard

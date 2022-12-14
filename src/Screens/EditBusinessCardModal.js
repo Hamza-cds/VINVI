@@ -29,8 +29,17 @@ export default function EditBusinessCardModal({
   industryType,
   setRefresh,
   props,
+  websiteID,
+  twitterID,
+  instaID,
+  youtubeID,
+  facebookID,
 }) {
-  console.log('bCardData', bCardData);
+  console.log('websiteID', websiteID);
+  // console.log('bCardData', bCardData);
+  // console.log('bCardData', bCardData);
+  // console.log('bCardData', bCardData);
+  // console.log('bCardData', bCardData);
 
   const [businessName, setBusinessName] = useState('');
   const [industry, setIndustryType] = useState('');
@@ -52,43 +61,43 @@ export default function EditBusinessCardModal({
   const [cardID, setCardID] = useState('');
 
   const onSave = () => {
-    // let businessCardArray = [
-    //   {
-    //     id: '0',
-    //     businessCardId: bCardData.id,
-    //     PersonalKey: 'facebook link',
-    //     PersonalValue: facebookLink.trim(),
-    //     Ishidden: true,
-    //   },
-    //   {
-    //     id: '0',
-    //     businessCardId: bCardData.id,
-    //     PersonalKey: 'twitter link',
-    //     PersonalValue: twitterLink.trim(),
-    //     Ishidden: true,
-    //   },
-    //   {
-    //     id: '0',
-    //     businessCardId: bCardData.id,
-    //     PersonalKey: 'website link',
-    //     PersonalValue: websiteLink.trim(),
-    //     Ishidden: true,
-    //   },
-    //   {
-    //     id: '0',
-    //     businessCardId: bCardData.id,
-    //     PersonalKey: 'instagram link',
-    //     PersonalValue: instagramLink.trim(),
-    //     Ishidden: true,
-    //   },
-    //   {
-    //     id: '0',
-    //     businessCardId: bCardData.id,
-    //     PersonalKey: 'youtube link',
-    //     PersonalValue: youtubeLink.trim(),
-    //     Ishidden: true,
-    //   },
-    // ];
+    let businessCardArray = [
+      {
+        id: facebookID,
+        businessCardId: bCardData.id,
+        PersonalKey: 'facebook link',
+        PersonalValue: facebookLink.trim(),
+        Ishidden: true,
+      },
+      {
+        id: twitterID,
+        businessCardId: bCardData.id,
+        PersonalKey: 'twitter link',
+        PersonalValue: twitterLink.trim(),
+        Ishidden: true,
+      },
+      {
+        id: instaID,
+        businessCardId: bCardData.id,
+        PersonalKey: 'instagram link',
+        PersonalValue: instagramLink.trim(),
+        Ishidden: true,
+      },
+      {
+        id: youtubeID,
+        businessCardId: bCardData.id,
+        PersonalKey: 'youtube link',
+        PersonalValue: youtubeLink.trim(),
+        Ishidden: true,
+      },
+      {
+        id: websiteID,
+        businessCardId: bCardData.id,
+        PersonalKey: 'website link',
+        PersonalValue: websiteLink.trim(),
+        Ishidden: true,
+      },
+    ];
     if (isNullOrEmpty(industry)) {
       alert('Select Industry Type');
     } else {
@@ -106,39 +115,39 @@ export default function EditBusinessCardModal({
         otherInfo ? otherInfo : bCardData.description,
       );
       formdata.append('Tagline', tagline ? tagline : bCardData.tagline);
-      formdata.append(
-        'Website',
-        comoanyWebsite ? comoanyWebsite : bCardData.website,
-      );
+      // formdata.append(
+      //   'Website',
+      //   comoanyWebsite ? comoanyWebsite : bCardData.website,
+      // );
       formdata.append('UserId', JSON.stringify(bCardData.userId));
-      formdata.append('BusinessCardMeta', JSON.stringify([]));
       // formdata.append('BusinessCardMeta', JSON.stringify([]));
-      // if (businessCardArray.length == 0) {
-      //   formdata.append('BusinessCardMeta', JSON.stringify([]));
-      // } else {
-      //   for (let index = 0; index < businessCardArray.length; index++) {
-      //     // debugger;
-      //     const element = businessCardArray[index];
-      //     formdata.append(`BusinessCardMeta[${index}][id]`, element.PersonalKey);
-      //     formdata.append(
-      //       `BusinessCardMeta[${index}][businessCardId]`,
-      //       element.PersonalKey,
-      //     );
+      // formdata.append('BusinessCardMeta', JSON.stringify([]));
+      if (businessCardArray.length < 0) {
+        formdata.append('BusinessCardMeta', JSON.stringify([]));
+      } else {
+        for (let index = 0; index < businessCardArray.length; index++) {
+          // debugger;
+          const element = businessCardArray[index];
+          formdata.append(`BusinessCardMeta[${index}][id]`, element.id);
+          formdata.append(
+            `BusinessCardMeta[${index}][businessCardId]`,
+            element.businessCardId,
+          );
 
-      //     formdata.append(
-      //       `BusinessCardMeta[${index}][BusinessKey]`,
-      //       element.PersonalKey,
-      //     );
-      //     formdata.append(
-      //       `BusinessCardMeta[${index}][BusinessValue]`,
-      //       element.PersonalValue,
-      //     );
-      //     formdata.append(
-      //       `BusinessCardMeta[${index}].Ishidden`,
-      //       element.Ishidden,
-      //     );
-      //   }
-      // }
+          formdata.append(
+            `BusinessCardMeta[${index}][BusinessKey]`,
+            element.PersonalKey,
+          );
+          formdata.append(
+            `BusinessCardMeta[${index}][BusinessValue]`,
+            element.PersonalValue,
+          );
+          formdata.append(
+            `BusinessCardMeta[${index}][Ishidden]`,
+            element.Ishidden,
+          );
+        }
+      }
       {
         logo
           ? formdata.append('logo_image_file', {
@@ -314,7 +323,7 @@ export default function EditBusinessCardModal({
                     setTagline(value);
                   }}
                 />
-                <OutlinedInputBox
+                {/* <OutlinedInputBox
                   placeholder="Company website"
                   inputType="text"
                   KeyboardType={'email-address'}
@@ -323,7 +332,7 @@ export default function EditBusinessCardModal({
                     // console.log('value', value);
                     setCompanyWebsite(value);
                   }}
-                />
+                /> */}
                 <OutlinedInputBox
                   placeholder="Contact Number"
                   inputType="text"

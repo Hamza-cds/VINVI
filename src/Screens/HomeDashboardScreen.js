@@ -52,6 +52,8 @@ export default function HomeDashboardScreen({navigation, route}) {
   const [indicator, setIndicator] = useState(false);
   const pagerRef = useRef(null);
   const timeout = useRef(null);
+  const [personalLimit, setPersonalLimit] = useState(10);
+  const [businessLimit, setBusinessLimit] = useState(10);
   // let uploadType = 1;
   let page = 1;
   let limit = 10;
@@ -206,7 +208,7 @@ export default function HomeDashboardScreen({navigation, route}) {
 
   const getAllIndividual = () => {
     setIsLoading(true);
-    getPersonalCardAllActiveApiCall((limit = 10), (page = 1), DATA.id)
+    getPersonalCardAllActiveApiCall(personalLimit, (page = 1), DATA.id)
       .then(({data}) => {
         // console.log('personal res', data);
         if (data.success == true) {
@@ -231,7 +233,8 @@ export default function HomeDashboardScreen({navigation, route}) {
   };
 
   const getBusinessList = () => {
-    getBusinessCardAllActiveApiCall((limit = 10), (page = 1))
+    setIsLoading(true);
+    getBusinessCardAllActiveApiCall(businessLimit, (page = 1))
       .then(({data}) => {
         if (data.success == true) {
           for (let index = 0; index < data.result.length; index++) {
@@ -240,6 +243,7 @@ export default function HomeDashboardScreen({navigation, route}) {
             element.key = JSON.stringify(element.id);
           }
           // console.log('business response', data);
+          setIsLoading(false);
           setBusinessData(data.result);
           setIndicator(false);
           // console.log('buisnessData', businessData);
@@ -352,6 +356,108 @@ export default function HomeDashboardScreen({navigation, route}) {
     //     console.log('err', err);
     //   });
   };
+
+  // const renderIndividualFooter = () => {
+  //   return (
+  //     //Footer View with Load More button
+  //     <View
+  //       style={{
+  //         padding: 10,
+  //         justifyContent: 'center',
+  //         alignItems: 'center',
+  //         flexDirection: 'row',
+  //       }}>
+  //       <TouchableOpacity
+  //         activeOpacity={0.9}
+  //         onPress={() => {
+  //           setPersonalLimit(personalLimit + 5);
+  //           getAllIndividual();
+  //         }}
+  //         //On Click of button load more data
+  //         style={{
+  //           height: 35,
+  //           width: 80,
+  //           alignItems: 'center',
+  //           backgroundColor: PRIMARY,
+  //           borderRadius: 10,
+  //         }}>
+  //         <Text style={{color: 'white', marginVertical: 6}}>Load More</Text>
+  //         {/* {loading ? (
+  //           <ActivityIndicator color="white" style={{marginLeft: 8}} />
+  //         ) : null} */}
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // };
+
+  // ************************************************
+  const renderIndividualFooter = () => {
+    return (
+      //Footer View with Load More button
+      <View
+        style={{
+          padding: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            setPersonalLimit(personalLimit + 5);
+            getAllIndividual();
+          }}
+          //On Click of button load more data
+          style={{
+            height: 35,
+            width: 80,
+            alignItems: 'center',
+            backgroundColor: PRIMARY,
+            borderRadius: 10,
+          }}>
+          <Text style={{color: 'white', marginVertical: 6}}>Load More</Text>
+          {/* {loading ? (
+            <ActivityIndicator color="white" style={{marginLeft: 8}} />
+          ) : null} */}
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const renderBusinessFooter = () => {
+    return (
+      //Footer View with Load More button
+      <View
+        style={{
+          padding: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            setBusinessLimit(businessLimit + 5);
+            getBusinessList();
+          }}
+          //On Click of button load more data
+          style={{
+            height: 35,
+            width: 80,
+            alignItems: 'center',
+            backgroundColor: PRIMARY,
+            borderRadius: 10,
+          }}>
+          <Text style={{color: 'white', marginVertical: 6}}>Load More</Text>
+          {/* {loading ? (
+            <ActivityIndicator color="white" style={{marginLeft: 8}} />
+          ) : null} */}
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  // ***************************************************************
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -515,6 +621,7 @@ export default function HomeDashboardScreen({navigation, route}) {
                 color: 'black',
                 fontSize: 12,
               }}
+              ListFooterComponent={renderIndividualFooter}
               indexContainerStyle={{marginHorizontal: 6, marginVertical: 3}}
               indexLetterContainerStyle={{height: 14, width: 10}}
               contentContainerStyle={{paddingBottom: 70}}
@@ -576,6 +683,7 @@ export default function HomeDashboardScreen({navigation, route}) {
                 color: 'black',
                 fontSize: 12,
               }}
+              ListFooterComponent={renderBusinessFooter}
               indexContainerStyle={{marginHorizontal: 6, marginVertical: 3}}
               indexLetterContainerStyle={{height: 15, width: 10}}
               contentContainerStyle={{paddingBottom: 70}}
@@ -634,39 +742,4 @@ export default function HomeDashboardScreen({navigation, route}) {
       {isLoading ? <Loader /> : null}
     </SafeAreaView>
   );
-}
-
-{
-  /* <Tab.Navigator
-        initialRouteName="Individual"
-        tabBarOptions={{
-          indicatorStyle: {backgroundColor: PRIMARY},
-          labelStyle: {
-            fontSize: 12,
-            color: PRIMARY,
-            fontWeight: 'bold',
-          },
-          style: {
-            backgroundColor: 'transparent',
-            borderWidth: 0,
-            elevation: 0,
-            marginHorizontal: 20,
-            // marginTop: 10,
-            marginBottom: 10,
-            color: useIsFocused ? PRIMARY : null,
-          },
-          bounces: true,
-        }}
-        sceneContainerStyle={{backgroundColor: 'transprent'}}>
-        <Tab.Screen
-          name="Individual"
-          component={IndividualDataCardsListing}
-          // initialParams={{search: search}}
-        />
-        <Tab.Screen
-          name="Business"
-          component={BusinessDataCardsListing}
-          initialParams={{search: search}}
-        />
-      </Tab.Navigator> */
 }

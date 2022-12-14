@@ -269,19 +269,23 @@ export default function IndividualCard({
             numberOfLines={1}
             style={{
               fontSize: 12,
-              // marginLeft: 10,
               color: WHITE,
-              // width: 250,
+              maxWidth: 170,
             }}>
-            {arrayOccupation}
+            {arrayOccupation ? arrayOccupation : 'Occupation'}
           </Text>
+
           <Text style={{marginHorizontal: 10, color: WHITE}}>|</Text>
           <Text style={{color: WHITE}}>
             {experience ? experience + ' yr(s) exp' : 0 + ' yr(s) exp'}
           </Text>
         </View>
         <Text style={{color: WHITE, fontSize: 12}}>
-          {eductaion ? (eductaion.degree ? eductaion.degree : null) : null}
+          {eductaion
+            ? !isNullOrEmpty(eductaion.degree)
+              ? eductaion.degree
+              : null
+            : null}
         </Text>
 
         <View style={{flexDirection: 'row', marginBottom: -10}}>
