@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   FlatList,
   Text,
+  BackHandler,
 } from 'react-native';
 import Header from '../Components/Header';
 import ChatCard from '../Components/ChatCard';
@@ -16,20 +17,7 @@ import {isNullOrEmptyArray} from '../Constants/TextUtils';
 
 const ChatsDashboardScreen = props => {
   const navigation = props.navigation;
-  // let DAT = [
-  //   {
-  //     id: 1,
-  //   },
-  //   {
-  //     id: 1,
-  //   },
-  //   {
-  //     id: 1,
-  //   },
-  //   {
-  //     id: 1,
-  //   },
-  // ];
+
   const [data, setData] = useState('');
   let status = 0;
 
@@ -55,6 +43,24 @@ const ChatsDashboardScreen = props => {
       });
   };
 
+  function handleBackButtonClick() {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -72,7 +78,10 @@ const ChatsDashboardScreen = props => {
           variant="dark2"
           headerName="Chats"
           onPress={() => {
-            navigation.navigate('Home');
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'Home'}],
+            });
           }}
           headerIcon={
             <Svg

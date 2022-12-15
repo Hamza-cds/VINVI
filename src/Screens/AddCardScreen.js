@@ -1,5 +1,11 @@
-import React from 'react';
-import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  BackHandler,
+} from 'react-native';
 import {SECONDARY, WHITE} from '../Constants/Colors';
 import Header from '../Components/Header';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -7,6 +13,24 @@ import Svg, {G, Circle, Path} from 'react-native-svg';
 import {Height, Width} from '../Constants/Constants';
 
 export default function AddCardScreen(props, navigation) {
+  function handleBackButtonClick() {
+    props.navigation.reset({
+      index: 0,
+      routes: [{name: 'Dashboard'}],
+    });
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
+
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
       <ImageBackground

@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useRef, useLayoutEffect} from 'react';
-import {View, TouchableOpacity, TextInput, SafeAreaView} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  SafeAreaView,
+  BackHandler,
+} from 'react-native';
 import {WHITE} from '../Constants/Colors';
 import Header from '../Components/Header';
 import UserMessage from '../Components/UserMessage';
@@ -102,6 +108,25 @@ const ChatsDashboardScreen = props => {
       clearTimeout(timeout);
     };
   }, [messages]);
+
+  function handleBackButtonClick() {
+    navigation.navigate('Chats');
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{name: 'Chats'}],
+    // });
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView
