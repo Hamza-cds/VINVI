@@ -98,106 +98,106 @@ export default function EditBusinessCardModal({
         Ishidden: true,
       },
     ];
-    if (isNullOrEmpty(industry)) {
-      alert('Select Industry Type');
+    // if (isNullOrEmpty(industry)) {
+    //   alert('Select Industry Type');
+    // } else {
+    var formdata = new FormData();
+    formdata.append('Id', JSON.stringify(bCardData.id));
+    formdata.append('Name', businessName ? businessName : bCardData.name);
+    formdata.append('PhoneNo', phone ? phone : bCardData.phoneNo);
+    formdata.append(
+      'IndustryTypeLookupDetailId',
+      industry ? industry.id : bCardData.industryTypeLookupDetail.id,
+    );
+    formdata.append('Address', address ? address : bCardData.address);
+    formdata.append(
+      'Description',
+      otherInfo ? otherInfo : bCardData.description,
+    );
+    formdata.append('Tagline', tagline ? tagline : bCardData.tagline);
+    // formdata.append(
+    //   'Website',
+    //   comoanyWebsite ? comoanyWebsite : bCardData.website,
+    // );
+    formdata.append('UserId', JSON.stringify(bCardData.userId));
+    // formdata.append('BusinessCardMeta', JSON.stringify([]));
+    // formdata.append('BusinessCardMeta', JSON.stringify([]));
+    if (businessCardArray.length < 0) {
+      formdata.append('BusinessCardMeta', JSON.stringify([]));
     } else {
-      var formdata = new FormData();
-      formdata.append('Id', JSON.stringify(bCardData.id));
-      formdata.append('Name', businessName ? businessName : bCardData.name);
-      formdata.append('PhoneNo', phone ? phone : bCardData.phoneNo);
-      formdata.append(
-        'IndustryTypeLookupDetailId',
-        industry ? industry.id : bCardData.industryTypeLookupDetail.id,
-      );
-      formdata.append('Address', address ? address : bCardData.address);
-      formdata.append(
-        'Description',
-        otherInfo ? otherInfo : bCardData.description,
-      );
-      formdata.append('Tagline', tagline ? tagline : bCardData.tagline);
-      // formdata.append(
-      //   'Website',
-      //   comoanyWebsite ? comoanyWebsite : bCardData.website,
-      // );
-      formdata.append('UserId', JSON.stringify(bCardData.userId));
-      // formdata.append('BusinessCardMeta', JSON.stringify([]));
-      // formdata.append('BusinessCardMeta', JSON.stringify([]));
-      if (businessCardArray.length < 0) {
-        formdata.append('BusinessCardMeta', JSON.stringify([]));
-      } else {
-        for (let index = 0; index < businessCardArray.length; index++) {
-          // debugger;
-          const element = businessCardArray[index];
-          formdata.append(`BusinessCardMeta[${index}][id]`, element.id);
-          formdata.append(
-            `BusinessCardMeta[${index}][businessCardId]`,
-            element.businessCardId,
-          );
+      for (let index = 0; index < businessCardArray.length; index++) {
+        // debugger;
+        const element = businessCardArray[index];
+        formdata.append(`BusinessCardMeta[${index}][id]`, element.id);
+        formdata.append(
+          `BusinessCardMeta[${index}][businessCardId]`,
+          element.businessCardId,
+        );
 
-          formdata.append(
-            `BusinessCardMeta[${index}][BusinessKey]`,
-            element.PersonalKey,
-          );
-          formdata.append(
-            `BusinessCardMeta[${index}][BusinessValue]`,
-            element.PersonalValue,
-          );
-          formdata.append(
-            `BusinessCardMeta[${index}][Ishidden]`,
-            element.Ishidden,
-          );
-        }
+        formdata.append(
+          `BusinessCardMeta[${index}][BusinessKey]`,
+          element.PersonalKey,
+        );
+        formdata.append(
+          `BusinessCardMeta[${index}][BusinessValue]`,
+          element.PersonalValue,
+        );
+        formdata.append(
+          `BusinessCardMeta[${index}][Ishidden]`,
+          element.Ishidden,
+        );
       }
-      {
-        logo
-          ? formdata.append('logo_image_file', {
-              uri: logo.path,
-              name: logoImageName,
-              type: logo.mime,
-            })
-          : bCardData.logo
-          ? formdata.append('Logo', bCardData.logo)
-          : null;
-      }
-
-      {
-        cover
-          ? formdata.append('cover_image_file', {
-              uri: cover.path,
-              name: coverImageName,
-              type: cover.mime,
-            })
-          : bCardData.cover
-          ? formdata.append('Cover', bCardData.cover)
-          : null;
-      }
-
-      formdata.append('BusinessCategory', JSON.stringify([]));
-
-      console.log('formdata', formdata);
-
-      setIsLoading(true);
-      businessCardApiCall(formdata)
-        .then(res => res.json())
-        .then(data => {
-          console.log('edit business response', data);
-          if (data.status === 200 && data.success === true) {
-            alert('Updated successfully');
-            setIsLoading(false);
-            setModalVisible(!modalVisible);
-            setRefresh(true);
-            // dispatch(BCDComplete(''));
-            // props.navigation.replace('MyCardsDashboardScreen');
-          } else {
-            setIsLoading(false);
-            alert('Invalid Request');
-          }
-        })
-        .catch(err => {
-          setIsLoading(false);
-          console.log('err', err);
-        });
     }
+    {
+      logo
+        ? formdata.append('logo_image_file', {
+            uri: logo.path,
+            name: logoImageName,
+            type: logo.mime,
+          })
+        : bCardData.logo
+        ? formdata.append('Logo', bCardData.logo)
+        : null;
+    }
+
+    {
+      cover
+        ? formdata.append('cover_image_file', {
+            uri: cover.path,
+            name: coverImageName,
+            type: cover.mime,
+          })
+        : bCardData.cover
+        ? formdata.append('Cover', bCardData.cover)
+        : null;
+    }
+
+    formdata.append('BusinessCategory', JSON.stringify([]));
+
+    console.log('formdata', formdata);
+
+    setIsLoading(true);
+    businessCardApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('edit business response', data);
+        if (data.status === 200 && data.success === true) {
+          alert('Updated successfully');
+          setIsLoading(false);
+          setModalVisible(!modalVisible);
+          setRefresh(true);
+          // dispatch(BCDComplete(''));
+          // props.navigation.replace('MyCardsDashboardScreen');
+        } else {
+          setIsLoading(false);
+          alert('Invalid Request');
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+    // }
   };
 
   const logoImage = image => {

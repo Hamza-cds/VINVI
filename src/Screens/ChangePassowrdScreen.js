@@ -54,34 +54,11 @@ const ChangePassowrdScreen = ({navigation, route}) => {
     }
   };
 
-  // const PasswordCheck = value => {
-  //   if (isNullOrEmpty(value)) {
-  //     setPassError(true);
-  //     setPassErrorMsg('Enter Password');
-  //   } else {
-  //     setPassError(false);
-  //   }
-  // };
   console.log('newPass', newPass);
   console.log('conPass', conPass);
-  // const PasswordCheck = value => {
-  //   if (isNullOrEmpty(value)) {
-  //     setPassError(true);
-  //     setPassErrorMsg('Enter Password');
-  //   } else if (isInvalidPassword(value)) {
-  //     setPassError(true);
-  //     setPassErrorMsg('Min 8 characters');
-  //   } else if (stringsNotEqual(conPass, newPass)) {
-  //     setPassError(false);
-  //     setConfirmPassError(true);
-  //     setConfirmPassErrorMsg('Passwords do not match');
-  //   } else {
-  //     setConfirmPassError(false);
-  //     setPassError(false);
-  //   }
-  // };
 
   const PasswordCheck = value => {
+    // debugger;
     if (isNullOrEmpty(value)) {
       setPassError(true);
       setPassErrorMsg('Enter Password');
@@ -91,18 +68,19 @@ const ChangePassowrdScreen = ({navigation, route}) => {
     } else if (isInvalidPassword(value)) {
       setPassError(true);
       setPassErrorMsg('Min 8 characters');
-      if (stringsNotEqual(conPass, value)) {
-        // setPassError(false);
-        setConfirmPassError(true);
-        setConfirmPassErrorMsg('Passwords do not match');
-      }
-    } else if (!isNullOrEmpty(conPass)) {
-      if (stringsNotEqual(conPass, value)) {
-        setPassError(false);
-        setConfirmPassError(true);
-        setConfirmPassErrorMsg('Passwords do not match');
-      }
-    } else {
+    } else if (stringsNotEqual(value, conPass)) {
+      setPassError(false);
+      setConfirmPassError(true);
+      setConfirmPassErrorMsg('Passwords do not match');
+    }
+    // else if (!isNullOrEmpty(conPass)) {
+    //   if (stringsNotEqual(value, conPass)) {
+    //     setPassError(false);
+    //     setConfirmPassError(true);
+    //     setConfirmPassErrorMsg('Passwords do not match');
+    //   }
+    // }
+    else {
       setConfirmPassError(false);
       setPassError(false);
     }
