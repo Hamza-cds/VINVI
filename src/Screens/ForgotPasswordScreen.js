@@ -86,11 +86,14 @@ const ForgetPasswordScreen = props => {
     } else if (isInvalidPassword(value)) {
       setPassError(true);
       setPassErrorMsg('Min 8 characters');
-    } else if (!isNullOrEmpty(conPass)) {
-      if (stringsNotEqual(conPass, value)) {
+    } else if (!isNullOrEmpty(confirmPassword)) {
+      if (stringsNotEqual(value, confirmPassword)) {
         setPassError(false);
         setConfirmPassError(true);
         setConfirmPassErrorMsg('Passwords do not match');
+      } else {
+        setPassError(false);
+        setConfirmPassError(false);
       }
     } else {
       setConfirmPassError(false);

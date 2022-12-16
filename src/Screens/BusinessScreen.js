@@ -213,6 +213,8 @@ const BusinessScreen = props => {
   //   arrayBusinessType = 'No Product Image';
   // }
 
+  console.log('websiteValue', websiteValue);
+
   useEffect(() => {
     let arrayWebsiteLinkValue;
     let arrayWebsiteLinkID;
@@ -220,6 +222,7 @@ const BusinessScreen = props => {
       businessKey: 'website link',
     });
     if (arrayWebsiteLinkValue) {
+      debugger;
       arrayWebsiteLinkID = arrayWebsiteLinkValue.id;
       arrayWebsiteLinkValue = arrayWebsiteLinkValue.businessValue;
       setWebSiteValue((websiteValue = arrayWebsiteLinkValue));
@@ -597,7 +600,7 @@ const BusinessScreen = props => {
                     fontWeight: 'bold',
                     maxWidth: 110,
                   }}>
-                  {websiteValue ? websiteValue : 'website'}
+                  {websiteValue ? websiteValue : 'Website'}
                   {/* {businessData.website != 'null'
                     ? businessData.website
                     : 'website'} */}

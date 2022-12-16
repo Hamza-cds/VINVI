@@ -99,6 +99,23 @@ export default function RegisterScreen(props) {
     }
   };
 
+  // const PasswordCheck = value => {
+  //   if (isNullOrEmpty(value)) {
+  //     setPassError(true);
+  //     setPassErrorMsg('Enter Password');
+  //   } else if (isInvalidPassword(value)) {
+  //     setPassError(true);
+  //     setPassErrorMsg('Min 8 characters');
+  //   } else if (stringsNotEqual(confirmPassword, value)) {
+  //     setPassError(false);
+  //     setConfirmPassError(true);
+  //     setConfirmPassErrorMsg('Passwords do not match');
+  //   } else {
+  //     setConfirmPassError(false);
+  //     setPassError(false);
+  //   }
+  // };
+
   const PasswordCheck = value => {
     if (isNullOrEmpty(value)) {
       setPassError(true);
@@ -106,10 +123,15 @@ export default function RegisterScreen(props) {
     } else if (isInvalidPassword(value)) {
       setPassError(true);
       setPassErrorMsg('Min 8 characters');
-    } else if (stringsNotEqual(confirmPassword, value)) {
-      setPassError(false);
-      setConfirmPassError(true);
-      setConfirmPassErrorMsg('Passwords do not match');
+    } else if (!isNullOrEmpty(confirmPassword)) {
+      if (stringsNotEqual(value, confirmPassword)) {
+        setPassError(false);
+        setConfirmPassError(true);
+        setConfirmPassErrorMsg('Passwords do not match');
+      } else {
+        setPassError(false);
+        setConfirmPassError(false);
+      }
     } else {
       setConfirmPassError(false);
       setPassError(false);

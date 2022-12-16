@@ -465,7 +465,7 @@ export function JobHistoryEditModalAdd({
               </Text>
               <Select
                 data={Months}
-                placeholder={'Start month'}
+                placeholder={'End month'}
                 isEdit={isEdit}
                 editText={endMonth}
                 error={endMonthError}
@@ -484,7 +484,7 @@ export function JobHistoryEditModalAdd({
 
               <Select
                 data={getYears()}
-                placeholder={'Start year'}
+                placeholder={'End year'}
                 isEdit={isEdit}
                 editText={endYear}
                 error={endYearError}

@@ -1,5 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {ScrollView, View, Text, TouchableOpacity, Image} from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+} from 'react-native';
 import Header from '../Components/Header';
 // import TopTabsNavigator from '../Navigation/TopTabsNavigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -16,16 +23,21 @@ import {Camera, CameraScreen} from 'react-native-camera-kit';
 import {useFocusEffect} from '@react-navigation/core';
 
 export default function SearchScreen({navigation, route}) {
+  // console.log('route', route);
   const [selectedPage, setSelectedPage] = useState(0);
+  let [scan, setScan] = useState(true);
   const pagerRef = useRef(null);
   const handlePageChange = pageNumber => {
     // setSelectedPage(pageNumber);
+    setTestData(null);
     pagerRef.current.setPage(pageNumber);
     setSelectedPage(pageNumber);
   };
   const onPageScroolEvent = event => {
     setSelectedPage(event.nativeEvent.position);
   };
+
+  let pageName = route.name;
 
   // my qr code requirements start
 
@@ -44,12 +56,31 @@ export default function SearchScreen({navigation, route}) {
     'secret key 123',
   ).toString();
 
-  // my qr code requirements end
+  console.log('scan value', scan);
 
-  // scan screen requirements start
+  useFocusEffect(
+    React.useCallback(() => {
+      // debugger;
+      setScan(true);
+    }, [navigation]),
+  );
 
   let [testData, setTestData] = useState('');
-  // scan screen requirements end
+
+  function handleBackButtonClick() {
+    navigation.navigate('Dashboard');
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 
   return (
     <SafeAreaView style={{height: Height, width: Width}}>
@@ -189,15 +220,29 @@ export default function SearchScreen({navigation, route}) {
                 width: '100%',
                 height: '100%',
               }}
-              scanBarcode={true}
+              scanBarcode={scan}
               ratioOverlay={['16:9', '1:1', '3:4']}
               onReadCode={event => {
-                // console.log('event', event);
-                setTestData((testData = event.nativeEvent.codeStringValue));
-                setTestData('');
-                navigation.navigate('IndividualScreen', {
-                  param: testData,
-                });
+                if (scan) {
+                  setTestData((testData = event.nativeEvent.codeStringValue));
+                  setScan(false);
+                  navigation.reset({
+                    index: 0,
+                    routes: [
+                      {
+                        name: 'IndividualScreen',
+                        params: {
+                          param: testData,
+                          searchScreen: pageName,
+                        },
+                      },
+                    ],
+                  });
+                  // navigation.navigate('IndividualScreen', {
+                  //   param: testData,
+                  //   searchScreen: pageName,
+                  // });
+                }
               }}
               showFrame={false} // (default false) optional, show frame with transparent layer (qr code or barcode will be read on this area ONLY), start animation for scanner,that stoped when find any code. Frame always at center of the screen
               laserColor="green" // (default red) optional, color of laser in scanner frame

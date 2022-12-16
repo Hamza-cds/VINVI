@@ -89,6 +89,7 @@ export default function IndividualScreen(props) {
   let [jobHistoryData, setJobHistoryData] = useState([]);
   let [educationHistoryData, setEducationHistoryData] = useState([]);
   const [stop, setStop] = useState(false);
+  let searchScreen = props.route.params.searchScreen;
   // console.log('degreeList', degreeList);
   var date = new Date();
   let DATA = useSelector(state => state.UserData);
@@ -266,7 +267,7 @@ export default function IndividualScreen(props) {
     let decryptedData = check.toString(CryptoJS.enc.Utf8);
     var scName = decryptedData.split('|')[1];
     console.log('screen name', scName);
-
+    // debugger;
     if (!isNullOrEmpty(ID)) {
       setIsLoading(true);
       console.log('ID', ID);
@@ -289,10 +290,11 @@ export default function IndividualScreen(props) {
         });
     } else if (scName == 'crd') {
       // debugger;
+      console.log('scanById', scanById);
       let bytes = CryptoJS.AES.decrypt(scanById, 'secret key 123');
       let decryptedData = bytes.toString(CryptoJS.enc.Utf8);
       var id = decryptedData.split('_')[1];
-      // console.log('here is id ', id);
+      console.log('here is id ', id);
 
       setIsLoading(true);
       getPersonalCardByIdApiCall(id, DATA.id)
@@ -323,7 +325,9 @@ export default function IndividualScreen(props) {
         .then(res => {
           console.log('getPersonalCardByUserIdApiCall', res.data.result);
           if (res.data.success) {
+            // debugger;
             setdata((data = res.data.result));
+            setID(data.id);
             setIsLoading(false);
             console.log('card data', data);
           } else {
@@ -511,7 +515,12 @@ export default function IndividualScreen(props) {
   };
 
   function handleBackButtonClick() {
-    props.navigation.goBack();
+    if (searchScreen == 'Search') {
+      props.navigation.navigate('Search');
+    } else {
+      props.navigation.goBack();
+    }
+    // props.navigation.goBack();
     return true;
   }
 
@@ -548,7 +557,11 @@ export default function IndividualScreen(props) {
             navigation={props.navigation}
             variant="user"
             onPress={() => {
-              props.navigation.navigate('Dashboard');
+              if (searchScreen == 'Search') {
+                props.navigation.navigate('Search');
+              } else {
+                props.navigation.navigate('Dashboard');
+              }
             }}
           />
 
