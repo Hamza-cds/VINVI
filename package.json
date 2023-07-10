@@ -48,6 +48,7 @@
     "react-native-indicators": "^0.17.0",
     "react-native-insta-story": "^1.1.8",
     "react-native-linear-gradient": "^2.6.2",
+    "react-native-masonry-list": "^2.16.1",
     "react-native-media-controls": "^2.3.0",
     "react-native-modal-dropdown": "^1.0.2",
     "react-native-modalbox": "^2.0.2",

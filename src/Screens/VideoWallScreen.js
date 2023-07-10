@@ -23,9 +23,10 @@ import {storyPostApiCall} from '../Apis/Repo';
 import {isValidVideo} from '../Constants/Validations';
 import Video from 'react-native-video';
 import {isNullOrEmptyArray} from '../Constants/TextUtils';
+import InstaGrid from '../Components/InstaGrid';
 
 export default function VideoWallScreen({navigation, route}) {
-  const [numOfColoums, setNumOfColoums] = useState(6);
+  const [numOfColoums, setNumOfColoums] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
   let [data, setData] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -156,41 +157,60 @@ export default function VideoWallScreen({navigation, route}) {
         />
 
         {!isNullOrEmptyArray(data) ? (
-          <FlatList
+          <InstaGrid
             data={data}
-            horizontal={false}
-            numColumns={numOfColoums}
-            keyExtractor={item => item.id}
-            renderItem={({item, index}) => (
-              <>
-                <TouchableOpacity
-                  onPress={() => {
-                    setImage((image = item));
-                    // checkMedia(image);
-                    setViewModal(true);
-                  }}
-                  style={{
-                    width: '16.40%',
-                    aspectRatio: 1,
-                    marginRight: 0.9,
-                    backgroundColor: GREY,
-                    marginTop: 10,
-                  }}>
-                  {!item.media.includes('.mp4') ? null : (
-                    <Video
-                      source={{uri: URL.concat(item.media)}} // Can be a URL or a local file.
-                      paused={false}
-                      muted={true}
-                      repeat={true}
-                      // seek={0.2}
-                      style={{height: '100%', width: '100%'}}
-                    />
-                  )}
-                </TouchableOpacity>
-              </>
-            )}
+            columns={3} // Set the desired number of columns in each row
+            // onEndReachedThreshold={0.5} // Adjust the threshold as needed
+            onEndReached={() => {
+              // Implement logic for loading more data
+            }}
           />
         ) : (
+          // ) : (
+          // <FlatList
+          //   data={data}
+          //   horizontal={false}
+          //   numColumns={numOfColoums}
+          //   keyExtractor={item => item.id}
+          //   renderItem={({item, index}) => (
+          //     <>
+          //       <InstaGrid
+          //         data={item}
+          //         columns={3} // Set the desired number of columns in each row
+          //         // onEndReachedThreshold={0.5} // Adjust the threshold as needed
+          //         onEndReached={() => {
+          //           // Implement logic for loading more data
+          //         }}
+          //         // loading={false} // Set to true when loading more data
+          //         // onItemClick={onItemClick}
+          //       />
+          //       {/* <TouchableOpacity
+          //             onPress={() => {
+          //               setImage((image = item));
+          //               // checkMedia(image);
+          //               setViewModal(true);
+          //             }}
+          //             style={{
+          //               width: '16.40%',
+          //               aspectRatio: 1,
+          //               marginRight: 0.9,
+          //               backgroundColor: GREY,
+          //               marginTop: 10,
+          //             }}>
+          //             {!item.media.includes('.mp4') ? null : (
+          //               <Video
+          //                 source={{uri: URL.concat(item.media)}} // Can be a URL or a local file.
+          //                 paused={false}
+          //                 muted={true}
+          //                 repeat={true}
+          //                 // seek={0.2}
+          //                 style={{height: '100%', width: '100%'}}
+          //               />
+          //             )}
+          //           </TouchableOpacity> */}
+          //     </>
+          //   )}
+          // />
           <View
             style={{
               justifyContent: 'center',
