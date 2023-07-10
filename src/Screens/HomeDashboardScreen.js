@@ -210,7 +210,7 @@ export default function HomeDashboardScreen({navigation, route}) {
     setIsLoading(true);
     getPersonalCardAllActiveApiCall(personalLimit, (page = 1), DATA.id)
       .then(({data}) => {
-        // console.log('personal res', data);
+        console.log('personal res', data);
         if (data.success == true) {
           for (let index = 0; index < data.result.length; index++) {
             const element = data.result[index];
@@ -236,6 +236,7 @@ export default function HomeDashboardScreen({navigation, route}) {
     setIsLoading(true);
     getBusinessCardAllActiveApiCall(businessLimit, (page = 1))
       .then(({data}) => {
+        console.log('business res', data);
         if (data.success == true) {
           for (let index = 0; index < data.result.length; index++) {
             const element = data.result[index];

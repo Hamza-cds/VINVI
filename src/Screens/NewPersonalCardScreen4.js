@@ -248,7 +248,8 @@ export default function NewCardScreen(props) {
       var formdata = new FormData();
       formdata.append('Name', PCScreen1.Name);
       formdata.append('Email', PCScreen1.Email);
-      formdata.append('UserId', JSON.stringify(userData.id));
+      // formdata.append('UserId', JSON.stringify(userData.id));
+      formdata.append('UserId', userData.id);
       formdata.append('PhoneNo', PCScreen1.PhoneNo);
       formdata.append('Address', PCScreen1.Address);
       for (let index = 0; index < PersonalCardMeta.length; index++) {

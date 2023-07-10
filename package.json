@@ -21,6 +21,7 @@
     "@react-native-firebase/firestore": "^16.4.0",
     "@react-native-firebase/messaging": "^16.4.0",
     "@react-native-picker/picker": "^2.4.2",
+    "@react-native-seoul/masonry-list": "^1.4.2",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/material-top-tabs": "^5.3.15",

@@ -24,7 +24,11 @@ export default function IndividualCard({
   let [experience, setExperiance] = useState('');
 
   let arrayOccupation;
-  arrayOccupation = _.find(item.personalCardMeta, {personalKey: 'occupation'});
+  if (item && item.personalCardMeta) {
+    arrayOccupation = _.find(item.personalCardMeta, {
+      personalKey: 'occupation',
+    });
+  }
   if (arrayOccupation) {
     arrayOccupation = arrayOccupation.personalValue;
     // console.log('arrayOccupation', arrayOccupation);
@@ -33,7 +37,9 @@ export default function IndividualCard({
   }
 
   let arrayCity;
-  arrayCity = _.find(item.personalCardMeta, {personalKey: 'city'});
+  if (item && item.personalCardMeta) {
+    arrayCity = _.find(item.personalCardMeta, {personalKey: 'city'});
+  }
   if (arrayCity) {
     arrayCity = arrayCity.personalValue;
     // console.log('arrayCity', arrayCity);
@@ -43,7 +49,9 @@ export default function IndividualCard({
 
   let arrayEducation;
   let eductaion;
-  arrayEducation = _.find(item.personalCardMeta, {personalKey: 'Education'});
+  if (item && item.personalCardMeta) {
+    arrayEducation = _.find(item.personalCardMeta, {personalKey: 'Education'});
+  }
   if (isNullOrEmpty(arrayEducation) && arrayEducation) {
     arrayEducation = JSON.parse(arrayEducation.personalValue);
     console.log('arrayEducation', arrayEducation);
@@ -54,11 +62,14 @@ export default function IndividualCard({
 
   useEffect(() => {
     let arrayJobHistory = [];
-    arrayJobHistory = _.find(item.personalCardMeta, {
-      personalKey: 'JobHistory',
-    });
+    if (item && item.personalCardMeta) {
+      arrayJobHistory = _.find(item.personalCardMeta, {
+        personalKey: 'JobHistory',
+      });
+    }
+    console.log('arrayJobHistory', arrayJobHistory);
     if (!isNullOrEmpty(arrayJobHistory)) {
-      if (isNullOrEmpty(arrayJobHistory.personalValue)) {
+      if (!isNullOrEmpty(arrayJobHistory.personalValue)) {
         arrayJobHistory = JSON.parse(arrayJobHistory.personalValue);
         if (!isNullOrEmptyArray(arrayJobHistory)) {
           setTempExp((tempExp = arrayJobHistory[0]));
@@ -73,7 +84,7 @@ export default function IndividualCard({
 
   // let experience;
 
-  // console.log('experience', experience);
+  // console.log('item', item);
 
   return (
     <TouchableOpacity
@@ -129,8 +140,10 @@ export default function IndividualCard({
             }}>
             <Image
               source={
-                item.profilePicture
-                  ? {uri: URL.concat(item.profilePicture)}
+                item
+                  ? !isNullOrEmpty(item.profilePicture)
+                    ? {uri: URL.concat(item.profilePicture)}
+                    : require('../Assets/profilePic.png')
                   : require('../Assets/profilePic.png')
               }
               style={{
@@ -149,7 +162,7 @@ export default function IndividualCard({
                 fontWeight: 'bold',
                 maxWidth: 160,
               }}>
-              {item.name}
+              {item ? item.name : 'name'}
             </Text>
             <Text
               numberOfLines={1}
@@ -158,7 +171,7 @@ export default function IndividualCard({
                 color: WHITE,
                 maxWidth: '100%',
               }}>
-              {item.email}
+              {item ? item.email : 'email'}
             </Text>
             {!isNullOrEmpty(arrayCity) ? (
               <View style={{flexDirection: 'row'}}>
@@ -171,7 +184,7 @@ export default function IndividualCard({
                 <Text
                   numberOfLines={1}
                   style={{fontSize: 13, color: WHITE, maxWidth: '100%'}}>
-                  {arrayCity}
+                  {arrayCity ? arrayCity : ''}
                 </Text>
               </View>
             ) : null}
