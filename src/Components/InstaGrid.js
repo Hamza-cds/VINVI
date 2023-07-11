@@ -14,6 +14,8 @@ import * as _ from 'lodash';
 import {URL} from '../Constants/Constants';
 import Video from 'react-native-video';
 import {GREY} from '../Constants/Colors';
+import Lottie from 'lottie-react-native';
+import assets from '../..';
 
 const MyImage = ({style, sourceObj, onPress}) => {
   const [imageError, setImageError] = useState(false);
@@ -21,19 +23,20 @@ const MyImage = ({style, sourceObj, onPress}) => {
 
   const renderMedia = () => {
     if (sourceObj.media.includes('.mp4')) {
-      console.log('ye ja ra ha data us k pas ____________', sourceObj.media);
       return (
-        <Video
-          source={{uri: URL.concat(sourceObj.media)}}
-          paused={false}
-          muted={true}
-          repeat={true}
-          resizeMode="stretch"
-          style={{
-            ...style,
-          }}
-          onLoad={() => setLoading(false)}
-        />
+        <View style={{borderWidth: 0.2, borderColor: 'black'}}>
+          <Video
+            source={{uri: URL.concat(sourceObj.media)}}
+            paused={false}
+            muted={true}
+            repeat={true}
+            resizeMode="stretch"
+            style={{
+              ...style,
+            }}
+            onLoad={() => setLoading(false)}
+          />
+        </View>
       );
     } else {
       return (
@@ -62,16 +65,22 @@ const MyImage = ({style, sourceObj, onPress}) => {
         renderMedia()
       )}
       {loading && (
-        <ActivityIndicator
-          style={styles.activityIndicator}
-          animating={loading}
-        />
+        // <ActivityIndicator
+        //   style={styles.activityIndicator}
+        //   animating={loading}
+        // />
+        <View style={styles.activityIndicator}>
+          <Lottie source={require('../../LottieLoader.json')} autoPlay loop />
+        </View>
       )}
     </TouchableOpacity>
   );
 };
 
 const InstaGrid = ({
+  setViewModal,
+  setObjectPassInModal,
+  objectPassInModal,
   data,
   columns,
   onEndReachedThreshold,
@@ -100,7 +109,9 @@ const InstaGrid = ({
                 style={styles.imageThumbnail}
                 sourceObj={smallImage1}
                 onPress={() => {
-                  onItemClick(smallImage1);
+                  setViewModal(true);
+                  setObjectPassInModal((objectPassInModal = smallImage1));
+                  // onItemClick(smallImage1);
                 }}
               />
             </View>
@@ -109,7 +120,9 @@ const InstaGrid = ({
                 style={styles.imageThumbnail}
                 sourceObj={smallImage2}
                 onPress={() => {
-                  onItemClick(smallImage2);
+                  setViewModal(true);
+                  setObjectPassInModal((objectPassInModal = smallImage2));
+                  // onItemClick(smallImage2);
                 }}
               />
             </View>
@@ -119,7 +132,9 @@ const InstaGrid = ({
               style={styles.imageThumbnailLarge}
               sourceObj={largeImage}
               onPress={() => {
-                onItemClick(largeImage);
+                setViewModal(true);
+                setObjectPassInModal((objectPassInModal = largeImage));
+                // onItemClick(largeImage);
               }}
             />
           </View>
@@ -134,7 +149,8 @@ const InstaGrid = ({
               style={styles.imageThumbnailLarge}
               sourceObj={largeImage}
               onPress={() => {
-                onItemClick(largeImage);
+                setViewModal(true);
+                setObjectPassInModal((objectPassInModal = largeImage));
               }}
             />
           </View>
@@ -144,7 +160,8 @@ const InstaGrid = ({
                 style={styles.imageThumbnail}
                 sourceObj={smallImage1}
                 onPress={() => {
-                  onItemClick(smallImage1);
+                  setViewModal(true);
+                  setObjectPassInModal((objectPassInModal = smallImage1));
                 }}
               />
             </View>
@@ -153,7 +170,8 @@ const InstaGrid = ({
                 style={styles.imageThumbnail}
                 sourceObj={smallImage2}
                 onPress={() => {
-                  onItemClick(smallImage2);
+                  setViewModal(true);
+                  setObjectPassInModal((objectPassInModal = smallImage2));
                 }}
               />
             </View>
@@ -170,7 +188,10 @@ const InstaGrid = ({
           style={styles.imageThumbnail}
           sourceObj={item}
           onPress={() => {
-            onItemClick(item);
+            // onItemClick(item);
+
+            setViewModal(true);
+            setObjectPassInModal((objectPassInModal = item));
           }}
         />
       </View>
@@ -203,7 +224,9 @@ const InstaGrid = ({
   const renderFooter = () => {
     return (
       <View style={{marginBottom: 16}}>
-        <ActivityIndicator animating size="large" />
+        {/* <ActivityIndicator animating size="large" /> */}
+
+        <Lottie source={require('../../LottieLoader.json')} autoPlay loop />
       </View>
     );
   };
@@ -235,8 +258,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   imageThumbnail: {
-    height: 140,
-    width: width / 3 - 12,
+    height: 143,
+    width: width / 3 - 0,
     backgroundColor: GREY,
     // height: width / 3 - 12,
     // width: width / 3 - 12,
@@ -245,7 +268,7 @@ const styles = StyleSheet.create({
   },
   imageThumbnailLarge: {
     height: width * 0.6 + 40,
-    width: width * 0.6 + 5,
+    width: width * 0.6 + 35,
     backgroundColor: GREY,
     // marginLeft: 4,
     // resizeMode: 'stretch',
@@ -253,7 +276,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-start',
   },
   gridStyle: {
-    margin: 4,
+    // margin: 4,
   },
   activityIndicator: {
     position: 'absolute',

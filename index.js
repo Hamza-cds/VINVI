@@ -85,3 +85,10 @@ PushNotification.configure({
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
 });
+
+const assets = {
+  lottieFiles: {
+    lazyLoading: require('./LottieLoader.json'),
+  },
+};
+export default assets;

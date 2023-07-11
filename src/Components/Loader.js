@@ -1,10 +1,24 @@
 import React from 'react';
-import {Modal, View, ActivityIndicator} from 'react-native';
+import {Modal, View, ActivityIndicator, TouchableOpacity} from 'react-native';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {DotIndicator} from 'react-native-indicators';
+import {WHITE} from '../Constants/Colors';
 
-export default function Loader() {
+export default function Loader({cancil, onPress}) {
   return (
     <Modal animationType="fade" transparent={true} visible={true}>
+      {cancil ? (
+        <TouchableOpacity
+          onPress={onPress}
+          style={{
+            position: 'absolute',
+            right: 15,
+            top: 15,
+            zIndex: 1,
+          }}>
+          <Entypo name="cross" size={23} color={WHITE} />
+        </TouchableOpacity>
+      ) : null}
       <View
         style={{
           flex: 1,

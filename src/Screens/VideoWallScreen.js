@@ -24,6 +24,8 @@ import {isValidVideo} from '../Constants/Validations';
 import Video from 'react-native-video';
 import {isNullOrEmptyArray} from '../Constants/TextUtils';
 import InstaGrid from '../Components/InstaGrid';
+import {useFocusEffect} from '@react-navigation/core';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 export default function VideoWallScreen({navigation, route}) {
   const [numOfColoums, setNumOfColoums] = useState(3);
@@ -32,6 +34,7 @@ export default function VideoWallScreen({navigation, route}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [viewModal, setViewModal] = useState(false);
+  let [objectPassInModal, setObjectPassInModal] = useState('');
   let [image, setImage] = useState('');
   let [uplaodMedia, setUploadMedia] = useState('');
   let [mediaType, setMediaType] = useState('');
@@ -40,13 +43,20 @@ export default function VideoWallScreen({navigation, route}) {
   let limit = 36;
 
   const DATA = useSelector(state => state.UserData);
-  console.log('dispatch DATA', DATA);
+  // console.log('dispatch DATA', DATA);
 
-  console.log('viewModal', viewModal);
+  // console.log('viewModal', viewModal);
 
-  useEffect(() => {
-    GetVideoWallData();
-  }, []);
+  // useEffect(() => {
+  //   GetVideoWallData();
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setData((data = ''));
+      GetVideoWallData();
+    }, [navigation]),
+  );
 
   const GetVideoWallData = () => {
     setIsLoading(true);
@@ -70,77 +80,120 @@ export default function VideoWallScreen({navigation, route}) {
 
   const onSelecet = image => {
     setIsVisible(false);
-    console.log('image', image);
+    // console.log('image', image);
     // for (let index = 0; index < image.assets.length; index++) {
     //   const element = image.assets[index];
     //   setUploadMedia((uplaodMedia = element));
     // }
     var imageType = image.mime;
-    console.log('imageType', imageType);
+    // console.log('imageType', imageType);
     var type = imageType.split('/')[1];
-    console.log('type', type);
+    // console.log('type', type);
     setMediaType((mediaType = type));
 
     // console.log('mediaType', mediaType);
 
-    if (isValidVideo(mediaType)) {
-      var formdata = new FormData();
-      formdata.append('Id', '0');
-      formdata.append('UploadType', 2);
-      formdata.append('Title', 'this is title');
-      formdata.append('Description', 'this is description');
-      formdata.append('UserId', JSON.stringify(DATA.id));
-      formdata.append('media_file', {
-        uri: image.path,
-        name: 'vinvi' + '.' + mediaType,
-        type: image.mime,
-      });
-      console.log('formdata', formdata);
-      setIsLoading(true);
-      storyPostApiCall(formdata)
-        .then(res => res.json())
-        .then(data => {
-          console.log('response', data);
-          if (data.status === 200 && data.success === true) {
-            setIsLoading(false);
-            GetVideoWallData();
-            // props.navigation.replace('MyCardsDashboardScreen');
-            alert('successfully posted');
-          } else {
-            setIsLoading(false);
-            alert('invalid request');
-          }
-        })
-        .catch(err => {
+    // if (isValidVideo(mediaType)) {
+    var formdata = new FormData();
+    formdata.append('Id', '0');
+    formdata.append('UploadType', 2);
+    formdata.append('Title', 'this is title');
+    formdata.append('Description', 'this is description');
+    formdata.append('UserId', JSON.stringify(DATA.id));
+    formdata.append('media_file', {
+      uri: image.path,
+      name: 'vinvi' + '.' + mediaType,
+      type: image.mime,
+    });
+    console.log('formdata', formdata);
+    setIsLoading(true);
+    storyPostApiCall(formdata)
+      .then(res => res.json())
+      .then(data => {
+        console.log('response', data);
+        if (data.status === 200 && data.success === true) {
           setIsLoading(false);
-          console.log('err', err);
-        });
-    } else {
-      alert('Please only select videos');
-    }
+          GetVideoWallData();
+          // props.navigation.replace('MyCardsDashboardScreen');
+          alert('successfully posted');
+        } else {
+          setIsLoading(false);
+          alert('invalid request');
+        }
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.log('err', err);
+      });
+    // } else {
+    //   alert('Please only select videos');
+    // }
   };
 
-  // const getFileType = () => {
-  //   console.log('image....', image);
-  //   var Type = image.media;
-  //   console.log('imageType', Type);
-  //   var type = Type.split('.')[1];
-  //   console.log('type', type);
-  // };
+  // const modalFunction = () => {
+  //   return (
+  //     <Modal
+  //       animationType="slide"
+  //       transparent={false}
+  //       visible={viewModal}
+  //       onRequestClose={() => {
+  //         setViewModal(!viewModal);
+  //       }}>
+  //       <View style={{height: '100%', width: '100%', backgroundColor: 'black'}}>
+  //         <View
+  //           style={{
+  //             flexDirection: 'row',
+  //             marginVertical: 20,
+  //             marginHorizontal: 20,
+  //           }}>
+  //           <Image
+  //             source={
+  //               objectPassInModal
+  //                 ? objectPassInModal.profileImage
+  //                   ? {uri: URL.concat(objectPassInModal.profileImage)}
+  //                   : require('../Assets/profilePic.png')
+  //                 : require('../Assets/profilePic.png')
+  //             }
+  //             style={{height: 50, width: 50, borderRadius: 50}}
+  //           />
 
-  // const checkMedia = image => {
-  //   console.log('image....', image);
-  //   var Type = image.media;
-  //   console.log('imageType', Type);
-  //   var type = Type.split('.')[1];
-  //   console.log('type', type);
-  //   // setMediaType((mediaType = type));
+  //           <Text
+  //             numberOfLines={1}
+  //             style={{
+  //               color: 'white',
+  //               fontSize: 15,
+  //               marginLeft: 15,
+  //               marginVertical: 13,
+  //             }}>
+  //             {objectPassInModal.firstName}
+  //           </Text>
+  //         </View>
 
-  //   if (isValidImage(image.media)) {
-  //     setModalVisible(true);
-  //   } else if (isValidVideo(image.media)) {
-  //     setViewModal(true);
-  //   }
+  //         <Video
+  //           source={{uri: URL.concat(objectPassInModal.media)}} // Can be a URL or a local file.
+  //           paused={false}
+  //           muted={false}
+  //           resizeMode="contain"
+  //           repeat={true}
+  //           fullscreen={true}
+  //           bufferConfig={{
+  //             minBufferMs: 15000,
+  //             maxBufferMs: 50000,
+  //             bufferForPlaybackMs: 2500,
+  //             bufferForPlaybackAfterRebufferMs: 5000,
+  //           }}
+  //           onLoadStart={() => {
+  //             setIsLoading(true);
+  //           }}
+  //           onLoad={() => {
+  //             setIsLoading(false);
+  //           }}
+  //           style={{height: '80%', width: '100%'}}
+  //         />
+  //       </View>
+  //       {isLoading ? <Loader /> : null}
+  //     </Modal>
+  //   );
   // };
 
   return (
@@ -158,6 +211,10 @@ export default function VideoWallScreen({navigation, route}) {
 
         {!isNullOrEmptyArray(data) ? (
           <InstaGrid
+            setObjectPassInModal={setObjectPassInModal}
+            objectPassInModal={objectPassInModal}
+            setViewModal={setViewModal}
+            viewModal={viewModal}
             data={data}
             columns={3} // Set the desired number of columns in each row
             // onEndReachedThreshold={0.5} // Adjust the threshold as needed
@@ -235,9 +292,6 @@ export default function VideoWallScreen({navigation, route}) {
             position: 'absolute',
             bottom: 10,
             right: 10,
-            // alignSelf: 'flex-end',
-            // marginRight: 20,
-            // marginBottom: 20,
           }}>
           <Feather
             name="upload"
@@ -272,7 +326,13 @@ export default function VideoWallScreen({navigation, route}) {
         onRequestClose={() => {
           setViewModal(!viewModal);
         }}>
-        <View style={{height: '100%', width: '100%', backgroundColor: 'black'}}>
+        <View
+          style={{
+            height: '100%',
+            width: '100%',
+            backgroundColor: 'black',
+            zIndex: 1,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -281,9 +341,9 @@ export default function VideoWallScreen({navigation, route}) {
             }}>
             <Image
               source={
-                image
-                  ? image.profileImage
-                    ? {uri: URL.concat(image.profileImage)}
+                objectPassInModal
+                  ? objectPassInModal.profileImage
+                    ? {uri: URL.concat(objectPassInModal.profileImage)}
                     : require('../Assets/profilePic.png')
                   : require('../Assets/profilePic.png')
               }
@@ -298,64 +358,61 @@ export default function VideoWallScreen({navigation, route}) {
                 marginLeft: 15,
                 marginVertical: 13,
               }}>
-              {image.firstName}
+              {objectPassInModal.firstName}
             </Text>
           </View>
-          {/* <Video
-            source={{uri: URL.concat(image.media)}} // Can be a URL or a local file.
-            ref={ref => {
-              let player = ref;
-            }} // Store reference
-            //  onBuffer={this.onBuffer}                // Callback when remote video is buffering
-            //  onError={this.videoError}               // Callback when video cannot be loaded
-            style={{height: '100%', width: '100%'}}
-          /> */}
 
-          <Video
-            source={{uri: URL.concat(image.media)}} // Can be a URL or a local file.
-            paused={false}
-            muted={false}
-            resizeMode="contain"
-            repeat={true}
-            fullscreen={true}
-            bufferConfig={{
-              minBufferMs: 15000,
-              maxBufferMs: 50000,
-              bufferForPlaybackMs: 2500,
-              bufferForPlaybackAfterRebufferMs: 5000,
-            }}
-            onLoadStart={() => {
-              setIsLoading(true);
-            }}
-            onLoad={() => {
-              setIsLoading(false);
-            }}
-            style={{height: '80%', width: '100%'}}
-          />
-          {/* <VLCPlayer
-            style={{flex: 1}}
-            // videoAspectRatio="16:9"
-            // autoAspectRatio={true}
-            source={{uri: URL.concat(image.media)}}
-            showBack={true}
-            resizeMode={'contain'}
-            playInBackground={false}
-            repeat={true}
-            paused={false}
-            onProgress={() => {
-              setIsLoading(false);
-              console.log('progress');
-            }}
-            onPlaying={() => {
-              setIsLoading(true);
-              console.log('playing');
-            }}
-            onBuffering={() => {
-              setIsLoading(true);
-            }}
-          /> */}
+          {objectPassInModal ? (
+            objectPassInModal.media.endsWith('.mp4') ||
+            objectPassInModal.media.endsWith('.3gp') ||
+            objectPassInModal.media.endsWith('.mkv') ||
+            objectPassInModal.media.endsWith('.rmvb') ? (
+              <Video
+                source={{uri: URL.concat(objectPassInModal.media)}} // Can be a URL or a local file.
+                paused={false}
+                muted={false}
+                resizeMode="contain"
+                repeat={true}
+                fullscreen={true}
+                bufferConfig={{
+                  minBufferMs: 15000,
+                  maxBufferMs: 50000,
+                  bufferForPlaybackMs: 2500,
+                  bufferForPlaybackAfterRebufferMs: 5000,
+                }}
+                onLoadStart={() => {
+                  setIsLoading(true);
+                  console.log('abi load ho raha ha');
+                }}
+                onLoad={() => {
+                  console.log('load complete ho gaya ha');
+                  setIsLoading(false);
+                }}
+                style={{height: '80%', width: '100%'}}
+              />
+            ) : (
+              <Image
+                style={{height: '80%', width: '100%'}}
+                source={{uri: URL.concat(objectPassInModal.media)}}
+                onLoadStart={() => {
+                  setIsLoading(true);
+                }}
+                onLoad={() => {
+                  setIsLoading(false);
+                }}
+              />
+            )
+          ) : null}
         </View>
-        {isLoading ? <Loader /> : null}
+        {isLoading ? (
+          <Loader
+            cancil={true}
+            onPress={() => {
+              setViewModal(!viewModal);
+              setIsLoading(false);
+            }}
+          />
+        ) : null}
       </Modal>
 
       <Modal
@@ -416,10 +473,10 @@ export default function VideoWallScreen({navigation, route}) {
             }}
           />
           <BtnComponent
-            placeholder="Upload Video"
+            placeholder="Upload Media"
             onPress={() => {
               ImagePicker.openPicker({
-                mediaType: 'video',
+                mediaType: 'mixed',
               }).then(image => {
                 onSelecet(image);
               });
