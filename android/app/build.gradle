@@ -176,10 +176,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('vinvi.keystore')
-            storePassword 'vinvi12345'
-            keyAlias 'vinvi'
-            keyPassword 'vinvi12345'
+            storeFile file('VINVI.keystore')
+            storePassword 'VINVI123'
+            keyAlias 'VINVI'
+            keyPassword 'VINVI123'
         }
     }
     buildTypes {
