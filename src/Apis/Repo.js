@@ -76,6 +76,8 @@ export async function personalCardApiCall(formdata) {
     redirect: 'follow',
   };
 
+  console.log('requestOptions', requestOptions);
+
   return fetch(
     'https://vinvi.dsmeglobal.com/api/PersonalCard/Post',
     requestOptions,

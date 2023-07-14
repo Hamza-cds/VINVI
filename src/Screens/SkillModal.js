@@ -144,6 +144,7 @@ export function SkillModal({
       personalCardId: CardData.id,
       personalKey: 'Skills',
       personalValue: JSON.stringify(skillData),
+      // personalValue: JSON.stringify(skillData),
     };
 
     console.log('abject', obj);

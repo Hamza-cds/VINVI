@@ -170,6 +170,7 @@ export function JobHistoryModal({
       ishidden: true,
       personalCardId: CardData.id,
       personalKey: 'JobHistory',
+      // personalValue: JSON.stringify(jobhistoryarray),
       personalValue: JSON.stringify(jobhistoryarray),
     };
 

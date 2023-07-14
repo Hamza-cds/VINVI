@@ -200,6 +200,7 @@ export function EducationModal({
           personalCardId: CardData.id,
           personalKey: 'Education',
           personalValue: JSON.stringify(educationarray),
+          // personalValue: JSON.stringify(educationarray),
         };
 
         setIsLoading(true);
